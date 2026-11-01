@@ -96,28 +96,45 @@ describe('deterministic mapping', () => {
 });
 
 describe('collision handling', () => {
+  // Three branches of one family: once that family is used, only branch identity matters.
+  const sameFamily = BRANCHES.filter((b) => b.family === 'print').slice(0, 3);
+  const include = sameFamily.map((b) => b.id);
+  const inPool = (i: number) => BRANCHES.filter((b) => include.includes(b.id))[i];
+
   it('walks forward to the next free branch', () => {
-    const a = hashWith([0, 3], 'aa');
-    const b = hashWith([0, 3], 'bb');
-    const c = hashWith([0, 4], 'cc');
-    const [da, db, dc] = mapRoll([a, b, c]);
-    expect(da!.branch).toBe(BRANCHES[3]);
+    const [da, db, dc] = mapRoll([hashWith([0, 0], 'aa'), hashWith([0, 0], 'bb'), hashWith([0, 1], 'cc')], {
+      include,
+    });
+    expect(da!.branch).toBe(inPool(0));
     expect(da!.probe).toBe(0);
-    expect(db!.branch).toBe(BRANCHES[4]);
+    expect(db!.branch).toBe(inPool(1));
     expect(db!.probe).toBe(1);
-    // c's primary (4) is now taken by b → walks to 5
-    expect(dc!.branch).toBe(BRANCHES[5]);
+    // c's primary (1) is now taken by b → walks to 2
+    expect(dc!.branch).toBe(inPool(2));
     expect(dc!.probe).toBe(1);
     expect(db!.ref.endsWith('+1')).toBe(true);
     expect(db!.trace[0]!.note).toMatch(/walked forward 1/);
   });
 
-  it('wraps around the end of the library', () => {
-    const n = BRANCHES.length;
-    const last = hashWith([0, n - 1], 'aa');
-    const again = hashWith([0, n - 1], 'bb');
-    const [, d2] = mapRoll([last, again]);
-    expect(d2!.branch).toBe(BRANCHES[0]);
+  it('wraps around the end of the pool', () => {
+    const [, d2] = mapRoll([hashWith([0, 2], 'aa'), hashWith([0, 2], 'bb')], { include });
+    expect(d2!.branch).toBe(inPool(0));
+  });
+
+  it('spreads a roll across families while unused families remain', () => {
+    const families = new Set(BRANCHES.map((b) => b.family)).size;
+    for (let i = 0; i < 60; i++) {
+      const designs = mapRoll(rollHashes(5, `spread-${i}`));
+      expect(new Set(designs.map((d) => d.branch.family)).size).toBe(Math.min(5, families));
+      const twelve = mapRoll(rollHashes(12, `spread12-${i}`));
+      expect(new Set(twelve.slice(0, families).map((d) => d.branch.family)).size).toBe(families);
+    }
+  });
+
+  it('a second hash in the same family walks to a different family', () => {
+    const first = mapDesign(hashWith([0, 0], 'aa'));
+    const [, second] = mapRoll([hashWith([0, 0], 'aa'), hashWith([0, 0], 'bb')]);
+    expect(second!.branch.family).not.toBe(first.branch.family);
   });
 
   it('rolls are always distinct and reproducible from refs', () => {
@@ -126,6 +143,11 @@ describe('collision handling', () => {
       expect(new Set(designs.map((d) => d.branch.id)).size).toBe(12);
       for (const d of designs) expect(ids(mapDesign(d.hash, { probe: d.probe }))).toEqual(ids(d));
     }
+  });
+
+  it('can roll the whole library', () => {
+    const all = mapRoll(rollHashes(BRANCHES.length, 'everything'));
+    expect(new Set(all.map((d) => d.branch.id)).size).toBe(BRANCHES.length);
   });
 
   it('refuses more designs than branches', () => {

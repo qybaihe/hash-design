@@ -1128,7 +1128,7 @@ const galleryCatalogue: Branch = {
 const topographicMap: Branch = {
   id: 'topographic-map',
   name: { zh: '地形图', en: 'Topographic map' },
-  family: 'document',
+  family: 'signage',
   concept: {
     zh: '测绘局出版的地形图：等高线一圈圈收紧，图廓上刻满坐标刻度，图例方框、比例尺和出版说明整齐地排在图边。水系是蓝色斜体，等高线是赭色，林地是淡绿色块——每一种颜色都是一层数据。',
     en: 'The survey office’s topographic sheet: contours tightening ring by ring, grid references ticked along the neat-line, legend boxes, scale bar and imprint lined up in the margin. Water is blue italic, contours ochre, woodland a pale green tint — every colour is a data layer.',
@@ -2525,7 +2525,7 @@ const instrumentPanel: Branch = {
 const chineseAlmanac: Branch = {
   id: 'chinese-almanac',
   name: { zh: '老黄历', en: 'Chinese almanac' },
-  family: 'print',
+  family: 'craft',
   concept: {
     zh: '老通书与撕页黄历：米黄纸上红黑两色套印，竖排文字从右往左读，干支纪日的方框、宜与忌对开的格子、角上一方朱印；月份牌则把节气与日期框进木刻花边。每一项都有固定的位置，读者凭位置就知道去哪里找。',
     en: 'The traditional tongshu almanac and the tear-off huangli: red and black ink on rice paper, vertical text read right to left, boxes for the ganzhi day, paired grids of 宜 (do) and 忌 (avoid), a cinnabar seal in the corner; the yuefenpai calendar poster frames dates and solar terms in woodblock borders. Every item has a fixed place, so readers find things by position alone.',

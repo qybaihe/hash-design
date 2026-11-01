@@ -823,7 +823,7 @@ const risographDuotone: Branch = {
 const ticketStub: Branch = {
   id: 'ticket-stub',
   name: { zh: '票根', en: 'Ticket stub' },
-  family: 'print',
+  family: 'document',
   concept: {
     zh: '剧院、铁路与电影院的票据：存根和票身之间一条打孔线，流水号、排号、座号、日期都关在小格子里，底下压着防伪扭索纹。信息很密，但每一项都有固定位置；撕下来的那一半，就是凭证。',
     en: 'Theatre, railway and cinema tickets: a perforated line between stub and body, serial, row, seat and date each locked in a small ruled cell, a guilloche security pattern underneath. Dense with information, yet every item has a fixed place — and the half you tear off is the proof.',
@@ -1088,7 +1088,7 @@ const ticketStub: Branch = {
 const thermalReceipt: Branch = {
   id: 'thermal-receipt',
   name: { zh: '热敏小票', en: 'Thermal receipt' },
-  family: 'print',
+  family: 'document',
   concept: {
     zh: '收银台吐出来的热敏小票：一条窄窄的纸带，等宽字一行一行打出来，虚线隔开每一段，合计用符号框住，底部一条条形码。纸是微微发灰的白，字已经开始褪色，越往下读越像一本流水账。',
     en: 'The till receipt: a narrow strip of thermal paper, monospaced lines printed one at a time, dashed separators between blocks, totals boxed in ASCII characters and a barcode at the foot. Grey-white paper, print already fading, and the further down you read the more it becomes a ledger of everything.',

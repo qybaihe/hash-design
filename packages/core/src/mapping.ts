@@ -94,7 +94,8 @@ export const BYTE_MAP: ReadonlyArray<{ bytes: number[]; dimension: string; sourc
   {
     bytes: [0, 1],
     dimension: 'branch',
-    source: 'library (uint16 big-endian mod N, collisions walk forward)',
+    source:
+      'library (uint16 big-endian mod N; collisions — same branch, or same family while families remain — walk forward)',
   },
   { bytes: [2], dimension: 'voice', source: 'global voices' },
   { bytes: [3], dimension: 'layout', source: 'branch.layouts' },
@@ -236,7 +237,9 @@ export function mapDesign(hash: string, opts: MapOptions = {}): Design {
     poolSize: pool.length,
     index,
     result: branch.id,
-    ...(probe ? { note: `primary branch already taken in this roll; walked forward ${probe} step(s)` } : {}),
+    ...(probe
+      ? { note: `primary branch (or its family) already used in this roll; walked forward ${probe} step(s)` }
+      : {}),
   });
 
   const voice = pick(VOICES, byte(2), 'voice', 2, trace);
@@ -370,8 +373,12 @@ export function mapDesign(hash: string, opts: MapOptions = {}): Design {
 }
 
 /**
- * Map a whole roll. Each hash gets its primary branch; if that branch is already taken by an earlier hash in
- * the same roll, walk forward (index + 1, + 2, …) to the next free branch, so every direction is distinct.
+ * Map a whole roll. Each hash gets its primary branch, then walks forward (index + 1, + 2, …) past
+ * "collisions" so every direction in the roll is genuinely different:
+ *  - a branch already used in this roll is always a collision;
+ *  - a branch whose *family* is already used is also a collision while some family in the pool is
+ *    still unused (family spread), so a 5-roll never clusters in, say, five paper documents.
+ * The walk is recorded as `probe`, so `mapDesign(hash, { probe })` reproduces each design on its own.
  */
 export function mapRoll(hashes: readonly string[], constraints: Constraints = {}): Design[] {
   const norm = normalizeConstraints(constraints);
@@ -379,12 +386,22 @@ export function mapRoll(hashes: readonly string[], constraints: Constraints = {}
   if (hashes.length > pool.length) {
     throw new Error(`Cannot roll ${hashes.length} distinct designs from a pool of ${pool.length} branches`);
   }
-  const taken = new Set<number>();
+  const familyCount = new Set(pool.map((b) => b.family)).size;
+  const usedBranches = new Set<number>();
+  const usedFamilies = new Set<string>();
   return hashes.map((hash) => {
     const primary = primaryBranchIndex(hash, pool.length);
+    const spread = usedFamilies.size < familyCount;
     let probe = 0;
-    while (taken.has((primary + probe) % pool.length)) probe++;
-    taken.add((primary + probe) % pool.length);
+    for (;;) {
+      const idx = (primary + probe) % pool.length;
+      const family = (pool[idx] as Branch).family;
+      if (!usedBranches.has(idx) && !(spread && usedFamilies.has(family))) break;
+      probe++;
+    }
+    const idx = (primary + probe) % pool.length;
+    usedBranches.add(idx);
+    usedFamilies.add((pool[idx] as Branch).family);
     return mapDesign(hash, { probe, constraints: norm });
   });
 }

@@ -51,3 +51,27 @@ describe('branch library', () => {
     }
   });
 });
+
+describe('branch order', () => {
+  it('lists every branch exactly once and interleaves families', async () => {
+    const { BRANCH_ORDER } = await import('../src/data/branches/index.js');
+    expect(new Set(BRANCH_ORDER).size).toBe(BRANCH_ORDER.length);
+    expect(BRANCH_ORDER.length).toBe(BRANCHES.length);
+    // No family occupies more than 2 consecutive slots.
+    let run = 1;
+    for (let i = 1; i < BRANCHES.length; i++) {
+      run = BRANCHES[i]!.family === BRANCHES[i - 1]!.family ? run + 1 : 1;
+      expect(run, `${BRANCHES[i]!.id}`).toBeLessThanOrEqual(2);
+    }
+  });
+
+  it('families are reasonably balanced (5–9 branches each)', () => {
+    const counts = new Map<string, number>();
+    for (const b of BRANCHES) counts.set(b.family, (counts.get(b.family) ?? 0) + 1);
+    expect(counts.size).toBe(6);
+    for (const [, n] of counts) {
+      expect(n).toBeGreaterThanOrEqual(5);
+      expect(n).toBeLessThanOrEqual(9);
+    }
+  });
+});

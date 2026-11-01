@@ -8,7 +8,7 @@ import type { Branch } from '../../types.js';
 const recipeCard: Branch = {
   id: 'recipe-card',
   name: { zh: '菜谱卡', en: 'Recipe card' },
-  family: 'document',
+  family: 'craft',
   concept: {
     zh: '铁皮盒里按分类插着的 3×5 英寸菜谱索引卡：浅蓝横线、顶端一道红线，打字机敲出的配料和步骤，页边是铅笔补的“糖减半”。凸出的分类插页标签就是导航，油渍和折角证明这张卡被反复用过。',
     en: 'The 3×5 inch recipe index cards filed in a kitchen tin: pale blue feint lines under one red top rule, ingredients and steps struck on a typewriter, a pencilled “half the sugar” in the margin. Protruding divider tabs are the navigation; grease spots and dog-ears prove the card has been used.',
@@ -1709,7 +1709,7 @@ const bureaucraticForm: Branch = {
 const labNotebook: Branch = {
   id: 'lab-notebook',
   name: { zh: '方格实验本', en: 'Lab notebook' },
-  family: 'document',
+  family: 'craft',
   concept: {
     zh: '科研实验记录本和工程方格计算纸：方格底，手写结论旁边是等宽字的注释，有草图、测量数据表，每条记录写日期并签名，写错了就划一道线而不是擦掉。页面是一份正在进行、可以追溯的工作记录。',
     en: 'The research lab notebook and the engineer’s computation pad: grid paper, handwritten conclusions beside monospace annotations, sketches, measurement tables, every entry dated and signed, mistakes struck through with a single line instead of erased. The page is a running, traceable record of work.',
@@ -2550,7 +2550,7 @@ const fieldGuidePlate: Branch = {
 const editorialMagazine: Branch = {
   id: 'editorial-magazine',
   name: { zh: '杂志编辑', en: 'Editorial magazine' },
-  family: 'document',
+  family: 'print',
   concept: {
     zh: '长篇杂志特稿：大号首字下沉、标题下的导语、署名行、多栏正文、打断栏位的引语和页脚页码。节奏来自栏宽、栏间细线和标题字号的大落差——是印刷杂志的版面，而不是大片留白的“生活方式”网页。',
     en: 'The long-form magazine feature: a big drop cap, a deck under the headline, a byline, multi-column body text, a pull quote breaking the columns and folios at the foot. Rhythm comes from column measure, hairline column rules and dramatic headline scale — a printed magazine spread, not a whitespace-heavy lifestyle site.',

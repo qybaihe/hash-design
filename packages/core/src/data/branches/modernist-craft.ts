@@ -281,7 +281,7 @@ const swissGrid: Branch = {
 const rawBrutalist: Branch = {
   id: 'raw-brutalist',
   name: { zh: '粗野原生', en: 'Raw brutalist' },
-  family: 'modernist',
+  family: 'screen',
   concept: {
     zh: '网页粗野主义：故意保留浏览器默认的样子——Times 字、蓝色下划线链接、灰色原生按钮、粗黑边框，结构完全外露。像《彭博商业周刊》封面那样粗暴而准确，像 Experimental Jetset 那样只用一种响亮的颜色。不精致，但每个决定都是故意的、可读的。',
     en: 'Web brutalism: the browser’s defaults kept on purpose — Times, blue underlined links, grey native buttons, thick black borders, structure fully exposed. Blunt and exact like a Bloomberg Businessweek cover, with one loud colour like Experimental Jetset. No polish, but every decision is deliberate and legible.',
@@ -2162,7 +2162,7 @@ const warmHandmade: Branch = {
 const maWhitespace: Branch = {
   id: 'ma-whitespace',
   name: { zh: '余白', en: 'Ma whitespace' },
-  family: 'modernist',
+  family: 'craft',
   concept: {
     zh: '日本的"间"：无印良品的目录、原研哉的展览书、Nendo 的作品集与日本的书籍装帧。大面积的留白不是空，而是让一件物、一行字被安静地看见；竖排、细小而精确的字号，只留一个克制的点色。',
     en: 'Japanese ma (間): Muji catalogues, Kenya Hara’s exhibition books, Nendo monographs and Japanese book design. The vast emptiness is not absence — it lets one object or one line be seen in quiet. Vertical setting, tiny precise type, a single restrained accent.',
