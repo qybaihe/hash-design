@@ -7,3 +7,5 @@ package-lock.json
 .claude/skills
 .cursor/skills
 skills
+packages/core/test/fixtures
+docs/branches.md

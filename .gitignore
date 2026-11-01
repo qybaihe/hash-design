@@ -7,3 +7,5 @@ coverage/
 .env
 .vscode/
 .idea/
+packages/core/skill/
+packages/*/LICENSE
