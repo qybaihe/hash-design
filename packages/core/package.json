@@ -36,7 +36,7 @@
     "./package.json": "./package.json"
   },
   "bin": {
-    "hash-design": "./dist/cli.js"
+    "hash-design": "./dist/bin.js"
   },
   "files": [
     "dist",
