@@ -1,0 +1,41 @@
+<!doctype html>
+<html lang="zh-CN">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>hash-design · examples</title>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=IBM+Plex+Mono:wght@400;600&family=IBM+Plex+Sans+Condensed:wght@400;600&family=Noto+Sans+SC:wght@400;700&display=swap">
+<style>
+  :root { --table: #d8d5ce; --ink: #151412; --muted: #55524b; --mark: #e2401c; }
+  body { margin: 0; background: var(--table); color: var(--ink); font: 16px/1.5 "IBM Plex Sans Condensed", "Noto Sans SC", "Arial Narrow", sans-serif; }
+  main { max-width: 880px; padding: 48px 24px 64px; }
+  h1 { font: 600 44px/1 "IBM Plex Sans Condensed", "Noto Sans SC", sans-serif; margin: 0 0 8px; letter-spacing: -0.01em; }
+  p { max-width: 60ch; }
+  .mono { font-family: "IBM Plex Mono", ui-monospace, monospace; font-size: 13px; color: var(--muted); }
+  table { width: 100%; border-collapse: collapse; margin-top: 24px; border-top: 2px solid var(--ink); }
+  td { padding: 10px 8px 10px 0; border-bottom: 1px solid var(--ink); vertical-align: top; }
+  td:first-child { font: 600 22px/1 "IBM Plex Mono", monospace; width: 48px; }
+  a { color: var(--ink); text-underline-offset: 3px; }
+  a:hover { color: var(--mark); }
+  .big { display: inline-block; margin-top: 16px; font: 600 18px "IBM Plex Mono", monospace; border: 2px solid var(--ink); padding: 8px 14px; text-decoration: none; }
+</style>
+</head>
+<body>
+<main>
+  <p class="mono">hash-design / examples</p>
+  <h1>第四巷面包店 · 5 个随机方向</h1>
+  <p>同一份事实清单，经 <code>roll_designs</code> 掷出 5 个哈希，映射成 5 份冻结的 brief，再由 5 个互不可见的 Agent 各自渲染。没有任何一个方向是模型自己挑的。</p>
+  <a class="big" href="fourth-lane-bakery/compare.html">打开并排对比页 →</a>
+  <table>
+    <tr><td>01</td><td><a href="fourth-lane-bakery/previews/01-bureaucratic-form.html">公文表格 Bureaucratic form</a><br><span class="mono"><a href="fourth-lane-bakery/briefs/01-bureaucratic-form.md">brief</a></span></td></tr>
+    <tr><td>02</td><td><a href="fourth-lane-bakery/previews/02-bauhaus-primary.html">包豪斯 Bauhaus primary</a><br><span class="mono"><a href="fourth-lane-bakery/briefs/02-bauhaus-primary.md">brief</a></span></td></tr>
+    <tr><td>03</td><td><a href="fourth-lane-bakery/previews/03-ink-and-seal.html">水墨印章 Ink and seal</a><br><span class="mono"><a href="fourth-lane-bakery/briefs/03-ink-and-seal.md">brief</a></span></td></tr>
+    <tr><td>04</td><td><a href="fourth-lane-bakery/previews/04-risograph-duotone.html">Riso 双色套印 Risograph duotone</a><br><span class="mono"><a href="fourth-lane-bakery/briefs/04-risograph-duotone.md">brief</a></span></td></tr>
+    <tr><td>05</td><td><a href="fourth-lane-bakery/previews/05-hk-shop-sign.html">港式招牌 Hong Kong shop sign</a><br><span class="mono"><a href="fourth-lane-bakery/briefs/05-hk-shop-sign.md">brief</a></span></td></tr>
+  </table>
+  <p class="mono" style="margin-top:32px">源码与说明：<a href="https://github.com/qybaihe/hash-design">github.com/qybaihe/hash-design</a></p>
+</main>
+</body>
+</html>
