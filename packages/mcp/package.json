@@ -41,7 +41,7 @@
   ],
   "scripts": {
     "build": "tsc -b",
-    "prepack": "tsc -b"
+    "prepack": "node -e \"require('fs').copyFileSync('../../LICENSE','LICENSE')\" && tsc -b"
   },
   "dependencies": {
     "@modelcontextprotocol/sdk": "^1.32.2",
