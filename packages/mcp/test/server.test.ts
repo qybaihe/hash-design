@@ -1,3 +1,4 @@
+import { readFileSync } from 'node:fs';
 import { mkdtemp, readFile } from 'node:fs/promises';
 import { tmpdir } from 'node:os';
 import { join } from 'node:path';
@@ -150,5 +151,23 @@ describe('hash-design MCP server', () => {
     expect(prompts.map((p) => p.name)).toContain('hash-design');
     const p = await client.getPrompt({ name: 'hash-design', arguments: { subject: '面包店' } });
     expect(JSON.stringify(p.messages)).toContain('roll_designs');
+  });
+
+  it('reproduces the CLI-generated example roll exactly (MCP ≡ CLI)', async () => {
+    const ex = (p: string) => new URL(`../../../examples/fourth-lane-bakery/${p}`, import.meta.url);
+    const saved = JSON.parse(readFileSync(ex('roll.json'), 'utf8'));
+    const res = await client.callTool({
+      name: 'roll_designs',
+      arguments: {
+        subject: saved.content.subject,
+        facts: saved.content.facts,
+        seed: 'fourth-lane-bakery',
+        detail: 'summary',
+      },
+    });
+    const machine = JSON.parse((res.content as TextContent[])[1]!.text);
+    expect(machine.designs.map((d: { ref: string }) => d.ref)).toEqual(
+      saved.designs.map((d: { ref: string }) => d.ref),
+    );
   });
 });
