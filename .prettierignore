@@ -1,0 +1,9 @@
+dist
+node_modules
+examples
+coverage
+*.tsbuildinfo
+package-lock.json
+.claude/skills
+.cursor/skills
+skills

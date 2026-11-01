@@ -1,0 +1,38 @@
+{
+  "name": "hash-design-monorepo",
+  "private": true,
+  "version": "0.1.0",
+  "description": "Random-hash–driven design directions that break the LLM default aesthetic. Core library, CLI, MCP server and Agent Skill.",
+  "license": "MIT",
+  "type": "module",
+  "workspaces": [
+    "packages/core",
+    "packages/mcp"
+  ],
+  "engines": {
+    "node": ">=20"
+  },
+  "scripts": {
+    "build": "tsc -b packages/core packages/mcp",
+    "clean": "rm -rf packages/*/dist packages/*/*.tsbuildinfo",
+    "typecheck": "tsc -b packages/core packages/mcp && tsc -p tsconfig.test.json --noEmit",
+    "lint": "eslint .",
+    "format": "prettier --write .",
+    "format:check": "prettier --check .",
+    "test": "vitest run",
+    "test:watch": "vitest",
+    "check": "npm run typecheck && npm run lint && npm run format:check && npm test",
+    "sync:skill": "node scripts/sync-skill.mjs",
+    "example:roll": "node packages/core/dist/cli.js roll --subject \"第四巷面包店\" --facts-file examples/fourth-lane-bakery/facts.md --seed fourth-lane-bakery --out examples/fourth-lane-bakery",
+    "screenshots": "node scripts/screenshot.mjs"
+  },
+  "devDependencies": {
+    "@eslint/js": "^10.0.1",
+    "@types/node": "^24.0.0",
+    "eslint": "^10.14.0",
+    "prettier": "^3.9.10",
+    "typescript": "~6.0.3",
+    "typescript-eslint": "^8.72.1",
+    "vitest": "^4.1.12"
+  }
+}
