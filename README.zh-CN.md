@@ -17,7 +17,7 @@
 [![Agent Skill](https://img.shields.io/badge/Agent_Skill-Claude_Code_%C2%B7_Cursor-151412?style=flat-square)](#快速开始)
 [![MCP server](https://img.shields.io/badge/MCP_server-6_tools_%C2%B7_stdio-151412?style=flat-square)](docs/mcp-tools.zh-CN.md)
 [![Node.js](https://img.shields.io/badge/Node.js-%E2%89%A520-151412?style=flat-square&logo=nodedotjs&logoColor=white)](.nvmrc)
-[![npm](https://img.shields.io/badge/npm-not_yet_published-a39e93?style=flat-square)](#手动安装)
+[![npm](https://img.shields.io/npm/v/hash-design?style=flat-square&color=151412)](https://www.npmjs.com/package/hash-design)
 [![MIT license](https://img.shields.io/badge/license-MIT-151412?style=flat-square)](LICENSE)
 
 **[在线示例](https://qybaihe.github.io/hash-design/) · [分支目录](docs/branches.md) · [MCP 参考](docs/mcp-tools.zh-CN.md) · [更新日志](CHANGELOG.md)**
@@ -27,15 +27,12 @@
 **直接告诉你的 Agent**（Claude Code、Cursor）：
 
 ```text
-从 https://github.com/qybaihe/hash-design 安装 hash-design（它还没发布到 npm）：
-克隆到 ~/hash-design 并构建，然后按它 README.zh-CN.md 里「手动安装」一节的步骤，
-把 skill 装进当前项目，并为你这个 Agent 注册它的 MCP server。
+为这个 Agent 安装 hash-design 的 skill：运行 `npx -y hash-design skill install --dir .`，
+并用 `npx -y hash-design mcp` 注册它的 MCP server（hash-design 0.1.0 时改用
+`npx -y hash-design-mcp@0.1.0`），步骤见 https://github.com/qybaihe/hash-design/blob/main/README.zh-CN.md#快速开始 。
 ```
 
 </div>
-
-> [!IMPORTANT]
-> hash-design **尚未发布到 npm**，请从源码安装：[qybaihe/hash-design](https://github.com/qybaihe/hash-design)。`package.json` 已可发布，CI 里会跑 `npm pack --dry-run`，但在正式发布之前，`npx hash-design` 和 `npx hash-design-mcp` 都用不了。
 
 ---
 
@@ -57,7 +54,7 @@ hash-design 不去求模型"更有品味"，而是**把选择权拿走**：
 
 默认产出是网页。传入**场景** `scenario`，同一批掷出的方向就能变成幻灯片、手机 App 界面、数据看板、海报 / 社交卡片或 HTML 邮件（见[场景](#场景)）。
 
-它由四部分组成：**Agent Skill**（何时、按什么顺序跑这套流程）、**MCP server**（stdio，6 个工具）、**CLI** 和 **TypeScript 库**，都在这个仓库里。
+它由四部分组成：**Agent Skill**（何时、按什么顺序跑这套流程）、**MCP server**（stdio，6 个工具）、**CLI** 和 **TypeScript 库**，一起以 [`hash-design`](https://www.npmjs.com/package/hash-design) 发布在 npm 上（MCP server 从 0.2.0 起也在这个包里）。
 
 ## 快速开始
 
@@ -66,74 +63,74 @@ hash-design 不去求模型"更有品味"，而是**把选择权拿走**：
 在要做页面的项目里打开 Claude Code 或 Cursor，粘贴：
 
 ```text
-从 https://github.com/qybaihe/hash-design 安装 hash-design（它还没发布到 npm）：
-克隆到 ~/hash-design 并构建，然后按它 README.zh-CN.md 里「手动安装」一节的步骤，
-把 skill 装进当前项目，并为你这个 Agent 注册它的 MCP server。
+为这个 Agent 安装 hash-design 的 skill：运行 `npx -y hash-design skill install --dir .`，
+并用 `npx -y hash-design mcp` 注册它的 MCP server（hash-design 0.1.0 时改用
+`npx -y hash-design-mcp@0.1.0`），步骤见 https://github.com/qybaihe/hash-design/blob/main/README.zh-CN.md#快速开始 。
 ```
 
-Agent 会克隆并构建这个仓库，把 Skill 复制到你项目的 `.claude/skills/` 或 `.cursor/skills/`，并注册 MCP server（Claude Code 用 `claude mcp add`，Cursor 写 `.cursor/mcp.json`）。完成后开一个新会话，让 Agent 加载两者，然后就可以[开始使用](#开始使用)。想自己敲命令，按下面的步骤来。
+Agent 会把 Skill 复制到你项目的 `.claude/skills/` 和 `.cursor/skills/`，并注册 MCP server（Claude Code 用 `claude mcp add`，Cursor 写 `.cursor/mcp.json`），不需要克隆或构建。完成后开一个新会话，让 Agent 加载两者，然后就可以[开始使用](#开始使用)。想自己敲命令，按下面的步骤来。
 
 ### 手动安装
 
-需要 Node.js ≥ 20（开发用的 `.nvmrc` 固定为 22）。
-
-```bash
-git clone https://github.com/qybaihe/hash-design.git ~/hash-design
-cd ~/hash-design && npm install && npm run build
-# CLI entry:        ~/hash-design/packages/core/dist/bin.js
-# MCP server entry: ~/hash-design/packages/mcp/dist/bin.js
-```
+需要 Node.js ≥ 20 和 npm（用来运行 `npx`）。
 
 **Skill。** Skill 告诉 Agent 何时使用、按什么顺序调用 MCP、怎样独立渲染、什么时候必须停下。
 
 ```bash
-# 装到某个项目（同时写 .claude/skills 和 .cursor/skills）
-node ~/hash-design/packages/core/dist/bin.js skill install --target both --dir /path/to/your/project
-# 装到用户目录（所有项目可用）
-node ~/hash-design/packages/core/dist/bin.js skill install --target claude --global
+npx -y hash-design skill install --target both --dir .      # 当前项目：.claude/skills 和 .cursor/skills
+npx -y hash-design skill install --target claude --global   # 或者装到用户目录，所有项目可用
 ```
 
-也可以手动复制 [`skills/hash-design/SKILL.md`](skills/hash-design/SKILL.md) 到 `.claude/skills/hash-design/SKILL.md`（Claude Code）或 `.cursor/skills/hash-design/SKILL.md`（Cursor）。本仓库自带这两份副本，测试保证它们和源文件一致。
+`--target` 可选 `claude`、`cursor` 或 `both`（默认）。也可以手动把 [`skills/hash-design/SKILL.md`](skills/hash-design/SKILL.md) 复制到 `.claude/skills/hash-design/SKILL.md`（Claude Code）或 `.cursor/skills/hash-design/SKILL.md`（Cursor）。
 
-**MCP server。** 把 `packages/mcp/dist/bin.js` 注册给你的 Agent。在 shell 里 `~/hash-design` 会展开成绝对路径；JSON 文件里要写出绝对路径（下面用 `/ABS/PATH/hash-design` 表示）。
+**MCP server。** 在你的 Agent 里注册 `npx -y hash-design mcp`，它会在 stdio 上运行 server。
+
+> [!NOTE]
+> `hash-design mcp` 从下一个版本 hash-design 0.2.0 开始提供。npm 上现在是 0.1.0，请改为注册 `npx -y hash-design-mcp@0.1.0`：之前单独发布的 server，6 个工具相同，不再更新。
 
 #### Claude Code
 
 ```bash
-claude mcp add hash-design -- node ~/hash-design/packages/mcp/dist/bin.js
+claude mcp add hash-design -- npx -y hash-design mcp
+# hash-design 0.1.0 时：
+claude mcp add hash-design -- npx -y hash-design-mcp@0.1.0
 ```
 
-或者在项目根目录提交一个 `.mcp.json`：
+或者提交一个项目级 `.mcp.json`：
 
 ```json
 {
   "mcpServers": {
     "hash-design": {
-      "command": "node",
-      "args": ["/ABS/PATH/hash-design/packages/mcp/dist/bin.js"]
+      "command": "npx",
+      "args": ["-y", "hash-design", "mcp"]
     }
   }
 }
 ```
+
+0.1.0 时 `args` 写 `["-y", "hash-design-mcp@0.1.0"]`。
 
 #### Cursor
 
-`.cursor/mcp.json`（项目级）或 `~/.cursor/mcp.json`（全局），结构相同：
-
-```json
-{
-  "mcpServers": {
-    "hash-design": {
-      "command": "node",
-      "args": ["/ABS/PATH/hash-design/packages/mcp/dist/bin.js"]
-    }
-  }
-}
-```
+`.cursor/mcp.json`（项目级）或 `~/.cursor/mcp.json`（全局），结构和上面的 `.mcp.json` 相同。
 
 #### Claude Desktop
 
-`~/Library/Application Support/Claude/claude_desktop_config.json`（macOS）或 `%APPDATA%\Claude\claude_desktop_config.json`（Windows），结构同上。Claude Desktop 启动 server 时的工作目录不是你的项目目录，所以调用 `roll_designs` 时请给 `out_dir` 传**绝对路径**。
+macOS 是 `~/Library/Application Support/Claude/claude_desktop_config.json`，Windows 是 `%APPDATA%\Claude\claude_desktop_config.json`，结构相同。Claude Desktop 不会在你的项目目录里启动 server，所以调用 `roll_designs` 时 `out_dir` 要传**绝对路径**。如果它找不到 `npx`，把 `which npx` 打印的路径写进 `command`。
+
+### 从源码运行
+
+参与开发，或者想运行还没发布的提交时（另见 [CONTRIBUTING.md](CONTRIBUTING.md)）：
+
+```bash
+git clone https://github.com/qybaihe/hash-design.git ~/hash-design
+cd ~/hash-design && npm install && npm run build
+node ~/hash-design/packages/core/dist/bin.js skill install --target both --dir /path/to/your/project
+claude mcp add hash-design -- node ~/hash-design/packages/core/dist/bin.js mcp
+```
+
+源码目录里的 CLI 是 `packages/core/dist/bin.js`。`packages/mcp/dist/bin.js` 启动的是同一个 MCP server，原来指向它的配置照样能用。本仓库自带 `.claude/` 和 `.cursor/` 两份 Skill 副本，测试保证它们和源文件一致。
 
 ### 开始使用
 
@@ -157,7 +154,7 @@ hash-design compare --roll design/hash-design/roll.json                         
 hash-design skill install --target both                                               # 安装 Skill
 ```
 
-源码安装时用 `node packages/core/dist/bin.js …` 运行（也可以在仓库根目录执行 `alias hash-design="node $PWD/packages/core/dist/bin.js"`）。`hash-design --help` 列出所有命令，`hash-design <command> --help`（例如 `hash-design roll --help`）列出单个命令的全部参数，包括约束参数 `--light-only`、`--dark-only`、`--reduced-motion`、`--brand`、`--family`、`--include`、`--exclude`、`--scenario`。
+用 `npx -y hash-design …` 运行，或者用 `npm install -g hash-design` 装一次后直接敲 `hash-design …`；在源码目录里是 `node packages/core/dist/bin.js …`。`hash-design --help` 列出所有命令，`hash-design <command> --help`（例如 `hash-design roll --help`）列出单个命令的全部参数，包括约束参数 `--light-only`、`--dark-only`、`--reduced-motion`、`--brand`、`--family`、`--include`、`--exclude`、`--scenario`。
 
 ### 作为库使用
 
@@ -172,16 +169,15 @@ const report = critiquePage({ html: '<!doctype html>…', design });
 console.log(report.score, report.adherence, report.findings);
 ```
 
-发布到 npm 之前，可以从源码目录导入（`packages/core/dist/index.js`），或者把本地目录装成依赖（`npm install /ABS/PATH/hash-design/packages/core`）。
+用 `npm install hash-design` 安装（ES 模块，Node.js ≥ 20，自带类型）。
 
 ### 更新
 
 ```bash
-cd ~/hash-design && git pull && npm install && npm run build
-node ~/hash-design/packages/core/dist/bin.js skill install --target both --dir /path/to/your/project   # refresh the copied SKILL.md
+npx -y hash-design@latest skill install --target both --dir .   # 刷新项目里的 SKILL.md 副本
 ```
 
-MCP 配置指向 `packages/mcp/dist/bin.js`，所以重新构建就更新了 server，重启 Agent 即可生效。`skill install` 会覆盖项目里的旧副本。如果某次更新改了分支数据，用旧版本掷出的 ref 需要旧版本才能复现（见[常见问题](#常见问题)）。
+npx 可能会继续用之前缓存的版本；加上 `@latest` 会取最新发布的版本（也可以固定版本，比如 `hash-design@0.2.0`）。MCP server 每次随 Agent 启动时通过 npx 运行，所以发布新版本后重启 Agent；如果一直跑的是旧版本，就在 MCP 命令里写 `hash-design@latest`。从源码运行的：`git pull && npm install && npm run build`。如果某次更新改了分支数据，用旧版本掷出的 ref 需要旧版本才能复现（见[常见问题](#常见问题)）。
 
 ## 它怎么工作
 
@@ -365,7 +361,7 @@ Skill 可以装进 Claude Code（`.claude/skills/`）和 Cursor（`.cursor/skill
 <details>
 <summary><strong>发布到 npm 了吗？</strong></summary>
 
-还没有。`package.json` 已可发布，CI 里会跑 `npm pack --dry-run`，但目前请从源码安装。发布之后，`npx -y hash-design-mcp` 和 `npx -y hash-design` 就能用。
+发布了。[`hash-design`](https://www.npmjs.com/package/hash-design) 0.1.0 包含库、CLI 和 Skill（`npx -y hash-design skill install`）。MCP server 从 0.2.0 起以 `hash-design mcp` 加入这个包；在那之前用 `npx -y hash-design-mcp@0.1.0`，也就是之前单独发布的 server 包，它不会再有新版本。版本由 GitHub Actions 通过 npm Trusted Publishing 发布（见 [docs/publishing.zh-CN.md](docs/publishing.zh-CN.md)）。
 
 </details>
 

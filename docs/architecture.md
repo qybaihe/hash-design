@@ -11,11 +11,11 @@ hash-design is an npm-workspaces monorepo with two packages, one Skill and a ful
                  │   │       data/ (branches, pools, bans, scenarios) ── validate.ts                         │
                  │ crypto     critique.ts (static HTML/CSS checks)   compare.ts (compare.html)   catalog.ts   │
                  │            cli.ts / bin.ts (hash-design CLI)      skill.ts (SKILL.md access + sync block) │
+                 │            mcp.ts (MCP server: 6 tools, 4 resources, 1 prompt) ◄── `hash-design mcp`      │
                  └───────────────▲────────────────────────────────────────────────────────────────────────────┘
-                                 │ imports the public API only
-                 ┌───────────────┴──── packages/mcp (npm: hash-design-mcp) ────┐
-                 │ server.ts: 6 tools, 4 resources, 1 prompt, instructions     │
-                 │ bin.ts:    stdio transport                                  │
+                                 │ re-exports hash-design/mcp
+                 ┌───────────────┴──── packages/mcp (private wrapper) ─────────┐
+                 │ bin.ts: the same server, run from a clone                   │
                  └─────────────────────────────────────────────────────────────┘
   skills/hash-design/SKILL.md ── the agent workflow (synced to .claude/ and .cursor/)
 ```
@@ -41,12 +41,13 @@ hash-design is an npm-workspaces monorepo with two packages, one Skill and a ful
 | `src/catalog.ts`           | Branch list / detail / catalogue rendering (used by the MCP server and `docs/branches.md`)                                                                 |
 | `src/skill.ts`             | Locates `SKILL.md` (repo or packaged copy) and renders the generated bans block                                                                            |
 | `src/cli.ts`, `src/bin.ts` | The `hash-design` CLI (`node:util` `parseArgs`, no CLI framework)                                                                                          |
+| `src/mcp.ts`               | The MCP server (`createServer`, `serveStdio`), loaded by `hash-design mcp`; exported as `hash-design/mcp`                                                  |
 
-Runtime dependency: `node-html-parser` (for `critique_page`). Nothing else.
+Runtime dependencies: `node-html-parser` (for `critique_page`), and `@modelcontextprotocol/sdk` and `zod` for the MCP server, which the CLI loads only for `hash-design mcp`.
 
-### `packages/mcp` (`hash-design-mcp`)
+### The MCP server (`src/mcp.ts`, `packages/mcp`)
 
-A thin adapter over the core's public API using `@modelcontextprotocol/sdk` and `zod` input schemas. Every tool has a CLI equivalent, and a test checks that `roll_designs` with the example seed returns exactly the refs of the CLI-generated example roll. See [mcp-tools.md](mcp-tools.md).
+A thin adapter over the core's public API using `@modelcontextprotocol/sdk` and `zod` input schemas, run as `hash-design mcp`. `packages/mcp` (`hash-design-mcp`, private) only re-exports it, so `node packages/mcp/dist/bin.js` keeps working in a clone. Every tool has a CLI equivalent, and a test checks that `roll_designs` with the example seed returns exactly the refs of the CLI-generated example roll. See [mcp-tools.md](mcp-tools.md).
 
 Design choices:
 
@@ -85,11 +86,11 @@ The four runs under `examples/` (a bakery, a developer tool, a bicycle repair sh
 
 ## Testing and CI
 
-- **Vitest**, 10 test files: `hash`, `mapping`, `branches`, `brief`, `critique` (with good and bad HTML fixtures), `compare`, `cli`, `skill` (sync checks), `examples`, and `mcp/server` (in-memory transport).
-- **`scripts/smoke.mjs`**: runs the built CLI and talks to the built MCP server over a real stdio pipe.
+- **Vitest**, 10 test files: `hash`, `mapping`, `branches`, `brief`, `critique` (with good and bad HTML fixtures), `compare`, `cli`, `skill` (sync checks), `examples`, and `mcp` (in-memory transport).
+- **`scripts/smoke.mjs`**: runs the built CLI and talks to `hash-design mcp` and the `packages/mcp` wrapper over a real stdio pipe.
 - **CI** (`.github/workflows/ci.yml`), on Node 20, 22 and 24: `npm ci`, build, typecheck (including tests), ESLint, Prettier check, tests, smoke test, `npm pack --dry-run` for both packages.
 - **Pages** (`.github/workflows/pages.yml`): publishes `examples/` to GitHub Pages when it changes.
 
 ## Packaging
 
-Both packages are publish-ready but **not published yet**. `prepack` in `packages/core` copies `SKILL.md` and `LICENSE` into the package so `hash-design skill install` works from an npm install; `packages/mcp` depends on `hash-design` by version. `tsbuildinfo` files are excluded from the tarballs.
+Only `packages/core` is published, as `hash-design` (0.1.0 has been on npm since 2026-11-02). Its `prepack` copies `SKILL.md` and `LICENSE` into the package so `hash-design skill install` works from an npm install, and `tsbuildinfo` files are excluded from the tarball. The package also carries the MCP server (`hash-design mcp`, from 0.2.0) and its two dependencies. `packages/mcp` is a private wrapper for clones; it depends on `hash-design` by version (`^<version>`), which npm satisfies by linking the workspace. Releases: [publishing.md](publishing.md).

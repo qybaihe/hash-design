@@ -17,7 +17,7 @@
 [![Agent Skill](https://img.shields.io/badge/Agent_Skill-Claude_Code_%C2%B7_Cursor-151412?style=flat-square)](#クイックスタート)
 [![MCP server](https://img.shields.io/badge/MCP_server-6_tools_%C2%B7_stdio-151412?style=flat-square)](docs/mcp-tools.md)
 [![Node.js](https://img.shields.io/badge/Node.js-%E2%89%A520-151412?style=flat-square&logo=nodedotjs&logoColor=white)](.nvmrc)
-[![npm](https://img.shields.io/badge/npm-not_yet_published-a39e93?style=flat-square)](#手動でインストール)
+[![npm](https://img.shields.io/npm/v/hash-design?style=flat-square&color=151412)](https://www.npmjs.com/package/hash-design)
 [![MIT license](https://img.shields.io/badge/license-MIT-151412?style=flat-square)](LICENSE)
 
 **[ライブサンプル](https://qybaihe.github.io/hash-design/) · [ブランチ一覧](docs/branches.md) · [MCP リファレンス](docs/mcp-tools.md) · [変更履歴](CHANGELOG.md)**
@@ -27,15 +27,12 @@
 **エージェントにこう伝える**（Claude Code、Cursor）：
 
 ```text
-https://github.com/qybaihe/hash-design から hash-design をインストールして（npm には未公開）。
-~/hash-design に clone してビルドし、README.ja.md の「手動でインストール」の手順どおりに、
-skill をこのプロジェクトに入れ、このエージェント用に MCP サーバーを登録して。
+このエージェントに hash-design の skill を入れて：`npx -y hash-design skill install --dir .` を実行し、
+`npx -y hash-design mcp` で MCP サーバーを登録して（hash-design が 0.1.0 なら
+`npx -y hash-design-mcp@0.1.0` を使う）。手順は https://github.com/qybaihe/hash-design/blob/main/README.ja.md#クイックスタート 。
 ```
 
 </div>
-
-> [!IMPORTANT]
-> hash-design は**まだ npm に公開していません**。ソース（[qybaihe/hash-design](https://github.com/qybaihe/hash-design)）からインストールしてください。`package.json` は公開できる状態で、CI では `npm pack --dry-run` を実行していますが、リリースまでは `npx hash-design` と `npx hash-design-mcp` は使えません。
 
 ---
 
@@ -57,7 +54,7 @@ hash-design は、モデルに「もっとセンスを良くしろ」とは求�
 
 デフォルトの出力は Web ページです。**シナリオ**（`scenario`）を渡すと、同じロールの方向性がスライド、モバイルアプリの画面、ダッシュボード、ポスター／SNS カード、HTML メールになります（[シナリオ](#シナリオ)を参照）。
 
-構成は **Agent Skill**（いつ、どの順でこの流れを回すか）、**MCP サーバー**（stdio、ツール 6 個）、**CLI**、**TypeScript ライブラリ** の 4 つで、すべてこのリポジトリにあります。
+構成は **Agent Skill**（いつ、どの順でこの流れを回すか）、**MCP サーバー**（stdio、ツール 6 個）、**CLI**、**TypeScript ライブラリ** の 4 つで、まとめて npm の [`hash-design`](https://www.npmjs.com/package/hash-design) として公開しています（MCP サーバーは 0.2.0 からこのパッケージに入ります）。
 
 ## クイックスタート
 
@@ -66,74 +63,74 @@ hash-design は、モデルに「もっとセンスを良くしろ」とは求�
 デザインしたいプロジェクトで Claude Code か Cursor を開き、次を貼り付けます：
 
 ```text
-https://github.com/qybaihe/hash-design から hash-design をインストールして（npm には未公開）。
-~/hash-design に clone してビルドし、README.ja.md の「手動でインストール」の手順どおりに、
-skill をこのプロジェクトに入れ、このエージェント用に MCP サーバーを登録して。
+このエージェントに hash-design の skill を入れて：`npx -y hash-design skill install --dir .` を実行し、
+`npx -y hash-design mcp` で MCP サーバーを登録して（hash-design が 0.1.0 なら
+`npx -y hash-design-mcp@0.1.0` を使う）。手順は https://github.com/qybaihe/hash-design/blob/main/README.ja.md#クイックスタート 。
 ```
 
-エージェントがこのリポジトリを clone してビルドし、Skill をプロジェクトの `.claude/skills/` か `.cursor/skills/` にコピーし、MCP サーバーを登録します（Claude Code は `claude mcp add`、Cursor は `.cursor/mcp.json`）。終わったら新しいセッションを始めて両方を読み込ませ、[使い方](#使い方)へ進んでください。自分でコマンドを打つ場合は、下の手順を使います。
+エージェントが Skill をプロジェクトの `.claude/skills/` と `.cursor/skills/` にコピーし、MCP サーバーを登録します（Claude Code は `claude mcp add`、Cursor は `.cursor/mcp.json`）。clone やビルドは要りません。終わったら新しいセッションを始めて両方を読み込ませ、[使い方](#使い方)へ進んでください。自分でコマンドを打つ場合は、下の手順を使います。
 
 ### 手動でインストール
 
-Node.js ≥ 20 が必要です（開発用には `.nvmrc` で 22 に固定しています）。
+Node.js ≥ 20 と npm（`npx` 用）が必要です。
+
+**Skill。** Skill は、いつ hash-design を使うか、どの順で MCP ツールを呼ぶか、プレビューをどう独立して作るか、どこで必ず止まるかをエージェントに伝えます。
 
 ```bash
-git clone https://github.com/qybaihe/hash-design.git ~/hash-design
-cd ~/hash-design && npm install && npm run build
-# CLI entry:        ~/hash-design/packages/core/dist/bin.js
-# MCP server entry: ~/hash-design/packages/mcp/dist/bin.js
+npx -y hash-design skill install --target both --dir .      # このプロジェクト：.claude/skills と .cursor/skills
+npx -y hash-design skill install --target claude --global   # またはホームディレクトリ（すべてのプロジェクト）
 ```
 
-**Skill。** Skill は、いつ hash-design を使うか、どの順序で MCP ツールを呼び出すか、プレビューをどうやって互いに独立してレンダリングするか、そしてどこで必ず止まるべきかをエージェントに伝えます。
+`--target` は `claude`、`cursor`、`both`（デフォルト）のいずれかです。[`skills/hash-design/SKILL.md`](skills/hash-design/SKILL.md) を手作業で `.claude/skills/hash-design/SKILL.md`（Claude Code）または `.cursor/skills/hash-design/SKILL.md`（Cursor）にコピーしてもかまいません。Skill の本文は中国語で書かれていますが、description には英語のトリガーフレーズも含まれています。
 
-```bash
-# プロジェクトにインストール（.claude/skills と .cursor/skills の両方に書き込む）
-node ~/hash-design/packages/core/dist/bin.js skill install --target both --dir /path/to/your/project
-# ホームディレクトリにインストール（すべてのプロジェクトで使える）
-node ~/hash-design/packages/core/dist/bin.js skill install --target claude --global
-```
+**MCP サーバー。** エージェントに `npx -y hash-design mcp` を登録します。stdio でサーバーが動きます。
 
-あるいは、[`skills/hash-design/SKILL.md`](skills/hash-design/SKILL.md) を手作業で `.claude/skills/hash-design/SKILL.md`（Claude Code）または `.cursor/skills/hash-design/SKILL.md`（Cursor）にコピーしてもかまいません。このリポジトリには両方のコピーが同梱されており、テストによってソースと同一に保たれています。Skill の本文は中国語で書かれていますが、description には英語のトリガーフレーズも含まれています。
-
-**MCP サーバー。** `packages/mcp/dist/bin.js` をエージェントに登録します。シェルでは `~/hash-design` が絶対パスに展開されますが、JSON ファイルには絶対パスを書いてください（以下では `/ABS/PATH/hash-design`）。
+> [!NOTE]
+> `hash-design mcp` は次のリリース hash-design 0.2.0 から使えます。いま npm にある 0.1.0 では、代わりに `npx -y hash-design-mcp@0.1.0` を登録してください。以前に別パッケージとして公開したサーバーで、ツール 6 個は同じですが、今後は更新されません。
 
 #### Claude Code
 
 ```bash
-claude mcp add hash-design -- node ~/hash-design/packages/mcp/dist/bin.js
+claude mcp add hash-design -- npx -y hash-design mcp
+# hash-design 0.1.0 の場合：
+claude mcp add hash-design -- npx -y hash-design-mcp@0.1.0
 ```
 
-または、プロジェクト単位の `.mcp.json` をコミットします。
+あるいはプロジェクト単位の `.mcp.json` をコミットします：
 
 ```json
 {
   "mcpServers": {
     "hash-design": {
-      "command": "node",
-      "args": ["/ABS/PATH/hash-design/packages/mcp/dist/bin.js"]
+      "command": "npx",
+      "args": ["-y", "hash-design", "mcp"]
     }
   }
 }
 ```
+
+0.1.0 では `args` を `["-y", "hash-design-mcp@0.1.0"]` にします。
 
 #### Cursor
 
-`.cursor/mcp.json`（プロジェクト）または `~/.cursor/mcp.json`（グローバル）に、同じ構造で記述します。
-
-```json
-{
-  "mcpServers": {
-    "hash-design": {
-      "command": "node",
-      "args": ["/ABS/PATH/hash-design/packages/mcp/dist/bin.js"]
-    }
-  }
-}
-```
+`.cursor/mcp.json`（プロジェクト）または `~/.cursor/mcp.json`（グローバル）に、上の `.mcp.json` と同じ構造で書きます。
 
 #### Claude Desktop
 
-`~/Library/Application Support/Claude/claude_desktop_config.json`（macOS）または `%APPDATA%\Claude\claude_desktop_config.json`（Windows）に、上と同じ構造で記述します。Claude Desktop はプロジェクトディレクトリでサーバーを起動しないため、`roll_designs` を呼び出すときは `out_dir` に**絶対パス**を渡してください。
+macOS は `~/Library/Application Support/Claude/claude_desktop_config.json`、Windows は `%APPDATA%\Claude\claude_desktop_config.json` で、構造は同じです。Claude Desktop はプロジェクトのディレクトリでサーバーを起動しないので、`roll_designs` を呼ぶときは `out_dir` に**絶対パス**を渡してください。`npx` が見つからない場合は、`which npx` が表示するパスを `command` に書きます。
+
+### ソースから使う
+
+開発に参加するとき、またはまだリリースされていないコミットを動かすとき（[CONTRIBUTING.md](CONTRIBUTING.md) も参照）：
+
+```bash
+git clone https://github.com/qybaihe/hash-design.git ~/hash-design
+cd ~/hash-design && npm install && npm run build
+node ~/hash-design/packages/core/dist/bin.js skill install --target both --dir /path/to/your/project
+claude mcp add hash-design -- node ~/hash-design/packages/core/dist/bin.js mcp
+```
+
+チェックアウトでは CLI は `packages/core/dist/bin.js` です。`packages/mcp/dist/bin.js` も同じ MCP サーバーを起動するので、そこを指している既存の設定はそのまま動きます。このリポジトリには Skill の `.claude/` と `.cursor/` のコピーが同梱されており、テストによってソースと同一に保たれています。
 
 ### 使い方
 
@@ -157,7 +154,7 @@ hash-design compare --roll design/hash-design/roll.json                         
 hash-design skill install --target both                                                          # Skill をインストール
 ```
 
-ソースのチェックアウトから使う場合は、`node packages/core/dist/bin.js …` として実行します（またはリポジトリのルートで `alias hash-design="node $PWD/packages/core/dist/bin.js"` を設定します）。`hash-design --help` ですべてのコマンドが、`hash-design <command> --help`（例：`hash-design roll --help`）でそのコマンドのオプションが表示されます。制約フラグ `--light-only`、`--dark-only`、`--reduced-motion`、`--brand`、`--family`、`--include`、`--exclude`、`--scenario` も含まれます。
+`npx -y hash-design …` で実行するか、`npm install -g hash-design` で一度インストールして `hash-design …` と打ちます。チェックアウトでは `node packages/core/dist/bin.js …` です。`hash-design --help` ですべてのコマンドが、`hash-design <command> --help`（例：`hash-design roll --help`）でそのコマンドのオプションが表示されます。制約フラグ `--light-only`、`--dark-only`、`--reduced-motion`、`--brand`、`--family`、`--include`、`--exclude`、`--scenario` も含まれます。
 
 ### ライブラリ
 
@@ -172,16 +169,15 @@ const report = critiquePage({ html: '<!doctype html>…', design });
 console.log(report.score, report.adherence, report.findings);
 ```
 
-パッケージが npm に公開されるまでは、ソースのチェックアウト（`packages/core/dist/index.js`）からインポートするか、チェックアウトをローカル依存として追加してください（`npm install /ABS/PATH/hash-design/packages/core`）。
+`npm install hash-design` でインストールします（ES モジュール、Node.js ≥ 20、型定義付き）。
 
 ### アップデート
 
 ```bash
-cd ~/hash-design && git pull && npm install && npm run build
-node ~/hash-design/packages/core/dist/bin.js skill install --target both --dir /path/to/your/project   # refresh the copied SKILL.md
+npx -y hash-design@latest skill install --target both --dir .   # コピーした SKILL.md を更新
 ```
 
-MCP の設定は `packages/mcp/dist/bin.js` を指しているので、ビルドし直せばサーバーも更新されます。エージェントを再起動すると反映されます。`skill install` はプロジェクト内のコピーを上書きします。アップデートでブランチのデータが変わった場合、古いバージョンでロールした ref の再現にはそのバージョンが必要です（[よくある質問](#よくある質問)を参照）。
+npx は以前にキャッシュしたコピーを使い続けることがあります。`@latest` を付けると最新のリリースを取得します（`hash-design@0.2.0` のようにバージョンを固定することもできます）。MCP サーバーはエージェントの起動時に npx で立ち上がるので、リリース後はエージェントを再起動し、古いコピーが動き続けるなら MCP のコマンドに `hash-design@latest` と書いてください。clone から使う場合は `git pull && npm install && npm run build`。アップデートでブランチのデータが変わった場合、古いバージョンでロールした ref の再現にはそのバージョンが必要です（[よくある質問](#よくある質問)を参照）。
 
 ## 仕組み
 
@@ -365,7 +361,7 @@ Skill は Claude Code（`.claude/skills/`）と Cursor（`.cursor/skills/`）に
 <details>
 <summary><strong>npm で公開されていますか？</strong></summary>
 
-まだです。`package.json` は公開できる状態で、CI では `npm pack --dry-run` を実行していますが、今はソースからインストールしてください。公開後は `npx -y hash-design-mcp` と `npx -y hash-design` が使えるようになります。
+はい。[`hash-design`](https://www.npmjs.com/package/hash-design) 0.1.0 にはライブラリ、CLI、Skill（`npx -y hash-design skill install`）が入っています。MCP サーバーは 0.2.0 で `hash-design mcp` としてこのパッケージに加わります。それまでは、以前の別パッケージで今後は更新されない `npx -y hash-design-mcp@0.1.0` を使ってください。リリースは GitHub Actions から npm Trusted Publishing で公開します（[docs/publishing.md](docs/publishing.md)、英語）。
 
 </details>
 

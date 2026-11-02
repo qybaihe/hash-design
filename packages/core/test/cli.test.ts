@@ -144,11 +144,21 @@ describe('cli', () => {
     expect(a).toMatch(/^---\nname: hash-design\n/);
   });
 
+  it('mcp is a command: listed in the help, with its own help and the npx registration line', async () => {
+    await main(['--help']);
+    expect(out).toMatch(/^ {2}hash-design mcp {7}Run the MCP server on stdio/m);
+    out = '';
+    await main(['mcp', '--help']);
+    expect(out).toBe(`${COMMAND_HELP.get('mcp')}`);
+    expect(out).toContain('claude mcp add hash-design -- npx -y hash-design mcp');
+    await expect(main(['mcp', '--port', '3000'])).rejects.toThrow(/Unknown option '--port'/);
+  });
+
   it('rejects unknown commands', async () => {
     await expect(main(['frobnicate'])).rejects.toThrow(/Unknown command/);
   });
 
-  const commands = ['roll', 'brief', 'branches', 'branch', 'critique', 'compare', 'skill'];
+  const commands = ['roll', 'brief', 'branches', 'branch', 'critique', 'compare', 'skill', 'mcp'];
 
   it.each(commands)('%s --help and -h print the command help without running it', async (cmd) => {
     await main([cmd, '--help']);

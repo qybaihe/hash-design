@@ -3,7 +3,7 @@
 All notable changes to this project are documented here.
 The format follows [Keep a Changelog](https://keepachangelog.com/en/1.1.0/), and the project aims to follow [Semantic Versioning](https://semver.org/spec/v2.0.0.html).
 
-Neither package (`hash-design`, `hash-design-mcp`) has been published to npm yet, and no git tag has been created. Version 0.1.0 below is the state of `main` at commit `ec5398a`.
+`hash-design@0.1.0` and `hash-design-mcp@0.1.0` were published to npm by hand on 2026-11-02, both built from commit `475ba16`. From the next version on, only `hash-design` is published, by the release workflow; `hash-design-mcp` is a private workspace in this repository and its 0.1.0 on npm will not be updated. No git tag has been created. The `[0.1.0]` section below describes `main` at commit `ec5398a`; the published 0.1.0 tarballs also contain the `[Unreleased]` changes merged by `475ba16` (up to and including design scenarios).
 
 ## [Unreleased]
 
@@ -25,15 +25,19 @@ Neither package (`hash-design`, `hash-design-mcp`) has been published to npm yet
 - Design scenarios: `scenario` (`web` default, `deck`, `app`, `dashboard`, `poster`, `email`) on `roll_designs`, `get_brief` and `critique_page`, `--scenario` on the CLI, and `Constraints.scenario` in the library. A scenario is a constraint, so it is part of a design's identity. It keeps the rolled direction (same branch, probe, voice, layout, type, palette, motif, anchor, scale and surface). It removes densities and twists that do not fit the medium before bytes 6 and 12 are read, uses byte 13 to pick a format (for example a deck's slide master or a poster's aspect ratio), and sets a canvas and a base text size. Briefs gain a Scenario section (output contract, count, how layout, anchor and motion translate, rules and must-nots). `critique_page` checks each scenario's output contract (`scenario-<id>`), and the compare page labels the scenario and scales fixed canvases from their real size. `web` normalises away, so existing refs, briefs, the examples and the library fingerprint are unchanged; scenario data has its own `scenarioFingerprint()`. The scenario list and rules draw on the templates of [nexu-io/open-design](https://github.com/nexu-io/open-design). See `docs/mapping.md` §6.
 - `scripts/hero-gif.mjs` (`npm run hero:gif`) renders an animated hero from the same example: `/hash-design` picked in a prompt box, five SHA-256 refs ticking and locking to the real ones, the five previews popping in and lining up as a compare row. Frames are captured deterministically at `t = i / fps` and encoded to `docs/assets/hero.gif` (960 px, 20 fps, 6 s loop) and `docs/assets/hero.mp4` (H.264).
 
+- npm release automation for the one published package, `hash-design`: `.github/workflows/release.yml` publishes it with provenance when a GitHub Release tagged `v<version>` is published (never on a plain push; a manual run is a dry run). It authenticates with npm Trusted Publishing (OIDC: `id-token: write`, `contents: read`, npm ≥ 11.5.1), so no npm token or repository secret is used; the Trusted Publisher is configured on `hash-design` only. `scripts/release-check.mjs` (`npm run release:check`, now also in CI instead of the bare `npm pack --dry-run`) checks lockstep versions, the tag, the CHANGELOG section, `hash-design`'s publish fields and tarball contents, and that `packages/mcp` stays private. `scripts/release-version.mjs` (`npm run release:version -- <version>`) sets one version across the workspace. Setup and steps: [docs/publishing.md](docs/publishing.md).
+- `hash-design mcp` runs the MCP server on stdio from the published package: `claude mcp add hash-design -- npx -y hash-design mcp`. The server moved from `packages/mcp/src/server.ts` to `packages/core/src/mcp.ts` (exported as `hash-design/mcp`), and `hash-design` now depends on `@modelcontextprotocol/sdk` and `zod`; the CLI loads them only for this command. `hash-design` 0.1.0 does not have it; until the next release, `npx -y hash-design-mcp@0.1.0` still works. The smoke test drives both `hash-design mcp` and the `packages/mcp` wrapper, and `release-check` requires `dist/mcp.js` and the server's dependencies in the tarball.
+
 ### Changed
 
+- `hash-design-mcp` is no longer published to npm. `packages/mcp` stays in the repository as a private workspace (`"private": true`, so it cannot be published by accident) and is now a thin wrapper that re-exports the server from `hash-design`, so `node …/packages/mcp/dist/bin.js` keeps working in a clone.
+- The READMEs install from npm: `npx -y hash-design skill install --target both --dir .` and `claude mcp add hash-design -- npx -y hash-design mcp` (with the `hash-design-mcp@0.1.0` fallback until 0.2.0), a "tell your agent" line built on those two commands, a real npm version badge, and a From source section for contributors. The not-on-npm callout and badge are gone. `packages/core/README.md` (the npm page), `docs/mcp-tools*.md`, `docs/architecture*.md` and `docs/publishing*.md` match.
 - All five READMEs share one structure, modelled on [qybaihe/bla](https://github.com/qybaihe/bla): a centred header with the GIF, badges, links, section nav and a copy-paste "tell your agent" install sentence; then What hash-design does, Quick start (Tell your agent, Install by hand, Use it, CLI, Library, Update), How it works, Examples, Reference, FAQ (which absorbs Known limitations), Documentation, Contributing and License. Install by hand clones to `~/hash-design`.
 - The READMEs' Examples section is now Showcase: one plate per example linked to its folder, a single link to the examples site, and no per-direction preview tables. `examples.test.ts` checks for the plate in every README.
 - The Fourth Lane Bakery per-direction notes moved from `README.zh-CN.md` to `examples/fourth-lane-bakery/README.md`.
 - Every README now opens with the animated hero; readers who prefer reduced motion get the static `hero.png` through a `<picture>` source.
-- The first screen of every README: a problem-first pitch, four badges (the rest in a collapsed block), the new hero linked to the Causeway compare page, a quick start that installs from source, and a four-line overview. The Fourth Lane Bakery compare image moved to the top of each Demo section.
+- The first screen of every README: a problem-first pitch, four badges (the rest in a collapsed block), the new hero linked to the Causeway compare page, a quick start, and a four-line overview. The Fourth Lane Bakery compare image moved to the top of each Demo section.
 - `npm run screenshots` now covers every example; `node scripts/screenshot.mjs <name|dir> [prefix]` still shoots one.
-- The package READMEs (`packages/core/README.md`, `packages/mcp/README.md`) now say the packages are not on npm yet and show the source install.
 - `examples.test.ts` checks every example instead of only the bakery: refs, briefs and library fingerprint, a preview and screenshots per brief, a critique score of at least 90 with no critical or major findings, no branch shared between examples, and links from the Pages index and every README.
 
 ### Fixed
@@ -42,7 +46,7 @@ Neither package (`hash-design`, `hash-design-mcp`) has been published to npm yet
 
 ## [0.1.0] - 2026-11-01
 
-First complete version, not yet published to npm.
+First complete version. Published to npm on 2026-11-02 (see the note at the top).
 
 ### Added
 

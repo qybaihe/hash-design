@@ -1,7 +1,8 @@
 {
   "name": "hash-design-mcp",
   "version": "0.1.0",
-  "description": "MCP server (stdio) for hash-design: roll random design directions, reproduce briefs, browse the branch library, critique pages for AI-template tells.",
+  "private": true,
+  "description": "Private wrapper: runs the hash-design MCP server (`hash-design mcp`) from a checkout as packages/mcp/dist/bin.js.",
   "license": "MIT",
   "author": "qybaihe",
   "type": "module",
@@ -32,7 +33,7 @@
     "./package.json": "./package.json"
   },
   "bin": {
-    "hash-design-mcp": "./dist/bin.js"
+    "hash-design-mcp": "dist/bin.js"
   },
   "files": [
     "dist",
@@ -41,15 +42,9 @@
     "LICENSE"
   ],
   "scripts": {
-    "build": "tsc -b",
-    "prepack": "node -e \"require('fs').copyFileSync('../../LICENSE','LICENSE')\" && tsc -b"
+    "build": "tsc -b"
   },
   "dependencies": {
-    "@modelcontextprotocol/sdk": "^1.32.2",
-    "hash-design": "^0.1.0",
-    "zod": "^4.6.7"
-  },
-  "publishConfig": {
-    "access": "public"
+    "hash-design": "^0.1.0"
   }
 }

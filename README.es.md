@@ -17,7 +17,7 @@
 [![Agent Skill](https://img.shields.io/badge/Agent_Skill-Claude_Code_%C2%B7_Cursor-151412?style=flat-square)](#inicio-rápido)
 [![MCP server](https://img.shields.io/badge/MCP_server-6_tools_%C2%B7_stdio-151412?style=flat-square)](docs/mcp-tools.md)
 [![Node.js](https://img.shields.io/badge/Node.js-%E2%89%A520-151412?style=flat-square&logo=nodedotjs&logoColor=white)](.nvmrc)
-[![npm](https://img.shields.io/badge/npm-not_yet_published-a39e93?style=flat-square)](#instalación-manual)
+[![npm](https://img.shields.io/npm/v/hash-design?style=flat-square&color=151412)](https://www.npmjs.com/package/hash-design)
 [![MIT license](https://img.shields.io/badge/license-MIT-151412?style=flat-square)](LICENSE)
 
 **[Ejemplos en vivo](https://qybaihe.github.io/hash-design/) · [Catálogo de ramas](docs/branches.md) · [Referencia MCP](docs/mcp-tools.md) · [Registro de cambios](CHANGELOG.md)**
@@ -27,15 +27,12 @@
 **Díselo a tu agente** (Claude Code, Cursor):
 
 ```text
-Instala hash-design desde https://github.com/qybaihe/hash-design (todavía no está en npm):
-clónalo en ~/hash-design, compílalo y, siguiendo los pasos de "Instalación manual" de su README.es.md,
-instala su skill en este proyecto y registra su servidor MCP para este agente.
+Instala la skill de hash-design para este agente: ejecuta `npx -y hash-design skill install --dir .`
+y registra su servidor MCP con `npx -y hash-design mcp` (con hash-design 0.1.0, usa
+`npx -y hash-design-mcp@0.1.0`), siguiendo https://github.com/qybaihe/hash-design/blob/main/README.es.md#inicio-rápido.
 ```
 
 </div>
-
-> [!IMPORTANT]
-> hash-design **todavía no está en npm**. Instálalo desde el código fuente, desde [qybaihe/hash-design](https://github.com/qybaihe/hash-design). Los `package.json` están listos para publicarse y CI ejecuta `npm pack --dry-run`, pero `npx hash-design` y `npx hash-design-mcp` no funcionarán hasta que haya una versión publicada.
 
 ---
 
@@ -57,7 +54,7 @@ Se trata de una restricción aleatoria externa que rompe la estética por defect
 
 La salida por defecto es una página web. Pasa un **escenario** (`scenario`) y las mismas direcciones de la tirada se convierten en una presentación de diapositivas, pantallas de app móvil, un panel de datos, un póster o tarjeta social, o un email HTML (ver [Escenarios](#escenarios)).
 
-Se distribuye como una **Agent Skill** (cuándo y en qué orden ejecutar el flujo), un **servidor MCP** (stdio, seis herramientas), una **CLI** y una **biblioteca TypeScript**, todo en este repositorio.
+Se distribuye como una **Agent Skill** (cuándo y en qué orden ejecutar el flujo), un **servidor MCP** (stdio, seis herramientas), una **CLI** y una **biblioteca TypeScript**, publicadas juntas en npm como [`hash-design`](https://www.npmjs.com/package/hash-design) (el servidor MCP se incorpora al paquete en la 0.2.0).
 
 ## Inicio rápido
 
@@ -66,74 +63,74 @@ Se distribuye como una **Agent Skill** (cuándo y en qué orden ejecutar el fluj
 Abre Claude Code o Cursor en el proyecto que quieres diseñar y pega:
 
 ```text
-Instala hash-design desde https://github.com/qybaihe/hash-design (todavía no está en npm):
-clónalo en ~/hash-design, compílalo y, siguiendo los pasos de "Instalación manual" de su README.es.md,
-instala su skill en este proyecto y registra su servidor MCP para este agente.
+Instala la skill de hash-design para este agente: ejecuta `npx -y hash-design skill install --dir .`
+y registra su servidor MCP con `npx -y hash-design mcp` (con hash-design 0.1.0, usa
+`npx -y hash-design-mcp@0.1.0`), siguiendo https://github.com/qybaihe/hash-design/blob/main/README.es.md#inicio-rápido.
 ```
 
-El agente clona y compila este repositorio, copia la Skill en `.claude/skills/` o `.cursor/skills/` de tu proyecto y registra el servidor MCP (`claude mcp add` en Claude Code, `.cursor/mcp.json` en Cursor). Después abre una sesión nueva para que el agente cargue ambos y pasa a [Uso](#uso). Si prefieres ejecutar los comandos tú, sigue los pasos de abajo.
+El agente copia la Skill en `.claude/skills/` y `.cursor/skills/` de tu proyecto y registra el servidor MCP (`claude mcp add` en Claude Code, `.cursor/mcp.json` en Cursor); no hay que clonar ni compilar nada. Después abre una sesión nueva para que el agente cargue ambos y pasa a [Uso](#uso). Si prefieres ejecutar los comandos tú, sigue los pasos de abajo.
 
 ### Instalación manual
 
-Requiere Node.js ≥ 20 (`.nvmrc` fija la versión 22 para desarrollo).
+Requiere Node.js ≥ 20, con npm (para `npx`).
+
+**Skill.** La Skill le dice al agente cuándo usar hash-design, en qué orden llamar a las herramientas MCP, cómo renderizar las vistas previas por separado y cuándo debe detenerse.
 
 ```bash
-git clone https://github.com/qybaihe/hash-design.git ~/hash-design
-cd ~/hash-design && npm install && npm run build
-# CLI entry:        ~/hash-design/packages/core/dist/bin.js
-# MCP server entry: ~/hash-design/packages/mcp/dist/bin.js
+npx -y hash-design skill install --target both --dir .      # este proyecto: .claude/skills y .cursor/skills
+npx -y hash-design skill install --target claude --global   # o tu directorio personal, para todos los proyectos
 ```
 
-**Skill.** La Skill le indica al agente cuándo usar hash-design, en qué orden llamar a las herramientas MCP, cómo renderizar las vistas previas de forma independiente y cuándo debe detenerse.
+`--target` es `claude`, `cursor` o `both` (por defecto). También puedes copiar a mano [`skills/hash-design/SKILL.md`](skills/hash-design/SKILL.md) en `.claude/skills/hash-design/SKILL.md` (Claude Code) o en `.cursor/skills/hash-design/SKILL.md` (Cursor). El cuerpo de la Skill está escrito en chino; su descripción incluye frases de activación en inglés.
 
-```bash
-# En un proyecto (escribe tanto en .claude/skills como en .cursor/skills)
-node ~/hash-design/packages/core/dist/bin.js skill install --target both --dir /path/to/your/project
-# En tu directorio personal (disponible en todos los proyectos)
-node ~/hash-design/packages/core/dist/bin.js skill install --target claude --global
-```
+**Servidor MCP.** Registra `npx -y hash-design mcp` en tu agente; ejecuta el servidor por stdio.
 
-O copia a mano [`skills/hash-design/SKILL.md`](skills/hash-design/SKILL.md) en `.claude/skills/hash-design/SKILL.md` (Claude Code) o en `.cursor/skills/hash-design/SKILL.md` (Cursor). Este repositorio incluye ambas copias, y un test las mantiene idénticas a la fuente. El cuerpo de la Skill está escrito en chino; su descripción incluye frases de activación en inglés.
-
-**Servidor MCP.** Registra `packages/mcp/dist/bin.js` en tu agente. En una shell, `~/hash-design` se expande a la ruta absoluta; en los archivos JSON escribe la ruta absoluta completa (abajo, `/ABS/PATH/hash-design`).
+> [!NOTE]
+> `hash-design mcp` llega con hash-design 0.2.0, la próxima versión. Con la 0.1.0, la que está hoy en npm, registra en su lugar `npx -y hash-design-mcp@0.1.0`: el servidor que se publicó antes como paquete aparte, con las mismas seis herramientas y sin más actualizaciones.
 
 #### Claude Code
 
 ```bash
-claude mcp add hash-design -- node ~/hash-design/packages/mcp/dist/bin.js
+claude mcp add hash-design -- npx -y hash-design mcp
+# con hash-design 0.1.0:
+claude mcp add hash-design -- npx -y hash-design-mcp@0.1.0
 ```
 
-O versiona un `.mcp.json` a nivel de proyecto:
+O haz commit de un `.mcp.json` a nivel de proyecto:
 
 ```json
 {
   "mcpServers": {
     "hash-design": {
-      "command": "node",
-      "args": ["/ABS/PATH/hash-design/packages/mcp/dist/bin.js"]
+      "command": "npx",
+      "args": ["-y", "hash-design", "mcp"]
     }
   }
 }
 ```
+
+Con la 0.1.0, los `args` son `["-y", "hash-design-mcp@0.1.0"]`.
 
 #### Cursor
 
-`.cursor/mcp.json` (proyecto) o `~/.cursor/mcp.json` (global), con la misma estructura:
-
-```json
-{
-  "mcpServers": {
-    "hash-design": {
-      "command": "node",
-      "args": ["/ABS/PATH/hash-design/packages/mcp/dist/bin.js"]
-    }
-  }
-}
-```
+`.cursor/mcp.json` (proyecto) o `~/.cursor/mcp.json` (global), con la misma estructura que el `.mcp.json` de arriba.
 
 #### Claude Desktop
 
-`~/Library/Application Support/Claude/claude_desktop_config.json` (macOS) o `%APPDATA%\Claude\claude_desktop_config.json` (Windows), con la misma estructura que arriba. Claude Desktop no inicia el servidor en el directorio de tu proyecto, así que pasa una **ruta absoluta** como `out_dir` al llamar a `roll_designs`.
+`~/Library/Application Support/Claude/claude_desktop_config.json` (macOS) o `%APPDATA%\Claude\claude_desktop_config.json` (Windows), con la misma estructura. Claude Desktop no arranca el servidor en el directorio de tu proyecto, así que pasa una **ruta absoluta** como `out_dir` al llamar a `roll_designs`. Si no encuentra `npx`, pon en `command` la ruta que imprime `which npx`.
+
+### Desde el código fuente
+
+Para contribuir, o para ejecutar un commit que aún no se ha publicado (ver [CONTRIBUTING.md](CONTRIBUTING.md)):
+
+```bash
+git clone https://github.com/qybaihe/hash-design.git ~/hash-design
+cd ~/hash-design && npm install && npm run build
+node ~/hash-design/packages/core/dist/bin.js skill install --target both --dir /path/to/your/project
+claude mcp add hash-design -- node ~/hash-design/packages/core/dist/bin.js mcp
+```
+
+En una copia del código, la CLI es `packages/core/dist/bin.js`. `packages/mcp/dist/bin.js` arranca el mismo servidor MCP, así que las configuraciones que ya apuntan ahí siguen funcionando. El repositorio incluye copias de la Skill en `.claude/` y `.cursor/`, que un test mantiene idénticas a la fuente.
 
 ### Uso
 
@@ -157,7 +154,7 @@ hash-design compare --roll design/hash-design/roll.json                         
 hash-design skill install --target both                                                          # instala la Skill
 ```
 
-Desde una copia del código fuente, ejecútalo como `node packages/core/dist/bin.js …` (o con `alias hash-design="node $PWD/packages/core/dist/bin.js"` desde la raíz del repositorio). `hash-design --help` lista todos los comandos y `hash-design <command> --help` (por ejemplo, `hash-design roll --help`) muestra las opciones de un comando, incluidos los flags de restricción `--light-only`, `--dark-only`, `--reduced-motion`, `--brand`, `--family`, `--include`, `--exclude` y `--scenario`.
+Ejecútala con `npx -y hash-design …`, o instálala una vez con `npm install -g hash-design` y escribe `hash-design …`; en una copia del código es `node packages/core/dist/bin.js …`. `hash-design --help` lista todos los comandos y `hash-design <command> --help` (por ejemplo, `hash-design roll --help`) muestra las opciones de un comando, incluidas las de restricción `--light-only`, `--dark-only`, `--reduced-motion`, `--brand`, `--family`, `--include`, `--exclude` y `--scenario`.
 
 ### Biblioteca
 
@@ -172,16 +169,15 @@ const report = critiquePage({ html: '<!doctype html>…', design });
 console.log(report.score, report.adherence, report.findings);
 ```
 
-Hasta que el paquete esté en npm, impórtalo desde una copia del código fuente (`packages/core/dist/index.js`) o añade esa copia como dependencia local (`npm install /ABS/PATH/hash-design/packages/core`).
+Instálala con `npm install hash-design` (módulo ES, Node.js ≥ 20, con tipos).
 
 ### Actualizar
 
 ```bash
-cd ~/hash-design && git pull && npm install && npm run build
-node ~/hash-design/packages/core/dist/bin.js skill install --target both --dir /path/to/your/project   # refresh the copied SKILL.md
+npx -y hash-design@latest skill install --target both --dir .   # actualiza la copia de SKILL.md
 ```
 
-La configuración MCP apunta a `packages/mcp/dist/bin.js`, así que recompilar actualiza el servidor; reinicia el agente para cargarlo. `skill install` sobrescribe la copia de tu proyecto. Si una actualización cambia los datos de las ramas, los refs sorteados con la versión anterior necesitan esa versión para reproducirse (ver [Preguntas frecuentes](#preguntas-frecuentes)).
+npx puede seguir usando una copia que guardó en caché; `@latest` hace que descargue la versión más reciente (o fija una, como `hash-design@0.2.0`). El servidor MCP se arranca con npx cada vez que se inicia el agente, así que reinicia el agente tras una nueva versión y escribe `hash-design@latest` en su comando MCP si sigue corriendo una copia antigua. Desde un clon: `git pull && npm install && npm run build`. Si una actualización cambia los datos de las ramas, los refs sorteados con la versión anterior necesitan esa versión para reproducirse (ver [Preguntas frecuentes](#preguntas-frecuentes)).
 
 ## Cómo funciona
 
@@ -365,7 +361,7 @@ La Skill se instala en Claude Code (`.claude/skills/`) y en Cursor (`.cursor/ski
 <details>
 <summary><strong>¿Está en npm?</strong></summary>
 
-Todavía no. Los `package.json` están listos para publicarse y CI ejecuta `npm pack --dry-run`, pero por ahora hay que instalar desde el código fuente. Cuando se publique, funcionarán `npx -y hash-design-mcp` y `npx -y hash-design`.
+Sí. [`hash-design`](https://www.npmjs.com/package/hash-design) 0.1.0 incluye la biblioteca, la CLI y la Skill (`npx -y hash-design skill install`). El servidor MCP se incorpora en la 0.2.0 como `hash-design mcp`; hasta entonces usa `npx -y hash-design-mcp@0.1.0`, el paquete de servidor anterior, que ya no recibe versiones nuevas. Las versiones se publican desde GitHub Actions con npm Trusted Publishing ([docs/publishing.md](docs/publishing.md), en inglés).
 
 </details>
 

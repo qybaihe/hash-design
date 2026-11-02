@@ -46,6 +46,7 @@ Usage
   hash-design compare   [--roll <roll.json>] [--out <compare.html>] [--previews <dir>] [--briefs <dir>] [--title <t>]
   hash-design skill     install [--target claude|cursor|both] [--global] [--dir <project>]
   hash-design skill     print | path
+  hash-design mcp       Run the MCP server on stdio (for your agent's MCP config)
 
 Constraints (roll / brief / critique --brief)
   --light-only  --dark-only  --reduced-motion  --brand <#hex> (×2 max)
@@ -112,6 +113,8 @@ const compareOptions = {
   title: { type: 'string' },
 } as const;
 
+const mcpOptions = {} as const;
+
 const skillInstallOptions = {
   target: { type: 'string' },
   global: { type: 'boolean' },
@@ -136,6 +139,7 @@ export const COMMAND_OPTIONS: ReadonlyMap<string, Readonly<Record<string, Option
   ['critique', critiqueOptions],
   ['compare', compareOptions],
   ['skill', skillInstallOptions],
+  ['mcp', mcpOptions],
 ]);
 
 const constraintsHelp = (title: string) => `${title}
@@ -298,6 +302,23 @@ Options (install)
   --target <t>           claude | cursor | both (default: both)
   --global               Install into your home directory (all projects)
   --dir <project>        Project directory (default: the current directory)
+`,
+  ],
+  [
+    'mcp',
+    `hash-design mcp — run the hash-design MCP server on stdio
+
+Usage
+  hash-design mcp
+
+Your agent starts this command and talks MCP over stdin/stdout; you do not run it by hand.
+It serves the tools roll_designs, get_brief, list_branches, get_branch, critique_page and
+build_compare_page. Relative paths (out_dir, roll_path, …) resolve against the directory the
+agent starts it in.
+
+Register it
+  claude mcp add hash-design -- npx -y hash-design mcp
+  { "mcpServers": { "hash-design": { "command": "npx", "args": ["-y", "hash-design", "mcp"] } } }
 `,
   ],
 ]);
@@ -518,6 +539,13 @@ export async function main(argv: string[]): Promise<void> {
   }
 }
 
+async function cmdMcp(args: string[]): Promise<void> {
+  parseArgs({ args, options: mcpOptions });
+  // Loaded on demand: the other commands never pay for the MCP SDK.
+  const { serveStdio } = await import('./mcp.js');
+  await serveStdio();
+}
+
 async function dispatch(cmd: string | undefined, rest: string[]): Promise<void> {
   switch (cmd) {
     case 'roll':
@@ -534,6 +562,8 @@ async function dispatch(cmd: string | undefined, rest: string[]): Promise<void> 
       return cmdCompare(rest);
     case 'skill':
       return cmdSkill(rest);
+    case 'mcp':
+      return cmdMcp(rest);
     case '-v':
     case '--version':
     case 'version':

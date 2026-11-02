@@ -11,11 +11,11 @@ hash-design 是一个 npm workspaces monorepo，包含两个包、一个 Skill �
                  │   │       data/ (branches, pools, bans, scenarios) ── validate.ts                         │
                  │ crypto     critique.ts (static HTML/CSS checks)   compare.ts (compare.html)   catalog.ts   │
                  │            cli.ts / bin.ts (hash-design CLI)      skill.ts (SKILL.md access + sync block) │
+                 │            mcp.ts (MCP server: 6 tools, 4 resources, 1 prompt) ◄── `hash-design mcp`      │
                  └───────────────▲────────────────────────────────────────────────────────────────────────────┘
-                                 │ imports the public API only
-                 ┌───────────────┴──── packages/mcp (npm: hash-design-mcp) ────┐
-                 │ server.ts: 6 tools, 4 resources, 1 prompt, instructions     │
-                 │ bin.ts:    stdio transport                                  │
+                                 │ re-exports hash-design/mcp
+                 ┌───────────────┴──── packages/mcp (private wrapper) ─────────┐
+                 │ bin.ts: the same server, run from a clone                   │
                  └─────────────────────────────────────────────────────────────┘
   skills/hash-design/SKILL.md ── the agent workflow (synced to .claude/ and .cursor/)
 ```
@@ -41,12 +41,13 @@ hash-design 是一个 npm workspaces monorepo，包含两个包、一个 Skill �
 | `src/catalog.ts`           | 分支列表 / 详情 / 目录渲染（MCP server 和 `docs/branches.md` 都用它）                                                          |
 | `src/skill.ts`             | 定位 `SKILL.md`（仓库内或包内副本），并渲染生成的禁令块                                                                        |
 | `src/cli.ts`, `src/bin.ts` | `hash-design` CLI（用 `node:util` 的 `parseArgs`，不用 CLI 框架）                                                              |
+| `src/mcp.ts`               | MCP server（`createServer`、`serveStdio`），由 `hash-design mcp` 加载；以 `hash-design/mcp` 导出                               |
 
-运行时依赖：`node-html-parser`（供 `critique_page` 使用），没有别的。
+运行时依赖：`node-html-parser`（供 `critique_page` 使用），以及 MCP server 用的 `@modelcontextprotocol/sdk` 和 `zod`；CLI 只在 `hash-design mcp` 时才加载它们。
 
-### `packages/mcp`（`hash-design-mcp`）
+### MCP server（`src/mcp.ts`、`packages/mcp`）
 
-基于 `@modelcontextprotocol/sdk` 和 `zod` 输入 schema，在 core 的公开 API 之上做的一层薄适配。每个工具都有对应的 CLI 命令，另有一个测试检查：用示例 seed 调用 `roll_designs`，返回的 ref 与 CLI 生成的示例掷骰完全一致。见 [mcp-tools.zh-CN.md](mcp-tools.zh-CN.md)。
+基于 `@modelcontextprotocol/sdk` 和 `zod` 输入 schema，在 core 的公开 API 之上做的一层薄适配，用 `hash-design mcp` 启动。`packages/mcp`（`hash-design-mcp`，private）只是重新导出它，所以在克隆的源码里 `node packages/mcp/dist/bin.js` 照样能用。每个工具都有对应的 CLI 命令，另有一个测试检查：用示例 seed 调用 `roll_designs`，返回的 ref 与 CLI 生成的示例掷骰完全一致。见 [mcp-tools.zh-CN.md](mcp-tools.zh-CN.md)。
 
 设计取舍：
 
@@ -85,11 +86,11 @@ hash-design 是一个 npm workspaces monorepo，包含两个包、一个 Skill �
 
 ## 测试与 CI
 
-- **Vitest**，10 个测试文件：`hash`、`mapping`、`branches`、`brief`、`critique`（带好/坏两类 HTML 夹具）、`compare`、`cli`、`skill`（同步检查）、`examples`，以及 `mcp/server`（in-memory transport）。
-- **`scripts/smoke.mjs`**：运行构建好的 CLI，并通过真实的 stdio 管道与构建好的 MCP server 通信。
+- **Vitest**，10 个测试文件：`hash`、`mapping`、`branches`、`brief`、`critique`（带好/坏两类 HTML 夹具）、`compare`、`cli`、`skill`（同步检查）、`examples`，以及 `mcp`（in-memory transport）。
+- **`scripts/smoke.mjs`**：运行构建好的 CLI，并通过真实的 stdio 管道与 `hash-design mcp` 和 `packages/mcp` 包装通信。
 - **CI**（`.github/workflows/ci.yml`），在 Node 20、22 和 24 上依次跑：`npm ci`、build、typecheck（含测试）、ESLint、Prettier 检查、测试、冒烟测试，以及两个包的 `npm pack --dry-run`。
 - **Pages**（`.github/workflows/pages.yml`）：`examples/` 有改动时发布到 GitHub Pages。
 
 ## 打包
 
-两个包都已经可以发布，但**尚未发布**。`packages/core` 的 `prepack` 会把 `SKILL.md` 和 `LICENSE` 复制进包里，这样从 npm 安装后 `hash-design skill install` 也能用；`packages/mcp` 按版本号依赖 `hash-design`。`tsbuildinfo` 文件不会打进 tarball。
+只有 `packages/core` 会发布，包名 `hash-design`（0.1.0 自 2026-11-02 起已在 npm 上）。它的 `prepack` 会把 `SKILL.md` 和 `LICENSE` 复制进包里，这样从 npm 安装后 `hash-design skill install` 也能用；`tsbuildinfo` 文件不会打进 tarball。这个包还带着 MCP server（`hash-design mcp`，0.2.0 起）及其两个依赖。`packages/mcp` 是给克隆源码用的 private 包装；它按版本号（`^<version>`）依赖 `hash-design`，npm 通过链接工作区来满足这个依赖。发布流程见 [publishing.zh-CN.md](publishing.zh-CN.md)。
