@@ -27,7 +27,7 @@ import {
   skillPath,
   writeRoll,
 } from './index.js';
-import type { BranchFamily } from './types.js';
+import type { BranchFamily, ScenarioId } from './types.js';
 
 const here = dirname(fileURLToPath(import.meta.url));
 const VERSION = (JSON.parse(readFileSync(join(here, '..', 'package.json'), 'utf8')) as { version: string })
@@ -50,6 +50,7 @@ Usage
 Constraints (roll / brief / critique --brief)
   --light-only  --dark-only  --reduced-motion  --brand <#hex> (×2 max)
   --family <family>…  --include <branch-id>…  --exclude <branch-id>…
+  --scenario web|deck|app|dashboard|poster|email
 
 Run "hash-design <command> --help" (or "hash-design help <command>") for one command's options.
 Without --seed every roll uses crypto.randomBytes(32) → SHA-256. --seed is for reproducible examples only.
@@ -63,6 +64,7 @@ const constraintOptions = {
   family: { type: 'string', multiple: true },
   include: { type: 'string', multiple: true },
   exclude: { type: 'string', multiple: true },
+  scenario: { type: 'string' },
 } as const;
 
 const contentOptions = {
@@ -144,7 +146,9 @@ const constraintsHelp = (title: string) => `${title}
   --family <family>      Restrict the pool to a family (repeatable):
                          print, document, signage, screen, craft, modernist
   --include <id>         Restrict the pool to these branch ids (repeatable)
-  --exclude <id>         Remove these branch ids from the pool (repeatable)`;
+  --exclude <id>         Remove these branch ids from the pool (repeatable)
+  --scenario <id>        What is being designed: web (default), deck, app, dashboard, poster, email.
+                         Non-web scenarios add a format (byte 13), a canvas and output rules to each brief`;
 
 const CONSTRAINTS_HELP = constraintsHelp(
   'Constraints (filter the pools before any byte is read; pass the same ones to reproduce a design)',
@@ -180,6 +184,7 @@ ${CONSTRAINTS_HELP}
 Examples
   hash-design roll --subject "Fourth Lane Bakery" --facts-file facts.md --out design/hash-design
   hash-design roll --subject "Fourth Lane Bakery" --light-only --brand "#c8102e" --format json
+  hash-design roll --subject "Causeway" --facts-file facts.md --scenario deck --out design/hash-design
 
 Without --seed every roll uses crypto.randomBytes(32) → SHA-256.
 `,
@@ -317,6 +322,7 @@ function constraintsFrom(v: Values): Constraints {
     families: ((v.family as string[] | undefined) ?? []) as BranchFamily[],
     include: (v.include as string[] | undefined) ?? [],
     exclude: (v.exclude as string[] | undefined) ?? [],
+    ...(v.scenario ? { scenario: v.scenario as ScenarioId } : {}),
   };
 }
 
