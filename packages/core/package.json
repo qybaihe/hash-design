@@ -33,6 +33,10 @@
       "types": "./dist/index.d.ts",
       "import": "./dist/index.js"
     },
+    "./mcp": {
+      "types": "./dist/mcp.d.ts",
+      "import": "./dist/mcp.js"
+    },
     "./package.json": "./package.json"
   },
   "bin": {
@@ -51,7 +55,9 @@
     "postpack": "node -e \"require('fs').rmSync('skill', { recursive: true, force: true })\""
   },
   "dependencies": {
-    "node-html-parser": "^9.0.6"
+    "@modelcontextprotocol/sdk": "^1.32.2",
+    "node-html-parser": "^9.0.6",
+    "zod": "^4.6.7"
   },
   "publishConfig": {
     "access": "public"

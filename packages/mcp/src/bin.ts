@@ -1,6 +1,5 @@
 #!/usr/bin/env node
-import { StdioServerTransport } from '@modelcontextprotocol/sdk/server/stdio.js';
-import { createServer, SERVER_VERSION } from './server.js';
+import { SERVER_VERSION, serveStdio } from './server.js';
 
 async function main(): Promise<void> {
   const arg = process.argv[2];
@@ -10,16 +9,14 @@ async function main(): Promise<void> {
   }
   if (arg === '--help' || arg === '-h') {
     process.stdout.write(
-      `hash-design-mcp ${SERVER_VERSION}\nStdio MCP server. Configure it in your MCP client with the absolute path of\n` +
-        `this file in a hash-design checkout (it is not published to npm), e.g.\n` +
-        `  { "mcpServers": { "hash-design": { "command": "node", "args": ["/ABS/PATH/hash-design/packages/mcp/dist/bin.js"] } } }\n`,
+      `hash-design-mcp ${SERVER_VERSION}\nStdio MCP server from a hash-design checkout. The same server ships in the\n` +
+        `hash-design package as \`hash-design mcp\` (from 0.2.0), e.g.\n` +
+        `  { "mcpServers": { "hash-design": { "command": "npx", "args": ["-y", "hash-design", "mcp"] } } }\n` +
+        `From a checkout: { "command": "node", "args": ["/ABS/PATH/hash-design/packages/mcp/dist/bin.js"] }\n`,
     );
     return;
   }
-  const server = createServer();
-  await server.connect(new StdioServerTransport());
-  // stdout belongs to the protocol; log to stderr only.
-  console.error(`hash-design-mcp ${SERVER_VERSION} ready on stdio (cwd: ${process.cwd()})`);
+  await serveStdio('hash-design-mcp');
 }
 
 main().catch((err: unknown) => {

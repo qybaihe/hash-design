@@ -26,6 +26,7 @@ const PACKAGES = [
     dir: 'packages/core',
     name: 'hash-design',
     bin: 'hash-design',
+    dependencies: ['@modelcontextprotocol/sdk', 'zod', 'node-html-parser'],
     files: [
       'package.json',
       'README.md',
@@ -33,6 +34,7 @@ const PACKAGES = [
       'dist/index.js',
       'dist/index.d.ts',
       'dist/bin.js',
+      'dist/mcp.js',
       'skill/SKILL.md',
     ],
   },
@@ -75,6 +77,11 @@ for (const p of PACKAGES) {
   if (!pkg.engines?.node) problems.push(`${where}: missing engines.node`);
   // npm normalises "./dist/bin.js" to "dist/bin.js" at publish time and warns that the original was invalid.
   if (pkg.bin?.[p.bin] !== 'dist/bin.js') problems.push(`${where}: bin.${p.bin} must be dist/bin.js`);
+  // `hash-design mcp` runs the MCP server from this package, so its runtime dependencies ship with it.
+  for (const dep of p.dependencies ?? [])
+    if (!pkg.dependencies?.[dep]) problems.push(`${where}: missing dependency ${dep}`);
+  if (pkg.exports?.['./mcp']?.import !== './dist/mcp.js')
+    problems.push(`${where}: exports["./mcp"] must point at ./dist/mcp.js`);
   if (pkg.publishConfig?.access !== 'public')
     problems.push(`${where}: publishConfig.access must be "public"`);
 }
