@@ -1,165 +1,184 @@
-# hash-design
+<div align="center">
 
-[English](README.md) | [简体中文](README.zh-CN.md) | **日本語** | [한국어](README.ko.md) | [Español](README.es.md)
+[English](README.md) · [简体中文](README.zh-CN.md) · **日本語** · [한국어](README.ko.md) · [Español](README.es.md)
+
+# hash-design
 
 <p align="center"><a href="https://qybaihe.github.io/hash-design/causeway-festival/compare.html"><picture><source media="(prefers-reduced-motion: reduce)" srcset="docs/assets/hero.png"><img src="docs/assets/hero.gif" width="960" alt="アニメーション：入力欄で /hash-design を選び、Causeway のランディングページを頼む。5 つの SHA-256 ref が回ってから確定し、実際の 5 つのプレビュー（Engineering plate、Topographic map、Warm handmade、Editorial magazine、Memphis pop）が次々に現れ、比較用の 1 列に並ぶ。1 つ選べば、ref から再現できる"></picture></a></p>
 
 <p align="center"><sub>モックアップではなく実際の出力です：<a href="examples/causeway-festival">examples/causeway-festival</a>。各プレビューは、凍結されたブリーフ 1 つだけを見た別々のサブエージェントが作りました。<br><a href="https://qybaihe.github.io/hash-design/"><b>4 つのライブサンプルをすべて見る →</b></a> · 40 ブランチのうち 20 · <a href="docs/assets/hero.png">静止画</a> · <a href="docs/assets/hero.mp4">MP4</a></sub></p>
 
-<p align="center"><b>コーディングエージェントが毎回同じ「Inter と紫のグラデーション」のページを出してくるのを止めます。</b><br>
-1 つのプロンプトから 5 つのデザインの方向性を出します。選ぶのはモデルではなく、真の乱数による SHA-256 ハッシュです。あなたが 1 つ選び、どの方向性も ref から同じものを作り直せます。</p>
+### 1 つのプロンプトから 5 つのデザインの方向性。選ぶのはモデルではなく、真の乱数による SHA-256 ハッシュです。
 
-<p align="center">
-<a href="https://github.com/qybaihe/hash-design/actions/workflows/ci.yml"><img src="https://github.com/qybaihe/hash-design/actions/workflows/ci.yml/badge.svg" alt="CI"></a>
-<a href="https://qybaihe.github.io/hash-design/"><img src="https://img.shields.io/badge/live%20demo-4%20examples-e2401c.svg" alt="ライブデモ"></a>
-<a href="LICENSE"><img src="https://img.shields.io/badge/license-MIT-black.svg" alt="MIT"></a>
-<a href="#skill-のインストール"><img src="https://img.shields.io/badge/Agent%20Skill-Claude%20Code%20%C2%B7%20Cursor-black.svg" alt="Agent Skill"></a>
-</p>
+**コーディングエージェントが毎回同じ「Inter と紫のグラデーション」のページを出してくるのを止めます。hash-design は 5 つの方向性をロールし、それぞれをデザインブリーフとして凍結し、5 つのプレビューを並べて表示してから、あなたが 1 つ選ぶのを待ちます。どの方向性も ref から作り直せます。**
 
-### クイックスタート
+[![CI](https://img.shields.io/github/actions/workflow/status/qybaihe/hash-design/ci.yml?branch=main&style=flat-square&label=CI)](https://github.com/qybaihe/hash-design/actions/workflows/ci.yml)
+[![Live demo](https://img.shields.io/badge/live_demo-4_examples-e2401c?style=flat-square)](https://qybaihe.github.io/hash-design/)
+[![Agent Skill](https://img.shields.io/badge/Agent_Skill-Claude_Code_%C2%B7_Cursor-151412?style=flat-square)](#クイックスタート)
+[![MCP server](https://img.shields.io/badge/MCP_server-6_tools_%C2%B7_stdio-151412?style=flat-square)](docs/mcp-tools.md)
+[![Node.js](https://img.shields.io/badge/Node.js-%E2%89%A520-151412?style=flat-square&logo=nodedotjs&logoColor=white)](.nvmrc)
+[![npm](https://img.shields.io/badge/npm-not_yet_published-a39e93?style=flat-square)](#手動でインストール)
+[![MIT license](https://img.shields.io/badge/license-MIT-151412?style=flat-square)](LICENSE)
 
-npm にはまだ公開していません。ソースからビルドし（Node ≥ 20）、Skill をプロジェクトに入れて MCP サーバーを登録します：
+**[ライブサンプル](https://qybaihe.github.io/hash-design/) · [ブランチ一覧](docs/branches.md) · [MCP リファレンス](docs/mcp-tools.md) · [変更履歴](CHANGELOG.md)**
 
-```bash
-git clone https://github.com/qybaihe/hash-design.git && cd hash-design && npm install && npm run build
-node packages/core/dist/bin.js skill install --target both --dir /path/to/your/project   # Skill → .claude/skills + .cursor/skills
-claude mcp add hash-design -- node "$PWD/packages/mcp/dist/bin.js"                       # MCP server (Claude Code)
+[クイックスタート](#クイックスタート) · [仕組み](#仕組み) · [サンプル](#サンプル) · [リファレンス](#リファレンス) · [よくある質問](#よくある質問)
+
+**エージェントにこう伝える**（Claude Code、Cursor）：
+
+```text
+https://github.com/qybaihe/hash-design から hash-design をインストールして（npm には未公開）。
+~/hash-design に clone してビルドし、README.ja.md の「手動でインストール」の手順どおりに、
+skill をこのプロジェクトに入れ、このエージェント用に MCP サーバーを登録して。
 ```
 
-あとはエージェントにこう頼みます：
+</div>
 
-> hash-design を使って、Skerrow 島で開かれる 1 日限りの音楽フェス「Causeway」の 1 ページサイトを作って。事実：2027 年 6 月 19 日（土）、長さ 1.2 km の潮の引いた道を歩いて島へ渡る……
-
-Cursor と Claude Desktop の設定：[MCP の設定](#mcp-の設定)。
-
-### 4 行でわかる仕組み
-
-1. **ロール**：システムの乱数から SHA-256 ハッシュを 5 つ作る。
-2. **マッピング**：固定の決定木が各ハッシュをブリーフに変える。ジャンル、レイアウト、フォント、16 進数のパレット、密度、モーション、ツイスト。同じ ref なら同じブリーフ。
-3. **レンダリング**：凍結されたブリーフ 1 つにつきサブエージェント 1 つが HTML プレビューを作り、比較ページで並べる。
-4. **選ぶ**：番号で答えると、エージェントがそのブリーフで最終ページを作り、`critique_page` でチェックする。
-
-<details><summary>その他のバッジ</summary>
-
-[![Pages](https://github.com/qybaihe/hash-design/actions/workflows/pages.yml/badge.svg)](https://github.com/qybaihe/hash-design/actions/workflows/pages.yml)
-[![Node](https://img.shields.io/badge/node-%E2%89%A520%20%C2%B7%20.nvmrc%2022-black.svg)](.nvmrc)
-[![npm: not yet published](https://img.shields.io/badge/npm-not%20yet%20published-lightgrey.svg)](#インストール)
-
-</details>
+> [!IMPORTANT]
+> hash-design は**まだ npm に公開していません**。ソース（[qybaihe/hash-design](https://github.com/qybaihe/hash-design)）からインストールしてください。`package.json` は公開できる状態で、CI では `npm pack --dry-run` を実行していますが、リリースまでは `npx hash-design` と `npx hash-design-mcp` は使えません。
 
 ---
 
-## 目次
-
-- [デモ](#デモ) · [その他のサンプル](#その他のサンプル) · [なぜ必要なのか](#なぜ必要なのか) · [仕組み](#仕組み) · [ブリーフに含まれるもの](#ブリーフに含まれるもの)
-- [インストール](#インストール) · [MCP の設定](#mcp-の設定) · [Skill のインストール](#skill-のインストール) · [使い方](#使い方)
-- [MCP ツール](#mcp-ツール) · [CLI](#cli) · [ライブラリ](#ライブラリ) · [ブランチライブラリ](#ブランチライブラリ40) · [グローバル禁止事項](#グローバル禁止事項)
-- [開発](#開発) · [ドキュメント](#ドキュメント) · [既知の制限](#既知の制限) · [コントリビューション](#コントリビューション)
-
-## デモ
-
-[![Fourth Lane Bakery：1 枚のファクトシートから出た 5 つのランダムな方向性を並べたもの](examples/fourth-lane-bakery/screenshots/compare.png)](https://qybaihe.github.io/hash-design/fourth-lane-bakery/compare.html)
-
-[`examples/fourth-lane-bakery/`](examples/fourth-lane-bakery) は、架空のベーカリーを題材にしたエンドツーエンドの完全な実行例です。[ファクトシート](examples/fourth-lane-bakery/facts.md) → 1 回のロール → 凍結された 5 つのブリーフ → 5 つのプレビュー（それぞれ、自分のブリーフしか見えない別々のサブエージェントがレンダリング）→ 並べて見比べられる比較ページ、という流れです。すべて GitHub Pages で公開しています。
-
-| #   | 方向性（ブランチ）                                                                                               | デスクトップ                                                                                                                         | ブリーフ                                                               |
-| --- | ---------------------------------------------------------------------------------------------------------------- | ------------------------------------------------------------------------------------------------------------------------------------ | ---------------------------------------------------------------------- |
-| 01  | [Bureaucratic form](https://qybaihe.github.io/hash-design/fourth-lane-bakery/previews/01-bureaucratic-form.html) | <img src="examples/fourth-lane-bakery/screenshots/01-bureaucratic-form-desktop.png" width="260" alt="#1 Bureaucratic form, desktop"> | [ブリーフ](examples/fourth-lane-bakery/briefs/01-bureaucratic-form.md) |
-| 02  | [Bauhaus primary](https://qybaihe.github.io/hash-design/fourth-lane-bakery/previews/02-bauhaus-primary.html)     | <img src="examples/fourth-lane-bakery/screenshots/02-bauhaus-primary-desktop.png" width="260" alt="#2 Bauhaus primary, desktop">     | [ブリーフ](examples/fourth-lane-bakery/briefs/02-bauhaus-primary.md)   |
-| 03  | [Ink and seal](https://qybaihe.github.io/hash-design/fourth-lane-bakery/previews/03-ink-and-seal.html)           | <img src="examples/fourth-lane-bakery/screenshots/03-ink-and-seal-desktop.png" width="260" alt="#3 Ink and seal, desktop">           | [ブリーフ](examples/fourth-lane-bakery/briefs/03-ink-and-seal.md)      |
-| 04  | [Risograph duotone](https://qybaihe.github.io/hash-design/fourth-lane-bakery/previews/04-risograph-duotone.html) | <img src="examples/fourth-lane-bakery/screenshots/04-risograph-duotone-desktop.png" width="260" alt="#4 Risograph duotone, desktop"> | [ブリーフ](examples/fourth-lane-bakery/briefs/04-risograph-duotone.md) |
-| 05  | [Hong Kong shop sign](https://qybaihe.github.io/hash-design/fourth-lane-bakery/previews/05-hk-shop-sign.html)    | <img src="examples/fourth-lane-bakery/screenshots/05-hk-shop-sign-desktop.png" width="260" alt="#5 Hong Kong shop sign, desktop">    | [ブリーフ](examples/fourth-lane-bakery/briefs/05-hk-shop-sign.md)      |
-
-- **ライブ比較ページ**：<https://qybaihe.github.io/hash-design/fourth-lane-bakery/compare.html>（1〜5 キーで拡大表示、D/M キーでデスクトップ／モバイルを切り替え）
-- **ローカルで開く場合**：`open examples/fourth-lane-bakery/compare.html`
-- どのプレビューも `critique_page` で 96〜100/100、ブリーフへの準拠度で 100/100 を獲得しました。制作の過程はサンプルの [README](examples/fourth-lane-bakery/README.md)（中国語）に記録しています。このページは中国語圏の読者向けに作られているため、店名・ファクト・コピーはいずれも中国語です。
-
-<details><summary>モバイルのスクリーンショットと、スマートフォン幅での比較ページ</summary>
-
-<img src="examples/fourth-lane-bakery/screenshots/01-bureaucratic-form-mobile.png" width="19%" alt="#1 mobile"> <img src="examples/fourth-lane-bakery/screenshots/02-bauhaus-primary-mobile.png" width="19%" alt="#2 mobile"> <img src="examples/fourth-lane-bakery/screenshots/03-ink-and-seal-mobile.png" width="19%" alt="#3 mobile"> <img src="examples/fourth-lane-bakery/screenshots/04-risograph-duotone-mobile.png" width="19%" alt="#4 mobile"> <img src="examples/fourth-lane-bakery/screenshots/05-hk-shop-sign-mobile.png" width="19%" alt="#5 mobile">
-
-![Compare page at phone width](examples/fourth-lane-bakery/screenshots/compare-mobile.png)
-
-</details>
-
-まったく同じロールを再現するには、次のように実行します。
-
-```bash
-npm run build
-node packages/core/dist/bin.js roll --subject "第四巷面包店" \
-  --facts-file examples/fourth-lane-bakery/facts.md --seed fourth-lane-bakery --out /tmp/fourth-lane
-# MCP で同じことをする場合: roll_designs { subject, facts, seed: "fourth-lane-bakery" } でも同じ 5 つの ref が返る
-```
-
-<!-- MORE-EXAMPLES:START -->
-
-### その他のサンプル
-
-ほかに 3 つの実行例があり、それぞれ独自のファクトシートと固定 seed を使っています。どの 2 つのサンプルも同じブランチを使わないため、4 つのサンプル全体で 40 ブランチのうち 20 ブランチ、6 つのファミリーすべてが登場します。各プレビューは自分のブリーフしか見ていないサブエージェントが個別にレンダリングしたもので、`critique_page` のスコアはすべて 90/100 以上です。すべて[サンプル一覧](https://qybaihe.github.io/hash-design/)から見られます。
-
-#### Sluice — セルフホスト型の Webhook 受信箱 · 英語ページ
-
-[![Sluice: five rolled directions side by side](examples/sluice/screenshots/compare.png)](https://qybaihe.github.io/hash-design/sluice/compare.html)
-
-<table>
-<tr>
-<td align="center"><a href="https://qybaihe.github.io/hash-design/sluice/previews/01-record-sleeve.html"><img src="examples/sluice/screenshots/01-record-sleeve-desktop.png" width="150" alt="#1 Record sleeve, desktop"></a><br><a href="https://qybaihe.github.io/hash-design/sluice/previews/01-record-sleeve.html">01 · Record sleeve</a></td>
-<td align="center"><a href="https://qybaihe.github.io/hash-design/sluice/previews/02-gallery-catalogue.html"><img src="examples/sluice/screenshots/02-gallery-catalogue-desktop.png" width="150" alt="#2 Gallery catalogue, desktop"></a><br><a href="https://qybaihe.github.io/hash-design/sluice/previews/02-gallery-catalogue.html">02 · Gallery catalogue</a></td>
-<td align="center"><a href="https://qybaihe.github.io/hash-design/sluice/previews/03-terminal-phosphor.html"><img src="examples/sluice/screenshots/03-terminal-phosphor-desktop.png" width="150" alt="#3 Terminal phosphor, desktop"></a><br><a href="https://qybaihe.github.io/hash-design/sluice/previews/03-terminal-phosphor.html">03 · Terminal phosphor</a></td>
-<td align="center"><a href="https://qybaihe.github.io/hash-design/sluice/previews/04-academic-paper.html"><img src="examples/sluice/screenshots/04-academic-paper-desktop.png" width="150" alt="#4 Academic paper, desktop"></a><br><a href="https://qybaihe.github.io/hash-design/sluice/previews/04-academic-paper.html">04 · Academic paper</a></td>
-<td align="center"><a href="https://qybaihe.github.io/hash-design/sluice/previews/05-lab-notebook.html"><img src="examples/sluice/screenshots/05-lab-notebook-desktop.png" width="150" alt="#5 Lab notebook, desktop"></a><br><a href="https://qybaihe.github.io/hash-design/sluice/previews/05-lab-notebook.html">05 · Lab notebook</a></td>
-</tr>
-</table>
-
-**[ライブ比較ページを開く →](https://qybaihe.github.io/hash-design/sluice/compare.html)** · [サンプルのフォルダ](examples/sluice)（ファクト、ブリーフ、制作過程） · seed `sluice` · critique 92–96 · ブリーフ遵守度 90–100
-
-#### Bridge No.2 Cycle Works（二号桥单车铺）— 橋の下の自転車修理店 · 中国語ページ
-
-[![Bridge No.2 Cycle Works: five rolled directions side by side](examples/bridge-two-bikes/screenshots/compare.png)](https://qybaihe.github.io/hash-design/bridge-two-bikes/compare.html)
-
-<table>
-<tr>
-<td align="center"><a href="https://qybaihe.github.io/hash-design/bridge-two-bikes/previews/01-swiss-grid.html"><img src="examples/bridge-two-bikes/screenshots/01-swiss-grid-desktop.png" width="150" alt="#1 Swiss grid, desktop"></a><br><a href="https://qybaihe.github.io/hash-design/bridge-two-bikes/previews/01-swiss-grid.html">01 · Swiss grid</a></td>
-<td align="center"><a href="https://qybaihe.github.io/hash-design/bridge-two-bikes/previews/02-couture-lookbook.html"><img src="examples/bridge-two-bikes/screenshots/02-couture-lookbook-desktop.png" width="150" alt="#2 Couture lookbook, desktop"></a><br><a href="https://qybaihe.github.io/hash-design/bridge-two-bikes/previews/02-couture-lookbook.html">02 · Couture lookbook</a></td>
-<td align="center"><a href="https://qybaihe.github.io/hash-design/bridge-two-bikes/previews/03-ticket-stub.html"><img src="examples/bridge-two-bikes/screenshots/03-ticket-stub-desktop.png" width="150" alt="#3 Ticket stub, desktop"></a><br><a href="https://qybaihe.github.io/hash-design/bridge-two-bikes/previews/03-ticket-stub.html">03 · Ticket stub</a></td>
-<td align="center"><a href="https://qybaihe.github.io/hash-design/bridge-two-bikes/previews/04-game-manual.html"><img src="examples/bridge-two-bikes/screenshots/04-game-manual-desktop.png" width="150" alt="#4 Game manual, desktop"></a><br><a href="https://qybaihe.github.io/hash-design/bridge-two-bikes/previews/04-game-manual.html">04 · Game manual</a></td>
-<td align="center"><a href="https://qybaihe.github.io/hash-design/bridge-two-bikes/previews/05-chinese-almanac.html"><img src="examples/bridge-two-bikes/screenshots/05-chinese-almanac-desktop.png" width="150" alt="#5 Chinese almanac, desktop"></a><br><a href="https://qybaihe.github.io/hash-design/bridge-two-bikes/previews/05-chinese-almanac.html">05 · Chinese almanac</a></td>
-</tr>
-</table>
-
-**[ライブ比較ページを開く →](https://qybaihe.github.io/hash-design/bridge-two-bikes/compare.html)** · [サンプルのフォルダ](examples/bridge-two-bikes)（ファクト、ブリーフ、制作過程） · seed `bridge-two-bikes-5` · critique 96–100 · ブリーフ遵守度 100
-
-#### Causeway — 潮の引いた時だけ渡れる島の 1 日限りの音楽フェス · 英語ページ
-
-[![Causeway: five rolled directions side by side](examples/causeway-festival/screenshots/compare.png)](https://qybaihe.github.io/hash-design/causeway-festival/compare.html)
-
-<table>
-<tr>
-<td align="center"><a href="https://qybaihe.github.io/hash-design/causeway-festival/previews/01-engineering-plate.html"><img src="examples/causeway-festival/screenshots/01-engineering-plate-desktop.png" width="150" alt="#1 Engineering plate, desktop"></a><br><a href="https://qybaihe.github.io/hash-design/causeway-festival/previews/01-engineering-plate.html">01 · Engineering plate</a></td>
-<td align="center"><a href="https://qybaihe.github.io/hash-design/causeway-festival/previews/02-topographic-map.html"><img src="examples/causeway-festival/screenshots/02-topographic-map-desktop.png" width="150" alt="#2 Topographic map, desktop"></a><br><a href="https://qybaihe.github.io/hash-design/causeway-festival/previews/02-topographic-map.html">02 · Topographic map</a></td>
-<td align="center"><a href="https://qybaihe.github.io/hash-design/causeway-festival/previews/03-warm-handmade.html"><img src="examples/causeway-festival/screenshots/03-warm-handmade-desktop.png" width="150" alt="#3 Warm handmade, desktop"></a><br><a href="https://qybaihe.github.io/hash-design/causeway-festival/previews/03-warm-handmade.html">03 · Warm handmade</a></td>
-<td align="center"><a href="https://qybaihe.github.io/hash-design/causeway-festival/previews/04-editorial-magazine.html"><img src="examples/causeway-festival/screenshots/04-editorial-magazine-desktop.png" width="150" alt="#4 Editorial magazine, desktop"></a><br><a href="https://qybaihe.github.io/hash-design/causeway-festival/previews/04-editorial-magazine.html">04 · Editorial magazine</a></td>
-<td align="center"><a href="https://qybaihe.github.io/hash-design/causeway-festival/previews/05-memphis-pop.html"><img src="examples/causeway-festival/screenshots/05-memphis-pop-desktop.png" width="150" alt="#5 Memphis pop, desktop"></a><br><a href="https://qybaihe.github.io/hash-design/causeway-festival/previews/05-memphis-pop.html">05 · Memphis pop</a></td>
-</tr>
-</table>
-
-**[ライブ比較ページを開く →](https://qybaihe.github.io/hash-design/causeway-festival/compare.html)** · [サンプルのフォルダ](examples/causeway-festival)（ファクト、ブリーフ、制作過程） · seed `causeway-festival-6` · critique 96–100 · ブリーフ遵守度 100
-
-<!-- MORE-EXAMPLES:END -->
-
-## なぜ必要なのか
+## hash-design でできること
 
 LLM に「美しいページ」を頼むと、ほぼ必ず同じ「最頻値」の美学に収束します。Inter、紫から青へのグラデーション、中央寄せの見出しと 2 つのボタン、まったく同じ 3 枚の機能紹介カード、グラスモーフィズム、絵文字アイコン、そして _Unlock_、_Seamless_、_Supercharge_ のようなコピー。理由は単純で、モデルは選択を任されると、学習データの中で最もありふれたものを選ぶからです。
 
 hash-design は、モデルに「もっとセンスを良くしろ」とは求めません。代わりに**選択そのものを取り上げます**。
 
-1. システムの乱数から 5 つのハッシュを生成します（`crypto.randomBytes(32)` → SHA-256）。
-2. 各ハッシュを**固定された再現可能な決定木**に通し、具体的な方向性に対応付けます。対象は、デザインのジャンル、レイアウト、フォントの組み合わせ、hex のカラーパレット、密度、モーション、モチーフ、ファーストビューのアンカー、タイプスケール、サーフェス、コピーの文体、そして 1 つの「ツイスト」です。
-3. 各方向性を、そのまま貼り付けられるトークン（フォントのリンク、hex 値、`tokens.css`、グリッドの数値、角丸／影のポリシー）とグローバル禁止事項をまとめた**ブリーフ**として凍結します。
-4. エージェントの仕事は、各ブリーフを忠実に**実行する**ことだけです。5 つの独立した HTML プレビューと、それらを並べた比較ページを作ります。そこで**いったん止まり、あなたが番号を選ぶのを待ちます**。
-5. 番号を選ぶと、エージェントはそのブリーフをもとに最終ページを作り、`critique_page` でチェックします。
+| ステップ         | 何が起きるか                                                                                                                                                                                                                                                                                          |
+| ---------------- | ----------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------- |
+| **ロール**       | システムの乱数から 5 つのハッシュを生成します（`crypto.randomBytes(32)` → SHA-256）。                                                                                                                                                                                                                 |
+| **マッピング**   | 各ハッシュを**固定された再現可能な決定木**に通し、具体的な方向性に対応付けます。対象は、デザインのジャンル、レイアウト、フォントの組み合わせ、hex のカラーパレット、密度、モーション、モチーフ、ファーストビューのアンカー、タイプスケール、サーフェス、コピーの文体、そして 1 つの「ツイスト」です。 |
+| **凍結**         | 各方向性を、そのまま貼り付けられるトークン（フォントのリンク、hex 値、`tokens.css`、グリッドの数値、角丸／影のポリシー）とグローバル禁止事項をまとめた**ブリーフ**として凍結します。                                                                                                                  |
+| **レンダリング** | エージェントの仕事は、各ブリーフを忠実に**実行する**ことだけです。5 つの独立した HTML プレビューと、それらを並べた比較ページを作ります。そこで**いったん止まり、あなたが番号を選ぶのを待ちます**。                                                                                                    |
+| **仕上げ**       | 番号を選ぶと、エージェントはそのブリーフをもとに最終ページを作り、`critique_page` でチェックします。                                                                                                                                                                                                  |
 
 これは、モデルのデフォルトの美学を打ち破るための、外部からのランダムな制約です。KV キャッシュやサンプリング温度とは関係ありません。モデルのセンスはスタイル選びではなく、実装の質（揃え、リズム、ディテール、可読性）に使われます。
+
+構成は **Agent Skill**（いつ、どの順でこの流れを回すか）、**MCP サーバー**（stdio、ツール 6 個）、**CLI**、**TypeScript ライブラリ** の 4 つで、すべてこのリポジトリにあります。
+
+## クイックスタート
+
+### エージェントに任せる
+
+デザインしたいプロジェクトで Claude Code か Cursor を開き、次を貼り付けます：
+
+```text
+https://github.com/qybaihe/hash-design から hash-design をインストールして（npm には未公開）。
+~/hash-design に clone してビルドし、README.ja.md の「手動でインストール」の手順どおりに、
+skill をこのプロジェクトに入れ、このエージェント用に MCP サーバーを登録して。
+```
+
+エージェントがこのリポジトリを clone してビルドし、Skill をプロジェクトの `.claude/skills/` か `.cursor/skills/` にコピーし、MCP サーバーを登録します（Claude Code は `claude mcp add`、Cursor は `.cursor/mcp.json`）。終わったら新しいセッションを始めて両方を読み込ませ、[使い方](#使い方)へ進んでください。自分でコマンドを打つ場合は、下の手順を使います。
+
+### 手動でインストール
+
+Node.js ≥ 20 が必要です（開発用には `.nvmrc` で 22 に固定しています）。
+
+```bash
+git clone https://github.com/qybaihe/hash-design.git ~/hash-design
+cd ~/hash-design && npm install && npm run build
+# CLI entry:        ~/hash-design/packages/core/dist/bin.js
+# MCP server entry: ~/hash-design/packages/mcp/dist/bin.js
+```
+
+**Skill。** Skill は、いつ hash-design を使うか、どの順序で MCP ツールを呼び出すか、プレビューをどうやって互いに独立してレンダリングするか、そしてどこで必ず止まるべきかをエージェントに伝えます。
+
+```bash
+# プロジェクトにインストール（.claude/skills と .cursor/skills の両方に書き込む）
+node ~/hash-design/packages/core/dist/bin.js skill install --target both --dir /path/to/your/project
+# ホームディレクトリにインストール（すべてのプロジェクトで使える）
+node ~/hash-design/packages/core/dist/bin.js skill install --target claude --global
+```
+
+あるいは、[`skills/hash-design/SKILL.md`](skills/hash-design/SKILL.md) を手作業で `.claude/skills/hash-design/SKILL.md`（Claude Code）または `.cursor/skills/hash-design/SKILL.md`（Cursor）にコピーしてもかまいません。このリポジトリには両方のコピーが同梱されており、テストによってソースと同一に保たれています。Skill の本文は中国語で書かれていますが、description には英語のトリガーフレーズも含まれています。
+
+**MCP サーバー。** `packages/mcp/dist/bin.js` をエージェントに登録します。シェルでは `~/hash-design` が絶対パスに展開されますが、JSON ファイルには絶対パスを書いてください（以下では `/ABS/PATH/hash-design`）。
+
+#### Claude Code
+
+```bash
+claude mcp add hash-design -- node ~/hash-design/packages/mcp/dist/bin.js
+```
+
+または、プロジェクト単位の `.mcp.json` をコミットします。
+
+```json
+{
+  "mcpServers": {
+    "hash-design": {
+      "command": "node",
+      "args": ["/ABS/PATH/hash-design/packages/mcp/dist/bin.js"]
+    }
+  }
+}
+```
+
+#### Cursor
+
+`.cursor/mcp.json`（プロジェクト）または `~/.cursor/mcp.json`（グローバル）に、同じ構造で記述します。
+
+```json
+{
+  "mcpServers": {
+    "hash-design": {
+      "command": "node",
+      "args": ["/ABS/PATH/hash-design/packages/mcp/dist/bin.js"]
+    }
+  }
+}
+```
+
+#### Claude Desktop
+
+`~/Library/Application Support/Claude/claude_desktop_config.json`（macOS）または `%APPDATA%\Claude\claude_desktop_config.json`（Windows）に、上と同じ構造で記述します。Claude Desktop はプロジェクトディレクトリでサーバーを起動しないため、`roll_designs` を呼び出すときは `out_dir` に**絶対パス**を渡してください。
+
+### 使い方
+
+MCP サーバーと Skill をインストールしたら、エージェントにこう頼むだけです。
+
+> hash-design を使って「Fourth Lane Bakery」のワンページサイトを作って。ファクト：火〜日 7:00〜19:00 営業、月曜定休。カンパーニュ ¥38。…
+
+エージェントはロールを行い、ブリーフを凍結し、5 つのプレビューをレンダリングして `design/hash-design/compare.html` を書き出したあと、止まってあなたが番号で返答するのを待ちます。MCP プロンプトに対応したクライアントなら、`hash-design` プロンプト（引数：`subject`、`facts`、`count`）で同じワークフローを始めることもできます。
+
+### CLI
+
+```bash
+hash-design roll --subject "Fourth Lane Bakery" --facts-file facts.md --out design/hash-design   # 真の乱数による 5 つの方向性
+hash-design roll --subject "…" --light-only --brand "#c8102e" --format json                     # 制約付き
+hash-design brief <ref> [constraints]                                                            # ブリーフを再現
+hash-design branches [--family craft]                                                            # ブランチライブラリ
+hash-design branch ink-and-seal                                                                  # 1 つのブランチの詳細
+hash-design critique page.html --roll design/hash-design/roll.json --pick 3 --fail-under 80
+hash-design compare --roll design/hash-design/roll.json                                          # compare.html を書き出す
+hash-design skill install --target both                                                          # Skill をインストール
+```
+
+ソースのチェックアウトから使う場合は、`node packages/core/dist/bin.js …` として実行します（またはリポジトリのルートで `alias hash-design="node $PWD/packages/core/dist/bin.js"` を設定します）。`hash-design --help` ですべてのコマンドが、`hash-design <command> --help`（例：`hash-design roll --help`）でそのコマンドのオプションが表示されます。制約フラグ `--light-only`、`--dark-only`、`--reduced-motion`、`--brand`、`--family`、`--include`、`--exclude` も含まれます。
+
+### ライブラリ
+
+```ts
+import { roll, renderBrief, critiquePage, reproduce, parseRef } from 'hash-design';
+
+const r = roll({ content: { subject: 'Fourth Lane Bakery', facts: ['Closed Mondays', 'Country loaf ¥38'] } });
+for (const [i, d] of r.designs.entries()) console.log(renderBrief(d, r.content, { number: i + 1 }));
+
+const design = reproduce(parseRef(r.designs[0].ref), r.constraints);
+const report = critiquePage({ html: '<!doctype html>…', design });
+console.log(report.score, report.adherence, report.findings);
+```
+
+パッケージが npm に公開されるまでは、ソースのチェックアウト（`packages/core/dist/index.js`）からインポートするか、チェックアウトをローカル依存として追加してください（`npm install /ABS/PATH/hash-design/packages/core`）。
+
+### アップデート
+
+```bash
+cd ~/hash-design && git pull && npm install && npm run build
+node ~/hash-design/packages/core/dist/bin.js skill install --target both --dir /path/to/your/project   # refresh the copied SKILL.md
+```
+
+MCP の設定は `packages/mcp/dist/bin.js` を指しているので、ビルドし直せばサーバーも更新されます。エージェントを再起動すると反映されます。`skill install` はプロジェクト内のコピーを上書きします。アップデートでブランチのデータが変わった場合、古いバージョンでロールした ref の再現にはそのバージョンが必要です（[よくある質問](#よくある質問)を参照）。
 
 ## 仕組み
 
@@ -201,7 +220,7 @@ flowchart LR
 
 具体例付きの完全な仕様は [docs/mapping.md](docs/mapping.md)（英語）にあります。
 
-## ブリーフに含まれるもの
+### ブリーフに含まれるもの
 
 サンプルの [#3 Ink and seal](examples/fourth-lane-bakery/briefs/03-ink-and-seal.md) を例にとると、ブリーフには次の内容が含まれます。
 
@@ -216,85 +235,102 @@ flowchart LR
 
 ブリーフはエージェント向けに書かれており、2 言語に対応しています。見出しには中国語と英語のラベルが併記され、`language`（`zh` または `en`。主題とファクトから自動判定）によって、コンセプトの説明文、指示文、CJK の Web フォントを読み込むかどうかが切り替わります。一部のプールの説明（文体、ツイスト）は、現時点では中国語のみです。
 
-## インストール
+## サンプル
 
-> **npm にはまだ公開されていません**。各 `package.json` は公開できる状態になっています（CI で `npm pack --dry-run` を実行しています）が、現時点ではソースからインストールしてください。公開後は `npx -y hash-design-mcp` と `npx -y hash-design` が使えるようになります。
+4 つの完全な実行例です。それぞれ独自のファクトシートと固定 seed を使っています（seed は再現のためだけのものです）。2 つのサンプルが同じブランチを使うことはなく、合わせて 40 ブランチのうち 20、6 つのファミリーすべてを見られます。各プレビューは自分のブリーフだけを見たサブエージェントが作り、どれも `critique_page` で 90/100 以上です。すべて[サンプル一覧](https://qybaihe.github.io/hash-design/)にあります。
 
-Node.js ≥ 20 が必要です（開発用には `.nvmrc` で 22 に固定しています）。
+### Fourth Lane Bakery（第四巷面包店）— 街のベーカリー · 中国語ページ
+
+[![Fourth Lane Bakery：1 枚のファクトシートから出た 5 つのランダムな方向性を並べたもの](examples/fourth-lane-bakery/screenshots/compare.png)](https://qybaihe.github.io/hash-design/fourth-lane-bakery/compare.html)
+
+[`examples/fourth-lane-bakery/`](examples/fourth-lane-bakery) は、架空のベーカリーを題材にしたエンドツーエンドの完全な実行例です。[ファクトシート](examples/fourth-lane-bakery/facts.md) → 1 回のロール → 凍結された 5 つのブリーフ → 5 つのプレビュー（それぞれ、自分のブリーフしか見えない別々のサブエージェントがレンダリング）→ 並べて見比べられる比較ページ、という流れです。すべて GitHub Pages で公開しています。
+
+| #   | 方向性（ブランチ）                                                                                               | デスクトップ                                                                                                                         | ブリーフ                                                               |
+| --- | ---------------------------------------------------------------------------------------------------------------- | ------------------------------------------------------------------------------------------------------------------------------------ | ---------------------------------------------------------------------- |
+| 01  | [Bureaucratic form](https://qybaihe.github.io/hash-design/fourth-lane-bakery/previews/01-bureaucratic-form.html) | <img src="examples/fourth-lane-bakery/screenshots/01-bureaucratic-form-desktop.png" width="260" alt="#1 Bureaucratic form, desktop"> | [ブリーフ](examples/fourth-lane-bakery/briefs/01-bureaucratic-form.md) |
+| 02  | [Bauhaus primary](https://qybaihe.github.io/hash-design/fourth-lane-bakery/previews/02-bauhaus-primary.html)     | <img src="examples/fourth-lane-bakery/screenshots/02-bauhaus-primary-desktop.png" width="260" alt="#2 Bauhaus primary, desktop">     | [ブリーフ](examples/fourth-lane-bakery/briefs/02-bauhaus-primary.md)   |
+| 03  | [Ink and seal](https://qybaihe.github.io/hash-design/fourth-lane-bakery/previews/03-ink-and-seal.html)           | <img src="examples/fourth-lane-bakery/screenshots/03-ink-and-seal-desktop.png" width="260" alt="#3 Ink and seal, desktop">           | [ブリーフ](examples/fourth-lane-bakery/briefs/03-ink-and-seal.md)      |
+| 04  | [Risograph duotone](https://qybaihe.github.io/hash-design/fourth-lane-bakery/previews/04-risograph-duotone.html) | <img src="examples/fourth-lane-bakery/screenshots/04-risograph-duotone-desktop.png" width="260" alt="#4 Risograph duotone, desktop"> | [ブリーフ](examples/fourth-lane-bakery/briefs/04-risograph-duotone.md) |
+| 05  | [Hong Kong shop sign](https://qybaihe.github.io/hash-design/fourth-lane-bakery/previews/05-hk-shop-sign.html)    | <img src="examples/fourth-lane-bakery/screenshots/05-hk-shop-sign-desktop.png" width="260" alt="#5 Hong Kong shop sign, desktop">    | [ブリーフ](examples/fourth-lane-bakery/briefs/05-hk-shop-sign.md)      |
+
+- **ライブ比較ページ**：<https://qybaihe.github.io/hash-design/fourth-lane-bakery/compare.html>（1〜5 キーで拡大表示、D/M キーでデスクトップ／モバイルを切り替え）
+- **ローカルで開く場合**：`open examples/fourth-lane-bakery/compare.html`
+- どのプレビューも `critique_page` で 96〜100/100、ブリーフへの準拠度で 100/100 を獲得しました。制作の過程はサンプルの [README](examples/fourth-lane-bakery/README.md)（中国語）に記録しています。このページは中国語圏の読者向けに作られているため、店名・ファクト・コピーはいずれも中国語です。
+
+<details><summary>モバイルのスクリーンショットと、スマートフォン幅での比較ページ</summary>
+
+<img src="examples/fourth-lane-bakery/screenshots/01-bureaucratic-form-mobile.png" width="19%" alt="#1 mobile"> <img src="examples/fourth-lane-bakery/screenshots/02-bauhaus-primary-mobile.png" width="19%" alt="#2 mobile"> <img src="examples/fourth-lane-bakery/screenshots/03-ink-and-seal-mobile.png" width="19%" alt="#3 mobile"> <img src="examples/fourth-lane-bakery/screenshots/04-risograph-duotone-mobile.png" width="19%" alt="#4 mobile"> <img src="examples/fourth-lane-bakery/screenshots/05-hk-shop-sign-mobile.png" width="19%" alt="#5 mobile">
+
+![Compare page at phone width](examples/fourth-lane-bakery/screenshots/compare-mobile.png)
+
+</details>
+
+まったく同じロールを再現するには、次のように実行します。
 
 ```bash
-git clone https://github.com/qybaihe/hash-design.git
-cd hash-design
-npm install
 npm run build
-# MCP サーバーのエントリ: packages/mcp/dist/bin.js
-# CLI のエントリ:         packages/core/dist/bin.js
+node packages/core/dist/bin.js roll --subject "第四巷面包店" \
+  --facts-file examples/fourth-lane-bakery/facts.md --seed fourth-lane-bakery --out /tmp/fourth-lane
+# MCP で同じことをする場合: roll_designs { subject, facts, seed: "fourth-lane-bakery" } でも同じ 5 つの ref が返る
 ```
 
-## MCP の設定
+<!-- MORE-EXAMPLES:START -->
 
-`/ABS/PATH/hash-design` は、クローンした場所の絶対パスに置き換えてください。
+### Sluice — セルフホスト型の Webhook 受信箱 · 英語ページ
 
-### Claude Code
+[![Sluice: five rolled directions side by side](examples/sluice/screenshots/compare.png)](https://qybaihe.github.io/hash-design/sluice/compare.html)
 
-```bash
-claude mcp add hash-design -- node /ABS/PATH/hash-design/packages/mcp/dist/bin.js
-```
+<table>
+<tr>
+<td align="center"><a href="https://qybaihe.github.io/hash-design/sluice/previews/01-record-sleeve.html"><img src="examples/sluice/screenshots/01-record-sleeve-desktop.png" width="150" alt="#1 Record sleeve, desktop"></a><br><a href="https://qybaihe.github.io/hash-design/sluice/previews/01-record-sleeve.html">01 · Record sleeve</a></td>
+<td align="center"><a href="https://qybaihe.github.io/hash-design/sluice/previews/02-gallery-catalogue.html"><img src="examples/sluice/screenshots/02-gallery-catalogue-desktop.png" width="150" alt="#2 Gallery catalogue, desktop"></a><br><a href="https://qybaihe.github.io/hash-design/sluice/previews/02-gallery-catalogue.html">02 · Gallery catalogue</a></td>
+<td align="center"><a href="https://qybaihe.github.io/hash-design/sluice/previews/03-terminal-phosphor.html"><img src="examples/sluice/screenshots/03-terminal-phosphor-desktop.png" width="150" alt="#3 Terminal phosphor, desktop"></a><br><a href="https://qybaihe.github.io/hash-design/sluice/previews/03-terminal-phosphor.html">03 · Terminal phosphor</a></td>
+<td align="center"><a href="https://qybaihe.github.io/hash-design/sluice/previews/04-academic-paper.html"><img src="examples/sluice/screenshots/04-academic-paper-desktop.png" width="150" alt="#4 Academic paper, desktop"></a><br><a href="https://qybaihe.github.io/hash-design/sluice/previews/04-academic-paper.html">04 · Academic paper</a></td>
+<td align="center"><a href="https://qybaihe.github.io/hash-design/sluice/previews/05-lab-notebook.html"><img src="examples/sluice/screenshots/05-lab-notebook-desktop.png" width="150" alt="#5 Lab notebook, desktop"></a><br><a href="https://qybaihe.github.io/hash-design/sluice/previews/05-lab-notebook.html">05 · Lab notebook</a></td>
+</tr>
+</table>
 
-または、プロジェクト単位の `.mcp.json` をコミットします。
+**[ライブ比較ページを開く →](https://qybaihe.github.io/hash-design/sluice/compare.html)** · [サンプルのフォルダ](examples/sluice)（ファクト、ブリーフ、制作過程） · seed `sluice` · critique 92–96 · ブリーフ遵守度 90–100
 
-```json
-{
-  "mcpServers": {
-    "hash-design": {
-      "command": "node",
-      "args": ["/ABS/PATH/hash-design/packages/mcp/dist/bin.js"]
-    }
-  }
-}
-```
+### Bridge No.2 Cycle Works（二号桥单车铺）— 橋の下の自転車修理店 · 中国語ページ
 
-### Cursor
+[![Bridge No.2 Cycle Works: five rolled directions side by side](examples/bridge-two-bikes/screenshots/compare.png)](https://qybaihe.github.io/hash-design/bridge-two-bikes/compare.html)
 
-`.cursor/mcp.json`（プロジェクト）または `~/.cursor/mcp.json`（グローバル）に、同じ構造で記述します。
+<table>
+<tr>
+<td align="center"><a href="https://qybaihe.github.io/hash-design/bridge-two-bikes/previews/01-swiss-grid.html"><img src="examples/bridge-two-bikes/screenshots/01-swiss-grid-desktop.png" width="150" alt="#1 Swiss grid, desktop"></a><br><a href="https://qybaihe.github.io/hash-design/bridge-two-bikes/previews/01-swiss-grid.html">01 · Swiss grid</a></td>
+<td align="center"><a href="https://qybaihe.github.io/hash-design/bridge-two-bikes/previews/02-couture-lookbook.html"><img src="examples/bridge-two-bikes/screenshots/02-couture-lookbook-desktop.png" width="150" alt="#2 Couture lookbook, desktop"></a><br><a href="https://qybaihe.github.io/hash-design/bridge-two-bikes/previews/02-couture-lookbook.html">02 · Couture lookbook</a></td>
+<td align="center"><a href="https://qybaihe.github.io/hash-design/bridge-two-bikes/previews/03-ticket-stub.html"><img src="examples/bridge-two-bikes/screenshots/03-ticket-stub-desktop.png" width="150" alt="#3 Ticket stub, desktop"></a><br><a href="https://qybaihe.github.io/hash-design/bridge-two-bikes/previews/03-ticket-stub.html">03 · Ticket stub</a></td>
+<td align="center"><a href="https://qybaihe.github.io/hash-design/bridge-two-bikes/previews/04-game-manual.html"><img src="examples/bridge-two-bikes/screenshots/04-game-manual-desktop.png" width="150" alt="#4 Game manual, desktop"></a><br><a href="https://qybaihe.github.io/hash-design/bridge-two-bikes/previews/04-game-manual.html">04 · Game manual</a></td>
+<td align="center"><a href="https://qybaihe.github.io/hash-design/bridge-two-bikes/previews/05-chinese-almanac.html"><img src="examples/bridge-two-bikes/screenshots/05-chinese-almanac-desktop.png" width="150" alt="#5 Chinese almanac, desktop"></a><br><a href="https://qybaihe.github.io/hash-design/bridge-two-bikes/previews/05-chinese-almanac.html">05 · Chinese almanac</a></td>
+</tr>
+</table>
 
-```json
-{
-  "mcpServers": {
-    "hash-design": {
-      "command": "node",
-      "args": ["/ABS/PATH/hash-design/packages/mcp/dist/bin.js"]
-    }
-  }
-}
-```
+**[ライブ比較ページを開く →](https://qybaihe.github.io/hash-design/bridge-two-bikes/compare.html)** · [サンプルのフォルダ](examples/bridge-two-bikes)（ファクト、ブリーフ、制作過程） · seed `bridge-two-bikes-5` · critique 96–100 · ブリーフ遵守度 100
 
-### Claude Desktop
+### Causeway — 潮の引いた時だけ渡れる島の 1 日限りの音楽フェス · 英語ページ
 
-`~/Library/Application Support/Claude/claude_desktop_config.json`（macOS）または `%APPDATA%\Claude\claude_desktop_config.json`（Windows）に、上と同じ構造で記述します。Claude Desktop はプロジェクトディレクトリでサーバーを起動しないため、`roll_designs` を呼び出すときは `out_dir` に**絶対パス**を渡してください。
+[![Causeway: five rolled directions side by side](examples/causeway-festival/screenshots/compare.png)](https://qybaihe.github.io/hash-design/causeway-festival/compare.html)
 
-## Skill のインストール
+<table>
+<tr>
+<td align="center"><a href="https://qybaihe.github.io/hash-design/causeway-festival/previews/01-engineering-plate.html"><img src="examples/causeway-festival/screenshots/01-engineering-plate-desktop.png" width="150" alt="#1 Engineering plate, desktop"></a><br><a href="https://qybaihe.github.io/hash-design/causeway-festival/previews/01-engineering-plate.html">01 · Engineering plate</a></td>
+<td align="center"><a href="https://qybaihe.github.io/hash-design/causeway-festival/previews/02-topographic-map.html"><img src="examples/causeway-festival/screenshots/02-topographic-map-desktop.png" width="150" alt="#2 Topographic map, desktop"></a><br><a href="https://qybaihe.github.io/hash-design/causeway-festival/previews/02-topographic-map.html">02 · Topographic map</a></td>
+<td align="center"><a href="https://qybaihe.github.io/hash-design/causeway-festival/previews/03-warm-handmade.html"><img src="examples/causeway-festival/screenshots/03-warm-handmade-desktop.png" width="150" alt="#3 Warm handmade, desktop"></a><br><a href="https://qybaihe.github.io/hash-design/causeway-festival/previews/03-warm-handmade.html">03 · Warm handmade</a></td>
+<td align="center"><a href="https://qybaihe.github.io/hash-design/causeway-festival/previews/04-editorial-magazine.html"><img src="examples/causeway-festival/screenshots/04-editorial-magazine-desktop.png" width="150" alt="#4 Editorial magazine, desktop"></a><br><a href="https://qybaihe.github.io/hash-design/causeway-festival/previews/04-editorial-magazine.html">04 · Editorial magazine</a></td>
+<td align="center"><a href="https://qybaihe.github.io/hash-design/causeway-festival/previews/05-memphis-pop.html"><img src="examples/causeway-festival/screenshots/05-memphis-pop-desktop.png" width="150" alt="#5 Memphis pop, desktop"></a><br><a href="https://qybaihe.github.io/hash-design/causeway-festival/previews/05-memphis-pop.html">05 · Memphis pop</a></td>
+</tr>
+</table>
 
-Skill は、いつ hash-design を使うか、どの順序で MCP ツールを呼び出すか、プレビューをどうやって互いに独立してレンダリングするか、そしてどこで必ず止まるべきかをエージェントに伝えます。
+**[ライブ比較ページを開く →](https://qybaihe.github.io/hash-design/causeway-festival/compare.html)** · [サンプルのフォルダ](examples/causeway-festival)（ファクト、ブリーフ、制作過程） · seed `causeway-festival-6` · critique 96–100 · ブリーフ遵守度 100
 
-```bash
-# プロジェクトにインストール（.claude/skills と .cursor/skills の両方に書き込む）
-node packages/core/dist/bin.js skill install --target both --dir /path/to/your/project
-# ホームディレクトリにインストール（すべてのプロジェクトで使える）
-node packages/core/dist/bin.js skill install --target claude --global
-```
+<!-- MORE-EXAMPLES:END -->
 
-あるいは、[`skills/hash-design/SKILL.md`](skills/hash-design/SKILL.md) を手作業で `.claude/skills/hash-design/SKILL.md`（Claude Code）または `.cursor/skills/hash-design/SKILL.md`（Cursor）にコピーしてもかまいません。このリポジトリには両方のコピーが同梱されており、テストによってソースと同一に保たれています。Skill の本文は中国語で書かれていますが、description には英語のトリガーフレーズも含まれています。
+## リファレンス
 
-## 使い方
+6 つの MCP ツール、40 のブランチ、そしてすべてのブリーフに入る 14 の禁止事項。
 
-MCP サーバーと Skill をインストールしたら、エージェントにこう頼むだけです。
-
-> hash-design を使って「Fourth Lane Bakery」のワンページサイトを作って。ファクト：火〜日 7:00〜19:00 営業、月曜定休。カンパーニュ ¥38。…
-
-エージェントはロールを行い、ブリーフを凍結し、5 つのプレビューをレンダリングして `design/hash-design/compare.html` を書き出したあと、止まってあなたが番号で返答するのを待ちます。MCP プロンプトに対応したクライアントなら、`hash-design` プロンプト（引数：`subject`、`facts`、`count`）で同じワークフローを始めることもできます。
-
-## MCP ツール
+### MCP ツール
 
 | ツール               | 機能                                                                                                                                                                                                                                            |
 | -------------------- | ----------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------- |
@@ -309,37 +345,7 @@ MCP サーバーと Skill をインストールしたら、エージェントに
 
 すべてのパラメータ、戻り値の形、対応する CLI コマンドは [docs/mcp-tools.md](docs/mcp-tools.md)（英語）にまとめています。
 
-## CLI
-
-```bash
-hash-design roll --subject "Fourth Lane Bakery" --facts-file facts.md --out design/hash-design   # 真の乱数による 5 つの方向性
-hash-design roll --subject "…" --light-only --brand "#c8102e" --format json                     # 制約付き
-hash-design brief <ref> [constraints]                                                            # ブリーフを再現
-hash-design branches [--family craft]                                                            # ブランチライブラリ
-hash-design branch ink-and-seal                                                                  # 1 つのブランチの詳細
-hash-design critique page.html --roll design/hash-design/roll.json --pick 3 --fail-under 80
-hash-design compare --roll design/hash-design/roll.json                                          # compare.html を書き出す
-hash-design skill install --target both                                                          # Skill をインストール
-```
-
-ソースのチェックアウトから使う場合は、`node packages/core/dist/bin.js …` として実行します（またはリポジトリのルートで `alias hash-design="node $PWD/packages/core/dist/bin.js"` を設定します）。`hash-design --help` ですべてのコマンドが、`hash-design <command> --help`（例：`hash-design roll --help`）でそのコマンドのオプションが表示されます。制約フラグ `--light-only`、`--dark-only`、`--reduced-motion`、`--brand`、`--family`、`--include`、`--exclude` も含まれます。
-
-## ライブラリ
-
-```ts
-import { roll, renderBrief, critiquePage, reproduce, parseRef } from 'hash-design';
-
-const r = roll({ content: { subject: 'Fourth Lane Bakery', facts: ['Closed Mondays', 'Country loaf ¥38'] } });
-for (const [i, d] of r.designs.entries()) console.log(renderBrief(d, r.content, { number: i + 1 }));
-
-const design = reproduce(parseRef(r.designs[0].ref), r.constraints);
-const report = critiquePage({ html: '<!doctype html>…', design });
-console.log(report.score, report.adherence, report.findings);
-```
-
-パッケージが npm に公開されるまでは、ソースのチェックアウト（`packages/core/dist/index.js`）からインポートするか、チェックアウトをローカル依存として追加してください（`npm install /ABS/PATH/hash-design/packages/core`）。
-
-## ブランチライブラリ（40）
+### ブランチライブラリ（40）
 
 どのブランチも「SaaS 風スタイル」ではなく、現実世界に実在するデザインジャンルです。各次元には 3 つの具体的な選択肢があります：フォントの組み合わせ（Google Fonts + CJK）、7 つの hex 値、グリッドの数値、角丸 / ボーダー / 影のポリシー、モーション仕様、モチーフ、サーフェス。全カタログは [docs/branches.md](docs/branches.md)（中国語・英語併記）にあり、`list_branches` / `get_branch` でその場で照会できます。
 
@@ -362,7 +368,7 @@ console.log(report.score, report.adherence, report.findings);
 - 2 つのブランチが同じ代表パレット（paper + accent）を共有しない
 - すべてのフォント URL が Google Fonts で解決できる：`node scripts/verify-fonts.mjs`（235/235 合格）
 
-## グローバル禁止事項
+### グローバル禁止事項
 
 すべてのブリーフにはこの 14 項目の禁止事項が含まれており、`critique_page` はそれぞれを自動で検出します。
 
@@ -385,7 +391,68 @@ console.log(report.score, report.adherence, report.findings);
 
 `critique_page` はこのほかに、文字のコントラスト（3:1 未満）、`viewport`、`lang`、`img alt`、モーションがあるのに `prefers-reduced-motion` がないこと、そしてブリーフへの準拠（フォント、hex 値、角丸と影のポリシー）もチェックします。これは静的解析です。ファーストビューが本当にブリーフのアンカーになっているか、文体が合っているかまでは判断できません。そこは依然として、人間か、ブリーフを読み直すエージェントが確認する必要があります。
 
-## 開発
+## よくある質問
+
+<details>
+<summary><strong>どのエージェントで使えますか？</strong></summary>
+
+Skill は Claude Code（`.claude/skills/`）と Cursor（`.cursor/skills/`）にインストールできます。MCP サーバーは stdio で動くので、どの MCP クライアントからでも起動できます。[手動でインストール](#手動でインストール)に Claude Code、Cursor、Claude Desktop の設定があります。Skill がなくてもツールは呼べますが、プレビューを独立して作ることや、選ぶまで止まることをエージェントに伝えるものがありません。
+
+</details>
+
+<details>
+<summary><strong>npm で公開されていますか？</strong></summary>
+
+まだです。`package.json` は公開できる状態で、CI では `npm pack --dry-run` を実行していますが、今はソースからインストールしてください。公開後は `npx -y hash-design-mcp` と `npx -y hash-design` が使えるようになります。
+
+</details>
+
+<details>
+<summary><strong>本当にランダムですか？同じブリーフをもう一度得るには？</strong></summary>
+
+ロールのたびにシステムの乱数（`crypto.randomBytes(32)` → SHA-256）を使います。`seed` はサンプルとテストの再現専用です。各ブリーフには `ref`（`<hash>` または `<hash>+<probe>`）、制約、ライブラリのフィンガープリントが記録されていて、`get_brief` か `hash-design brief <ref>` でまったく同じブリーフを作り直せます。
+
+</details>
+
+<details>
+<summary><strong>アップデート後も古い ref は再現できますか？</strong></summary>
+
+ブランチのデータが変わっていなければ再現できます。ライブラリには 40 のブランチがあり、ブランチを追加・削除するとマッピングが変わります。すべてのブリーフにライブラリのフィンガープリントが記録されるので不一致は検出できますが、古い ref の再現には対応するバージョンが必要です。
+
+</details>
+
+<details>
+<summary><strong><code>critique_page</code> は良いページを保証しますか？</strong></summary>
+
+いいえ。ヒューリスティックな静的解析です。インラインの `<style>`、`style=""`、追加で渡した CSS を読みますが、ページのレンダリングやリンクされたスタイルシートの取得はしません。禁止パターンを検出し、フォント、16 進カラー、角丸、影をブリーフと照合しますが、結果が*良い*かどうかは、モデルとブリーフを実行する人次第です。このツールが解決するのは「どれも同じに見える」問題で、デザインの判断を置き換えるものではありません。
+
+</details>
+
+<details>
+<summary><strong>ネットワーク接続は必要ですか？</strong></summary>
+
+CLI と MCP サーバーはローカルで動き、ネットワークリクエストはしません。作られるページは Google Fonts（CJK フォントを含む）からフォントを読み込むので、オフラインや制限のあるネットワークでは、フォントをセルフホストするか、各ブリーフに書かれたフォールバックを使ってください。
+
+</details>
+
+<details>
+<summary><strong>ブリーフの一部が中国語なのはなぜですか？</strong></summary>
+
+ブリーフはバイリンガルです。見出しには中国語と英語のラベルがあり、`language`（`zh` または `en`）でコンセプトの文章と指示が切り替わります。プールの説明の一部（ボイス、ツイスト）と Skill の本文は今のところ中国語のみで、Skill の description には英語のトリガーフレーズが入っています。
+
+</details>
+
+## ドキュメント
+
+- [docs/architecture.md](docs/architecture.md)（英語）：パッケージ構成、データフロー、設計上の判断、テスト
+- [docs/mapping.md](docs/mapping.md)（英語）：`hash-design/v1` のマッピング、衝突、制約、再現性
+- [docs/mcp-tools.md](docs/mcp-tools.md)（英語）：すべての MCP ツール、リソース、プロンプトと、対応する CLI コマンド
+- [docs/branches.md](docs/branches.md)（中国語・英語併記）：40 ブランチのカタログ（自動生成）
+- 中国語版：[アーキテクチャ](docs/architecture.zh-CN.md) · [マッピング仕様](docs/mapping.zh-CN.md) · [MCP ツール](docs/mcp-tools.zh-CN.md)
+
+## コントリビューション
+
+コントリビューションを歓迎します。特に新しいブランチは大歓迎です。まず [CONTRIBUTING.md](CONTRIBUTING.md)（英語）を読んでください。データのルール、`npm run sync`、そしてデータを変更するとなぜサンプルを振り直す必要があるのかを説明しています。[行動規範](CODE_OF_CONDUCT.md)（英語）に従い、脆弱性は [SECURITY.md](SECURITY.md)（英語）に記載された方法で報告してください。リリースノートは [CHANGELOG.md](CHANGELOG.md)（英語）にあります。
 
 ```bash
 npm install
@@ -419,29 +486,8 @@ packages/mcp/            # npm: hash-design-mcp — stdio MCP server
 skills/hash-design/      # Skill source (.claude/ and .cursor/ hold synced copies)
 examples/                # 4 full runs: facts → roll → 5 briefs → 5 previews → compare page → screenshots
 docs/                    # architecture, mapping spec, MCP reference, branch catalogue (generated)
-scripts/                 # sync / smoke / verify-fonts / screenshot / prepack
+scripts/                 # sync / smoke / verify-fonts / examples / screenshot / hero / hero-gif / prepack
 ```
-
-## ドキュメント
-
-- [docs/architecture.md](docs/architecture.md)（英語）：パッケージ構成、データフロー、設計上の判断、テスト
-- [docs/mapping.md](docs/mapping.md)（英語）：`hash-design/v1` のマッピング、衝突、制約、再現性
-- [docs/mcp-tools.md](docs/mcp-tools.md)（英語）：すべての MCP ツール、リソース、プロンプトと、対応する CLI コマンド
-- [docs/branches.md](docs/branches.md)（中国語・英語併記）：40 ブランチのカタログ（自動生成）
-- 中国語版：[アーキテクチャ](docs/architecture.zh-CN.md) · [マッピング仕様](docs/mapping.zh-CN.md) · [MCP ツール](docs/mcp-tools.zh-CN.md)
-
-## 既知の制限
-
-- npm にはまだ公開されていません（各 `package.json` は準備済みで、`npm pack --dry-run` は CI で検証済みです）。
-- `critique_page` はヒューリスティックな静的解析です。インラインの `<style>`、`style=""`、および渡された追加の CSS を読み取りますが、ページのレンダリングや、リンクされたスタイルシートの取得は行いません。
-- ライブラリには 40 のブランチがあります。ブランチを追加・削除するとマッピングが変わります。ライブラリ・フィンガープリントでこれを検出できますが、古い ref を再現するには対応するバージョンが必要です。
-- CJK フォントは Google Fonts から読み込まれます。オフライン環境や制限のあるネットワークでは、フォントをセルフホストするか、各ブリーフに記載されたフォールバックを使う必要があります。
-- ブリーフと Skill のテキストの一部は中国語のみです（[ブリーフに含まれるもの](#ブリーフに含まれるもの)を参照）。
-- 結果が*良い*ものになるかどうかは、依然としてブリーフを実行するモデルと人に左右されます。このツールが解決するのは「どれも同じに見える」という問題であり、デザインの判断力に取って代わるものではありません。
-
-## コントリビューション
-
-コントリビューションを歓迎します。特に新しいブランチは大歓迎です。まず [CONTRIBUTING.md](CONTRIBUTING.md)（英語）を読んでください。データのルール、`npm run sync`、そしてデータを変更するとなぜサンプルを振り直す必要があるのかを説明しています。[行動規範](CODE_OF_CONDUCT.md)（英語）に従い、脆弱性は [SECURITY.md](SECURITY.md)（英語）に記載された方法で報告してください。リリースノートは [CHANGELOG.md](CHANGELOG.md)（英語）にあります。
 
 ## ライセンス
 
