@@ -1,181 +1,158 @@
 # hash-design
 
+**English** | [简体中文](README.zh-CN.md) | [日本語](README.ja.md) | [한국어](README.ko.md) | [Español](README.es.md)
+
 [![CI](https://github.com/qybaihe/hash-design/actions/workflows/ci.yml/badge.svg)](https://github.com/qybaihe/hash-design/actions/workflows/ci.yml)
+[![Pages](https://github.com/qybaihe/hash-design/actions/workflows/pages.yml/badge.svg)](https://github.com/qybaihe/hash-design/actions/workflows/pages.yml)
+[![Live demo](https://img.shields.io/badge/demo-compare%20page-e2401c.svg)](https://qybaihe.github.io/hash-design/fourth-lane-bakery/compare.html)
 [![License: MIT](https://img.shields.io/badge/license-MIT-black.svg)](LICENSE)
-![node >= 20](https://img.shields.io/badge/node-%E2%89%A520-black.svg)
+[![Node](https://img.shields.io/badge/node-%E2%89%A520%20%C2%B7%20.nvmrc%2022-black.svg)](.nvmrc)
+[![npm: not yet published](https://img.shields.io/badge/npm-not%20yet%20published-lightgrey.svg)](#install)
 
-**用真随机哈希替 AI 定设计方向，不让模型自己挑风格。**
-核心库 + MCP server（stdio）+ Agent Skill + CLI。[English summary ↓](#english)
+**Let a true-random hash pick the design direction, not the model.**
+Core library + MCP server (stdio) + Agent Skill + CLI, in TypeScript.
 
-![第四巷面包店：同一份事实，5 个随机方向并排对比](examples/fourth-lane-bakery/screenshots/compare.png)
+![Fourth Lane Bakery: one fact sheet, five random directions side by side](examples/fourth-lane-bakery/screenshots/compare.png)
 
-<p align="center"><sub>同一份事实清单，掷出 5 个方向：公文表格 · 包豪斯 · 水墨印章 · Riso 双色套印 · 港式招牌。<a href="#示例第四巷面包店">看示例 ↓</a></sub></p>
+<p align="center"><sub>One fact sheet, five rolled directions: bureaucratic form · Bauhaus · ink and seal · risograph duotone · Hong Kong shop sign.<br><a href="https://qybaihe.github.io/hash-design/fourth-lane-bakery/compare.html"><b>Open the live compare page →</b></a></sub></p>
 
 ---
 
-## 为什么
+## Contents
 
-让 LLM "做一个好看的页面"，结果几乎总会塌缩到同一种众数审美：Inter 字体、紫蓝渐变、居中大标题配两个按钮、三张一模一样的 feature 卡、毛玻璃、emoji 图标，再配上 Unlock / Seamless / Supercharge 之类的空话。原因很简单：模型只要能自己选，就会选训练数据里最常见的那一种。
+- [Demo](#demo) · [Why](#why) · [How it works](#how-it-works) · [What a brief contains](#what-a-brief-contains)
+- [Install](#install) · [Configure MCP](#configure-mcp) · [Install the Skill](#install-the-skill) · [Use it](#use-it)
+- [MCP tools](#mcp-tools) · [CLI](#cli) · [Library](#library) · [Branch library](#branch-library-40) · [Global bans](#global-bans)
+- [Development](#development) · [Documentation](#documentation) · [Known limitations](#known-limitations) · [Contributing](#contributing)
 
-hash-design 不去求模型"更有品味"，而是**把选择权拿走**：
+## Demo
 
-1. 用系统真随机掷出 5 个哈希（`crypto.randomBytes(32)` → SHA-256）；
-2. 每个哈希通过一棵**固定、可复现的决策树**映射到一个具体的设计方向：设计流派、版式、字体对、色值、密度、动效、母题、首屏锚点、字号比例、材质、文案语气、一个"变数"；
-3. 每个方向输出一份**冻结的 brief**，里面有可以直接粘贴的 token（字体链接、色值、`tokens.css`、栅格、圆角/阴影策略），以及全局禁令；
-4. Agent 只负责**忠实执行** brief，分别做出 5 个独立的 HTML 预览，再做一个并排对比页，然后**停下来等你选号**；
-5. 你选中一个后，Agent 按那份 brief 做出正式页面，并用 `critique_page` 自检。
+[`examples/fourth-lane-bakery/`](examples/fourth-lane-bakery) is a full end-to-end run for a fictional bakery: a [fact sheet](examples/fourth-lane-bakery/facts.md) → one roll → five frozen briefs → five previews, each rendered by a separate sub-agent that could only see its own brief → a side-by-side compare page. All of it is served on GitHub Pages:
 
-本质上，这是用**外部随机约束**打破模型的默认审美，跟 KV cache、温度采样都没有关系。模型的品味只用在执行质量上，比如对齐、节奏、细节和可读性，而不是用来挑风格。
+| #   | Direction (branch)                                                                                               | Desktop                                                                                                                              | Brief                                                               |
+| --- | ---------------------------------------------------------------------------------------------------------------- | ------------------------------------------------------------------------------------------------------------------------------------ | ------------------------------------------------------------------- |
+| 01  | [Bureaucratic form](https://qybaihe.github.io/hash-design/fourth-lane-bakery/previews/01-bureaucratic-form.html) | <img src="examples/fourth-lane-bakery/screenshots/01-bureaucratic-form-desktop.png" width="260" alt="#1 Bureaucratic form, desktop"> | [brief](examples/fourth-lane-bakery/briefs/01-bureaucratic-form.md) |
+| 02  | [Bauhaus primary](https://qybaihe.github.io/hash-design/fourth-lane-bakery/previews/02-bauhaus-primary.html)     | <img src="examples/fourth-lane-bakery/screenshots/02-bauhaus-primary-desktop.png" width="260" alt="#2 Bauhaus primary, desktop">     | [brief](examples/fourth-lane-bakery/briefs/02-bauhaus-primary.md)   |
+| 03  | [Ink and seal](https://qybaihe.github.io/hash-design/fourth-lane-bakery/previews/03-ink-and-seal.html)           | <img src="examples/fourth-lane-bakery/screenshots/03-ink-and-seal-desktop.png" width="260" alt="#3 Ink and seal, desktop">           | [brief](examples/fourth-lane-bakery/briefs/03-ink-and-seal.md)      |
+| 04  | [Risograph duotone](https://qybaihe.github.io/hash-design/fourth-lane-bakery/previews/04-risograph-duotone.html) | <img src="examples/fourth-lane-bakery/screenshots/04-risograph-duotone-desktop.png" width="260" alt="#4 Risograph duotone, desktop"> | [brief](examples/fourth-lane-bakery/briefs/04-risograph-duotone.md) |
+| 05  | [Hong Kong shop sign](https://qybaihe.github.io/hash-design/fourth-lane-bakery/previews/05-hk-shop-sign.html)    | <img src="examples/fourth-lane-bakery/screenshots/05-hk-shop-sign-desktop.png" width="260" alt="#5 Hong Kong shop sign, desktop">    | [brief](examples/fourth-lane-bakery/briefs/05-hk-shop-sign.md)      |
 
-## 它怎么工作
+- **Live compare page:** <https://qybaihe.github.io/hash-design/fourth-lane-bakery/compare.html> (press 1–5 to zoom, D/M to switch desktop/mobile)
+- **Locally:** `open examples/fourth-lane-bakery/compare.html`
+- Every preview scored 96–100/100 on `critique_page` and 100/100 on brief adherence. The example's [README](examples/fourth-lane-bakery/README.md) (in Chinese) records the process. The shop, its facts and its copy are Chinese because the page is written for a Chinese audience.
 
-```mermaid
-flowchart LR
-  A[事实清单] --> B[roll_designs<br/>5 × SHA-256 真随机]
-  B --> C[固定决策树<br/>字节 → 维度]
-  C --> D[5 份冻结 brief<br/>briefs/01…05.md]
-  D --> E[5 个独立 HTML 预览<br/>每个只看自己的 brief]
-  E --> F[build_compare_page<br/>并排对比]
-  F --> G{用户选号}
-  G --> H[按选中 brief<br/>落地正式页面]
-  H --> I[critique_page<br/>禁令 + brief 遵守度]
-```
+<details><summary>Mobile screenshots and the compare page at phone width</summary>
 
-### 字节 → 维度（`hash-design/v1`）
+<img src="examples/fourth-lane-bakery/screenshots/01-bureaucratic-form-mobile.png" width="19%" alt="#1 mobile"> <img src="examples/fourth-lane-bakery/screenshots/02-bauhaus-primary-mobile.png" width="19%" alt="#2 mobile"> <img src="examples/fourth-lane-bakery/screenshots/03-ink-and-seal-mobile.png" width="19%" alt="#3 mobile"> <img src="examples/fourth-lane-bakery/screenshots/04-risograph-duotone-mobile.png" width="19%" alt="#4 mobile"> <img src="examples/fourth-lane-bakery/screenshots/05-hk-shop-sign-mobile.png" width="19%" alt="#5 mobile">
 
-| 字节  | 维度            | 规则                                                                              |
-| ----- | --------------- | --------------------------------------------------------------------------------- |
-| 0–1   | 设计分支 branch | `uint16(b0,b1) mod N`（N = 40）。碰撞时向后走，见下文                             |
-| 2     | 文案语气 voice  | 14 种：店主黑板、田野笔记、技术手册、亲笔信、展签、配方、分类广告、时刻表、历书…… |
-| 3     | 版式 layout     | 分支内 3 选 1，带栅格数值和自上而下的分节草图                                     |
-| 4     | 字体对 type     | 分支内 3 选 1：display / body（/ mono）+ 中文字体 + 排版细则                      |
-| 5     | 配色 palette    | 分支内 3 选 1：paper / ink / muted / accent / accent2 / rule / panel 七个 hex     |
-| 6     | 密度 density    | 分支允许的子集：疏朗 / 常规 / 紧凑 / 满版                                         |
-| 7     | 动效 motion     | 分支内 3 选 1：时长、缓动、reduced-motion 策略                                    |
-| 8     | 母题 motif      | 分支内 3 选 1                                                                     |
-| 9     | 首屏锚点 anchor | 分支内 3 选 1                                                                     |
-| 10    | 字号比例 scale  | 分支允许的模数比例（1.125–1.618）                                                 |
-| 11    | 材质 surface    | 分支内 3 选 1（带 CSS 提示）                                                      |
-| 12    | 变数 twist      | 16 种，例如"数字即主角""唯一越界""首屏无按钮""版权页式页脚"                       |
-| 13–31 | 未使用          | 记录在 brief 里，保留给以后的维度                                                 |
-
-- **碰撞与家族分散**：同一次掷骰里，若某个哈希落到已用过的分支，就向后走（+1、+2…）到下一个空闲分支。只要还有没用到的**家族**（印刷品 / 文档票据 / 标识招牌 / 屏幕仪器 / 手作东方 / 现代主义），落到已用家族的分支也算碰撞。所以 5 个方向一定来自 5 个不同家族，不会出现 5 张纸质文档的情况。走过的步数记为 `probe`，ref 写成 `<hash>+<probe>`，单独拿出来也能复现。
-- **分支顺序**：库的顺序就是映射顺序。每个家族的成员均匀分布在整圈上，所以"向后走"分走的概率不会集中到某一个分支上（5 连抽时，每个分支的出现率在 9%–17% 之间，均匀分布是 12.5%）。
-- **约束**会先过滤候选池，再应用字节，所以约束也是设计身份的一部分：`light_only`、`dark_only`、`reduced_motion`、`brand_colors`（品牌色替换 accent，自动挑色相最近的调色板，并给出对比度）、`families`、`include_branches`、`exclude_branches`。
-- **可复现**：同一个 `ref`、同样的约束、同一个库指纹，一定得到同一份 brief。每份 brief 都记录了算法版本（`hash-design/v1`）和库指纹（数据的 SHA-256 前 12 位）。
-- `seed` **只用来复现示例和测试**，真实使用一律走系统随机。
-
-### 一份 brief 里有什么
-
-以示例 [#3 水墨印章](examples/fourth-lane-bakery/briefs/03-ink-and-seal.md) 为例，一份 brief 包含：
-
-- 映射过程表，逐字节列出公式和结果
-- 内容：只能用的事实清单
-- 文案语气及其修辞手段、版式（栅格数值和分节顺序）、首屏锚点
-- 字体：Google Fonts `<link>`（含中文字体），以及按模数比例算出的字号阶梯
-- 7 个色值、用色比例、WCAG 对比度表（哪个颜色只能做大字或装饰）
-- 密度、圆角、边框、阴影策略、材质（含 CSS 片段）、母题、动效规格
-- 变数（twist）、分支的必须/不要，以及 14 条全局禁令
-- 可直接粘贴的 `tokens.css`，以及交付前自检清单
-
-## 示例：第四巷面包店
-
-[`examples/fourth-lane-bakery/`](examples/fourth-lane-bakery) 是一次完整的端到端运行：先写[事实清单](examples/fourth-lane-bakery/facts.md)（虚构店铺），再掷骰得到 5 份 brief，按 Skill 流程分别由 5 个**互相看不到对方**的子 Agent 各做一个预览，最后生成并排对比页。
-
-<!-- EXAMPLES:START -->
-
-### 01 · 公文表格 Bureaucratic form
-
-<a href="https://qybaihe.github.io/hash-design/fourth-lane-bakery/previews/01-bureaucratic-form.html"><img src="examples/fourth-lane-bakery/screenshots/01-bureaucratic-form-desktop.png" width="74%" alt="#1 Bureaucratic form desktop"></a> <img src="examples/fourth-lane-bakery/screenshots/01-bureaucratic-form-mobile.png" width="22%" alt="#1 mobile">
-
-`51a76d00` · 版式 Numbered field form · 字体 IBM Plex Sans Condensed / IBM Plex Sans · 配色 Dropout-ink green · 语气 词条 · 变数 粗线分区 · critique **96/100**，brief 遵守度 **100/100** · [brief](examples/fourth-lane-bakery/briefs/01-bureaucratic-form.md)
-
-首屏是表头：巨大的表号 IV-17（第四巷 17 号），配上编号、年度和"仅供内部填写"的红章。所有事实都填进带编号的字段、勾选格和价目表；每一部分下面的注释写成词条。
-
-### 02 · 包豪斯 Bauhaus primary
-
-<a href="https://qybaihe.github.io/hash-design/fourth-lane-bakery/previews/02-bauhaus-primary.html"><img src="examples/fourth-lane-bakery/screenshots/02-bauhaus-primary-desktop.png" width="74%" alt="#2 Bauhaus primary desktop"></a> <img src="examples/fourth-lane-bakery/screenshots/02-bauhaus-primary-mobile.png" width="22%" alt="#2 mobile">
-
-`4f1cc0f2` · 版式 Bauhausbuch cover · 字体 League Spartan / Kumbh Sans · 配色 Primaries on cream · 语气 问答访谈 · 变数 版权页式页脚 · critique **96/100**，brief 遵守度 **100/100** · [brief](examples/fourth-lane-bakery/briefs/02-bauhaus-primary.md)
-
-首屏是包豪斯丛书封面：巨大的数字"4"、黄三角、蓝圆和红方形正片叠底。价格做成黑色条形图，问答体分章，页脚是信息最密的版权页。
-
-### 03 · 水墨印章 Ink and seal
-
-<a href="https://qybaihe.github.io/hash-design/fourth-lane-bakery/previews/03-ink-and-seal.html"><img src="examples/fourth-lane-bakery/screenshots/03-ink-and-seal-desktop.png" width="74%" alt="#3 Ink and seal desktop"></a> <img src="examples/fourth-lane-bakery/screenshots/03-ink-and-seal-mobile.png" width="22%" alt="#3 mobile">
-
-`7f18e1dc` · 版式 Handscroll (手卷) · 字体 Zen Antique / Crimson Pro · 配色 Blue-green landscape on silk · 语气 田野笔记 · 变数 时间为骨 · critique **100/100**，brief 遵守度 **100/100** · [brief](examples/fourth-lane-bakery/briefs/03-ink-and-seal.md)
-
-自右向左展开的手卷：首屏是白文大印"第四巷面包店"配一行竖排地址和营业时间，往后按时间顺序是 5 段水墨小景，底部是时间轴索引。手机上变成立轴。
-
-### 04 · Riso 双色套印 Risograph duotone
-
-<a href="https://qybaihe.github.io/hash-design/fourth-lane-bakery/previews/04-risograph-duotone.html"><img src="examples/fourth-lane-bakery/screenshots/04-risograph-duotone-desktop.png" width="74%" alt="#4 Risograph duotone desktop"></a> <img src="examples/fourth-lane-bakery/screenshots/04-risograph-duotone-mobile.png" width="22%" alt="#4 mobile">
-
-`bde66a3f` · 版式 Overprint poster · 字体 Unbounded / Familjen Grotesk · 配色 Bright red + green on white · 语气 历书 · 变数 数字即主角 · critique **100/100**，brief 遵守度 **100/100** · [brief](examples/fourth-lane-bakery/briefs/04-risograph-duotone.md)
-
-Riso 套印海报：颗粒红日与绿色大字叠印出第三种墨色，并有刻意的错版。按历书口吻写宜忌，所有数字放大成主角。
-
-### 05 · 港式招牌 Hong Kong shop sign
-
-<a href="https://qybaihe.github.io/hash-design/fourth-lane-bakery/previews/05-hk-shop-sign.html"><img src="examples/fourth-lane-bakery/screenshots/05-hk-shop-sign-desktop.png" width="74%" alt="#5 Hong Kong shop sign desktop"></a> <img src="examples/fourth-lane-bakery/screenshots/05-hk-shop-sign-mobile.png" width="22%" alt="#5 mobile">
-
-`42c248e7` · 版式 Projecting sign stack · 字体 Antonio / Hanken Grotesk · 配色 Neon street at night · 语气 技术手册 · 变数 数字即主角 · critique **96/100**，brief 遵守度 **100/100** · [brief](examples/fourth-lane-bakery/briefs/05-hk-shop-sign.md)
-
-港式招牌：右侧一块红漆竖招牌"第四巷面包店"从视口顶端垂下，左侧是"面包 咖啡"横招牌和巨大的出炉时刻；写成技术手册口吻，霓虹灯管是线描，不发光。
-
-<details><summary>#3 手卷的后几段（桌面横向滚动）</summary>
-
-<img src="examples/fourth-lane-bakery/screenshots/03-ink-and-seal-scroll-1.png" width="49%"> <img src="examples/fourth-lane-bakery/screenshots/03-ink-and-seal-scroll-2.png" width="49%">
-<img src="examples/fourth-lane-bakery/screenshots/03-ink-and-seal-scroll-3.png" width="49%"> <img src="examples/fourth-lane-bakery/screenshots/03-ink-and-seal-scroll-4.png" width="49%">
+![Compare page at phone width](examples/fourth-lane-bakery/screenshots/compare-mobile.png)
 
 </details>
 
-手机宽度下的对比页（`?device=mobile`）：
-
-![手机宽度对比](examples/fourth-lane-bakery/screenshots/compare-mobile.png)
-
-<!-- EXAMPLES:END -->
-
-本地打开：`open examples/fourth-lane-bakery/compare.html`（按 1–5 放大，D/M 切换桌面/手机）。
-在线预览：<https://qybaihe.github.io/hash-design/fourth-lane-bakery/compare.html>
-
-复现这次掷骰：
+Reproduce the exact roll:
 
 ```bash
 npm run build
 node packages/core/dist/bin.js roll --subject "第四巷面包店" \
   --facts-file examples/fourth-lane-bakery/facts.md --seed fourth-lane-bakery --out /tmp/fourth-lane
-# MCP 等价调用：roll_designs { subject, facts, seed: "fourth-lane-bakery" }，得到相同的 5 个 ref
+# MCP equivalent: roll_designs { subject, facts, seed: "fourth-lane-bakery" } returns the same five refs
 ```
 
-## 安装
+## Why
 
-> 目前**尚未发布到 npm**，请先用源码方式。发布后可以直接用 `npx -y hash-design-mcp` 和 `npx -y hash-design`。
+Ask an LLM for "a beautiful page" and it almost always collapses into the same modal aesthetic: Inter, a purple-to-blue gradient, a centered headline with two buttons, three identical feature cards, glassmorphism, emoji icons, and copy like _Unlock_, _Seamless_, _Supercharge_. The reason is simple: whenever the model gets to choose, it picks the most common thing in its training data.
+
+hash-design does not ask the model to have better taste. It **takes the choice away**:
+
+1. Roll five hashes from system randomness (`crypto.randomBytes(32)` → SHA-256).
+2. Map each hash through a **fixed, reproducible decision tree** to a concrete direction: design genre, layout, font pairing, hex palette, density, motion, motif, first-screen anchor, type scale, surface, copy voice and one "twist".
+3. Freeze each direction as a **brief** with paste-ready tokens (font links, hex values, `tokens.css`, grid numbers, radius/shadow policy) plus the global bans.
+4. The agent's only job is to **execute** each brief faithfully: five independent HTML previews and a side-by-side compare page. Then it **stops and waits for you to pick a number**.
+5. Once you pick, the agent builds the final page from that brief and checks it with `critique_page`.
+
+This is an external random constraint that breaks the model's default aesthetic. It has nothing to do with KV caches or sampling temperature. The model's taste is spent on execution quality (alignment, rhythm, detail, legibility), not on choosing a style.
+
+## How it works
+
+```mermaid
+flowchart LR
+  A[Fact sheet] --> B[roll_designs<br/>5 × SHA-256, true random]
+  B --> C[Fixed decision tree<br/>bytes → dimensions]
+  C --> D[5 frozen briefs<br/>briefs/01…05.md]
+  D --> E[5 independent HTML previews<br/>each sees only its own brief]
+  E --> F[build_compare_page<br/>side by side]
+  F --> G{User picks}
+  G --> H[Final page<br/>from the chosen brief]
+  H --> I[critique_page<br/>bans + brief adherence]
+```
+
+### Bytes → dimensions (`hash-design/v1`)
+
+| Bytes | Dimension | Rule                                                                                                       |
+| ----- | --------- | ---------------------------------------------------------------------------------------------------------- |
+| 0–1   | branch    | `uint16(b0, b1) mod N` (N = 40). Collisions walk forward, see below                                        |
+| 2     | voice     | 14 copy voices: shopkeeper chalkboard, field notes, technical manual, personal letter, timetable, almanac… |
+| 3     | layout    | 1 of the branch's 3 layouts, with grid numbers and a top-to-bottom section sketch                          |
+| 4     | type      | 1 of 3 pairings: display / body (/ mono) + CJK fonts + typesetting notes                                   |
+| 5     | palette   | 1 of 3 palettes: seven hex values (paper / ink / muted / accent / accent2 / rule / panel)                  |
+| 6     | density   | The branch's allowed subset of airy / regular / compact / packed                                           |
+| 7     | motion    | 1 of 3: duration, easing and a reduced-motion policy                                                       |
+| 8     | motif     | 1 of the branch's 3 motifs                                                                                 |
+| 9     | anchor    | 1 of the branch's 3 first-screen anchors                                                                   |
+| 10    | scale     | The branch's allowed modular scales (1.125–1.618)                                                          |
+| 11    | surface   | 1 of 3 surfaces (with CSS hints)                                                                           |
+| 12    | twist     | 16 twists, e.g. "numerals as display", "one element breaks the grid", "no button above the fold"           |
+| 13–31 | unused    | Recorded in the brief, reserved for future dimensions                                                      |
+
+- **Collisions and family spread.** Inside one roll, a hash that lands on a branch already used walks forward (+1, +2, …) to the next free branch. While some **family** (print / document / signage / screen / craft / modernist) is still unused, landing in an already-used family also counts as a collision, so a 5-roll always spans 5 different families. The number of steps is the `probe`; a ref is written `<hash>+<probe>` and reproduces on its own.
+- **Branch order.** Library order is mapping order. Each family's members are spread evenly around the ring, so walking forward does not funnel probability into one branch: in 5-rolls every branch appears 9–17% of the time (uniform would be 12.5%).
+- **Constraints filter the pools before the bytes are applied**, so constraints are part of a design's identity: `light_only`, `dark_only`, `reduced_motion`, `brand_colors` (the brand colour replaces the accent; the palette with the nearest accent hue is chosen and contrast is reported), `families`, `include_branches`, `exclude_branches`.
+- **Reproducible.** The same `ref`, the same constraints and the same library fingerprint always produce the same brief. Every brief records the algorithm (`hash-design/v1`) and the library fingerprint (the first 12 hex digits of a SHA-256 over the data).
+- **`seed` is only for reproducing examples and tests.** Real use always draws from system randomness.
+
+The full specification, with a worked example, is in [docs/mapping.md](docs/mapping.md).
+
+## What a brief contains
+
+Take [#3 Ink and seal](examples/fourth-lane-bakery/briefs/03-ink-and-seal.md) from the example. A brief has:
+
+- the mapping trace, byte by byte, with the formula and the result
+- the content: the only facts the page may state
+- the copy voice and its devices, the layout (grid numbers and section order), the first-screen anchor
+- type: a Google Fonts `<link>` (including CJK fonts when the page is Chinese) and a type scale computed from the modular ratio
+- seven hex values, colour proportions and a WCAG contrast table (which colours are only for large text or decoration)
+- density, radius / border / shadow policy, surface (with a CSS snippet), motif and motion spec
+- the twist, the branch's must / must-not lists and all 14 global bans
+- a paste-ready `tokens.css` and a pre-delivery checklist
+
+Briefs are written for agents and are bilingual: headings carry Chinese and English labels, and `language` (`zh` or `en`, auto-detected from the subject and facts) switches the concept text, the instructions and whether CJK webfonts are loaded. Some pool descriptions (voices, twists) are currently written in Chinese only.
+
+## Install
+
+> **Not published on npm yet.** The `package.json` files are publish-ready (`npm pack --dry-run` runs in CI), but for now install from source. Once published, `npx -y hash-design-mcp` and `npx -y hash-design` will work.
+
+Requires Node.js ≥ 20 (`.nvmrc` pins 22 for development).
 
 ```bash
 git clone https://github.com/qybaihe/hash-design.git
 cd hash-design
 npm install
 npm run build
-# MCP server 入口：packages/mcp/dist/bin.js
-# CLI 入口：     packages/core/dist/bin.js
+# MCP server entry: packages/mcp/dist/bin.js
+# CLI entry:        packages/core/dist/bin.js
 ```
 
-需要 Node ≥ 20。
+## Configure MCP
 
-## 配置 MCP
-
-下面的 `/ABS/PATH/hash-design` 换成你 clone 的绝对路径。npm 发布后，把 `"command": "node", "args": ["…/bin.js"]` 换成 `"command": "npx", "args": ["-y", "hash-design-mcp"]` 即可。
+Replace `/ABS/PATH/hash-design` with the absolute path of your clone.
 
 ### Claude Code
 
 ```bash
 claude mcp add hash-design -- node /ABS/PATH/hash-design/packages/mcp/dist/bin.js
-# 发布后：claude mcp add hash-design -- npx -y hash-design-mcp
 ```
 
-或者在项目根目录写 `.mcp.json`：
+Or commit a project-level `.mcp.json`:
 
 ```json
 {
@@ -190,7 +167,7 @@ claude mcp add hash-design -- node /ABS/PATH/hash-design/packages/mcp/dist/bin.j
 
 ### Cursor
 
-`.cursor/mcp.json`（项目级）或 `~/.cursor/mcp.json`（全局）：
+`.cursor/mcp.json` (project) or `~/.cursor/mcp.json` (global), same structure:
 
 ```json
 {
@@ -205,60 +182,65 @@ claude mcp add hash-design -- node /ABS/PATH/hash-design/packages/mcp/dist/bin.j
 
 ### Claude Desktop
 
-`~/Library/Application Support/Claude/claude_desktop_config.json`（macOS）或 `%APPDATA%\Claude\claude_desktop_config.json`（Windows），结构同上。Claude Desktop 启动 server 时的工作目录不是你的项目目录，所以调用 `roll_designs` 时请给 `out_dir` 传**绝对路径**。
+`~/Library/Application Support/Claude/claude_desktop_config.json` (macOS) or `%APPDATA%\Claude\claude_desktop_config.json` (Windows), same structure as above. Claude Desktop does not start the server in your project directory, so pass an **absolute path** as `out_dir` when calling `roll_designs`.
 
-## 安装 Skill
+## Install the Skill
 
-Skill 告诉 Agent 何时使用、按什么顺序调用 MCP、怎样独立渲染、什么时候必须停下。
+The Skill tells the agent when to use hash-design, in what order to call the MCP tools, how to render previews independently and when it must stop.
 
 ```bash
-# 装到某个项目（同时写 .claude/skills 和 .cursor/skills）
+# Into a project (writes both .claude/skills and .cursor/skills)
 node packages/core/dist/bin.js skill install --target both --dir /path/to/your/project
-# 装到用户目录（所有项目可用）
+# Into your home directory (available in every project)
 node packages/core/dist/bin.js skill install --target claude --global
-# 发布后：npx -y hash-design skill install
 ```
 
-也可以手动复制 [`skills/hash-design/SKILL.md`](skills/hash-design/SKILL.md) 到 `.claude/skills/hash-design/SKILL.md`（Claude Code）或 `.cursor/skills/hash-design/SKILL.md`（Cursor）。本仓库自带这两份副本，测试保证它们和源文件一致。
+Or copy [`skills/hash-design/SKILL.md`](skills/hash-design/SKILL.md) by hand to `.claude/skills/hash-design/SKILL.md` (Claude Code) or `.cursor/skills/hash-design/SKILL.md` (Cursor). This repo ships both copies, and a test keeps them identical to the source. The Skill body is written in Chinese; its description includes English trigger phrases.
 
-然后直接对 Agent 说：
+## Use it
 
-> 用 hash-design 给「第四巷面包店」做一个一页站。事实：周二至周日 7:00–19:00 营业，周一休息；乡村面包 ¥38……
+With the MCP server and the Skill installed, just ask your agent:
 
-Agent 会依次掷骰、冻结 brief、做 5 个预览、生成 `design/hash-design/compare.html`，然后停下来等你回复编号。
+> Use hash-design to build a one-page site for "Fourth Lane Bakery". Facts: open Tue–Sun 7:00–19:00, closed Mondays; country loaf ¥38; …
 
-## MCP 工具
+The agent rolls, freezes the briefs, renders five previews, writes `design/hash-design/compare.html`, then stops and waits for you to reply with a number. Clients that support MCP prompts can also start the same workflow with the `hash-design` prompt (arguments: `subject`, `facts`, `count`).
 
-| 工具                 | 作用                                                                                                                                                                                 |
-| -------------------- | ------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------ |
-| `roll_designs`       | 输入 `subject`、`facts`、`count`（默认 5），可选 `seed`、`language` 和约束。返回 5 个哈希、映射过程和 5 份 brief。传 `out_dir` 会把 `roll.json`、`ROLL.md`、`briefs/*.md` 冻结到磁盘 |
-| `get_brief`          | 按 `ref`（`<hash>` 或 `<hash>+<probe>`）加同样的约束复现 brief，支持 Markdown 或 JSON                                                                                                |
-| `list_branches`      | 列出 40 个设计分支，可按家族过滤                                                                                                                                                     |
-| `get_branch`         | 查看一个分支的全部选项和 token                                                                                                                                                       |
-| `critique_page`      | 输入 HTML 字符串或文件路径，按禁令和 AI 味清单打分；带 `brief_ref` 或 `roll_path`+`pick` 时还会给出对 brief 的遵守度                                                                 |
-| `build_compare_page` | 根据 `roll.json` 生成并排对比页 `compare.html`                                                                                                                                       |
+## MCP tools
 
-资源：`hash-design://bans`、`hash-design://workflow`（即 SKILL.md）、`hash-design://branches`、`hash-design://branch/{id}`。Prompt：`hash-design`（参数为 subject、facts）。
+| Tool                 | What it does                                                                                                                                                                                                                        |
+| -------------------- | ----------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------- |
+| `roll_designs`       | Takes `subject`, `facts`, `count` (default 5), optional `seed`, `language` and constraints. Returns the hashes, the mapping and one brief per direction. With `out_dir` it freezes `roll.json`, `ROLL.md` and `briefs/*.md` to disk |
+| `get_brief`          | Reproduces a brief from a `ref` (`<hash>` or `<hash>+<probe>`) plus the same constraints, as Markdown or JSON                                                                                                                       |
+| `list_branches`      | Lists the 40 design branches, optionally filtered by family                                                                                                                                                                         |
+| `get_branch`         | Shows every option and token of one branch                                                                                                                                                                                          |
+| `critique_page`      | Scores an HTML string or file against the bans and the AI-template checklist; with `brief_ref` or `roll_path` + `pick` it also scores adherence to the brief                                                                        |
+| `build_compare_page` | Builds the side-by-side `compare.html` from a `roll.json`                                                                                                                                                                           |
+
+Resources: `hash-design://bans`, `hash-design://workflow` (the Skill), `hash-design://branches`, `hash-design://branch/{id}`. Prompt: `hash-design` (`subject`, `facts`, `count`).
+
+Every parameter, return shape and CLI equivalent is documented in [docs/mcp-tools.md](docs/mcp-tools.md).
 
 ## CLI
 
 ```bash
-hash-design roll --subject "第四巷面包店" --facts-file facts.md --out design/hash-design   # 真随机 5 个
-hash-design roll --subject "…" --light-only --brand "#c8102e" --format json            # 带约束
-hash-design brief <ref> [约束参数]                                                    # 复现 brief
-hash-design branches [--family craft]                                               # 分支库
-hash-design branch ink-and-seal                                                     # 分支详情
+hash-design roll --subject "Fourth Lane Bakery" --facts-file facts.md --out design/hash-design   # 5 true-random directions
+hash-design roll --subject "…" --light-only --brand "#c8102e" --format json                     # with constraints
+hash-design brief <ref> [constraints]                                                            # reproduce a brief
+hash-design branches [--family craft]                                                            # the branch library
+hash-design branch ink-and-seal                                                                  # one branch in detail
 hash-design critique page.html --roll design/hash-design/roll.json --pick 3 --fail-under 80
-hash-design compare --roll design/hash-design/roll.json                              # 生成 compare.html
-hash-design skill install --target both                                             # 安装 Skill
+hash-design compare --roll design/hash-design/roll.json                                          # write compare.html
+hash-design skill install --target both                                                          # install the Skill
 ```
 
-## 作为库使用
+From a source checkout, run it as `node packages/core/dist/bin.js …` (or `alias hash-design="node $PWD/packages/core/dist/bin.js"` from the repo root). `hash-design --help` prints every option, including the constraint flags `--light-only`, `--dark-only`, `--reduced-motion`, `--brand`, `--family`, `--include` and `--exclude`.
+
+## Library
 
 ```ts
 import { roll, renderBrief, critiquePage, reproduce, parseRef } from 'hash-design';
 
-const r = roll({ content: { subject: '第四巷面包店', facts: ['周一休息', '乡村面包 ¥38'] } });
+const r = roll({ content: { subject: 'Fourth Lane Bakery', facts: ['Closed Mondays', 'Country loaf ¥38'] } });
 for (const [i, d] of r.designs.entries()) console.log(renderBrief(d, r.content, { number: i + 1 }));
 
 const design = reproduce(parseRef(r.designs[0].ref), r.constraints);
@@ -266,121 +248,109 @@ const report = critiquePage({ html: '<!doctype html>…', design });
 console.log(report.score, report.adherence, report.findings);
 ```
 
-## 分支库（40）
+Until the package is on npm, import it from a source checkout (`packages/core/dist/index.js`) or add the checkout as a local dependency (`npm install /ABS/PATH/hash-design/packages/core`).
 
-每个分支都是一个真实世界的设计门类，而不是"SaaS 风格"。每个维度有 3 个具体选项，写明字体对（Google Fonts + 中文）、7 个 hex、栅格数值、圆角/边框/阴影策略、动效规格、母题和材质。完整目录见 [docs/branches.md](docs/branches.md)，也可以用 `list_branches` / `get_branch` 查询。
+## Branch library (40)
 
-| 家族               | 分支                                                                                                        |
-| ------------------ | ----------------------------------------------------------------------------------------------------------- |
-| 印刷品 print       | 超市促销单 · 凸版木活字 · 复印小志 · Riso 双色套印 · 唱片封套 · 赛事秩序册 · 时装画册 · 大报版面 · 杂志编辑 |
-| 文档票据 document  | 工程图版 · 账本 · 票根 · 学术论文 · 药房标签 · 公文表格 · 热敏小票 · 植物标本 · 野外图鉴                    |
-| 标识招牌 signage   | 交通导视 · 港式招牌 · 餐馆菜单板 · 美术馆图录 · 地形图                                                      |
-| 屏幕仪器 screen    | 终端荧光 · 早期个人主页 · 游戏说明书 · 工业仪表 · 粗野原生                                                  |
-| 手作东方 craft     | 菜谱卡 · 手作温度 · 水墨印章 · 老黄历 · 余白 · 方格实验本                                                   |
-| 现代主义 modernist | 瑞士网格 · 包豪斯 · 构成主义海报 · 装饰艺术 · 七十年代超级图形 · 孟菲斯                                     |
+Every branch is a real-world design genre, not a "SaaS style". Each dimension has three concrete options: font pairings (Google Fonts + CJK), seven hex values, grid numbers, radius / border / shadow policy, motion spec, motifs and surfaces. The full catalogue is in [docs/branches.md](docs/branches.md); `list_branches` / `get_branch` query it live.
 
-数据由测试和脚本强制约束：
+| Family    | Branches                                                                                                                                                                                    |
+| --------- | ------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------- |
+| print     | Supermarket circular · Letterpress wood type · Photocopy zine · Risograph duotone · Record sleeve · Varsity sports programme · Couture lookbook · Broadsheet newspaper · Editorial magazine |
+| document  | Engineering plate · Ledger · Ticket stub · Academic paper · Apothecary label · Bureaucratic form · Thermal receipt · Herbarium specimen · Field guide plate                                 |
+| signage   | Transit wayfinding · Hong Kong shop sign · Diner menu board · Gallery catalogue · Topographic map                                                                                           |
+| screen    | Terminal phosphor · Web 1.0 homepage · Game manual · Instrument panel · Raw brutalist                                                                                                       |
+| craft     | Recipe card · Warm handmade · Ink and seal · Chinese almanac · Ma whitespace · Lab notebook                                                                                                 |
+| modernist | Swiss grid · Bauhaus primary · Constructivist poster · Art Deco · 70s supergraphic · Memphis pop                                                                                            |
 
-- 不得使用禁用字体，fallback 里也不行
-- ink/paper 对比度 ≥ 7:1，muted/paper ≥ 4.5:1
-- 每个分支至少有一套浅色调色板
-- 不得使用框架默认色值
-- 同一个 display 字体最多用于 3 个分支
-- 调色板不得重复
-- 每个字体 URL 都能在 Google Fonts 解析：`node scripts/verify-fonts.mjs`，235/235 通过
+The data is enforced by tests and scripts:
 
-## 全局禁令
+- no banned fonts, not even in fallbacks
+- ink/paper contrast ≥ 7:1, muted/paper ≥ 4.5:1
+- every branch has at least one light palette
+- no framework default hex values
+- a display font may lead at most 3 branches
+- no two branches share the same lead palette (paper + accent)
+- every font URL resolves on Google Fonts: `node scripts/verify-fonts.mjs` (235/235 pass)
 
-每份 brief 都会抄录这 14 条，`critique_page` 能自动检测其中每一条：
+## Global bans
 
-| id                          | 禁止                                                                                                   |
-| --------------------------- | ------------------------------------------------------------------------------------------------------ |
-| `generic-sans`              | Inter、Roboto、Poppins、Montserrat、DM Sans、Space Grotesk 等 23 个默认无衬线；只用 system-ui 当"设计" |
-| `purple-blue-gradient`      | 紫/靛/蓝渐变、渐变文字、彩色光斑                                                                       |
-| `centered-hero-two-buttons` | 居中大标题 + 副标题 + 主按钮/幽灵按钮                                                                  |
-| `identical-cards`           | 3/4/6 张同构的"图标 + 标题 + 两行字"卡片                                                               |
-| `glassmorphism`             | `backdrop-filter` 毛玻璃                                                                               |
-| `emoji-icons`               | emoji 当图标；拿通用图标库当装饰                                                                       |
-| `buzzword-copy`             | Unlock / Seamless / Supercharge / 赋能 / 一站式 / 极致体验……                                           |
-| `soft-shadow-rounded`       | 处处 12–24px 圆角 + 柔和大投影                                                                         |
-| `invented-facts`            | "10K+ 用户""Trusted by"、带头像的假评价                                                                |
-| `tailwind-default-palette`  | `#6366f1` `#8b5cf6` `#0f172a` 这类框架默认色                                                           |
-| `scroll-fade-everything`    | 每段都滚动淡入上浮                                                                                     |
-| `pill-badge-sparkle`        | 标题上方的 "New ✨" 胶囊                                                                               |
-| `placeholder-content`       | Lorem ipsum、图库人像、随机 Unsplash                                                                   |
-| `template-sections`         | Hero → Features → Testimonials → Pricing → FAQ 套路                                                    |
+Every brief carries these 14 bans, and `critique_page` detects each one automatically:
 
-`critique_page` 另外还会检查文字对比度（< 3:1）、`viewport`、`lang`、`img alt`、有动效时是否缺少 `prefers-reduced-motion`，以及对 brief 的遵守度：字体、色值、圆角和阴影策略。它是静态检查，抓不到"首屏是否真的是 brief 的锚点""语气对不对"这类问题，这些仍然需要人看或 Agent 对照 brief 自查。
+| id                          | Banned                                                                                                           |
+| --------------------------- | ---------------------------------------------------------------------------------------------------------------- |
+| `generic-sans`              | Inter, Roboto, Poppins, Montserrat, DM Sans, Space Grotesk and 17 more default sans; `system-ui` as "the design" |
+| `purple-blue-gradient`      | Purple / indigo / blue gradients, gradient text, coloured blobs                                                  |
+| `centered-hero-two-buttons` | Centered headline + subtitle + primary / ghost button pair                                                       |
+| `identical-cards`           | 3 / 4 / 6 identical "icon + title + two lines" cards                                                             |
+| `glassmorphism`             | `backdrop-filter` frosted glass                                                                                  |
+| `emoji-icons`               | Emoji as icons; a generic icon set as decoration                                                                 |
+| `buzzword-copy`             | Unlock / Seamless / Supercharge / 赋能 / 一站式 / 极致体验 …                                                     |
+| `soft-shadow-rounded`       | 12–24px radius + large soft shadow on everything                                                                 |
+| `invented-facts`            | "10K+ users", "Trusted by", fake testimonials with avatars                                                       |
+| `tailwind-default-palette`  | Framework defaults such as `#6366f1`, `#8b5cf6`, `#0f172a`                                                       |
+| `scroll-fade-everything`    | Every section fading up on scroll                                                                                |
+| `pill-badge-sparkle`        | A "New ✨" pill above the headline                                                                               |
+| `placeholder-content`       | Lorem ipsum, stock portraits, random Unsplash                                                                    |
+| `template-sections`         | The Hero → Features → Testimonials → Pricing → FAQ formula                                                       |
 
-## 开发
+`critique_page` also checks text contrast (< 3:1), `viewport`, `lang`, `img alt`, missing `prefers-reduced-motion` when there is motion, and adherence to the brief: fonts, hex values, radius and shadow policy. It is static analysis. It cannot tell whether the first screen really is the brief's anchor or whether the voice is right; that still needs a human, or an agent re-reading the brief.
+
+## Development
 
 ```bash
 npm install
-npm run build        # tsc -b，两个包
-npm test             # vitest：核心、CLI、MCP（in-memory transport）、Skill/文档一致性
+npm run build        # tsc -b, both packages
+npm test             # vitest: core, CLI, MCP (in-memory transport), Skill/docs consistency
 npm run check        # typecheck + lint + prettier + test
-npm run sync         # 改数据后重新生成 SKILL.md 的禁令块、.claude/.cursor 副本、docs/branches.md
-node scripts/smoke.mjs        # 真实 stdio 上的 MCP + CLI 冒烟测试（CI 会跑）
-node scripts/verify-fonts.mjs # 联网检查所有字体 URL（不在 CI 里跑）
-npm run screenshots           # Playwright 截图示例（需 npx playwright install chromium）
+npm run sync         # after data changes: regenerate the SKILL.md bans block, the .claude/.cursor copies, docs/branches.md
+node scripts/smoke.mjs        # MCP over real stdio + CLI smoke test (runs in CI)
+node scripts/verify-fonts.mjs # check every font URL online (not in CI)
+npm run screenshots           # Playwright screenshots of the example (needs `npx playwright install chromium`)
 ```
 
-仓库结构：
+CI runs build, typecheck, lint, format check, tests, the stdio smoke test and `npm pack --dry-run` on Node 20, 22 and 24.
+
+Repository layout:
 
 ```
-packages/core/           # npm: hash-design —— 数据、映射、brief、critique、对比页、CLI
-  src/data/bans.ts       #   全局禁令、禁用字体、空话词表
-  src/data/pools.ts      #   密度、比例、14 种文案语气、16 个变数
-  src/data/branches/     #   40 个分支（index.ts 定义映射顺序）
-  src/mapping.ts         #   哈希 → 设计（决策树、碰撞、约束）
-  src/brief.ts           #   brief 渲染（Markdown / JSON）
-  src/critique.ts        #   AI 味静态检查
-  src/compare.ts         #   并排对比页
+packages/core/           # npm: hash-design — data, mapping, briefs, critique, compare page, CLI
+  src/data/bans.ts       #   global bans, banned fonts, buzzword lists
+  src/data/pools.ts      #   densities, scales, 14 copy voices, 16 twists
+  src/data/branches/     #   40 branches (index.ts defines the mapping order)
+  src/mapping.ts         #   hash → design (decision tree, collisions, constraints)
+  src/brief.ts           #   brief rendering (Markdown / JSON)
+  src/critique.ts        #   static AI-template checks
+  src/compare.ts         #   side-by-side compare page
   src/cli.ts             #   CLI
-packages/mcp/            # npm: hash-design-mcp —— stdio MCP server
-skills/hash-design/      # Skill 源文件（.claude/ 和 .cursor/ 下为同步副本）
-examples/                # 完整示例：事实 → roll → 5 brief → 5 预览 → 对比页 → 截图
-docs/branches.md         # 分支库目录（生成）
+packages/mcp/            # npm: hash-design-mcp — stdio MCP server
+skills/hash-design/      # Skill source (.claude/ and .cursor/ hold synced copies)
+examples/                # full example: facts → roll → 5 briefs → 5 previews → compare page → screenshots
+docs/                    # architecture, mapping spec, MCP reference, branch catalogue (generated)
 scripts/                 # sync / smoke / verify-fonts / screenshot / prepack
 ```
 
-### 添加一个分支
+## Documentation
 
-1. 在 `packages/core/src/data/branches/` 下按 `_exemplar.ts` 的粒度写一个 `Branch`；
-2. 把它的 id 加进 `index.ts` 的 `BRANCH_ORDER`。注意：这会改变 N 和库指纹，旧 ref 需要用旧版本复现；
-3. 运行 `npm test`、`node scripts/verify-fonts.mjs`、`npm run sync`。
+- [docs/architecture.md](docs/architecture.md): packages, data flow, design decisions, testing
+- [docs/mapping.md](docs/mapping.md): the `hash-design/v1` mapping, collisions, constraints, reproducibility
+- [docs/mcp-tools.md](docs/mcp-tools.md): every MCP tool, resource and prompt, with CLI equivalents
+- [docs/branches.md](docs/branches.md): the 40-branch catalogue (generated)
+- 中文：[架构](docs/architecture.zh-CN.md) · [映射规范](docs/mapping.zh-CN.md) · [MCP 工具](docs/mcp-tools.zh-CN.md)
 
-## 已知局限
+## Known limitations
 
-- 还没有发布到 npm（`package.json` 已经准备好，`npm pack --dry-run` 在 CI 中验证）。
-- `critique_page` 是启发式静态分析，只读内联 `<style>`、`style=""` 和你额外传入的 CSS，不渲染页面，也不解析外链样式表。
-- 分支库目前是 40 个；增删分支会改变映射，库指纹可以检测到这一点，但旧 ref 需要对应版本才能复现。
-- 中文字体依赖 Google Fonts 在线加载。网络受限的环境需要自托管字体，或者改用 brief 里的 fallback。
-- "好不好看"最终仍取决于执行 brief 的模型和人。这个工具解决的是"不要都长一个样"，而不是替代设计判断。
+- Not published on npm yet (the `package.json` files are ready and `npm pack --dry-run` is verified in CI).
+- `critique_page` is heuristic static analysis. It reads inline `<style>`, `style=""` and any extra CSS you pass; it does not render the page or fetch linked stylesheets.
+- The library has 40 branches. Adding or removing a branch changes the mapping; the library fingerprint detects this, but old refs need the matching version to reproduce.
+- CJK fonts are loaded from Google Fonts. Offline or restricted networks need self-hosted fonts or the fallbacks listed in each brief.
+- Part of the brief and Skill text is Chinese-only (see [What a brief contains](#what-a-brief-contains)).
+- Whether the result is _good_ still depends on the model and the people executing the brief. The tool solves "everything looks the same"; it does not replace design judgement.
 
----
+## Contributing
 
-## English
+Contributions are welcome, especially new branches. Read [CONTRIBUTING.md](CONTRIBUTING.md) first: it covers the data rules, `npm run sync` and why a data change means re-rolling the example. Please follow the [Code of Conduct](CODE_OF_CONDUCT.md) and report vulnerabilities as described in [SECURITY.md](SECURITY.md). Release notes live in [CHANGELOG.md](CHANGELOG.md).
 
-**hash-design** stops AI agents from choosing a style. It rolls true-random SHA-256 hashes and maps each one,
-through a fixed and reproducible decision tree, onto a concrete design direction: one of 40 real-world genres
-(supermarket circular, engineering plate, Hong Kong shop sign, risograph, Bauhaus, ink-and-seal…) plus specific layout, font pairing,
-hex palette, density, motion, motif, first-screen anchor, type scale, surface, copy voice and a twist. Each
-direction becomes a frozen brief with paste-ready tokens and 14 global bans (no Inter, no purple gradients, no
-centered hero with two buttons, no identical cards…). The agent renders one independent HTML preview per brief,
-builds a side-by-side compare page, waits for the user to pick, then builds the final page and critiques it.
+## License
 
-- **MCP server** (stdio): `roll_designs`, `get_brief`, `list_branches`, `get_branch`, `critique_page`, `build_compare_page`
-- **Skill** for Claude Code / Cursor: `skills/hash-design/SKILL.md`
-- **CLI**: `hash-design roll | brief | branches | branch | critique | compare | skill install`
-- **Library**: `import { roll, renderBrief, critiquePage } from 'hash-design'`
-
-Quick start (from source, until published on npm):
-
-```bash
-git clone https://github.com/qybaihe/hash-design && cd hash-design && npm install && npm run build
-claude mcp add hash-design -- node "$PWD/packages/mcp/dist/bin.js"
-node packages/core/dist/bin.js skill install --target claude --global
-```
-
-MIT © qybaihe
+[MIT](LICENSE) © qybaihe
