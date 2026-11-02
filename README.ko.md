@@ -4,7 +4,7 @@
 
 [![CI](https://github.com/qybaihe/hash-design/actions/workflows/ci.yml/badge.svg)](https://github.com/qybaihe/hash-design/actions/workflows/ci.yml)
 [![Pages](https://github.com/qybaihe/hash-design/actions/workflows/pages.yml/badge.svg)](https://github.com/qybaihe/hash-design/actions/workflows/pages.yml)
-[![Live demo](https://img.shields.io/badge/demo-compare%20page-e2401c.svg)](https://qybaihe.github.io/hash-design/fourth-lane-bakery/compare.html)
+[![Live demo](https://img.shields.io/badge/demo-4%20examples-e2401c.svg)](https://qybaihe.github.io/hash-design/)
 [![License: MIT](https://img.shields.io/badge/license-MIT-black.svg)](LICENSE)
 [![Node](https://img.shields.io/badge/node-%E2%89%A520%20%C2%B7%20.nvmrc%2022-black.svg)](.nvmrc)
 [![npm: not yet published](https://img.shields.io/badge/npm-not%20yet%20published-lightgrey.svg)](#설치)
@@ -14,13 +14,13 @@ TypeScript로 작성한 코어 라이브러리 + MCP 서버(stdio) + Agent Skill
 
 ![Fourth Lane Bakery: one fact sheet, five random directions side by side](examples/fourth-lane-bakery/screenshots/compare.png)
 
-<p align="center"><sub>팩트 시트 하나, 롤로 뽑은 방향 다섯 가지: 관공서 서식 · 바우하우스 · 먹과 인장 · 리소그래프 2도 인쇄 · 홍콩 가게 간판.<br><a href="https://qybaihe.github.io/hash-design/fourth-lane-bakery/compare.html"><b>라이브 비교 페이지 열기 →</b></a></sub></p>
+<p align="center"><sub>팩트 시트 하나, 롤로 뽑은 방향 다섯 가지: 관공서 서식 · 바우하우스 · 먹과 인장 · 리소그래프 2도 인쇄 · 홍콩 가게 간판.<br><a href="https://qybaihe.github.io/hash-design/fourth-lane-bakery/compare.html"><b>라이브 비교 페이지 열기 →</b></a> · <a href="#더-많은-예시">예시 3개 더 보기 ↓</a></sub></p>
 
 ---
 
 ## 목차
 
-- [데모](#데모) · [왜 필요한가](#왜-필요한가) · [작동 방식](#작동-방식) · [브리프에 담기는 내용](#브리프에-담기는-내용)
+- [데모](#데모) · [더 많은 예시](#더-많은-예시) · [왜 필요한가](#왜-필요한가) · [작동 방식](#작동-방식) · [브리프에 담기는 내용](#브리프에-담기는-내용)
 - [설치](#설치) · [MCP 설정](#mcp-설정) · [Skill 설치](#skill-설치) · [사용법](#사용법)
 - [MCP 도구](#mcp-도구) · [CLI](#cli) · [라이브러리](#라이브러리) · [브랜치 라이브러리](#브랜치-라이브러리-40) · [전역 금지 규칙](#전역-금지-규칙)
 - [개발](#개발) · [문서](#문서) · [알려진 한계](#알려진-한계) · [기여하기](#기여하기)
@@ -57,6 +57,62 @@ node packages/core/dist/bin.js roll --subject "第四巷面包店" \
   --facts-file examples/fourth-lane-bakery/facts.md --seed fourth-lane-bakery --out /tmp/fourth-lane
 # MCP로 하려면: roll_designs { subject, facts, seed: "fourth-lane-bakery" } 가 같은 ref 다섯 개를 반환합니다
 ```
+
+<!-- MORE-EXAMPLES:START -->
+
+### 더 많은 예시
+
+팩트 시트와 고정 seed를 각각 따로 쓴 실행 예시가 세 개 더 있습니다. 어떤 두 예시도 같은 브랜치를 쓰지 않으므로, 네 예시를 합치면 40개 브랜치 중 20개가 나오고 여섯 패밀리가 모두 등장합니다. 각 미리보기는 자기 브리프만 본 서브 에이전트가 따로 렌더링했고, `critique_page` 점수는 모두 90/100 이상입니다. 전체 목록은 [예시 인덱스](https://qybaihe.github.io/hash-design/)에서 볼 수 있습니다.
+
+#### Sluice — 셀프 호스팅 웹훅 수신함 · 영어 페이지
+
+[![Sluice: five rolled directions side by side](examples/sluice/screenshots/compare.png)](https://qybaihe.github.io/hash-design/sluice/compare.html)
+
+<table>
+<tr>
+<td align="center"><a href="https://qybaihe.github.io/hash-design/sluice/previews/01-record-sleeve.html"><img src="examples/sluice/screenshots/01-record-sleeve-desktop.png" width="150" alt="#1 Record sleeve, desktop"></a><br><a href="https://qybaihe.github.io/hash-design/sluice/previews/01-record-sleeve.html">01 · Record sleeve</a></td>
+<td align="center"><a href="https://qybaihe.github.io/hash-design/sluice/previews/02-gallery-catalogue.html"><img src="examples/sluice/screenshots/02-gallery-catalogue-desktop.png" width="150" alt="#2 Gallery catalogue, desktop"></a><br><a href="https://qybaihe.github.io/hash-design/sluice/previews/02-gallery-catalogue.html">02 · Gallery catalogue</a></td>
+<td align="center"><a href="https://qybaihe.github.io/hash-design/sluice/previews/03-terminal-phosphor.html"><img src="examples/sluice/screenshots/03-terminal-phosphor-desktop.png" width="150" alt="#3 Terminal phosphor, desktop"></a><br><a href="https://qybaihe.github.io/hash-design/sluice/previews/03-terminal-phosphor.html">03 · Terminal phosphor</a></td>
+<td align="center"><a href="https://qybaihe.github.io/hash-design/sluice/previews/04-academic-paper.html"><img src="examples/sluice/screenshots/04-academic-paper-desktop.png" width="150" alt="#4 Academic paper, desktop"></a><br><a href="https://qybaihe.github.io/hash-design/sluice/previews/04-academic-paper.html">04 · Academic paper</a></td>
+<td align="center"><a href="https://qybaihe.github.io/hash-design/sluice/previews/05-lab-notebook.html"><img src="examples/sluice/screenshots/05-lab-notebook-desktop.png" width="150" alt="#5 Lab notebook, desktop"></a><br><a href="https://qybaihe.github.io/hash-design/sluice/previews/05-lab-notebook.html">05 · Lab notebook</a></td>
+</tr>
+</table>
+
+**[라이브 비교 페이지 열기 →](https://qybaihe.github.io/hash-design/sluice/compare.html)** · [예시 폴더](examples/sluice) (팩트, 브리프, 작업 과정) · seed `sluice` · critique 92–96 · 브리프 준수도 90–100
+
+#### Bridge No.2 Cycle Works (二号桥单车铺) — 다리 밑 자전거 수리점 · 중국어 페이지
+
+[![Bridge No.2 Cycle Works: five rolled directions side by side](examples/bridge-two-bikes/screenshots/compare.png)](https://qybaihe.github.io/hash-design/bridge-two-bikes/compare.html)
+
+<table>
+<tr>
+<td align="center"><a href="https://qybaihe.github.io/hash-design/bridge-two-bikes/previews/01-swiss-grid.html"><img src="examples/bridge-two-bikes/screenshots/01-swiss-grid-desktop.png" width="150" alt="#1 Swiss grid, desktop"></a><br><a href="https://qybaihe.github.io/hash-design/bridge-two-bikes/previews/01-swiss-grid.html">01 · Swiss grid</a></td>
+<td align="center"><a href="https://qybaihe.github.io/hash-design/bridge-two-bikes/previews/02-couture-lookbook.html"><img src="examples/bridge-two-bikes/screenshots/02-couture-lookbook-desktop.png" width="150" alt="#2 Couture lookbook, desktop"></a><br><a href="https://qybaihe.github.io/hash-design/bridge-two-bikes/previews/02-couture-lookbook.html">02 · Couture lookbook</a></td>
+<td align="center"><a href="https://qybaihe.github.io/hash-design/bridge-two-bikes/previews/03-ticket-stub.html"><img src="examples/bridge-two-bikes/screenshots/03-ticket-stub-desktop.png" width="150" alt="#3 Ticket stub, desktop"></a><br><a href="https://qybaihe.github.io/hash-design/bridge-two-bikes/previews/03-ticket-stub.html">03 · Ticket stub</a></td>
+<td align="center"><a href="https://qybaihe.github.io/hash-design/bridge-two-bikes/previews/04-game-manual.html"><img src="examples/bridge-two-bikes/screenshots/04-game-manual-desktop.png" width="150" alt="#4 Game manual, desktop"></a><br><a href="https://qybaihe.github.io/hash-design/bridge-two-bikes/previews/04-game-manual.html">04 · Game manual</a></td>
+<td align="center"><a href="https://qybaihe.github.io/hash-design/bridge-two-bikes/previews/05-chinese-almanac.html"><img src="examples/bridge-two-bikes/screenshots/05-chinese-almanac-desktop.png" width="150" alt="#5 Chinese almanac, desktop"></a><br><a href="https://qybaihe.github.io/hash-design/bridge-two-bikes/previews/05-chinese-almanac.html">05 · Chinese almanac</a></td>
+</tr>
+</table>
+
+**[라이브 비교 페이지 열기 →](https://qybaihe.github.io/hash-design/bridge-two-bikes/compare.html)** · [예시 폴더](examples/bridge-two-bikes) (팩트, 브리프, 작업 과정) · seed `bridge-two-bikes-5` · critique 96–100 · 브리프 준수도 100
+
+#### Causeway — 썰물 때만 건너가는 섬의 하루짜리 음악 축제 · 영어 페이지
+
+[![Causeway: five rolled directions side by side](examples/causeway-festival/screenshots/compare.png)](https://qybaihe.github.io/hash-design/causeway-festival/compare.html)
+
+<table>
+<tr>
+<td align="center"><a href="https://qybaihe.github.io/hash-design/causeway-festival/previews/01-engineering-plate.html"><img src="examples/causeway-festival/screenshots/01-engineering-plate-desktop.png" width="150" alt="#1 Engineering plate, desktop"></a><br><a href="https://qybaihe.github.io/hash-design/causeway-festival/previews/01-engineering-plate.html">01 · Engineering plate</a></td>
+<td align="center"><a href="https://qybaihe.github.io/hash-design/causeway-festival/previews/02-topographic-map.html"><img src="examples/causeway-festival/screenshots/02-topographic-map-desktop.png" width="150" alt="#2 Topographic map, desktop"></a><br><a href="https://qybaihe.github.io/hash-design/causeway-festival/previews/02-topographic-map.html">02 · Topographic map</a></td>
+<td align="center"><a href="https://qybaihe.github.io/hash-design/causeway-festival/previews/03-warm-handmade.html"><img src="examples/causeway-festival/screenshots/03-warm-handmade-desktop.png" width="150" alt="#3 Warm handmade, desktop"></a><br><a href="https://qybaihe.github.io/hash-design/causeway-festival/previews/03-warm-handmade.html">03 · Warm handmade</a></td>
+<td align="center"><a href="https://qybaihe.github.io/hash-design/causeway-festival/previews/04-editorial-magazine.html"><img src="examples/causeway-festival/screenshots/04-editorial-magazine-desktop.png" width="150" alt="#4 Editorial magazine, desktop"></a><br><a href="https://qybaihe.github.io/hash-design/causeway-festival/previews/04-editorial-magazine.html">04 · Editorial magazine</a></td>
+<td align="center"><a href="https://qybaihe.github.io/hash-design/causeway-festival/previews/05-memphis-pop.html"><img src="examples/causeway-festival/screenshots/05-memphis-pop-desktop.png" width="150" alt="#5 Memphis pop, desktop"></a><br><a href="https://qybaihe.github.io/hash-design/causeway-festival/previews/05-memphis-pop.html">05 · Memphis pop</a></td>
+</tr>
+</table>
+
+**[라이브 비교 페이지 열기 →](https://qybaihe.github.io/hash-design/causeway-festival/compare.html)** · [예시 폴더](examples/causeway-festival) (팩트, 브리프, 작업 과정) · seed `causeway-festival-6` · critique 96–100 · 브리프 준수도 100
+
+<!-- MORE-EXAMPLES:END -->
 
 ## 왜 필요한가
 
@@ -306,7 +362,8 @@ npm run check        # 타입 검사 + lint + prettier + 테스트
 npm run sync         # 데이터 변경 후: SKILL.md 금지 규칙 블록, .claude/.cursor 사본, docs/branches.md 재생성
 node scripts/smoke.mjs        # 실제 stdio 기반 MCP + CLI 스모크 테스트 (CI에서 실행)
 node scripts/verify-fonts.mjs # 모든 폰트 URL을 온라인으로 확인 (CI에서는 실행 안 함)
-npm run screenshots           # 예시의 Playwright 스크린샷 (`npx playwright install chromium` 필요)
+npm run example:critique      # 모든 예시 미리보기를 브리프 기준으로 critique (90 미만이면 실패)
+npm run screenshots           # 모든 예시의 Playwright 스크린샷 (`npx playwright install chromium` 필요)
 ```
 
 CI는 Node 20, 22, 24에서 빌드, 타입 검사, lint, 포맷 검사, 테스트, stdio 스모크 테스트, `npm pack --dry-run`을 실행합니다.
@@ -325,7 +382,7 @@ packages/core/           # npm: hash-design — data, mapping, briefs, critique,
   src/cli.ts             #   CLI
 packages/mcp/            # npm: hash-design-mcp — stdio MCP server
 skills/hash-design/      # Skill source (.claude/ and .cursor/ hold synced copies)
-examples/                # full example: facts → roll → 5 briefs → 5 previews → compare page → screenshots
+examples/                # 4 full runs: facts → roll → 5 briefs → 5 previews → compare page → screenshots
 docs/                    # architecture, mapping spec, MCP reference, branch catalogue (generated)
 scripts/                 # sync / smoke / verify-fonts / screenshot / prepack
 ```

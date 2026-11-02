@@ -4,7 +4,7 @@
 
 [![CI](https://github.com/qybaihe/hash-design/actions/workflows/ci.yml/badge.svg)](https://github.com/qybaihe/hash-design/actions/workflows/ci.yml)
 [![Pages](https://github.com/qybaihe/hash-design/actions/workflows/pages.yml/badge.svg)](https://github.com/qybaihe/hash-design/actions/workflows/pages.yml)
-[![Live demo](https://img.shields.io/badge/demo-compare%20page-e2401c.svg)](https://qybaihe.github.io/hash-design/fourth-lane-bakery/compare.html)
+[![Live demo](https://img.shields.io/badge/demo-4%20examples-e2401c.svg)](https://qybaihe.github.io/hash-design/)
 [![License: MIT](https://img.shields.io/badge/license-MIT-black.svg)](LICENSE)
 [![Node](https://img.shields.io/badge/node-%E2%89%A520%20%C2%B7%20.nvmrc%2022-black.svg)](.nvmrc)
 [![npm: not yet published](https://img.shields.io/badge/npm-not%20yet%20published-lightgrey.svg)](#安装)
@@ -14,13 +14,13 @@
 
 ![第四巷面包店：同一份事实，5 个随机方向并排对比](examples/fourth-lane-bakery/screenshots/compare.png)
 
-<p align="center"><sub>同一份事实清单，掷出 5 个方向：公文表格 · 包豪斯 · 水墨印章 · Riso 双色套印 · 港式招牌。<br><a href="https://qybaihe.github.io/hash-design/fourth-lane-bakery/compare.html"><b>打开在线对比页 →</b></a></sub></p>
+<p align="center"><sub>同一份事实清单，掷出 5 个方向：公文表格 · 包豪斯 · 水墨印章 · Riso 双色套印 · 港式招牌。<br><a href="https://qybaihe.github.io/hash-design/fourth-lane-bakery/compare.html"><b>打开在线对比页 →</b></a> · <a href="#更多示例">另外 3 个示例 ↓</a></sub></p>
 
 ---
 
 ## 目录
 
-- [在线演示](#在线演示) · [为什么](#为什么) · [它怎么工作](#它怎么工作) · [一份 brief 里有什么](#一份-brief-里有什么)
+- [在线演示](#在线演示) · [更多示例](#更多示例) · [为什么](#为什么) · [它怎么工作](#它怎么工作) · [一份 brief 里有什么](#一份-brief-里有什么)
 - [安装](#安装) · [配置 MCP](#配置-mcp) · [安装 Skill](#安装-skill) · [开始使用](#开始使用)
 - [MCP 工具](#mcp-工具) · [CLI](#cli) · [作为库使用](#作为库使用) · [分支库](#分支库40) · [全局禁令](#全局禁令)
 - [示例详解](#示例第四巷面包店) · [开发](#开发) · [文档](#文档) · [已知局限](#已知局限) · [参与贡献](#参与贡献)
@@ -32,6 +32,62 @@
 - **本地打开**：`open examples/fourth-lane-bakery/compare.html`
 
 5 个预览分别是 [公文表格](https://qybaihe.github.io/hash-design/fourth-lane-bakery/previews/01-bureaucratic-form.html) · [包豪斯](https://qybaihe.github.io/hash-design/fourth-lane-bakery/previews/02-bauhaus-primary.html) · [水墨印章](https://qybaihe.github.io/hash-design/fourth-lane-bakery/previews/03-ink-and-seal.html) · [Riso 双色套印](https://qybaihe.github.io/hash-design/fourth-lane-bakery/previews/04-risograph-duotone.html) · [港式招牌](https://qybaihe.github.io/hash-design/fourth-lane-bakery/previews/05-hk-shop-sign.html)。截图、brief 和每个方向的说明见下文[示例：第四巷面包店](#示例第四巷面包店)。
+
+<!-- MORE-EXAMPLES:START -->
+
+### 更多示例
+
+另外 3 次完整运行，各有自己的事实清单和固定 seed。任意两个示例都不共用分支，4 个示例合起来覆盖 40 个分支中的 20 个，6 个家族都有。每个预览都由只看得到自己那份 brief 的子 Agent 独立完成，`critique_page` 全部不低于 90 分。所有示例都在[示例首页](https://qybaihe.github.io/hash-design/)。
+
+#### Sluice：自托管的 webhook 收件箱 · 英文页面
+
+[![Sluice：5 个随机方向并排对比](examples/sluice/screenshots/compare.png)](https://qybaihe.github.io/hash-design/sluice/compare.html)
+
+<table>
+<tr>
+<td align="center"><a href="https://qybaihe.github.io/hash-design/sluice/previews/01-record-sleeve.html"><img src="examples/sluice/screenshots/01-record-sleeve-desktop.png" width="150" alt="#1 Record sleeve 桌面"></a><br><a href="https://qybaihe.github.io/hash-design/sluice/previews/01-record-sleeve.html">01 · 唱片封套</a></td>
+<td align="center"><a href="https://qybaihe.github.io/hash-design/sluice/previews/02-gallery-catalogue.html"><img src="examples/sluice/screenshots/02-gallery-catalogue-desktop.png" width="150" alt="#2 Gallery catalogue 桌面"></a><br><a href="https://qybaihe.github.io/hash-design/sluice/previews/02-gallery-catalogue.html">02 · 美术馆图录</a></td>
+<td align="center"><a href="https://qybaihe.github.io/hash-design/sluice/previews/03-terminal-phosphor.html"><img src="examples/sluice/screenshots/03-terminal-phosphor-desktop.png" width="150" alt="#3 Terminal phosphor 桌面"></a><br><a href="https://qybaihe.github.io/hash-design/sluice/previews/03-terminal-phosphor.html">03 · 终端荧光</a></td>
+<td align="center"><a href="https://qybaihe.github.io/hash-design/sluice/previews/04-academic-paper.html"><img src="examples/sluice/screenshots/04-academic-paper-desktop.png" width="150" alt="#4 Academic paper 桌面"></a><br><a href="https://qybaihe.github.io/hash-design/sluice/previews/04-academic-paper.html">04 · 学术论文</a></td>
+<td align="center"><a href="https://qybaihe.github.io/hash-design/sluice/previews/05-lab-notebook.html"><img src="examples/sluice/screenshots/05-lab-notebook-desktop.png" width="150" alt="#5 Lab notebook 桌面"></a><br><a href="https://qybaihe.github.io/hash-design/sluice/previews/05-lab-notebook.html">05 · 方格实验本</a></td>
+</tr>
+</table>
+
+**[打开在线对比页 →](https://qybaihe.github.io/hash-design/sluice/compare.html)** · [示例目录](examples/sluice)（事实、brief、过程记录） · seed `sluice` · critique 92–96 · brief 遵守度 90–100
+
+#### 二号桥单车铺：桥洞下的单车修理铺 · 中文页面
+
+[![二号桥单车铺：5 个随机方向并排对比](examples/bridge-two-bikes/screenshots/compare.png)](https://qybaihe.github.io/hash-design/bridge-two-bikes/compare.html)
+
+<table>
+<tr>
+<td align="center"><a href="https://qybaihe.github.io/hash-design/bridge-two-bikes/previews/01-swiss-grid.html"><img src="examples/bridge-two-bikes/screenshots/01-swiss-grid-desktop.png" width="150" alt="#1 Swiss grid 桌面"></a><br><a href="https://qybaihe.github.io/hash-design/bridge-two-bikes/previews/01-swiss-grid.html">01 · 瑞士网格</a></td>
+<td align="center"><a href="https://qybaihe.github.io/hash-design/bridge-two-bikes/previews/02-couture-lookbook.html"><img src="examples/bridge-two-bikes/screenshots/02-couture-lookbook-desktop.png" width="150" alt="#2 Couture lookbook 桌面"></a><br><a href="https://qybaihe.github.io/hash-design/bridge-two-bikes/previews/02-couture-lookbook.html">02 · 时装画册</a></td>
+<td align="center"><a href="https://qybaihe.github.io/hash-design/bridge-two-bikes/previews/03-ticket-stub.html"><img src="examples/bridge-two-bikes/screenshots/03-ticket-stub-desktop.png" width="150" alt="#3 Ticket stub 桌面"></a><br><a href="https://qybaihe.github.io/hash-design/bridge-two-bikes/previews/03-ticket-stub.html">03 · 票根</a></td>
+<td align="center"><a href="https://qybaihe.github.io/hash-design/bridge-two-bikes/previews/04-game-manual.html"><img src="examples/bridge-two-bikes/screenshots/04-game-manual-desktop.png" width="150" alt="#4 Game manual 桌面"></a><br><a href="https://qybaihe.github.io/hash-design/bridge-two-bikes/previews/04-game-manual.html">04 · 游戏说明书</a></td>
+<td align="center"><a href="https://qybaihe.github.io/hash-design/bridge-two-bikes/previews/05-chinese-almanac.html"><img src="examples/bridge-two-bikes/screenshots/05-chinese-almanac-desktop.png" width="150" alt="#5 Chinese almanac 桌面"></a><br><a href="https://qybaihe.github.io/hash-design/bridge-two-bikes/previews/05-chinese-almanac.html">05 · 老黄历</a></td>
+</tr>
+</table>
+
+**[打开在线对比页 →](https://qybaihe.github.io/hash-design/bridge-two-bikes/compare.html)** · [示例目录](examples/bridge-two-bikes)（事实、brief、过程记录） · seed `bridge-two-bikes-5` · critique 96–100 · brief 遵守度 100
+
+#### Causeway：潮汐岛上的一日音乐节 · 英文页面
+
+[![Causeway：5 个随机方向并排对比](examples/causeway-festival/screenshots/compare.png)](https://qybaihe.github.io/hash-design/causeway-festival/compare.html)
+
+<table>
+<tr>
+<td align="center"><a href="https://qybaihe.github.io/hash-design/causeway-festival/previews/01-engineering-plate.html"><img src="examples/causeway-festival/screenshots/01-engineering-plate-desktop.png" width="150" alt="#1 Engineering plate 桌面"></a><br><a href="https://qybaihe.github.io/hash-design/causeway-festival/previews/01-engineering-plate.html">01 · 工程图版</a></td>
+<td align="center"><a href="https://qybaihe.github.io/hash-design/causeway-festival/previews/02-topographic-map.html"><img src="examples/causeway-festival/screenshots/02-topographic-map-desktop.png" width="150" alt="#2 Topographic map 桌面"></a><br><a href="https://qybaihe.github.io/hash-design/causeway-festival/previews/02-topographic-map.html">02 · 地形图</a></td>
+<td align="center"><a href="https://qybaihe.github.io/hash-design/causeway-festival/previews/03-warm-handmade.html"><img src="examples/causeway-festival/screenshots/03-warm-handmade-desktop.png" width="150" alt="#3 Warm handmade 桌面"></a><br><a href="https://qybaihe.github.io/hash-design/causeway-festival/previews/03-warm-handmade.html">03 · 手作温度</a></td>
+<td align="center"><a href="https://qybaihe.github.io/hash-design/causeway-festival/previews/04-editorial-magazine.html"><img src="examples/causeway-festival/screenshots/04-editorial-magazine-desktop.png" width="150" alt="#4 Editorial magazine 桌面"></a><br><a href="https://qybaihe.github.io/hash-design/causeway-festival/previews/04-editorial-magazine.html">04 · 杂志编辑</a></td>
+<td align="center"><a href="https://qybaihe.github.io/hash-design/causeway-festival/previews/05-memphis-pop.html"><img src="examples/causeway-festival/screenshots/05-memphis-pop-desktop.png" width="150" alt="#5 Memphis pop 桌面"></a><br><a href="https://qybaihe.github.io/hash-design/causeway-festival/previews/05-memphis-pop.html">05 · 孟菲斯</a></td>
+</tr>
+</table>
+
+**[打开在线对比页 →](https://qybaihe.github.io/hash-design/causeway-festival/compare.html)** · [示例目录](examples/causeway-festival)（事实、brief、过程记录） · seed `causeway-festival-6` · critique 96–100 · brief 遵守度 100
+
+<!-- MORE-EXAMPLES:END -->
 
 ## 为什么
 
@@ -349,7 +405,8 @@ npm run check        # typecheck + lint + prettier + test
 npm run sync         # 改数据后重新生成 SKILL.md 的禁令块、.claude/.cursor 副本、docs/branches.md
 node scripts/smoke.mjs        # 真实 stdio 上的 MCP + CLI 冒烟测试（CI 会跑）
 node scripts/verify-fonts.mjs # 联网检查所有字体 URL（不在 CI 里跑）
-npm run screenshots           # Playwright 截图示例（需 npx playwright install chromium）
+npm run example:critique      # 对照 brief 批量 critique 所有示例预览（低于 90 分即失败）
+npm run screenshots           # Playwright 截图所有示例（需 npx playwright install chromium）
 ```
 
 CI 在 Node 20、22、24 上跑 build、typecheck、lint、格式检查、测试、stdio 冒烟测试和 `npm pack --dry-run`。
@@ -368,7 +425,7 @@ packages/core/           # npm: hash-design —— 数据、映射、brief、cri
   src/cli.ts             #   CLI
 packages/mcp/            # npm: hash-design-mcp —— stdio MCP server
 skills/hash-design/      # Skill 源文件（.claude/ 和 .cursor/ 下为同步副本）
-examples/                # 完整示例：事实 → roll → 5 brief → 5 预览 → 对比页 → 截图
+examples/                # 4 个完整示例：事实 → roll → 5 brief → 5 预览 → 对比页 → 截图
 docs/                    # 架构、映射规范、MCP 参考、分支库目录（生成）
 scripts/                 # sync / smoke / verify-fonts / screenshot / prepack
 ```
