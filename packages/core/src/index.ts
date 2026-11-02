@@ -10,6 +10,7 @@ export * from './types.js';
 export { BANS, BANNED_FONTS, BUZZWORDS_EN, BUZZWORDS_ZH, banIds, isBannedFont } from './data/bans.js';
 export { BRANCHES } from './data/branches/index.js';
 export { DENSITIES, DENSITY_ORDER, SCALES, SCALE_ORDER, TWISTS, VOICES } from './data/pools.js';
+export { SCENARIOS, SCENARIO_IDS, getScenario } from './data/scenarios.js';
 export {
   ALGORITHM,
   formatRef,
@@ -33,8 +34,11 @@ export {
   mapRoll,
   normalizeConstraints,
   primaryBranchIndex,
+  scenarioBaseSize,
+  scenarioFingerprint,
   type Constraints,
   type Design,
+  type DesignScenario,
   type MapOptions,
   type NormalizedConstraints,
   type TraceStep,
@@ -57,6 +61,7 @@ export {
   type RollOptions,
 } from './brief.js';
 export {
+  baseSize,
   contrastReport,
   detectLanguage,
   fontStack,

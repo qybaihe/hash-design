@@ -188,6 +188,54 @@ export interface Twist {
   description: string;
 }
 
+/**
+ * What is being designed. `web` is the default and leaves the mapping exactly as it was; every other
+ * scenario keeps the rolled direction (branch, voice, type, palette, …) and adds an output format,
+ * a canvas and scenario rules.
+ */
+export type ScenarioId = 'web' | 'deck' | 'app' | 'dashboard' | 'poster' | 'email';
+
+/** One concrete format inside a scenario. Byte 13 picks one (non-web scenarios only). */
+export interface ScenarioFormat {
+  id: string;
+  name: Bilingual;
+  description: Bilingual;
+  /** Canvas (fixed formats) or design viewport / column width, in CSS px. */
+  width: number;
+  height: number;
+  /** A fixed artboard that is scaled to fit and never reflowed (slides, posters). */
+  fixed: boolean;
+}
+
+/** How the scenario sets the root text size: scale the density's web base, or clamp it. */
+export type BaseSizeRule = { scale: number } | { min: number; max: number };
+
+export interface Scenario {
+  id: ScenarioId;
+  name: Bilingual;
+  /** One line: what gets delivered. */
+  summary: Bilingual;
+  /** File and structure contract for the previews and the final artifact. */
+  output: Bilingual;
+  /** How many slides / screens / artboards. */
+  count: Bilingual;
+  /** How the branch's layout, anchor and motion translate into this scenario. */
+  layout: Bilingual;
+  anchor: Bilingual;
+  motion: Bilingual;
+  baseSize: BaseSizeRule;
+  /** Byte 13 picks one. Empty for web. */
+  formats: ScenarioFormat[];
+  /** Densities removed from the branch's pool before byte 6 applies (ignored if nothing would be left). */
+  dropDensities: DensityId[];
+  /** Twists removed from the global pool before byte 12 applies. */
+  dropTwists: string[];
+  /** Use the branch's stillest motion option (as with reduced_motion). */
+  stillMotion: boolean;
+  must: Bilingual[];
+  mustNot: Bilingual[];
+}
+
 export type BanSeverity = 'critical' | 'major' | 'minor';
 
 export interface Ban {

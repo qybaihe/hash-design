@@ -17,8 +17,13 @@ export interface ScaleStep {
 }
 
 /** Modular type scale from step -2 to +7 around the density's base size. */
+/** Root text size: the density's base size, or the scenario's size for its canvas (slides, phone, …). */
+export function baseSize(design: Design): number {
+  return design.scenario?.baseSize ?? design.density.baseSize;
+}
+
 export function typeScale(design: Design): ScaleStep[] {
-  const base = design.density.baseSize;
+  const base = baseSize(design);
   const steps: ScaleStep[] = [];
   for (let s = -2; s <= 7; s++) {
     const px = base * design.scale.ratio ** s;
@@ -165,13 +170,18 @@ export function tokensCss(design: Design, lang: Language): string {
   lines.push('');
   for (let i = 1; i <= 8; i++) lines.push(`  --space-${i}: ${d.unit * i}px;`);
   lines.push(`  --section-gap: ${d.sectionGap}px;`);
-  lines.push(`  --max-width: ${d.maxWidth}px;`);
+  const format = design.scenario?.format;
+  lines.push(`  --max-width: ${format ? format.width : d.maxWidth}px;`);
+  if (format?.fixed) {
+    lines.push(`  --canvas-width: ${format.width}px;`);
+    lines.push(`  --canvas-height: ${format.height}px;`);
+  }
   lines.push('');
   lines.push(`  --motion-duration: ${design.motion.duration};`);
   lines.push(`  --motion-easing: ${design.motion.easing};`);
   lines.push('}');
   lines.push('');
-  lines.push(`html { font-size: ${Math.round((d.baseSize / 16) * 1000) / 10}%; }`);
+  lines.push(`html { font-size: ${Math.round((baseSize(design) / 16) * 1000) / 10}%; }`);
   lines.push(
     'body { background: var(--paper); color: var(--ink); font-family: var(--font-body); line-height: var(--leading); }',
   );
