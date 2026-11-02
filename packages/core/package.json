@@ -47,7 +47,8 @@
   ],
   "scripts": {
     "build": "tsc -b",
-    "prepack": "node ../../scripts/prepack-core.mjs && tsc -b"
+    "prepack": "node ../../scripts/prepack-core.mjs && tsc -b",
+    "postpack": "node -e \"require('fs').rmSync('skill', { recursive: true, force: true })\""
   },
   "dependencies": {
     "node-html-parser": "^9.0.6"
