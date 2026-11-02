@@ -9,6 +9,8 @@ import {
   type BranchFamily,
   type Constraints,
   type RollJson,
+  SCENARIO_IDS,
+  type ScenarioId,
   briefJson,
   buildComparePage,
   compareEntriesFromRoll,
@@ -49,6 +51,12 @@ const constraintShape = {
   families: z.array(z.enum(FAMILIES)).optional().describe('Restrict the branch pool to these families.'),
   include_branches: z.array(z.string()).optional().describe('Restrict the branch pool to these branch ids.'),
   exclude_branches: z.array(z.string()).optional().describe('Remove these branch ids from the pool.'),
+  scenario: z
+    .enum(SCENARIO_IDS as [ScenarioId, ...ScenarioId[]])
+    .optional()
+    .describe(
+      'What is being designed: web (default), deck (16:9 slides), app (phone screens), dashboard, poster (poster / social card), email (HTML email). Non-web scenarios add a format (byte 13), a canvas and output rules to each brief. Part of the design identity: pass it again to reproduce.',
+    ),
 };
 
 type ConstraintArgs = {
@@ -59,6 +67,7 @@ type ConstraintArgs = {
   families?: BranchFamily[] | undefined;
   include_branches?: string[] | undefined;
   exclude_branches?: string[] | undefined;
+  scenario?: ScenarioId | undefined;
 };
 
 function toConstraints(a: ConstraintArgs): Constraints {
@@ -70,6 +79,7 @@ function toConstraints(a: ConstraintArgs): Constraints {
     families: a.families ?? [],
     include: a.include_branches ?? [],
     exclude: a.exclude_branches ?? [],
+    ...(a.scenario ? { scenario: a.scenario } : {}),
   };
 }
 
@@ -104,7 +114,7 @@ export function createServer(): McpServer {
     {
       title: 'Roll design directions',
       description:
-        'Roll N true-random SHA-256 hashes (crypto.randomBytes) and map each, through a fixed decision tree, onto a distinct design direction (branch, layout, type, palette, density, motion, motif, anchor, scale, surface, voice, twist). Returns the hashes, the mapping trace and one frozen Markdown brief per direction. Use `seed` only to reproduce examples. Pass `out_dir` to freeze the briefs on disk (roll.json, ROLL.md, briefs/NN-<branch>.md) — recommended, then render each preview from its own brief file.',
+        'Roll N true-random SHA-256 hashes (crypto.randomBytes) and map each, through a fixed decision tree, onto a distinct design direction (branch, layout, type, palette, density, motion, motif, anchor, scale, surface, voice, twist). Returns the hashes, the mapping trace and one frozen Markdown brief per direction. Use `seed` only to reproduce examples. Pass `scenario` for a slide deck, app screens, a dashboard, a poster / social card or an HTML email (default: web page). Pass `out_dir` to freeze the briefs on disk (roll.json, ROLL.md, briefs/NN-<branch>.md) — recommended, then render each preview from its own brief file.',
       inputSchema: {
         subject: z.string().describe('What the page is for, e.g. "第四巷面包店 一页站".'),
         facts: z
@@ -164,7 +174,12 @@ export function createServer(): McpServer {
           source: r.source,
           library: r.library,
           constraints: r.constraints,
-          designs: r.designs.map((d, i) => ({ number: i + 1, ref: d.ref, branch: d.branch.id })),
+          designs: r.designs.map((d, i) => ({
+            number: i + 1,
+            ref: d.ref,
+            branch: d.branch.id,
+            ...(d.scenario ? { format: d.scenario.format.id } : {}),
+          })),
         };
         return { content: [text(parts.join('\n\n')), text(JSON.stringify(machine))] };
       } catch (err) {
@@ -347,6 +362,7 @@ export function createServer(): McpServer {
         subject: z.string().describe('What the page is for.'),
         facts: z.string().optional().describe('Facts, one per line.'),
         count: z.string().optional().describe('Number of directions (default 5).'),
+        scenario: z.string().optional().describe('web (default), deck, app, dashboard, poster or email.'),
       },
     },
     (args) => ({
@@ -361,7 +377,7 @@ export function createServer(): McpServer {
                 ? `Facts (the only content allowed):\n${args.facts}`
                 : 'No facts supplied: ask me for them before writing copy.',
               '',
-              `1. Call roll_designs with count=${args.count ?? '5'}, the subject and facts, out_dir="design/hash-design". Do not pass a seed.`,
+              `1. Call roll_designs with count=${args.count ?? '5'}, the subject and facts, ${args.scenario ? `scenario="${args.scenario}", ` : ''}out_dir="design/hash-design". Do not pass a seed.`,
               '2. For each brief in design/hash-design/briefs, read only that brief and write a self-contained preview to design/hash-design/previews/<same name>.html. Follow it literally.',
               '3. Run critique_page with roll_path + pick on each preview; fix every critical/major finding.',
               '4. Call build_compare_page, show me compare.html, and STOP. Wait for my number.',

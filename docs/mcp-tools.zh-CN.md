@@ -20,17 +20,18 @@ server 在本地以你的用户权限运行，不发起任何网络请求。相�
 
 ## 共用的约束参数
 
-`roll_designs`、`get_brief` 和 `critique_page` 接受同样的扁平约束字段，详见 [mapping.zh-CN.md §5](mapping.zh-CN.md#5-约束)。
+`roll_designs`、`get_brief` 和 `critique_page` 接受同样的扁平约束字段，详见 [mapping.zh-CN.md §5](mapping.zh-CN.md#5-约束)，`scenario` 见 [§6](mapping.zh-CN.md#6-场景)。
 
-| 参数               | 类型                             | 含义                                                      |
-| ------------------ | -------------------------------- | --------------------------------------------------------- |
-| `light_only`       | boolean                          | 只用浅色调色板                                            |
-| `dark_only`        | boolean                          | 只用深色调色板（没有深色调色板的分支会被跳过）            |
-| `reduced_motion`   | boolean                          | 强制每个分支使用最静止的动效选项                          |
-| `brand_colors`     | string[] (≤ 2, `#rgb`/`#rrggbb`) | `[accent]` 或 `[accent, accent2]`                         |
-| `families`         | enum[]                           | `print` `document` `signage` `screen` `craft` `modernist` |
-| `include_branches` | string[]                         | 把池子限制为这些分支 id                                   |
-| `exclude_branches` | string[]                         | 从池中移除这些分支 id                                     |
+| 参数               | 类型                             | 含义                                                                                                                     |
+| ------------------ | -------------------------------- | ------------------------------------------------------------------------------------------------------------------------ |
+| `light_only`       | boolean                          | 只用浅色调色板                                                                                                           |
+| `dark_only`        | boolean                          | 只用深色调色板（没有深色调色板的分支会被跳过）                                                                           |
+| `reduced_motion`   | boolean                          | 强制每个分支使用最静止的动效选项                                                                                         |
+| `brand_colors`     | string[] (≤ 2, `#rgb`/`#rrggbb`) | `[accent]` 或 `[accent, accent2]`                                                                                        |
+| `families`         | enum[]                           | `print` `document` `signage` `screen` `craft` `modernist`                                                                |
+| `include_branches` | string[]                         | 把池子限制为这些分支 id                                                                                                  |
+| `exclude_branches` | string[]                         | 从池中移除这些分支 id                                                                                                    |
+| `scenario`         | enum                             | `web`（默认）`deck` `app` `dashboard` `poster` `email`。非 web 场景会给每份 brief 加上格式（第 13 字节）、画布和输出规则 |
 
 ## 工具
 
@@ -49,9 +50,9 @@ server 在本地以你的用户权限运行，不发起任何网络请求。相�
 | `detail`   | `full` \| `summary` | 有 `out_dir` 时为 `summary`，否则为 `full` | 是否把每份 brief 都内联在返回结果里                           |
 | 约束       | 见上文              |                                            |                                                               |
 
-返回两个文本块：（1）Markdown（汇总表、ref、写入的文件、`detail = full` 时的 brief，以及下一步）；（2）一个 JSON 对象 `{ source, library, constraints, designs: [{ number, ref, branch }] }`，供程序使用。
+返回两个文本块：（1）Markdown（汇总表、ref、写入的文件、`detail = full` 时的 brief，以及下一步）；（2）一个 JSON 对象 `{ source, library, constraints, designs: [{ number, ref, branch, format? }] }`，供程序使用（只有非 web 的 `scenario` 才有 `format`）。
 
-CLI：`hash-design roll --subject … --fact … --facts-file … --count … --seed … --out … --format md|json|summary`。CLI 没有 `--language` 参数，始终自动判断。
+CLI：`hash-design roll --subject … --fact … --facts-file … --count … --seed … --out … --format md|json|summary [约束参数，如 --scenario deck]`。CLI 没有 `--language` 参数，始终自动判断。
 
 ### `get_brief`
 
@@ -78,7 +79,7 @@ CLI：`hash-design brief <ref> [constraints] [--subject …] [--fact …] [--for
 
 ### `critique_page`
 
-对 HTML 页面做静态评审：对照 14 条全局禁令，外加对比度、`viewport`、`lang`、`img alt` 和 reduced-motion 检查。提供 brief 时还会给遵守度打分（字体、配色、圆角 / 阴影策略）。只读。
+对 HTML 页面做静态评审：对照 14 条全局禁令，外加对比度、`viewport`、`lang`、`img alt` 和 reduced-motion 检查。提供 brief 时还会给遵守度打分（字体、配色、圆角 / 阴影策略）。brief 带非 web 场景时，还会按规则 `scenario-<id>` 检查场景的输出约定：`deck` 至少 3 页、1920×1080 或 16:9 画布、键盘翻页；`app` 390 px 机框、至少 2 屏；`dashboard` 等宽数字；`poster` 格式的宽和高；`email` 不含 `<script>`、用 `<table>` 布局、写明栏宽。只读。
 
 | 参数        | 类型                 | 说明                                                                          |
 | ----------- | -------------------- | ----------------------------------------------------------------------------- |
@@ -98,7 +99,7 @@ CLI：`hash-design critique <page.html> [--css <file>] [--brief <ref> | --roll <
 
 ### `build_compare_page`
 
-写出 `compare.html`：把每个预览放进缩放的 iframe 里并排展示，带分支 / 配色 / 字体标签、桌面 / 手机切换和聚焦模式（按键 1–9）。预览应位于 `<previews_dir>/NN-<branch>.html`，缺失的会被列出来。页面上的标签、按钮和操作说明跟随这次 roll 的语言（`roll.json` 里的 `content.language`，中文或英文）。
+写出 `compare.html`：把每个预览放进缩放的 iframe 里并排展示，带分支 / 配色 / 字体标签、桌面 / 手机切换和聚焦模式（按键 1–9）。非 web 场景下，副标题和每张卡片会写明场景和格式；固定画布（`deck`、`poster`）按真实尺寸缩放，“桌面”按钮变为“画布”。预览应位于 `<previews_dir>/NN-<branch>.html`，缺失的会被列出来。页面上的标签、按钮和操作说明跟随这次 roll 的语言（`roll.json` 里的 `content.language`，中文或英文）。
 
 | 参数           | 类型         | 默认值                            |
 | -------------- | ------------ | --------------------------------- |
@@ -121,7 +122,7 @@ CLI：`hash-design compare [--roll <roll.json>] [--out <compare.html>] [--previe
 
 ## Prompt
 
-`hash-design`，参数为 `subject`（必填）、`facts`（每行一条）和 `count`。它会展开成一条用户消息，带 Agent 依次完成：用 `out_dir="design/hash-design"`、不带 seed 调用 `roll_designs` → 每份 brief 做一个预览 → 用 `roll_path` + `pick` 调用 `critique_page` → `build_compare_page` → 停下来等用户回复编号 → 按选中的 brief 做正式页面，并再评审一次。
+`hash-design`，参数为 `subject`（必填）、`facts`（每行一条）、`count` 和 `scenario`。它会展开成一条用户消息，带 Agent 依次完成：用 `out_dir="design/hash-design"`、给定的场景、不带 seed 调用 `roll_designs` → 每份 brief 做一个预览 → 用 `roll_path` + `pick` 调用 `critique_page` → `build_compare_page` → 停下来等用户回复编号 → 按选中的 brief 做正式页面，并再评审一次。
 
 ## 一次掷骰写出的文件
 

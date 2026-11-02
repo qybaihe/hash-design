@@ -1,6 +1,7 @@
 import { hexToHsl, hueDistance, isLightPaper, normalizeHex } from './color.js';
 import { BRANCHES } from './data/branches/index.js';
 import { DENSITIES, SCALES, TWISTS, VOICES } from './data/pools.js';
+import { getScenario, SCENARIO_IDS, SCENARIOS } from './data/scenarios.js';
 import { ALGORITHM, formatRef, hashBytes, sha256Hex, shortHash } from './hash.js';
 import type {
   Branch,
@@ -11,6 +12,9 @@ import type {
   Option,
   Palette,
   Scale,
+  Scenario,
+  ScenarioFormat,
+  ScenarioId,
   SurfaceOption,
   Twist,
   TypePairing,
@@ -33,6 +37,8 @@ export interface Constraints {
   include?: string[];
   /** Remove these branch ids from the pool. */
   exclude?: string[];
+  /** What is being designed (default "web", which leaves the mapping unchanged). */
+  scenario?: ScenarioId;
 }
 
 export interface NormalizedConstraints {
@@ -43,6 +49,19 @@ export interface NormalizedConstraints {
   families: BranchFamily[];
   include: string[];
   exclude: string[];
+  /** Present only for non-web scenarios, so web constraints serialise exactly as before. */
+  scenario?: Exclude<ScenarioId, 'web'>;
+}
+
+/** The scenario layer of a design (non-web scenarios only). */
+export interface DesignScenario {
+  id: Exclude<ScenarioId, 'web'>;
+  /** Fingerprint of the scenario data; the branch library fingerprint is unaffected by scenarios. */
+  data: string;
+  /** Picked by byte 13. */
+  format: ScenarioFormat;
+  /** Root text size in px for this scenario; replaces the density's web base size in the type scale. */
+  baseSize: number;
 }
 
 /** One step of the decision tree, kept so the mapping is auditable ("show your work"). */
@@ -85,8 +104,10 @@ export interface Design {
   scale: Scale;
   surface: SurfaceOption;
   twist: Twist;
+  /** Set for non-web scenarios only. */
+  scenario?: DesignScenario;
   trace: TraceStep[];
-  /** Bytes 13–31: recorded, deliberately unused (reserved for future dimensions). */
+  /** Bytes 13–31 (14–31 with a non-web scenario): recorded, deliberately unused. */
   unusedBytes: string;
 }
 
@@ -111,7 +132,8 @@ export const BYTE_MAP: ReadonlyArray<{ bytes: number[]; dimension: string; sourc
   { bytes: [9], dimension: 'anchor', source: 'branch.anchors' },
   { bytes: [10], dimension: 'scale', source: 'branch.scales' },
   { bytes: [11], dimension: 'surface', source: 'branch.surfaces' },
-  { bytes: [12], dimension: 'twist', source: 'global twists' },
+  { bytes: [12], dimension: 'twist', source: 'global twists (minus the scenario’s dropped twists)' },
+  { bytes: [13], dimension: 'format', source: 'scenario.formats (non-web scenarios only; unused for web)' },
 ];
 
 let cachedFingerprint: string | undefined;
@@ -124,6 +146,24 @@ export function libraryFingerprint(): string {
   return cachedFingerprint;
 }
 
+let cachedScenarioFingerprint: string | undefined;
+
+/**
+ * Fingerprint of the scenario data, recorded in non-web designs. Kept separate from the library
+ * fingerprint so that scenario data can change without touching web refs.
+ */
+export function scenarioFingerprint(): string {
+  cachedScenarioFingerprint ??= sha256Hex(JSON.stringify({ ALGORITHM, SCENARIOS })).slice(0, 12);
+  return cachedScenarioFingerprint;
+}
+
+/** Root text size for a scenario: the density's web base size, scaled or clamped. */
+export function scenarioBaseSize(s: Scenario, density: Density): number {
+  const r = s.baseSize;
+  if ('scale' in r) return Math.round(density.baseSize * r.scale);
+  return Math.min(r.max, Math.max(r.min, density.baseSize));
+}
+
 export function normalizeConstraints(c: Constraints = {}): NormalizedConstraints {
   const n: NormalizedConstraints = {
     lightOnly: Boolean(c.lightOnly),
@@ -134,6 +174,12 @@ export function normalizeConstraints(c: Constraints = {}): NormalizedConstraints
     include: [...new Set(c.include ?? [])].sort(),
     exclude: [...new Set(c.exclude ?? [])].sort(),
   };
+  if (c.scenario !== undefined && c.scenario !== 'web') {
+    if (!getScenario(c.scenario)) {
+      throw new Error(`Unknown scenario "${c.scenario}". Use one of: ${SCENARIO_IDS.join(', ')}.`);
+    }
+    n.scenario = c.scenario;
+  }
   if (n.lightOnly && n.darkOnly) throw new Error('lightOnly and darkOnly cannot both be set');
   if (n.brandColors.length > 2) throw new Error('At most 2 brand colours are supported (accent, accent2)');
   const known = new Set(BRANCHES.map((b) => b.id));
@@ -152,6 +198,7 @@ export function describeConstraints(c: NormalizedConstraints): string {
   if (c.families.length) parts.push(`families=${c.families.join(',')}`);
   if (c.include.length) parts.push(`include=${c.include.join(',')}`);
   if (c.exclude.length) parts.push(`exclude=${c.exclude.join(',')}`);
+  if (c.scenario) parts.push(`scenario=${c.scenario}`);
   return parts.length ? parts.join('; ') : 'none';
 }
 
@@ -222,6 +269,7 @@ export function mapDesign(hash: string, opts: MapOptions = {}): Design {
   const pool = branchPool(constraints);
   const byte = (i: number) => bytes[i] as number;
   const trace: TraceStep[] = [];
+  const scenario = constraints.scenario ? (getScenario(constraints.scenario) as Scenario) : undefined;
 
   const u16 = (byte(0) << 8) | byte(1);
   const primary = u16 % pool.length;
@@ -295,20 +343,35 @@ export function mapDesign(hash: string, opts: MapOptions = {}): Design {
     palette = pick(candidates, byte(5), 'palette', 5, trace, filterNote || undefined);
   }
 
-  const densityId = branch.densities[byte(6) % branch.densities.length] as Density['id'];
+  // Scenarios may drop densities that do not suit the canvas (e.g. packed slides), unless none would remain.
+  let densities = branch.densities;
+  let densityNote: string | undefined;
+  if (scenario) {
+    const dropped = branch.densities.filter((d) => scenario.dropDensities.includes(d));
+    const kept = branch.densities.filter((d) => !scenario.dropDensities.includes(d));
+    if (dropped.length && kept.length) {
+      densities = kept;
+      densityNote = `scenario ${scenario.id} drops ${dropped.join(', ')}`;
+    } else if (dropped.length) {
+      densityNote = `scenario ${scenario.id} would drop ${dropped.join(', ')}, leaving nothing; branch list kept`;
+    }
+  }
+  const densityId = densities[byte(6) % densities.length] as Density['id'];
   const density = DENSITIES[densityId];
   trace.push({
     dimension: 'density',
     bytes: [6],
     hex: hx(byte(6)),
-    rule: `0x${hx(byte(6))} = ${byte(6)}; ${byte(6)} mod ${branch.densities.length} = ${byte(6) % branch.densities.length}`,
-    poolSize: branch.densities.length,
-    index: byte(6) % branch.densities.length,
+    rule: `0x${hx(byte(6))} = ${byte(6)}; ${byte(6)} mod ${densities.length} = ${byte(6) % densities.length}`,
+    poolSize: densities.length,
+    index: byte(6) % densities.length,
     result: density.id,
+    ...(densityNote ? { note: densityNote } : {}),
   });
 
   let motion: MotionOption;
-  if (constraints.reducedMotion) {
+  if (constraints.reducedMotion || scenario?.stillMotion) {
+    const why = constraints.reducedMotion ? 'reduced-motion' : `scenario ${scenario?.id}`;
     const ms = (m: MotionOption) =>
       parseFloat(m.duration) * (m.duration.trim().endsWith('ms') ? 1 : 1000) || 0;
     const sorted = branch.motion.map((m, i) => ({ m, i })).sort((a, b) => ms(a.m) - ms(b.m) || a.i - b.i);
@@ -318,11 +381,13 @@ export function mapDesign(hash: string, opts: MapOptions = {}): Design {
       dimension: 'motion',
       bytes: [7],
       hex: hx(byte(7)),
-      rule: `reduced-motion → stillest option (shortest duration) = ${motion.id}`,
+      rule: `${why} → stillest option (shortest duration) = ${motion.id}`,
       poolSize: branch.motion.length,
       index: chosen.i,
       result: motion.id,
-      note: 'byte 7 not used because reduced-motion was requested',
+      note: constraints.reducedMotion
+        ? 'byte 7 not used because reduced-motion was requested'
+        : `byte 7 not used because scenario ${scenario?.id} is static`,
     });
   } else {
     motion = pick(branch.motion, byte(7), 'motion', 7, trace);
@@ -344,7 +409,28 @@ export function mapDesign(hash: string, opts: MapOptions = {}): Design {
   });
 
   const surface = pick(branch.surfaces, byte(11), 'surface', 11, trace);
-  const twist = pick(TWISTS, byte(12), 'twist', 12, trace);
+  const droppedTwists = scenario ? TWISTS.filter((t) => scenario.dropTwists.includes(t.id)) : [];
+  const twist = pick(
+    droppedTwists.length ? TWISTS.filter((t) => !droppedTwists.includes(t)) : TWISTS,
+    byte(12),
+    'twist',
+    12,
+    trace,
+    droppedTwists.length
+      ? `scenario ${scenario?.id} drops ${droppedTwists.map((t) => t.id).join(', ')}`
+      : undefined,
+  );
+
+  let scenarioPart: DesignScenario | undefined;
+  if (scenario && constraints.scenario) {
+    const format = pick(scenario.formats, byte(13), 'format', 13, trace, `scenario ${scenario.id}`);
+    scenarioPart = {
+      id: constraints.scenario,
+      data: scenarioFingerprint(),
+      format,
+      baseSize: scenarioBaseSize(scenario, density),
+    };
+  }
 
   return {
     algorithm: ALGORITHM,
@@ -367,8 +453,9 @@ export function mapDesign(hash: string, opts: MapOptions = {}): Design {
     scale,
     surface,
     twist,
+    ...(scenarioPart ? { scenario: scenarioPart } : {}),
     trace,
-    unusedBytes: h.slice(26),
+    unusedBytes: h.slice(scenarioPart ? 28 : 26),
   };
 }
 

@@ -162,6 +162,108 @@ function colorDistance(a: string, b: string): number {
   return Math.sqrt((x.r - y.r) ** 2 + (x.g - y.g) ** 2 + (x.b - y.b) ** 2);
 }
 
+/**
+ * Static checks for a non-web scenario's output contract. Cheap and conservative: they catch a page
+ * that ignores the scenario (no slides, no artboard, scripts in an email), not finer points.
+ */
+function scenarioFindings(design: Design, html: string, root: HTMLElement, css: string): Finding[] {
+  const sc = design.scenario;
+  if (!sc) return [];
+  const f = sc.format;
+  const rule = `scenario-${sc.id}`;
+  const px = (n: number) => new RegExp(`(^|[^\\d.])${n}px`);
+  const out: Finding[] = [];
+  switch (sc.id) {
+    case 'deck': {
+      const slides = root.querySelectorAll('.slide, [data-slide]').length;
+      if (slides < 3)
+        out.push({
+          rule,
+          severity: 'major',
+          message: `A slide deck needs slides: found ${slides} element(s) with class "slide" or [data-slide].`,
+          fix: 'Build each slide as <section class="slide"> on the 1920×1080 canvas (preview: 5–7 slides).',
+        });
+      if (!(px(1920).test(css) && px(1080).test(css)) && !/16\s*\/\s*9/.test(css))
+        out.push({
+          rule,
+          severity: 'minor',
+          message: 'No 1920×1080 (16:9) slide canvas in the CSS.',
+          fix: 'Give slides a fixed 1920×1080 size and scale them to fit the window.',
+        });
+      if (!/keydown|keyup/.test(html))
+        out.push({
+          rule,
+          severity: 'minor',
+          message: 'No keyboard navigation for the slides.',
+          fix: 'Handle ←/→, PageUp/PageDown and Space, and keep the slide number in the URL hash.',
+        });
+      break;
+    }
+    case 'app': {
+      if (!px(f.width).test(css))
+        out.push({
+          rule,
+          severity: 'minor',
+          message: `No ${f.width} px phone frame in the CSS.`,
+          fix: `Draw each screen as a ${f.width}×${f.height} frame.`,
+        });
+      if (root.querySelectorAll('.screen, [data-screen]').length < 2)
+        out.push({
+          rule,
+          severity: 'minor',
+          message: 'Fewer than two screens (.screen or [data-screen]); the preview should show a journey.',
+          fix: 'Show 3 screens side by side, each captioned with its step.',
+        });
+      break;
+    }
+    case 'dashboard': {
+      if (!/tabular-nums|["']tnum["']/.test(css))
+        out.push({
+          rule,
+          severity: 'minor',
+          message: 'Figures are not set in tabular numerals.',
+          fix: 'Use font-variant-numeric: tabular-nums for figures and table columns.',
+        });
+      break;
+    }
+    case 'poster': {
+      if (!(px(f.width).test(css) && px(f.height).test(css)))
+        out.push({
+          rule,
+          severity: 'minor',
+          message: `No ${f.width}×${f.height} artboard in the CSS.`,
+          fix: `Give the artboard exactly ${f.width}×${f.height} px and scale it to fit the window.`,
+        });
+      break;
+    }
+    case 'email': {
+      if (root.querySelectorAll('script').length)
+        out.push({
+          rule,
+          severity: 'major',
+          message: 'The email contains <script>; mail clients strip or block it.',
+          fix: 'Remove all JavaScript.',
+        });
+      if (!root.querySelectorAll('table').length)
+        out.push({
+          rule,
+          severity: 'major',
+          message: 'No table layout; many mail clients ignore CSS layout.',
+          fix: 'Build the column as nested role="presentation" tables.',
+        });
+      if (!px(f.width).test(css) && !new RegExp(`width=["']?${f.width}\\b`).test(html))
+        out.push({
+          rule,
+          severity: 'minor',
+          message: `No ${f.width} px column width.`,
+          fix: `Set the main table to width="${f.width}" with max-width: 100%.`,
+        });
+      break;
+    }
+  }
+  return out;
+}
+
 /** Static critique of an HTML page against the global bans (and optionally a brief). */
 export function critiquePage(input: CritiqueInput): CritiqueResult {
   const root = parse(input.html, {
@@ -734,6 +836,13 @@ export function critiquePage(input: CritiqueInput): CritiqueResult {
         message: `Branch shadow policy is "${snippet(d.branch.tokens.shadow, 60)}" but ${shadowUse.length} box-shadow declarations found.`,
         fix: 'Remove shadows unless the branch token explicitly allows a specific one.',
       });
+    }
+    if (d.scenario) {
+      checked.add(`scenario-${d.scenario.id}`);
+      for (const f of scenarioFindings(d, input.html, root, css)) {
+        points -= f.severity === 'major' ? 15 : 5;
+        add(f);
+      }
     }
     adherence = Math.max(0, points);
   }

@@ -44,6 +44,59 @@ describe('cli', () => {
     expect(j.constraints.lightOnly).toBe(true);
   });
 
+  it('roll --scenario adds the scenario; brief and critique reproduce it from roll.json', async () => {
+    const dir = await mkdtemp(join(tmpdir(), 'hd-cli-scenario-'));
+    await main([
+      'roll',
+      '--subject',
+      'Causeway',
+      '--fact',
+      'A festival',
+      '--seed',
+      's',
+      '--scenario',
+      'deck',
+      '--out',
+      dir,
+    ]);
+    const roll = JSON.parse(await readFile(join(dir, 'roll.json'), 'utf8'));
+    expect(roll.constraints.scenario).toBe('deck');
+    expect(roll.designs[0].scenario.format.width).toBe(1920);
+    const saved = await readFile(join(dir, 'briefs', `${roll.designs[0].slug}.md`), 'utf8');
+    expect(saved).toContain('## 场景 Scenario — 幻灯片 / Slide deck');
+    out = '';
+    await main([
+      'brief',
+      roll.designs[0].ref,
+      '--scenario',
+      'deck',
+      '--subject',
+      'Causeway',
+      '--fact',
+      'A festival',
+    ]);
+    expect(out.split('\n').slice(1).join('\n')).toBe(saved.split('\n').slice(1).join('\n'));
+    const page = join(dir, 'page.html');
+    await writeFile(page, '<!doctype html><html lang="en"><body><h1>Not a deck</h1></body></html>');
+    out = '';
+    await main(['critique', page, '--roll', join(dir, 'roll.json'), '--pick', '1']);
+    expect(out).toContain('scenario-deck');
+    out = '';
+    await main(['compare', '--roll', join(dir, 'roll.json')]);
+    expect(await readFile(join(dir, 'compare.html'), 'utf8')).toContain('data-w="1920"');
+  });
+
+  it('roll --scenario web is the same as no scenario; unknown scenarios fail', async () => {
+    await main(['roll', '--seed', 'w', '--format', 'json']);
+    const plain = JSON.parse(out);
+    out = '';
+    await main(['roll', '--seed', 'w', '--scenario', 'web', '--format', 'json']);
+    const web = JSON.parse(out);
+    expect(web.designs).toEqual(plain.designs);
+    expect(web.constraints).toEqual(plain.constraints);
+    await expect(main(['roll', '--scenario', 'billboard'])).rejects.toThrow(/Unknown scenario "billboard"/);
+  });
+
   it('roll --out writes files and compare builds the light table', async () => {
     const dir = await mkdtemp(join(tmpdir(), 'hd-cli-'));
     const facts = join(dir, 'facts.md');

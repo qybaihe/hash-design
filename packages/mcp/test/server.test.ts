@@ -110,6 +110,54 @@ describe('hash-design MCP server', () => {
     expect(await readFile(join(dir, 'compare.html'), 'utf8')).toContain('<iframe');
   });
 
+  it('roll_designs with a scenario freezes it into roll.json, briefs and get_brief', async () => {
+    const dir = await mkdtemp(join(tmpdir(), 'hd-mcp-scn-'));
+    const r = await client.callTool({
+      name: 'roll_designs',
+      arguments: { subject: 'Quarterly review', seed: 'scn', scenario: 'deck', out_dir: dir },
+    });
+    expect(r.isError).toBeFalsy();
+    const machine = JSON.parse((r.content as TextContent[])[1]!.text);
+    expect(machine.constraints.scenario).toBe('deck');
+    expect(machine.designs[0].format).toMatch(/^(full-bleed|index-rail|document)$/);
+    const roll = JSON.parse(await readFile(join(dir, 'roll.json'), 'utf8'));
+    expect(roll.constraints.scenario).toBe('deck');
+    const first = roll.designs[0];
+    const saved = await readFile(join(dir, 'briefs', `01-${first.branch.id}.md`), 'utf8');
+    expect(saved).toContain('## 场景 Scenario');
+    expect(saved).toContain('1920×1080');
+    const { text } = await call('get_brief', {
+      ref: first.ref,
+      subject: 'Quarterly review',
+      scenario: 'deck',
+      format: 'json',
+    });
+    const brief = JSON.parse(text);
+    expect(brief.scenario.id).toBe('deck');
+    expect(brief.scenario.format.id).toBe(machine.designs[0].format);
+    // Same ref without the scenario: same branch (bytes 0–1 unchanged), no scenario section.
+    const web = JSON.parse((await call('get_brief', { ref: first.ref, format: 'json' })).text);
+    expect(web.branch.id).toBe(brief.branch.id);
+    expect(web.scenario).toBeUndefined();
+    // critique_page applies the scenario's output checks.
+    const crit = JSON.parse(
+      (
+        await call('critique_page', {
+          html: '<html><body><p>one slide</p></body></html>',
+          roll_path: join(dir, 'roll.json'),
+          pick: 1,
+          format: 'json',
+        })
+      ).text,
+    );
+    expect(crit.findings.map((f: { rule: string }) => f.rule)).toContain('scenario-deck');
+  });
+
+  it('roll_designs rejects unknown scenarios', async () => {
+    const { res } = await call('roll_designs', { subject: 'x', seed: 's', scenario: 'billboard' });
+    expect(res.isError).toBe(true);
+  });
+
   it('list_branches / get_branch', async () => {
     const list = await call('list_branches', {});
     expect(list.text).toContain(`${BRANCHES.length} branches`);

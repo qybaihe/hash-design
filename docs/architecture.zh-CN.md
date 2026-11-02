@@ -8,7 +8,7 @@ hash-design 是一个 npm workspaces monorepo，包含两个包、一个 Skill �
                  ┌──────────────────────────── packages/core (npm: hash-design) ─────────────────────────────┐
   facts ───────► │ hash.ts ──► mapping.ts ──► brief.ts / derive.ts ──► files.ts (roll.json, ROLL.md, briefs/) │
   constraints    │   ▲            ▲                                                                           │
-                 │   │       data/ (branches, pools, bans) ── validate.ts                                    │
+                 │   │       data/ (branches, pools, bans, scenarios) ── validate.ts                         │
                  │ crypto     critique.ts (static HTML/CSS checks)   compare.ts (compare.html)   catalog.ts   │
                  │            cli.ts / bin.ts (hash-design CLI)      skill.ts (SKILL.md access + sync block) │
                  └───────────────▲────────────────────────────────────────────────────────────────────────────┘
@@ -24,22 +24,23 @@ hash-design 是一个 npm workspaces monorepo，包含两个包、一个 Skill �
 
 ### `packages/core`（`hash-design`）
 
-| 模块                       | 职责                                                                                                            |
-| -------------------------- | --------------------------------------------------------------------------------------------------------------- |
-| `src/hash.ts`              | `randomHash`（CSPRNG → SHA-256）、`seededHash`、`rollHashes`、ref 解析与格式化（`<hash>+<probe>`）、`ALGORITHM` |
-| `src/mapping.ts`           | 决策树：`mapDesign`、`mapRoll`（碰撞 + 家族分散）、`branchPool`、约束、`BYTE_MAP`、`libraryFingerprint`         |
-| `src/data/branches/`       | 40 个分支，每个分支一个对象（`_exemplar.ts` 加四个家族文件）；`index.ts` 固定 `BRANCH_ORDER`（即映射顺序）      |
-| `src/data/pools.ts`        | 全局池：4 种密度、7 种模数比例、14 种文案语气、16 个变数                                                        |
-| `src/data/bans.ts`         | 14 条全局禁令、23 个禁用字体、英文和中文空话词表                                                                |
-| `src/validate.ts`          | `validateBranch` / `validateLibrary`：结构、对比度、禁用字体、框架色值、字体多样性                              |
-| `src/derive.ts`            | 派生 token：字号阶梯、字体栈、Google Fonts URL、WCAG 对比度报告、`tokens.css`、语言检测                         |
-| `src/brief.ts`             | `roll`、`reproduce`、Markdown 和 JSON brief、掷骰摘要、`roll.json` 的结构                                       |
-| `src/files.ts`             | `writeRoll`：冻结 `roll.json`、`ROLL.md` 和 `briefs/NN-<branch>.md`                                             |
-| `src/critique.ts`          | `critiquePage`：逐条检查禁令的静态 HTML/CSS 检查，外加对比度 / 无障碍基础项和 brief 遵守度                      |
-| `src/compare.ts`           | `buildComparePage`：一个自包含的 HTML 文件，含缩放的 iframe、标签、桌面/手机切换、聚焦快捷键                    |
-| `src/catalog.ts`           | 分支列表 / 详情 / 目录渲染（MCP server 和 `docs/branches.md` 都用它）                                           |
-| `src/skill.ts`             | 定位 `SKILL.md`（仓库内或包内副本），并渲染生成的禁令块                                                         |
-| `src/cli.ts`, `src/bin.ts` | `hash-design` CLI（用 `node:util` 的 `parseArgs`，不用 CLI 框架）                                               |
+| 模块                       | 职责                                                                                                                           |
+| -------------------------- | ------------------------------------------------------------------------------------------------------------------------------ |
+| `src/hash.ts`              | `randomHash`（CSPRNG → SHA-256）、`seededHash`、`rollHashes`、ref 解析与格式化（`<hash>+<probe>`）、`ALGORITHM`                |
+| `src/mapping.ts`           | 决策树：`mapDesign`、`mapRoll`（碰撞 + 家族分散）、`branchPool`、约束、`BYTE_MAP`、`libraryFingerprint`、`scenarioFingerprint` |
+| `src/data/branches/`       | 40 个分支，每个分支一个对象（`_exemplar.ts` 加四个家族文件）；`index.ts` 固定 `BRANCH_ORDER`（即映射顺序）                     |
+| `src/data/pools.ts`        | 全局池：4 种密度、7 种模数比例、14 种文案语气、16 个变数                                                                       |
+| `src/data/scenarios.ts`    | 6 个场景（web、deck、app、dashboard、poster、email）：格式、画布、基准字号规则、池过滤、输出约定、规则                         |
+| `src/data/bans.ts`         | 14 条全局禁令、23 个禁用字体、英文和中文空话词表                                                                               |
+| `src/validate.ts`          | `validateBranch` / `validateLibrary`：结构、对比度、禁用字体、框架色值、字体多样性                                             |
+| `src/derive.ts`            | 派生 token：字号阶梯、字体栈、Google Fonts URL、WCAG 对比度报告、`tokens.css`、语言检测                                        |
+| `src/brief.ts`             | `roll`、`reproduce`、Markdown 和 JSON brief、掷骰摘要、`roll.json` 的结构                                                      |
+| `src/files.ts`             | `writeRoll`：冻结 `roll.json`、`ROLL.md` 和 `briefs/NN-<branch>.md`                                                            |
+| `src/critique.ts`          | `critiquePage`：逐条检查禁令的静态 HTML/CSS 检查，外加对比度 / 无障碍基础项和 brief 遵守度                                     |
+| `src/compare.ts`           | `buildComparePage`：一个自包含的 HTML 文件，含缩放的 iframe、标签、桌面/手机切换、聚焦快捷键                                   |
+| `src/catalog.ts`           | 分支列表 / 详情 / 目录渲染（MCP server 和 `docs/branches.md` 都用它）                                                          |
+| `src/skill.ts`             | 定位 `SKILL.md`（仓库内或包内副本），并渲染生成的禁令块                                                                        |
+| `src/cli.ts`, `src/bin.ts` | `hash-design` CLI（用 `node:util` 的 `parseArgs`，不用 CLI 框架）                                                              |
 
 运行时依赖：`node-html-parser`（供 `critique_page` 使用），没有别的。
 
@@ -63,6 +64,8 @@ hash-design 是一个 npm workspaces monorepo，包含两个包、一个 Skill �
 - 版式、字体对、配色、动效、母题、首屏锚点、材质，每项各 3 个选项
 - 1–3 个允许的密度和模数比例
 - 必须 / 不要清单
+
+场景（`src/data/scenarios.ts`）同样是数据：每个场景有双语摘要、输出约定、数量、分支的版式 / 锚点 / 动效如何落地的说明、基准字号规则、格式（第 13 字节）、要移除的密度和变数，以及必须 / 不要清单。它们单独计算 `scenarioFingerprint`，所以增改场景不会改变库指纹，也不会改变任何 web ref。见 [mapping.zh-CN.md §6](mapping.zh-CN.md#6-场景)。
 
 `validateLibrary`（在 `branches.test.ts` 中运行）强制要求：每个维度 3–5 个选项；hex 为小写 `#rrggbb`；ink/paper 对比度 ≥ 7:1，muted/paper ≥ 4.5:1；至少一套浅色调色板；不得使用禁用字体（fallback 也算）；不得使用框架默认 hex 值；同一个 display 字体最多作为 3 个分支的首选；id 和名称唯一。`branches.test.ts` 还会检查任意两个分支的首选调色板（paper + accent）不相同。`scripts/verify-fonts.mjs` 在线检查每个 Google Fonts URL（235/235）；它需要联网，所以不在 CI 里跑。
 

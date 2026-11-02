@@ -55,6 +55,8 @@ hash-design 不去求模型"更有品味"，而是**把选择权拿走**：
 
 本质上，这是用**外部随机约束**打破模型的默认审美，跟 KV cache、温度采样都没有关系。模型的品味只用在执行质量上，比如对齐、节奏、细节和可读性，而不是用来挑风格。
 
+默认产出是网页。传入**场景** `scenario`，同一批掷出的方向就能变成幻灯片、手机 App 界面、数据看板、海报 / 社交卡片或 HTML 邮件（见[场景](#场景)）。
+
 它由四部分组成：**Agent Skill**（何时、按什么顺序跑这套流程）、**MCP server**（stdio，6 个工具）、**CLI** 和 **TypeScript 库**，都在这个仓库里。
 
 ## 快速开始
@@ -139,13 +141,14 @@ claude mcp add hash-design -- node ~/hash-design/packages/mcp/dist/bin.js
 
 > 用 hash-design 给「第四巷面包店」做一个一页站。事实：周二至周日 7:00–19:00 营业，周一休息；乡村面包 ¥38……
 
-Agent 会依次掷骰、冻结 brief、做 5 个预览、生成 `design/hash-design/compare.html`，然后停下来等你回复编号。支持 MCP prompt 的客户端也可以直接用 `hash-design` 这个 prompt（参数 `subject`、`facts`、`count`）启动同样的流程。
+Agent 会依次掷骰、冻结 brief、做 5 个预览、生成 `design/hash-design/compare.html`，然后停下来等你回复编号。支持 MCP prompt 的客户端也可以直接用 `hash-design` 这个 prompt（参数 `subject`、`facts`、`count`、`scenario`）启动同样的流程。要做幻灯片、App 界面、看板、海报或邮件时直接说，Agent 会传对应的 `scenario`。
 
 ### CLI
 
 ```bash
 hash-design roll --subject "第四巷面包店" --facts-file facts.md --out design/hash-design   # 真随机 5 个方向
 hash-design roll --subject "…" --light-only --brand "#c8102e" --format json            # 带约束
+hash-design roll --subject "季度复盘" --facts-file facts.md --scenario deck --out design/deck   # 做幻灯片而不是网页
 hash-design brief <ref> [constraints]                                                 # 复现 brief
 hash-design branches [--family craft]                                                 # 分支库
 hash-design branch ink-and-seal                                                       # 分支详情
@@ -154,7 +157,7 @@ hash-design compare --roll design/hash-design/roll.json                         
 hash-design skill install --target both                                               # 安装 Skill
 ```
 
-源码安装时用 `node packages/core/dist/bin.js …` 运行（也可以在仓库根目录执行 `alias hash-design="node $PWD/packages/core/dist/bin.js"`）。`hash-design --help` 列出所有命令，`hash-design <command> --help`（例如 `hash-design roll --help`）列出单个命令的全部参数，包括约束参数 `--light-only`、`--dark-only`、`--reduced-motion`、`--brand`、`--family`、`--include`、`--exclude`。
+源码安装时用 `node packages/core/dist/bin.js …` 运行（也可以在仓库根目录执行 `alias hash-design="node $PWD/packages/core/dist/bin.js"`）。`hash-design --help` 列出所有命令，`hash-design <command> --help`（例如 `hash-design roll --help`）列出单个命令的全部参数，包括约束参数 `--light-only`、`--dark-only`、`--reduced-motion`、`--brand`、`--family`、`--include`、`--exclude`、`--scenario`。
 
 ### 作为库使用
 
@@ -210,15 +213,36 @@ flowchart LR
 | 10    | 字号比例 scale  | 分支允许的模数比例（1.125–1.618）                                                 |
 | 11    | 材质 surface    | 分支内 3 选 1（带 CSS 提示）                                                      |
 | 12    | 变数 twist      | 16 种，例如"数字即主角""唯一越界""首屏无按钮""版权页式页脚"                       |
-| 13–31 | 未使用          | 记录在 brief 里，保留给以后的维度                                                 |
+| 13    | 格式 format     | 仅限非 web 场景：从场景的 3–4 种格式里选 1 种（例如幻灯片的母版）                 |
+| 13–31 | 未使用          | 记录在 brief 里，保留给以后的维度（场景用到第 13 字节时为 14–31）                 |
 
 - **碰撞与家族分散**：同一次掷骰里，若某个哈希落到已用过的分支，就向后走（+1、+2…）到下一个空闲分支。只要还有没用到的**家族**（印刷品 / 文档票据 / 标识招牌 / 屏幕仪器 / 手作东方 / 现代主义），落到已用家族的分支也算碰撞。所以 5 个方向一定来自 5 个不同家族，不会出现 5 张纸质文档的情况。走过的步数记为 `probe`，ref 写成 `<hash>+<probe>`，单独拿出来也能复现。
 - **分支顺序**：库的顺序就是映射顺序。每个家族的成员均匀分布在整圈上，所以"向后走"分走的概率不会集中到某一个分支上（5 连抽时，每个分支的出现率在 9%–17% 之间，均匀分布是 12.5%）。
-- **约束**会先过滤候选池，再应用字节，所以约束也是设计身份的一部分：`light_only`、`dark_only`、`reduced_motion`、`brand_colors`（品牌色替换 accent，自动挑色相最近的调色板，并给出对比度）、`families`、`include_branches`、`exclude_branches`。
+- **约束**会先过滤候选池，再应用字节，所以约束也是设计身份的一部分：`light_only`、`dark_only`、`reduced_motion`、`brand_colors`（品牌色替换 accent，自动挑色相最近的调色板，并给出对比度）、`families`、`include_branches`、`exclude_branches`、`scenario`。
 - **可复现**：同一个 `ref`、同样的约束、同一个库指纹，一定得到同一份 brief。每份 brief 都记录了算法版本（`hash-design/v1`）和库指纹（数据的 SHA-256 前 12 位）。
 - `seed` **只用来复现示例和测试**，真实使用一律走系统随机。
 
 完整规范和逐字节推演示例见 [docs/mapping.zh-CN.md](docs/mapping.zh-CN.md)。
+
+### 场景
+
+`scenario` 说明你要设计的是什么。默认的 `web` 就是上面的网页流程，完全不变。其余五个保留掷出的方向，给每份 brief 加上格式、画布和输出规则。
+
+| 场景          | 交付物                                                                    | 格式（第 13 字节）                         | 画布                                      |
+| ------------- | ------------------------------------------------------------------------- | ------------------------------------------ | ----------------------------------------- |
+| `web`（默认） | 响应式网页、落地页或一页站                                                | —                                          | 响应式                                    |
+| `deck`        | HTML 幻灯片：每页一个固定画布，键盘翻页，可打印成 PDF                     | 满版、索引栏、文档母版                     | 1920×1080                                 |
+| `app`         | 同一条用户路径上的几屏手机界面，并排展示                                  | 底部标签栏、顶部分段、单任务流程、底部面板 | 390×844                                   |
+| `dashboard`   | 一屏桌面看板：核心数字、一张主图表、若干辅助面板                          | 侧栏、顶栏、看板墙                         | 1440×900                                  |
+| `poster`      | 一张画板：海报或社交图片，截图即成品                                      | 竖版 4:5、方形、竖屏 9:16、链接卡片        | 1080×1350、1080×1080、1080×1920、1200×630 |
+| `email`       | 能在真实邮件客户端里显示的 HTML 邮件：表格布局、内联样式、不用 JavaScript | 单栏、通栏色带、摘要简报                   | 600 或 640 px 单栏                        |
+
+- **方向保持不变。** 场景不过滤分支池，所以同一个哈希在任何场景下都得到同样的分支、文案语气、版式、字体对、配色、母题、首屏锚点、字号比例和材质。
+- **部分池子变小。** 读第 6、12 字节之前，先去掉在该场景里没有意义的密度和变数（幻灯片不用 `packed`，也不用"首屏不放按钮"），所以密度和变数可能与 web 版不同。邮件一律取最静止的动效。
+- **尺寸随媒介。** 基准字号由密度基准缩放或限定而来（幻灯片 ×2、海报 ×1.75、App 和邮件 16–17 px、看板 13–15 px），`tokens.css` 里带上画布尺寸。
+- **属于设计身份。** 和其他约束一样，复现 ref 时要传同样的 `scenario`。`web` 什么都不改：已有的 ref、brief 和示例都能原样复现。
+
+`critique_page` 会检查各场景的输出约定（页数与画布、手机机框、等宽数字、画板尺寸、邮件表格），对比页会按真实尺寸缩放固定画布。场景列表和规则参考了 [Open Design](https://github.com/nexu-io/open-design) 的模板。详见 [docs/mapping.zh-CN.md §6](docs/mapping.zh-CN.md#6-场景)。
 
 ### 一份 brief 里有什么
 
@@ -232,6 +256,7 @@ flowchart LR
 - 密度、圆角、边框、阴影策略、材质（含 CSS 片段）、母题、动效规格
 - 变数（twist）、分支的必须/不要，以及 14 条全局禁令
 - 可直接粘贴的 `tokens.css`，以及交付前自检清单
+- 非 web 场景还有一节「场景」：格式、画布、文件结构、页数 / 屏数、版式 / 锚点 / 动效如何落地，以及场景规则和禁忌
 
 brief 是写给 Agent 看的，标题中英双语。`language`（`zh` 或 `en`，默认根据 subject 和 facts 自动判断）决定概念说明和执行指令用哪种语言，以及是否加载中文字体。文案语气、变数等部分描述目前只有中文。
 
@@ -269,16 +294,16 @@ seed `causeway-festival-6` · `critique_page` 96–100 · brief 遵守度 100 ·
 
 ### MCP 工具
 
-| 工具                 | 作用                                                                                                                                                                                 |
-| -------------------- | ------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------ |
-| `roll_designs`       | 输入 `subject`、`facts`、`count`（默认 5），可选 `seed`、`language` 和约束。返回 5 个哈希、映射过程和 5 份 brief。传 `out_dir` 会把 `roll.json`、`ROLL.md`、`briefs/*.md` 冻结到磁盘 |
-| `get_brief`          | 按 `ref`（`<hash>` 或 `<hash>+<probe>`）加同样的约束复现 brief，支持 Markdown 或 JSON                                                                                                |
-| `list_branches`      | 列出 40 个设计分支，可按家族过滤                                                                                                                                                     |
-| `get_branch`         | 查看一个分支的全部选项和 token                                                                                                                                                       |
-| `critique_page`      | 输入 HTML 字符串或文件路径，按禁令和 AI 味清单打分；带 `brief_ref` 或 `roll_path`+`pick` 时还会给出对 brief 的遵守度                                                                 |
-| `build_compare_page` | 根据 `roll.json` 生成并排对比页 `compare.html`                                                                                                                                       |
+| 工具                 | 作用                                                                                                                                                                                             |
+| -------------------- | ------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------ |
+| `roll_designs`       | 输入 `subject`、`facts`、`count`（默认 5），可选 `seed`、`language`、`scenario` 和约束。返回 5 个哈希、映射过程和 5 份 brief。传 `out_dir` 会把 `roll.json`、`ROLL.md`、`briefs/*.md` 冻结到磁盘 |
+| `get_brief`          | 按 `ref`（`<hash>` 或 `<hash>+<probe>`）加同样的约束复现 brief，支持 Markdown 或 JSON                                                                                                            |
+| `list_branches`      | 列出 40 个设计分支，可按家族过滤                                                                                                                                                                 |
+| `get_branch`         | 查看一个分支的全部选项和 token                                                                                                                                                                   |
+| `critique_page`      | 输入 HTML 字符串或文件路径，按禁令和 AI 味清单打分；带 `brief_ref` 或 `roll_path`+`pick` 时还会给出对 brief 和场景输出约定的遵守度                                                               |
+| `build_compare_page` | 根据 `roll.json` 生成并排对比页 `compare.html`                                                                                                                                                   |
 
-资源：`hash-design://bans`、`hash-design://workflow`（即 SKILL.md）、`hash-design://branches`、`hash-design://branch/{id}`。Prompt：`hash-design`（参数为 `subject`、`facts`、`count`）。
+资源：`hash-design://bans`、`hash-design://workflow`（即 SKILL.md）、`hash-design://branches`、`hash-design://branch/{id}`。Prompt：`hash-design`（参数为 `subject`、`facts`、`count`、`scenario`）。
 
 每个参数、返回格式和对应的 CLI 命令见 [docs/mcp-tools.zh-CN.md](docs/mcp-tools.zh-CN.md)。
 
