@@ -20,9 +20,11 @@ Neither package (`hash-design`, `hash-design-mcp`) has been published to npm yet
 - "More examples" in every README: each new example's compare page, five desktop thumbnails and links to the live pages and the example folder. The Pages index (`examples/index.html`) now lists all four examples.
 - The compare page (`hash-design compare`, `build_compare_page`) follows the roll's language: an English roll gets English labels, buttons, instructions and voice/twist names, and `<html lang="en">`. Chinese rolls are unchanged. `compareSubtitle()` is exported from the library.
 - `scripts/examples.mjs` and the npm scripts `examples`, `example:roll`, `example:critique` and `example:compare`, which list, re-roll, critique or rebuild the compare pages of every example (or one, with `-- <name>`).
+- `scripts/hero.mjs` (`npm run hero`) builds the README hero `docs/assets/hero.png` and a 1280×640 `docs/assets/social-preview.png` from one example's roll and screenshots: the prompt fans out into the five previews, labelled with their refs, branch names and palettes. Both images currently show `examples/causeway-festival`.
 
 ### Changed
 
+- The first screen of every README: a problem-first pitch, four badges (the rest in a collapsed block), the new hero linked to the Causeway compare page, a quick start that installs from source, and a four-line overview. The Fourth Lane Bakery compare image moved to the top of each Demo section.
 - `npm run screenshots` now covers every example; `node scripts/screenshot.mjs <name|dir> [prefix]` still shoots one.
 - The package READMEs (`packages/core/README.md`, `packages/mcp/README.md`) now say the packages are not on npm yet and show the source install.
 - `examples.test.ts` checks every example instead of only the bakery: refs, briefs and library fingerprint, a preview and screenshots per brief, a critique score of at least 90 with no critical or major findings, no branch shared between examples, and links from the Pages index and every README.
