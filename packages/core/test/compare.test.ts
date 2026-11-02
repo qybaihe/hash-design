@@ -61,6 +61,35 @@ describe('compare page', () => {
     expect(html).not.toMatch(/回复编号|版式|放大看|打开整页|个方向/);
   });
 
+  it('labels scenario rolls and shows fixed canvases at their own size', () => {
+    const deck = roll({
+      seed: 'compare',
+      content: { subject: 'Causeway', facts: ['A festival'] },
+      constraints: { scenario: 'deck' },
+    });
+    const entries = compareEntriesFromRoll(deck);
+    const html = buildComparePage({ title: 't', subtitle: compareSubtitle(deck), entries, language: 'en' });
+    expect(compareSubtitle(deck)).toMatch(/ · Slide deck$/);
+    expect(entries[0]!.scenario).toMatchObject({ width: 1920, height: 1080, fixed: true });
+    expect(html).toContain('<dt>Scenario</dt><dd>Slide deck · ');
+    expect(html.match(/data-w="1920" data-h="1080"/g)).toHaveLength(5);
+    expect(html).toContain('>Canvas</button>');
+    expect(html).toContain('screen.dataset.w');
+
+    const app = roll({ seed: 'compare', content: { subject: '第四巷' }, constraints: { scenario: 'app' } });
+    const appHtml = buildComparePage({ title: 't', entries: compareEntriesFromRoll(app) });
+    expect(appHtml).toContain('<dt>场景</dt><dd>手机 App 界面 · ');
+    expect(appHtml).not.toContain('data-w=');
+    expect(appHtml).toContain('>桌面 1440</button>');
+    const fromJson = compareEntriesFromRoll(JSON.parse(JSON.stringify(rollJson(deck))));
+    expect(fromJson.map((e) => e.scenario)).toEqual(entries.map((e) => e.scenario));
+  });
+
+  it('keeps web compare pages free of scenario markup', () => {
+    const html = buildComparePage({ title: 't', entries: compareEntriesFromRoll(r) });
+    expect(html).not.toMatch(/<dt>场景<\/dt>|data-w=|screen\.dataset\.w|>画布</);
+  });
+
   it('accepts roll.json shaped input with the same slugs', () => {
     const fromJson = compareEntriesFromRoll(JSON.parse(JSON.stringify(rollJson(r))), { previewDir: 'p' });
     const fromRoll = compareEntriesFromRoll(r, { previewDir: 'p' });

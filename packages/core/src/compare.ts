@@ -1,5 +1,6 @@
 import type { Roll, RollJson } from './brief.js';
 import { designSlug } from './brief.js';
+import { getScenario } from './data/scenarios.js';
 import type { Language } from './derive.js';
 
 export interface CompareEntry {
@@ -20,6 +21,8 @@ export interface CompareEntry {
   preview: string;
   /** Path of the brief Markdown, relative to the compare page (optional). */
   brief?: string;
+  /** Non-web scenarios: label plus the format's canvas; fixed canvases are shown at their own size. */
+  scenario?: { label: string; width: number; height: number; fixed: boolean };
 }
 
 export interface CompareOptions {
@@ -41,6 +44,8 @@ const STRINGS = {
     toolbar: '视图',
     views: ['并排', '两列', '单张'],
     devices: ['桌面 1440', '手机 390'],
+    scenario: '场景',
+    canvas: '画布',
     directions: (n: number) => `${n} 个方向`,
     pick: (n: number) =>
       `看完后，<b>回复编号（1–${n}）</b>选定一个方向，Agent 会按该编号的 brief 落地正式页面。默认整套采用，不混搭；确需混搭请明确说出“取 #a 的什么 + #b 的什么”。键盘：<b>1–${n}</b> 放大 · <b>←/→</b> 切换 · <b>D/M</b> 桌面/手机 · <b>Esc</b> 返回并排。`,
@@ -54,6 +59,8 @@ const STRINGS = {
     toolbar: 'View',
     views: ['Strip', '2 columns', 'Single'],
     devices: ['Desktop 1440', 'Mobile 390'],
+    scenario: 'Scenario',
+    canvas: 'Canvas',
     directions: (n: number) => `${n} directions`,
     pick: (n: number) =>
       `When you have looked, <b>reply with a number (1–${n})</b> to choose a direction, and the agent builds the final page from that brief. A brief is used whole; to mix, say exactly what to take: “X from #a + Y from #b”. Keys: <b>1–${n}</b> zoom · <b>←/→</b> previous/next · <b>D/M</b> desktop/mobile · <b>Esc</b> back to the strip.`,
@@ -63,7 +70,12 @@ const STRINGS = {
 /** The compare page's subtitle line for a roll: count, source, algorithm and library fingerprint. */
 export function compareSubtitle(roll: Roll | RollJson): string {
   const t = STRINGS[roll.content.language] ?? STRINGS.zh;
-  return `${t.directions(roll.designs.length)} · ${roll.source} · ${roll.algorithm} · library ${roll.library}`;
+  const scenario = roll.constraints.scenario ? getScenario(roll.constraints.scenario) : undefined;
+  const lang = roll.content.language === 'en' ? 'en' : 'zh';
+  return (
+    `${t.directions(roll.designs.length)} · ${roll.source} · ${roll.algorithm} · library ${roll.library}` +
+    (scenario ? ` · ${scenario.name[lang]}` : '')
+  );
 }
 
 const esc = (s: string) =>
@@ -83,6 +95,8 @@ export function compareEntriesFromRoll(
   return roll.designs.map((d, i) => {
     const slug = 'slug' in d ? (d as { slug: string }).slug : designSlug(d as Roll['designs'][number], i);
     const type = d.type;
+    const sc = d.scenario;
+    const scenario = sc ? getScenario(sc.id) : undefined;
     return {
       number: i + 1,
       ref: d.ref,
@@ -99,6 +113,16 @@ export function compareEntriesFromRoll(
       twist: d.twist.name[lang],
       preview: `${previewDir}/${slug}.html`,
       brief: `${briefDir}/${slug}.md`,
+      ...(sc && scenario
+        ? {
+            scenario: {
+              label: `${scenario.name[lang]} · ${sc.format.name[lang]} · ${sc.format.width}×${sc.format.height}`,
+              width: sc.format.width,
+              height: sc.format.height,
+              fixed: sc.format.fixed,
+            },
+          }
+        : {}),
     };
   });
 }
@@ -112,6 +136,8 @@ export function buildComparePage(opts: CompareOptions): string {
   const t = en ? STRINGS.en : STRINGS.zh;
   const [lLayout, lType, lColour, lDensity, lVoice, lTwist] = t.labels;
   const n = opts.entries.length;
+  // Fixed canvases (slides, posters) are shown at their own size; web rolls keep the exact old markup.
+  const hasCanvas = opts.entries.some((e) => e.scenario?.fixed);
   const cards = opts.entries
     .map((e) => {
       const swatches = ['paper', 'ink', 'accent', 'accent2', 'panel', 'muted', 'rule']
@@ -131,10 +157,10 @@ export function buildComparePage(opts: CompareOptions): string {
         </div>
         <code class="hash" title="${esc(e.ref)}">${esc(e.short)}</code>
       </header>
-      <div class="screen" data-src="${esc(e.preview)}">
+      <div class="screen" data-src="${esc(e.preview)}"${e.scenario?.fixed ? ` data-w="${e.scenario.width}" data-h="${e.scenario.height}"` : ''}>
         <iframe src="${esc(e.preview)}" title="${esc(`#${e.number} ${e.branchEn}`)}" loading="lazy"></iframe>
       </div>
-      <dl class="spec">
+      <dl class="spec">${e.scenario ? `\n        <dt>${t.scenario}</dt><dd>${esc(e.scenario.label)}</dd>` : ''}
         <dt>${lLayout}</dt><dd>${esc(e.layout)}</dd>
         <dt>${lType}</dt><dd>${esc(e.display)} / ${esc(e.body)}</dd>
         <dt>${lColour}</dt><dd><span class="sw">${swatches}</span> ${esc(e.palette)}</dd>
@@ -212,7 +238,7 @@ export function buildComparePage(opts: CompareOptions): string {
       <button type="button" data-view="strip" aria-pressed="true">${t.views[0]}</button>
       <button type="button" data-view="cols-2" aria-pressed="false">${t.views[1]}</button>
       <button type="button" data-view="focus" aria-pressed="false">${t.views[2]}</button>
-      <button type="button" data-device="desktop" aria-pressed="true">${t.devices[0]}</button>
+      <button type="button" data-device="desktop" aria-pressed="true">${hasCanvas ? t.canvas : t.devices[0]}</button>
       <button type="button" data-device="mobile" aria-pressed="false">${t.devices[1]}</button>
     </div>
   </header>
@@ -227,8 +253,13 @@ ${cards}
   const body = document.body;
   const frames = [...document.querySelectorAll('.frame')];
   function fit() {
-    const [w, h] = devices[device];
-    for (const screen of document.querySelectorAll('.screen')) {
+${
+  hasCanvas
+    ? `    for (const screen of document.querySelectorAll('.screen')) {
+      const [w, h] = device === 'desktop' && screen.dataset.w ? [+screen.dataset.w, +screen.dataset.h] : devices[device];`
+    : `    const [w, h] = devices[device];
+    for (const screen of document.querySelectorAll('.screen')) {`
+}
       const iframe = screen.querySelector('iframe');
       const avail = screen.clientWidth;
       const scale = Math.min(1, avail / w);
