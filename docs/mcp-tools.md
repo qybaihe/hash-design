@@ -20,17 +20,18 @@ Tools that touch the filesystem:
 
 ## Shared constraint parameters
 
-`roll_designs`, `get_brief` and `critique_page` accept the same flat constraint fields. They are documented in detail in [mapping.md §5](mapping.md#5-constraints).
+`roll_designs`, `get_brief` and `critique_page` accept the same flat constraint fields. They are documented in detail in [mapping.md §5](mapping.md#5-constraints) and, for `scenario`, [§6](mapping.md#6-scenarios).
 
-| Parameter          | Type                             | Meaning                                                   |
-| ------------------ | -------------------------------- | --------------------------------------------------------- |
-| `light_only`       | boolean                          | Only light palettes                                       |
-| `dark_only`        | boolean                          | Only dark palettes (branches without one are skipped)     |
-| `reduced_motion`   | boolean                          | Force the stillest motion option of each branch           |
-| `brand_colors`     | string[] (≤ 2, `#rgb`/`#rrggbb`) | `[accent]` or `[accent, accent2]`                         |
-| `families`         | enum[]                           | `print` `document` `signage` `screen` `craft` `modernist` |
-| `include_branches` | string[]                         | Restrict the pool to these branch ids                     |
-| `exclude_branches` | string[]                         | Remove these branch ids from the pool                     |
+| Parameter          | Type                             | Meaning                                                                                                                                      |
+| ------------------ | -------------------------------- | -------------------------------------------------------------------------------------------------------------------------------------------- |
+| `light_only`       | boolean                          | Only light palettes                                                                                                                          |
+| `dark_only`        | boolean                          | Only dark palettes (branches without one are skipped)                                                                                        |
+| `reduced_motion`   | boolean                          | Force the stillest motion option of each branch                                                                                              |
+| `brand_colors`     | string[] (≤ 2, `#rgb`/`#rrggbb`) | `[accent]` or `[accent, accent2]`                                                                                                            |
+| `families`         | enum[]                           | `print` `document` `signage` `screen` `craft` `modernist`                                                                                    |
+| `include_branches` | string[]                         | Restrict the pool to these branch ids                                                                                                        |
+| `exclude_branches` | string[]                         | Remove these branch ids from the pool                                                                                                        |
+| `scenario`         | enum                             | `web` (default) `deck` `app` `dashboard` `poster` `email`. Non-web scenarios add a format (byte 13), a canvas and output rules to each brief |
 
 ## Tools
 
@@ -49,9 +50,9 @@ Roll N true-random hashes and map each to a distinct design direction. Not read-
 | `detail`    | `full` \| `summary` | `summary` with `out_dir`, else `full` | Whether every brief is inlined in the response              |
 | constraints | see above           |                                       |                                                             |
 
-Returns two text blocks: (1) Markdown (summary table, refs, the files written, the briefs when `detail = full`, and the next step) and (2) a JSON object `{ source, library, constraints, designs: [{ number, ref, branch }] }` for programmatic use.
+Returns two text blocks: (1) Markdown (summary table, refs, the files written, the briefs when `detail = full`, and the next step) and (2) a JSON object `{ source, library, constraints, designs: [{ number, ref, branch, format? }] }` for programmatic use (`format` only with a non-web `scenario`).
 
-CLI: `hash-design roll --subject … --fact … --facts-file … --count … --seed … --out … --format md|json|summary`. The CLI has no `--language` flag; it always auto-detects.
+CLI: `hash-design roll --subject … --fact … --facts-file … --count … --seed … --out … --format md|json|summary [constraints, e.g. --scenario deck]`. The CLI has no `--language` flag; it always auto-detects.
 
 ### `get_brief`
 
@@ -78,7 +79,7 @@ Full detail of one branch: concept, references, tokens and every option of every
 
 ### `critique_page`
 
-Static critique of an HTML page against the 14 global bans plus contrast, `viewport`, `lang`, `img alt` and reduced-motion checks. With a brief it also scores adherence (fonts, palette, radius / shadow policy). Read-only.
+Static critique of an HTML page against the 14 global bans plus contrast, `viewport`, `lang`, `img alt` and reduced-motion checks. With a brief it also scores adherence (fonts, palette, radius / shadow policy). When the brief has a non-web scenario it also checks the scenario's output contract under the rule `scenario-<id>`: at least 3 slides, a 1920×1080 or 16:9 canvas and keyboard navigation for `deck`; a 390 px frame and at least 2 screens for `app`; tabular figures for `dashboard`; the format's width and height for `poster`; no `<script>`, a `<table>` layout and the column width for `email`. Read-only.
 
 | Parameter   | Type                 | Notes                                                                                                            |
 | ----------- | -------------------- | ---------------------------------------------------------------------------------------------------------------- |
@@ -98,7 +99,7 @@ CLI: `hash-design critique <page.html> [--css <file>] [--brief <ref> | --roll <r
 
 ### `build_compare_page`
 
-Write `compare.html`: every preview in a scaled iframe side by side, with branch / palette / type labels, a desktop / mobile toggle and a focus mode (keys 1–9). Expects previews at `<previews_dir>/NN-<branch>.html` and lists any that are missing. The page's labels, buttons and instructions follow the roll's language (`content.language` in `roll.json`: Chinese or English).
+Write `compare.html`: every preview in a scaled iframe side by side, with branch / palette / type labels, a desktop / mobile toggle and a focus mode (keys 1–9). With a non-web scenario the subtitle and every card name the scenario and format; fixed canvases (`deck`, `poster`) are scaled from their real size and the desktop button becomes Canvas. Expects previews at `<previews_dir>/NN-<branch>.html` and lists any that are missing. The page's labels, buttons and instructions follow the roll's language (`content.language` in `roll.json`: Chinese or English).
 
 | Parameter      | Type             | Default                              |
 | -------------- | ---------------- | ------------------------------------ |
@@ -121,7 +122,7 @@ CLI: `hash-design compare [--roll <roll.json>] [--out <compare.html>] [--preview
 
 ## Prompt
 
-`hash-design` with arguments `subject` (required), `facts` (one per line) and `count`. It expands to a user message that walks the agent through: `roll_designs` with `out_dir="design/hash-design"` and no seed → one preview per brief → `critique_page` with `roll_path` + `pick` → `build_compare_page` → stop and wait for the user's number → build the final page from the chosen brief and critique it again.
+`hash-design` with arguments `subject` (required), `facts` (one per line), `count` and `scenario`. It expands to a user message that walks the agent through: `roll_designs` with `out_dir="design/hash-design"`, the scenario if given, and no seed → one preview per brief → `critique_page` with `roll_path` + `pick` → `build_compare_page` → stop and wait for the user's number → build the final page from the chosen brief and critique it again.
 
 ## Files written by a roll
 

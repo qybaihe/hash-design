@@ -20,28 +20,29 @@
 
 一个哈希有 32 字节。`hash-design/v1` 按下表读取它们（见 `mapping.ts` 中的 `BYTE_MAP`）：
 
-| 字节  | 维度            | 取值范围                               | 规则                   |
-| ----- | --------------- | -------------------------------------- | ---------------------- |
-| 0–1   | 分支 branch     | 分支池（40 个分支，约束过滤后）        | `uint16(b0, b1) mod N` |
-| 2     | 文案语气 voice  | 14 种全局文案语气                      | `b2 mod 14`            |
-| 3     | 版式 layout     | 该分支的版式（3）                      | `b3 mod len`           |
-| 4     | 字体对 type     | 该分支的字体对（3）                    | `b4 mod len`           |
-| 5     | 配色 palette    | 该分支的调色板（3），经浅色/深色过滤后 | `b5 mod len`           |
-| 6     | 密度 density    | 该分支允许的密度（1–3）                | `b6 mod len`           |
-| 7     | 动效 motion     | 该分支的动效选项（3）                  | `b7 mod len`           |
-| 8     | 母题 motif      | 该分支的母题（3）                      | `b8 mod len`           |
-| 9     | 首屏锚点 anchor | 该分支的首屏锚点（3）                  | `b9 mod len`           |
-| 10    | 字号比例 scale  | 该分支允许的模数比例（1–3）            | `b10 mod len`          |
-| 11    | 材质 surface    | 该分支的材质（3）                      | `b11 mod len`          |
-| 12    | 变数 twist      | 16 个全局变数                          | `b12 mod 16`           |
-| 13–31 | —               | 未使用                                 | 记录在每份 brief 里    |
+| 字节  | 维度            | 取值范围                                | 规则                         |
+| ----- | --------------- | --------------------------------------- | ---------------------------- |
+| 0–1   | 分支 branch     | 分支池（40 个分支，约束过滤后）         | `uint16(b0, b1) mod N`       |
+| 2     | 文案语气 voice  | 14 种全局文案语气                       | `b2 mod 14`                  |
+| 3     | 版式 layout     | 该分支的版式（3）                       | `b3 mod len`                 |
+| 4     | 字体对 type     | 该分支的字体对（3）                     | `b4 mod len`                 |
+| 5     | 配色 palette    | 该分支的调色板（3），经浅色/深色过滤后  | `b5 mod len`                 |
+| 6     | 密度 density    | 该分支允许的密度（1–3），减去场景移除的 | `b6 mod len`                 |
+| 7     | 动效 motion     | 该分支的动效选项（3）                   | `b7 mod len`                 |
+| 8     | 母题 motif      | 该分支的母题（3）                       | `b8 mod len`                 |
+| 9     | 首屏锚点 anchor | 该分支的首屏锚点（3）                   | `b9 mod len`                 |
+| 10    | 字号比例 scale  | 该分支允许的模数比例（1–3）             | `b10 mod len`                |
+| 11    | 材质 surface    | 该分支的材质（3）                       | `b11 mod len`                |
+| 12    | 变数 twist      | 16 个全局变数，减去场景移除的           | `b12 mod len`（web 下为 16） |
+| 13    | 格式 format     | 场景的格式（3–4），仅限非 web 场景      | `b13 mod len`                |
+| 13–31 | —               | 未使用（场景用到第 13 字节时为 14–31）  | 记录在每份 brief 里          |
 
 每一步都会连同十六进制值、公式和结果写进 brief 的**映射过程**，任何人都可以手工核对算术。
 
 有两个约束不是过滤池子，而是替换掉某个字节：
 
 - `brand_colors`：忽略第 5 字节。选出 accent 色相与第一个品牌色最接近的调色板（无彩色的品牌色按明度匹配），然后覆盖 `accent`（如果给了第二个颜色，也覆盖 `accent2`）。brief 的对比度表按覆盖后的调色板计算。
-- `reduced_motion`：忽略第 7 字节，选择最静止的动效选项（时长最短）。
+- `reduced_motion`：忽略第 7 字节，选择最静止的动效选项（时长最短）。`email` 场景也这样做。
 
 ## 3. 碰撞与家族分散
 
@@ -87,28 +88,54 @@
 
 约束在读取任何字节**之前**通过过滤池子生效。因此约束也是设计身份的一部分：同一个哈希配上不同约束就是另一个设计，要复现它，必须给 `get_brief` / `hash-design brief` 传同样的约束。
 
-| MCP 参数           | CLI 参数           | 效果                                                                        |
-| ------------------ | ------------------ | --------------------------------------------------------------------------- |
-| `light_only`       | `--light-only`     | 只用浅色调色板                                                              |
-| `dark_only`        | `--dark-only`      | 只用深色调色板；没有深色调色板的分支移出池子                                |
-| `reduced_motion`   | `--reduced-motion` | 每个分支取最静止的动效选项（不使用第 7 字节）                               |
-| `brand_colors`     | `--brand <#hex>`   | 最多 2 个颜色：取色相最近的调色板，覆盖 accent / accent2（不使用第 5 字节） |
-| `families`         | `--family <id>`    | 把分支池限制在这些家族内                                                    |
-| `include_branches` | `--include <id>`   | 把分支池限制为这些分支 id                                                   |
-| `exclude_branches` | `--exclude <id>`   | 从池中移除这些分支 id                                                       |
+| MCP 参数           | CLI 参数           | 效果                                                                           |
+| ------------------ | ------------------ | ------------------------------------------------------------------------------ |
+| `light_only`       | `--light-only`     | 只用浅色调色板                                                                 |
+| `dark_only`        | `--dark-only`      | 只用深色调色板；没有深色调色板的分支移出池子                                   |
+| `reduced_motion`   | `--reduced-motion` | 每个分支取最静止的动效选项（不使用第 7 字节）                                  |
+| `brand_colors`     | `--brand <#hex>`   | 最多 2 个颜色：取色相最近的调色板，覆盖 accent / accent2（不使用第 5 字节）    |
+| `families`         | `--family <id>`    | 把分支池限制在这些家族内                                                       |
+| `include_branches` | `--include <id>`   | 把分支池限制为这些分支 id                                                      |
+| `exclude_branches` | `--exclude <id>`   | 从池中移除这些分支 id                                                          |
+| `scenario`         | `--scenario <id>`  | 设计什么：web（默认）、deck、app、dashboard、poster、email（见 [§6](#6-场景)） |
 
 `light_only` 和 `dark_only` 不能同时使用。未知的分支 id 会被拒绝。约束过滤后池子为空会报错。
 
-## 6. 可复现性与库指纹
+## 6. 场景
 
-一个设计是 `(hash, probe, constraints, library)` 的纯函数。每份 brief 和每个 `roll.json` 都会记录：
+`scenario` 说明要设计的是什么。它和其他约束一样：在读取任何字节之前生效，记录在 `roll.json` 和每份 brief 里，复现 ref 时要再传一次。数据在 [`packages/core/src/data/scenarios.ts`](../packages/core/src/data/scenarios.ts)，由 `packages/core/test/scenarios.test.ts` 覆盖。
+
+| 场景             | 第 13 字节选格式                                                             | 画布               | 基准字号        | 读第 6 / 12 字节前移除                                                                                |
+| ---------------- | ---------------------------------------------------------------------------- | ------------------ | --------------- | ----------------------------------------------------------------------------------------------------- |
+| `web`（默认）    | —（不使用第 13 字节）                                                        | 响应式页面         | 密度基准        | 无                                                                                                    |
+| `deck` 幻灯片    | full-bleed · index-rail · document                                           | 1920×1080，固定    | 密度基准 × 2    | `packed` / `no-button-above-fold`                                                                     |
+| `app` 手机界面   | tab-bar · top-tabs · single-flow · sheet                                     | 390×844 手机屏     | 限定在 16–17 px | `packed` / `no-button-above-fold`、`footer-as-colophon`                                               |
+| `dashboard` 看板 | sidebar · top-nav · wall                                                     | 1440×900 视口      | 限定在 13–15 px | `airy` / `no-button-above-fold`、`footer-as-colophon`                                                 |
+| `poster` 海报    | portrait 1080×1350 · square 1080×1080 · story 1080×1920 · link-card 1200×630 | 格式尺寸，固定     | 密度基准 × 1.75 | — / `nav-elsewhere`、`no-button-above-fold`                                                           |
+| `email` 邮件     | single-600 · banded-640 · digest                                             | 600 或 640 px 单栏 | 限定在 16–17 px | `packed` / `nav-elsewhere`、`vertical-text`、`one-element-breaks-grid`；最静止动效（不使用第 7 字节） |
+
+字节如何作用：
+
+- **不变。** 场景不过滤分支池，所以同一个哈希在任何场景下都落在同一个分支、同一个 probe 上，第 2–5、8–11 字节选出的文案语气、版式、字体对、配色、母题、首屏锚点、字号比例和材质也与 web 相同。给一次掷骰换场景，方向不变。
+- **过滤。** 读第 6、12 字节之前，先移除在该场景里没有意义的密度和变数（如果某分支的密度会被删光，就保留原列表，并在映射过程里注明）。池子变短可能让结果移位，所以同一个哈希的密度和变数可能与 web 不同。
+- **替换。** `email` 忽略第 7 字节，取最静止的动效选项，和 `reduced_motion` 一样。
+- **新增。** 第 13 字节选场景的格式。web 下它仍不使用。
+- **派生。** 基准字号由密度基准缩放或限定而来（见上表），字号比例和 `tokens.css` 都用它；`--max-width` 变为格式宽度，固定格式另加 `--canvas-width` / `--canvas-height`。
+
+brief 会多出一节**场景 Scenario**：格式与画布、文件和结构约定、几页 / 几屏 / 几张、分支的版式、锚点和动效如何落到这个场景（例如幻灯片里，版式的分区顺序就是页序，锚点就是封面页），以及场景规则和禁忌。用场景 brief 自检时，`critique_page` 会对这些约定做静态检查（规则 `scenario-<id>`）。
+
+默认行为不变：`scenario: "web"` 会被规范化掉，所以 web 设计、brief、`roll.json` 和库指纹都与引入场景之前完全一致，示例照样复现。场景数据有自己的指纹 `scenarioFingerprint()`，即 `sha256(JSON.stringify({ ALGORITHM, SCENARIOS }))` 的前 12 位十六进制数字，目前是 `ca5b03695da9`，作为 `scenario data` 写进每份非 web brief。
+
+## 7. 可复现性与库指纹
+
+一个设计是 `(hash, probe, constraints, library)` 的纯函数（设了非 web 场景时还取决于场景数据，见 §6）。每份 brief 和每个 `roll.json` 都会记录：
 
 - `algorithm`：`hash-design/v1`。只有字节分配改变时它才会变。
 - `library`：`sha256(JSON.stringify({ ALGORITHM, BRANCHES, VOICES, TWISTS, DENSITIES, SCALES }))` 的前 12 位十六进制数字，目前是 `c7b166fe6ec0`。
 
 对分支数据或池子的任何修改都会改变指纹。旧 ref 仍然能解析，但可能已经映射到不同的设计，所以复现旧 ref 时，请使用指纹与之匹配的 hash-design 版本。仓库自带的示例就是这样锁定的：如果库指纹与 `examples/fourth-lane-bakery/roll.json` 不再一致，`packages/core/test/examples.test.ts` 就会失败。
 
-## 7. 推演示例：#3 水墨印章
+## 8. 推演示例：#3 水墨印章
 
 哈希 `7f18e1dc68359c51db6bb6903d7778c59556fad43c0b1bb2aa52adf7051e97a4`，probe 0，无约束，来自[第四巷面包店示例](../examples/fourth-lane-bakery/briefs/03-ink-and-seal.md)：
 
@@ -133,7 +160,22 @@
 node packages/core/dist/bin.js brief 7f18e1dc68359c51db6bb6903d7778c59556fad43c0b1bb2aa52adf7051e97a4
 ```
 
-## 8. 修改映射
+同一个哈希在各个场景下（第 12 字节 = `3d` = 61，第 13 字节 = `77` = 119）。分支、文案语气、版式、字体对、配色、母题、首屏锚点、字号比例和材质都与上表相同，只有这些会变：
+
+| 场景      | 格式（第 13 字节）        | 密度                   | 动效                 | 变数（第 12 字节）                      | 基准字号 |
+| --------- | ------------------------- | ---------------------- | -------------------- | --------------------------------------- | -------- |
+| web       | —                         | airy                   | ink-bleed            | 61 mod 16 = 13 → time-as-structure      | 18 px    |
+| deck      | 119 mod 3 = 2 → document  | airy                   | ink-bleed            | 61 mod 15 = 1 → one-element-breaks-grid | 36 px    |
+| app       | 119 mod 4 = 3 → sheet     | airy                   | ink-bleed            | 61 mod 14 = 5 → vertical-text           | 17 px    |
+| dashboard | 119 mod 3 = 2 → wall      | regular（airy 被移除） | ink-bleed            | 61 mod 14 = 5 → vertical-text           | 15 px    |
+| poster    | 119 mod 4 = 3 → link-card | airy                   | ink-bleed            | 61 mod 14 = 5 → no-photography          | 32 px    |
+| email     | 119 mod 3 = 2 → digest    | airy                   | seal-press（最静止） | 61 mod 13 = 9 → no-button-above-fold    | 17 px    |
+
+```bash
+node packages/core/dist/bin.js brief 7f18e1dc68359c51db6bb6903d7778c59556fad43c0b1bb2aa52adf7051e97a4 --scenario deck
+```
+
+## 9. 修改映射
 
 - 增加、删除或重新排列分支，或者修改任何选项，都会改变 `N` 和/或指纹。这是允许的，库就是这样扩充的。改完之后请重新掷示例（见 [CONTRIBUTING.md](../CONTRIBUTING.md)）。
 - 改变哪个字节驱动哪个维度，或者修改碰撞规则，属于算法变更，必须升级 `ALGORITHM`（例如升到 `hash-design/v2`）。

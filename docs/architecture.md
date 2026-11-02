@@ -8,7 +8,7 @@ hash-design is an npm-workspaces monorepo with two packages, one Skill and a ful
                  ┌──────────────────────────── packages/core (npm: hash-design) ─────────────────────────────┐
   facts ───────► │ hash.ts ──► mapping.ts ──► brief.ts / derive.ts ──► files.ts (roll.json, ROLL.md, briefs/) │
   constraints    │   ▲            ▲                                                                           │
-                 │   │       data/ (branches, pools, bans) ── validate.ts                                    │
+                 │   │       data/ (branches, pools, bans, scenarios) ── validate.ts                         │
                  │ crypto     critique.ts (static HTML/CSS checks)   compare.ts (compare.html)   catalog.ts   │
                  │            cli.ts / bin.ts (hash-design CLI)      skill.ts (SKILL.md access + sync block) │
                  └───────────────▲────────────────────────────────────────────────────────────────────────────┘
@@ -24,22 +24,23 @@ hash-design is an npm-workspaces monorepo with two packages, one Skill and a ful
 
 ### `packages/core` (`hash-design`)
 
-| Module                     | Responsibility                                                                                                                      |
-| -------------------------- | ----------------------------------------------------------------------------------------------------------------------------------- |
-| `src/hash.ts`              | `randomHash` (CSPRNG → SHA-256), `seededHash`, `rollHashes`, ref parsing/formatting (`<hash>+<probe>`), `ALGORITHM`                 |
-| `src/mapping.ts`           | The decision tree: `mapDesign`, `mapRoll` (collisions + family spread), `branchPool`, constraints, `BYTE_MAP`, `libraryFingerprint` |
-| `src/data/branches/`       | 40 branches, one object each (`_exemplar.ts` plus four family files); `index.ts` fixes `BRANCH_ORDER` (the mapping order)           |
-| `src/data/pools.ts`        | Global pools: 4 densities, 7 modular scales, 14 copy voices, 16 twists                                                              |
-| `src/data/bans.ts`         | 14 global bans, 23 banned fonts, English and Chinese buzzword lists                                                                 |
-| `src/validate.ts`          | `validateBranch` / `validateLibrary`: shape, contrast, banned fonts, framework colours, font diversity                              |
-| `src/derive.ts`            | Derived tokens: type scale, font stacks, Google Fonts URL, WCAG contrast report, `tokens.css`, language detection                   |
-| `src/brief.ts`             | `roll`, `reproduce`, Markdown and JSON briefs, roll summaries, `roll.json` shape                                                    |
-| `src/files.ts`             | `writeRoll`: freezes `roll.json`, `ROLL.md` and `briefs/NN-<branch>.md`                                                             |
-| `src/critique.ts`          | `critiquePage`: static HTML/CSS checks for every ban plus contrast / a11y basics and brief adherence                                |
-| `src/compare.ts`           | `buildComparePage`: one self-contained HTML file with scaled iframes, labels, desktop/mobile toggle, focus keys                     |
-| `src/catalog.ts`           | Branch list / detail / catalogue rendering (used by the MCP server and `docs/branches.md`)                                          |
-| `src/skill.ts`             | Locates `SKILL.md` (repo or packaged copy) and renders the generated bans block                                                     |
-| `src/cli.ts`, `src/bin.ts` | The `hash-design` CLI (`node:util` `parseArgs`, no CLI framework)                                                                   |
+| Module                     | Responsibility                                                                                                                                             |
+| -------------------------- | ---------------------------------------------------------------------------------------------------------------------------------------------------------- |
+| `src/hash.ts`              | `randomHash` (CSPRNG → SHA-256), `seededHash`, `rollHashes`, ref parsing/formatting (`<hash>+<probe>`), `ALGORITHM`                                        |
+| `src/mapping.ts`           | The decision tree: `mapDesign`, `mapRoll` (collisions + family spread), `branchPool`, constraints, `BYTE_MAP`, `libraryFingerprint`, `scenarioFingerprint` |
+| `src/data/branches/`       | 40 branches, one object each (`_exemplar.ts` plus four family files); `index.ts` fixes `BRANCH_ORDER` (the mapping order)                                  |
+| `src/data/pools.ts`        | Global pools: 4 densities, 7 modular scales, 14 copy voices, 16 twists                                                                                     |
+| `src/data/scenarios.ts`    | 6 scenarios (web, deck, app, dashboard, poster, email): formats, canvas, base-size rule, pool filters, output contract, rules                              |
+| `src/data/bans.ts`         | 14 global bans, 23 banned fonts, English and Chinese buzzword lists                                                                                        |
+| `src/validate.ts`          | `validateBranch` / `validateLibrary`: shape, contrast, banned fonts, framework colours, font diversity                                                     |
+| `src/derive.ts`            | Derived tokens: type scale, font stacks, Google Fonts URL, WCAG contrast report, `tokens.css`, language detection                                          |
+| `src/brief.ts`             | `roll`, `reproduce`, Markdown and JSON briefs, roll summaries, `roll.json` shape                                                                           |
+| `src/files.ts`             | `writeRoll`: freezes `roll.json`, `ROLL.md` and `briefs/NN-<branch>.md`                                                                                    |
+| `src/critique.ts`          | `critiquePage`: static HTML/CSS checks for every ban plus contrast / a11y basics and brief adherence                                                       |
+| `src/compare.ts`           | `buildComparePage`: one self-contained HTML file with scaled iframes, labels, desktop/mobile toggle, focus keys                                            |
+| `src/catalog.ts`           | Branch list / detail / catalogue rendering (used by the MCP server and `docs/branches.md`)                                                                 |
+| `src/skill.ts`             | Locates `SKILL.md` (repo or packaged copy) and renders the generated bans block                                                                            |
+| `src/cli.ts`, `src/bin.ts` | The `hash-design` CLI (`node:util` `parseArgs`, no CLI framework)                                                                                          |
 
 Runtime dependency: `node-html-parser` (for `critique_page`). Nothing else.
 
@@ -63,6 +64,8 @@ Branches are TypeScript objects, not YAML or JSON, so the compiler checks their 
 - 3 options for each of layouts, type pairings, palettes, motion, motifs, anchors and surfaces
 - 1–3 allowed densities and modular scales
 - must / must-not lists
+
+Scenarios (`src/data/scenarios.ts`) are data in the same way: each has a bilingual summary, output contract, count, a note on how the branch's layout / anchor / motion translate, a base-size rule, its formats (byte 13), the densities and twists it removes, and must / must-not lists. They are hashed into their own `scenarioFingerprint`, so adding or editing a scenario leaves the library fingerprint and every web ref unchanged. See [mapping.md §6](mapping.md#6-scenarios).
 
 `validateLibrary` (run in `branches.test.ts`) enforces: 3–5 options per dimension, lowercase `#rrggbb` hex, ink/paper ≥ 7:1 and muted/paper ≥ 4.5:1 contrast, at least one light palette, no banned fonts (fallbacks included), no framework default hex values, a display family leading at most 3 branches, unique ids and names. `branches.test.ts` also checks that no two branches share the same lead palette (paper + accent). `scripts/verify-fonts.mjs` checks every Google Fonts URL online (235/235); it is not in CI because it needs the network.
 
