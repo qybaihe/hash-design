@@ -51,7 +51,7 @@ const constraintShape = {
     .enum(SCENARIO_IDS as [ScenarioId, ...ScenarioId[]])
     .optional()
     .describe(
-      'What is being designed: web (default), deck (16:9 slides), app (phone screens), dashboard, poster (poster / social card), email (HTML email). Non-web scenarios add a format (byte 13), a canvas and output rules to each brief. Part of the design identity: pass it again to reproduce.',
+      'What is being designed: web (default), deck (16:9 slides), app (phone screens), dashboard, poster (poster / social card), email (HTML email). Non-web scenarios add a format (byte 28), a canvas and output rules to each brief. Part of the design identity: pass it again to reproduce.',
     ),
 };
 
@@ -185,7 +185,11 @@ export function createServer(): McpServer {
       description:
         'Rebuild the brief for a design ref (the 64-hex hash) with the same constraints that were used for the roll. Deterministic: the same ref + constraints + library always gives the same brief.',
       inputSchema: {
-        ref: z.string().describe('Design ref from roll_designs, e.g. "3fa9…c1" or "3fa9…c1+1".'),
+        ref: z
+          .string()
+          .describe(
+            'Design ref from roll_designs, i.e. its 64-hex hash (hash-design/v2 refs have no "+N" suffix).',
+          ),
         subject: z.string().optional(),
         facts: z.array(z.string()).optional(),
         language: z.enum(['zh', 'en']).optional(),
