@@ -1,5 +1,7 @@
 import { BANS } from './data/bans.js';
+import { getScenario } from './data/scenarios.js';
 import {
+  baseSize,
   contrastReport,
   detectLanguage,
   fontStacks,
@@ -17,7 +19,7 @@ import {
   mapRoll,
   normalizeConstraints,
 } from './mapping.js';
-import type { FontSpec } from './types.js';
+import type { Bilingual, FontSpec, Scenario } from './types.js';
 
 /** What the page is about. Facts are the ONLY content the page may state. */
 export interface Content {
@@ -88,6 +90,52 @@ function swatch(hex: string): string {
   return `\`${hex}\``;
 }
 
+function scenarioOf(design: Design): Scenario | undefined {
+  return design.scenario ? getScenario(design.scenario.id) : undefined;
+}
+
+function sizeRule(s: Scenario, density: number): string {
+  const r = s.baseSize;
+  return 'scale' in r
+    ? `density base ${density}px × ${r.scale}`
+    : `density base ${density}px clamped to ${r.min}–${r.max}px`;
+}
+
+/** The Scenario section of a non-web brief: format, output contract, translation rules, musts. */
+function renderScenario(design: Design, lang: Language): string[] {
+  const sc = design.scenario;
+  const s = scenarioOf(design);
+  if (!sc || !s) return [];
+  const t = (b: Bilingual) => b[lang];
+  const f = sc.format;
+  const out: string[] = [];
+  out.push(`## 场景 Scenario — ${s.name.zh} / ${s.name.en}`);
+  out.push('');
+  out.push(t(s.summary));
+  out.push('');
+  out.push(
+    `- **Format — ${t(f.name)}** (${f.width}×${f.height}${f.fixed ? ', fixed canvas' : ''}): ${t(f.description)}`,
+  );
+  out.push(`- **Output:** ${t(s.output)}`);
+  out.push(`- **Count:** ${t(s.count)}`);
+  out.push(`- **Layout:** ${t(s.layout)}`);
+  out.push(`- **Anchor:** ${t(s.anchor)}`);
+  out.push(`- **Motion:** ${t(s.motion)}`);
+  out.push(
+    `- **Type base:** ${sc.baseSize}px (${sizeRule(s, design.density.baseSize)}); the type scale and tokens.css below use it.`,
+  );
+  out.push('');
+  out.push(lang === 'zh' ? '场景规则：' : 'Scenario rules:');
+  out.push('');
+  for (const m of s.must) out.push(`- ${t(m)}`);
+  out.push('');
+  out.push(lang === 'zh' ? '场景禁忌：' : 'Scenario must-nots:');
+  out.push('');
+  for (const m of s.mustNot) out.push(`- ${t(m)}`);
+  out.push('');
+  return out;
+}
+
 export interface BriefOptions {
   /** Position in the roll, 1-based (for headings). */
   number?: number;
@@ -117,6 +165,13 @@ export function renderBrief(design: Design, content: Partial<Content> = {}, opts
   out.push(`| ref | \`${design.ref}\` |`);
   out.push(`| algorithm / library | ${design.algorithm} / \`${design.library}\` |`);
   out.push(`| constraints | ${describeConstraints(design.constraints)} |`);
+  if (design.scenario) {
+    const s = scenarioOf(design);
+    const f = design.scenario.format;
+    out.push(
+      `| scenario | ${s?.name.en} — ${f.name.en} (${f.width}×${f.height}) · scenario data \`${design.scenario.data}\` |`,
+    );
+  }
   out.push(`| family | ${b.family} |`);
   out.push(`| references | ${b.references.join('; ')} |`);
   out.push('');
@@ -138,7 +193,9 @@ export function renderBrief(design: Design, content: Partial<Content> = {}, opts
         `| ${t.bytes.join('+')} | \`${t.hex}\` | ${t.dimension} | ${t.rule}${note} | **${t.result}** |`,
       );
     }
-    out.push(`| 13–31 | \`${design.unusedBytes.slice(0, 12)}…\` | (unused) | recorded, not used | — |`);
+    out.push(
+      `| ${design.scenario ? '14–31' : '13–31'} | \`${design.unusedBytes.slice(0, 12)}…\` | (unused) | recorded, not used | — |`,
+    );
     out.push('');
   }
 
@@ -160,6 +217,8 @@ export function renderBrief(design: Design, content: Partial<Content> = {}, opts
     );
   }
   out.push('');
+
+  out.push(...renderScenario(design, lang));
 
   out.push(`## 文案语气 Voice — ${design.voice.name.zh} / ${design.voice.name.en}`);
   out.push('');
@@ -193,7 +252,7 @@ export function renderBrief(design: Design, content: Partial<Content> = {}, opts
   out.push(`- **Setting rules:** ${design.type.notes}`);
   out.push('');
   out.push(
-    `Scale: **${design.scale.name}** on a ${design.density.baseSize}px base → ` +
+    `Scale: **${design.scale.name}** on a ${baseSize(design)}px base → ` +
       scale.map((s) => `${s.step}: ${s.px}px`).join(' · '),
   );
   out.push('');
@@ -237,7 +296,10 @@ export function renderBrief(design: Design, content: Partial<Content> = {}, opts
   out.push('');
   out.push(
     `${design.density.description} Base ${design.density.baseSize}px, line-height ${design.density.lineHeight}, ` +
-      `spacing unit ${design.density.unit}px, section gap ${design.density.sectionGap}px, max width ${design.density.maxWidth}px.`,
+      `spacing unit ${design.density.unit}px, section gap ${design.density.sectionGap}px, max width ${design.density.maxWidth}px.` +
+      (design.scenario
+        ? ` Scenario: type base ${design.scenario.baseSize}px and ${design.scenario.format.fixed ? 'canvas' : 'width'} ${design.scenario.format.width}${design.scenario.format.fixed ? `×${design.scenario.format.height}` : ''}px replace the base size and max width.`
+        : ''),
   );
   out.push('');
 
@@ -308,6 +370,14 @@ export function renderBrief(design: Design, content: Partial<Content> = {}, opts
   out.push(`- [ ] First screen is the "${design.anchor.name}" anchor, in the "${design.layout.name}" layout`);
   out.push(`- [ ] Copy is written in the "${design.voice.name.en}" voice using only the facts`);
   out.push(`- [ ] Twist "${design.twist.name.en}" is visibly applied`);
+  if (design.scenario) {
+    const s = scenarioOf(design);
+    const f = design.scenario.format;
+    out.push(
+      `- [ ] Delivered as a ${s?.name.en.toLowerCase()}: ${f.name.en}, ${f.width}×${f.height}${f.fixed ? ' fixed canvas' : ''}, following the Scenario section`,
+    );
+    out.push('- [ ] Every scenario rule holds and no scenario must-not appears');
+  }
   out.push(
     `- [ ] \`critique_page\` (or \`hash-design critique --brief ${design.ref}\`) reports no critical/major findings`,
   );
@@ -327,6 +397,7 @@ export function briefJson(design: Design, content: Partial<Content> = {}) {
     algorithm: design.algorithm,
     library: design.library,
     constraints: design.constraints,
+    ...(design.scenario ? { scenario: scenarioJson(design, lang) } : {}),
     content: c,
     branch: {
       id: design.branch.id,
@@ -360,6 +431,28 @@ export function briefJson(design: Design, content: Partial<Content> = {}) {
 
 export type BriefJson = ReturnType<typeof briefJson>;
 
+/** Scenario part of the JSON brief, with text in the brief's language. */
+function scenarioJson(design: Design, lang: Language) {
+  const sc = design.scenario as NonNullable<Design['scenario']>;
+  const s = scenarioOf(design) as Scenario;
+  const t = (b: Bilingual) => b[lang];
+  return {
+    id: sc.id,
+    data: sc.data,
+    name: s.name,
+    format: sc.format,
+    baseSize: sc.baseSize,
+    summary: t(s.summary),
+    output: t(s.output),
+    count: t(s.count),
+    layout: t(s.layout),
+    anchor: t(s.anchor),
+    motion: t(s.motion),
+    must: s.must.map(t),
+    mustNot: s.mustNot.map(t),
+  };
+}
+
 /** File-system friendly slug for a design in a roll: "01-supermarket-circular". */
 export function designSlug(design: Design, index: number): string {
   return `${String(index + 1).padStart(2, '0')}-${design.branch.id}`;
@@ -379,7 +472,7 @@ export function renderRollSummary(r: Roll): string {
   r.designs.forEach((d, i) => {
     const probe = d.probe ? ` (+${d.probe})` : '';
     out.push(
-      `| ${i + 1} | \`${d.short}\`${probe} | **${d.branch.name.zh}** ${d.branch.name.en} | ${d.layout.name} | ${d.type.display.family} / ${d.type.body.family} | ${d.palette.name} | ${d.density.id} | ${d.voice.name.zh} | ${d.twist.name.zh} |`,
+      `| ${i + 1} | \`${d.short}\`${probe} | **${d.branch.name.zh}** ${d.branch.name.en} | ${d.layout.name}${d.scenario ? ` · ${d.scenario.format.name.en}` : ''} | ${d.type.display.family} / ${d.type.body.family} | ${d.palette.name} | ${d.density.id} | ${d.voice.name.zh} | ${d.twist.name.zh} |`,
     );
   });
   out.push('');

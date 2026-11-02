@@ -1,5 +1,5 @@
 import { describe, expect, it } from 'vitest';
-import { reproduce, roll, rollJson } from '../src/brief.js';
+import { briefJson, renderBrief, renderRollSummary, reproduce, roll, rollJson } from '../src/brief.js';
 import { DENSITIES, TWISTS } from '../src/data/pools.js';
 import { SCENARIOS, getScenario } from '../src/data/scenarios.js';
 import { baseSize, tokensCss, typeScale } from '../src/derive.js';
@@ -157,5 +157,48 @@ describe('scenario type sizes', () => {
     expect(scenarioBaseSize(s('app'), DENSITIES.compact)).toBe(16);
     expect(scenarioBaseSize(s('dashboard'), DENSITIES.regular)).toBe(15);
     expect(scenarioBaseSize(s('email'), DENSITIES.compact)).toBe(16);
+  });
+});
+
+describe('scenario briefs', () => {
+  it.each(NON_WEB)('%s brief carries the scenario section in the page language', (id) => {
+    const s = getScenario(id)!;
+    for (const [lang, c] of [
+      ['en', { subject: 'Causeway', facts: ['A one-day music festival on Skerrow Island'] }],
+      ['zh', { subject: '第四巷面包店', facts: ['周一休息'] }],
+    ] as const) {
+      const r = roll({
+        seed: `brief-${id}`,
+        content: { subject: c.subject, facts: [...c.facts] },
+        constraints: { scenario: id },
+      });
+      const d = r.designs[0]!;
+      const f = d.scenario!.format;
+      const md = renderBrief(d, r.content, { number: 1 });
+      expect(md).toContain(`## 场景 Scenario — ${s.name.zh} / ${s.name.en}`);
+      expect(md).toContain(`| scenario | ${s.name.en} — ${f.name.en} (${f.width}×${f.height})`);
+      expect(md).toContain(`- **Format — ${f.name[lang]}**`);
+      expect(md).toContain(s.output[lang]);
+      for (const m of s.must) expect(md).toContain(`- ${m[lang]}`);
+      expect(md).toContain(`on a ${d.scenario!.baseSize}px base`);
+      expect(md).toMatch(/\| 14–31 \|/);
+      expect(md).toContain('- [ ] Every scenario rule holds');
+      expect(md).toContain('constraints | scenario=' + id);
+
+      const json = briefJson(d, r.content);
+      expect(json.scenario?.id).toBe(id);
+      expect(json.scenario?.format).toEqual(f);
+      expect(json.scenario?.output).toBe(s.output[lang]);
+      expect(renderRollSummary(r)).toContain(`${d.layout.name} · ${f.name.en}`);
+    }
+  });
+
+  it('web briefs have no scenario section, row or JSON key', () => {
+    const r = roll({ seed: 'brief-web', content });
+    const md = renderBrief(r.designs[0]!, r.content);
+    expect(md).not.toContain('场景 Scenario');
+    expect(md).not.toContain('| scenario |');
+    expect(md).toMatch(/\| 13–31 \|/);
+    expect('scenario' in briefJson(r.designs[0]!, r.content)).toBe(false);
   });
 });
