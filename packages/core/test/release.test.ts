@@ -28,4 +28,19 @@ describe('release readiness', () => {
       expect(wrong.out).toContain(`expected v${version}`);
     }
   });
+
+  it('the release workflow publishes only from a published GitHub Release, with the token from secrets', () => {
+    const wf = readFileSync(repo('.github/workflows/release.yml'), 'utf8');
+    const on = wf.slice(wf.indexOf('\non:'), wf.indexOf('\npermissions:'));
+    expect(on).toContain('release:');
+    expect(on).toContain('types: [published]');
+    expect(on).not.toMatch(/\bpush:/);
+    expect(wf).toContain('id-token: write');
+    expect(wf).toContain('NODE_AUTH_TOKEN: ${{ secrets.NPM_TOKEN }}');
+    expect(wf).not.toMatch(/npm_[A-Za-z0-9]{20,}/);
+    const publish = wf.slice(wf.indexOf('- name: Publish to npm'));
+    expect(publish).toContain("if: github.event_name == 'release'");
+    expect(publish).toContain('--provenance');
+    expect(wf).toContain('node scripts/release-check.mjs --tag "$TAG"');
+  });
 });

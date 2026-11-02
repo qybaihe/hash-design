@@ -1,0 +1,88 @@
+name: Release
+
+# Publishes hash-design and hash-design-mcp to npm when a GitHub Release is published.
+# Nothing is published on pushes to main: a release needs a version bump, a CHANGELOG section and a
+# published GitHub Release tagged v<version>. Running the workflow by hand is a dry run (verify + pack).
+# Setup and release steps: docs/publishing.md.
+on:
+  release:
+    types: [published]
+  workflow_dispatch:
+
+permissions:
+  contents: read
+  id-token: write # npm provenance (and npm trusted publishing, if configured)
+
+concurrency:
+  group: release
+  cancel-in-progress: false
+
+jobs:
+  publish:
+    name: Verify and publish to npm
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v7
+
+      - uses: actions/setup-node@v7
+        with:
+          node-version: 24
+          registry-url: https://registry.npmjs.org
+          cache: npm
+
+      # Trusted publishing needs npm >= 11.5.1; provenance works with any recent npm.
+      - name: Use npm 11
+        run: npm install -g npm@11 && npm --version
+
+      - run: npm ci
+
+      - name: Check versions, tag, CHANGELOG and package manifests
+        env:
+          TAG: ${{ github.event.release.tag_name }}
+        run: |
+          if [ "${{ github.event_name }}" = "release" ]; then
+            node scripts/release-check.mjs --tag "$TAG"
+          else
+            node scripts/release-check.mjs
+          fi
+
+      - run: npm run build
+      - run: npm run typecheck
+      - run: npm run lint
+      - run: npm run format:check
+      - run: npm test
+      - name: Smoke test (CLI + MCP over real stdio)
+        run: node scripts/smoke.mjs
+
+      - name: Pack the tarballs that will be published
+        run: |
+          node scripts/release-check.mjs --pack
+          mkdir -p release-assets
+          npm pack -w hash-design -w hash-design-mcp --pack-destination release-assets
+          ls -l release-assets
+
+      - name: Publish to npm (core first, then the MCP server that depends on it)
+        if: github.event_name == 'release'
+        env:
+          NODE_AUTH_TOKEN: ${{ secrets.NPM_TOKEN }}
+          PRERELEASE: ${{ github.event.release.prerelease }}
+        run: |
+          set -euo pipefail
+          VERSION=$(node -p "require('./packages/core/package.json').version")
+          DIST_TAG=latest
+          if [[ "$VERSION" == *-* || "$PRERELEASE" == "true" ]]; then DIST_TAG=next; fi
+          if [ -z "${NODE_AUTH_TOKEN}" ]; then
+            echo "::notice::NPM_TOKEN is not set; relying on npm trusted publishing (OIDC)."
+          fi
+          for NAME in hash-design hash-design-mcp; do
+            if npm view "${NAME}@${VERSION}" version >/dev/null 2>&1; then
+              echo "${NAME}@${VERSION} is already on npm; skipping."
+              continue
+            fi
+            npm publish "release-assets/${NAME}-${VERSION}.tgz" --provenance --access public --tag "${DIST_TAG}"
+            echo "Published ${NAME}@${VERSION} (dist-tag ${DIST_TAG})."
+          done
+
+      - name: Dry run summary
+        if: github.event_name != 'release'
+        run: echo "::notice::Dry run only. Publish a GitHub Release tagged v<version> to publish to npm."
