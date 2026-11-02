@@ -35,5 +35,5 @@ jobs:
       - run: npm test
       - name: Smoke test (CLI + MCP over real stdio)
         run: node scripts/smoke.mjs
-      - name: Pack dry-run
-        run: npm pack --dry-run -w hash-design -w hash-design-mcp
+      - name: Release readiness (manifests, lockstep versions, npm pack --dry-run contents)
+        run: npm run release:check
