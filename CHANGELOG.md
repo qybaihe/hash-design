@@ -21,9 +21,11 @@ Neither package (`hash-design`, `hash-design-mcp`) has been published to npm yet
 - The compare page (`hash-design compare`, `build_compare_page`) follows the roll's language: an English roll gets English labels, buttons, instructions and voice/twist names, and `<html lang="en">`. Chinese rolls are unchanged. `compareSubtitle()` is exported from the library.
 - `scripts/examples.mjs` and the npm scripts `examples`, `example:roll`, `example:critique` and `example:compare`, which list, re-roll, critique or rebuild the compare pages of every example (or one, with `-- <name>`).
 - `scripts/hero.mjs` (`npm run hero`) builds the README hero `docs/assets/hero.png` and a 1280×640 `docs/assets/social-preview.png` from one example's roll and screenshots: the prompt fans out into the five previews, labelled with their refs, branch names and palettes. Both images currently show `examples/causeway-festival`.
+- `scripts/hero-gif.mjs` (`npm run hero:gif`) renders an animated hero from the same example: `/hash-design` picked in a prompt box, five SHA-256 refs ticking and locking to the real ones, the five previews popping in and lining up as a compare row. Frames are captured deterministically at `t = i / fps` and encoded to `docs/assets/hero.gif` (960 px, 20 fps, 6 s loop) and `docs/assets/hero.mp4` (H.264).
 
 ### Changed
 
+- Every README now opens with the animated hero; readers who prefer reduced motion get the static `hero.png` through a `<picture>` source.
 - The first screen of every README: a problem-first pitch, four badges (the rest in a collapsed block), the new hero linked to the Causeway compare page, a quick start that installs from source, and a four-line overview. The Fourth Lane Bakery compare image moved to the top of each Demo section.
 - `npm run screenshots` now covers every example; `node scripts/screenshot.mjs <name|dir> [prefix]` still shoots one.
 - The package READMEs (`packages/core/README.md`, `packages/mcp/README.md`) now say the packages are not on npm yet and show the source install.
