@@ -2,7 +2,7 @@
 
 Stdio [MCP](https://modelcontextprotocol.io) server for [hash-design](https://github.com/qybaihe/hash-design).
 
-> **Not published on npm yet.** Until it is, build it from source and point your client at the built entry:
+> **Not published to npm.** Only the core package, [`hash-design`](https://www.npmjs.com/package/hash-design) (library, CLI and Skill), is published. This server is part of the monorepo: build it from a clone and point your client at the built entry. An early `hash-design-mcp@0.1.0` is on npm from a one-time manual publish; it will not be updated.
 >
 > ```bash
 > git clone https://github.com/qybaihe/hash-design.git && cd hash-design && npm install && npm run build
@@ -19,8 +19,6 @@ Stdio [MCP](https://modelcontextprotocol.io) server for [hash-design](https://gi
   }
 }
 ```
-
-Once published, `"command": "npx", "args": ["-y", "hash-design-mcp"]` will work as well.
 
 Tools: `roll_designs`, `get_brief`, `list_branches`, `get_branch`, `critique_page`, `build_compare_page`.
 Resources: `hash-design://bans`, `hash-design://workflow`, `hash-design://branches`, `hash-design://branch/{id}`.

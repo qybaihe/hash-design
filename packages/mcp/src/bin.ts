@@ -10,8 +10,9 @@ async function main(): Promise<void> {
   }
   if (arg === '--help' || arg === '-h') {
     process.stdout.write(
-      `hash-design-mcp ${SERVER_VERSION}\nStdio MCP server. Configure it in your MCP client, e.g.\n` +
-        `  { "mcpServers": { "hash-design": { "command": "npx", "args": ["-y", "hash-design-mcp"] } } }\n`,
+      `hash-design-mcp ${SERVER_VERSION}\nStdio MCP server. Configure it in your MCP client with the absolute path of\n` +
+        `this file in a hash-design checkout (it is not published to npm), e.g.\n` +
+        `  { "mcpServers": { "hash-design": { "command": "node", "args": ["/ABS/PATH/hash-design/packages/mcp/dist/bin.js"] } } }\n`,
     );
     return;
   }
