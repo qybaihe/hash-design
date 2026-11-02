@@ -2,19 +2,50 @@
 
 [English](README.md) | [简体中文](README.zh-CN.md) | [日本語](README.ja.md) | [한국어](README.ko.md) | **Español**
 
-[![CI](https://github.com/qybaihe/hash-design/actions/workflows/ci.yml/badge.svg)](https://github.com/qybaihe/hash-design/actions/workflows/ci.yml)
+<p align="center"><b>Que tu agente de programación deje de entregar siempre la misma página con Inter y degradado morado.</b><br>
+Un solo prompt se convierte en cinco direcciones de diseño, elegidas por hashes SHA-256 verdaderamente aleatorios y no por el modelo. Tú eliges una; cualquier dirección se puede reconstruir a partir de su ref.</p>
+
+<p align="center">
+<a href="https://github.com/qybaihe/hash-design/actions/workflows/ci.yml"><img src="https://github.com/qybaihe/hash-design/actions/workflows/ci.yml/badge.svg" alt="CI"></a>
+<a href="https://qybaihe.github.io/hash-design/"><img src="https://img.shields.io/badge/live%20demo-4%20examples-e2401c.svg" alt="Demo en vivo"></a>
+<a href="LICENSE"><img src="https://img.shields.io/badge/license-MIT-black.svg" alt="MIT"></a>
+<a href="#instalar-la-skill"><img src="https://img.shields.io/badge/Agent%20Skill-Claude%20Code%20%C2%B7%20Cursor-black.svg" alt="Agent Skill"></a>
+</p>
+
+[![Un prompt para la página de un festival se abre en cinco direcciones sorteadas: Engineering plate, Topographic map, Warm handmade, Editorial magazine, Memphis pop](docs/assets/hero.png)](https://qybaihe.github.io/hash-design/causeway-festival/compare.html)
+
+<p align="center"><sub>Resultado real, no una maqueta: <a href="examples/causeway-festival">examples/causeway-festival</a>; cada vista previa la hizo un subagente distinto a partir de un único brief congelado.<br><a href="https://qybaihe.github.io/hash-design/"><b>Ver los 4 ejemplos en vivo →</b></a> · 20 de las 40 ramas</sub></p>
+
+### Inicio rápido
+
+Aún no está en npm. Compila desde el código fuente (Node ≥ 20), instala la Skill en tu proyecto y registra el servidor MCP:
+
+```bash
+git clone https://github.com/qybaihe/hash-design.git && cd hash-design && npm install && npm run build
+node packages/core/dist/bin.js skill install --target both --dir /path/to/your/project   # Skill → .claude/skills + .cursor/skills
+claude mcp add hash-design -- node "$PWD/packages/mcp/dist/bin.js"                       # MCP server (Claude Code)
+```
+
+Después, pídele a tu agente:
+
+> Usa hash-design para crear una web de una sola página para Causeway, un festival de música de un día en la isla de Skerrow. Datos: sábado 19 de junio de 2027; se llega a pie por una calzada de 1,2 km que solo se puede cruzar con marea baja; …
+
+Cursor y Claude Desktop: [Configurar MCP](#configurar-mcp).
+
+### Cómo funciona, en cuatro líneas
+
+1. **Tirada**: cinco hashes SHA-256 a partir de la aleatoriedad del sistema.
+2. **Mapeo**: un árbol de decisión fijo convierte cada hash en un brief: género, maquetación, fuentes, paleta en hex, densidad, movimiento, giro. Mismo ref, mismo brief.
+3. **Render**: cinco vistas previas HTML, un subagente por brief congelado, y una página comparativa que las pone lado a lado.
+4. **Elección**: respondes con un número; el agente construye la página final con ese brief y la revisa con `critique_page`.
+
+<details><summary>Más insignias</summary>
+
 [![Pages](https://github.com/qybaihe/hash-design/actions/workflows/pages.yml/badge.svg)](https://github.com/qybaihe/hash-design/actions/workflows/pages.yml)
-[![Live demo](https://img.shields.io/badge/demo-4%20examples-e2401c.svg)](https://qybaihe.github.io/hash-design/)
-[![License: MIT](https://img.shields.io/badge/license-MIT-black.svg)](LICENSE)
 [![Node](https://img.shields.io/badge/node-%E2%89%A520%20%C2%B7%20.nvmrc%2022-black.svg)](.nvmrc)
 [![npm: not yet published](https://img.shields.io/badge/npm-not%20yet%20published-lightgrey.svg)](#instalación)
 
-**Deja que un hash verdaderamente aleatorio elija la dirección de diseño, no el modelo.**
-Biblioteca principal + servidor MCP (stdio) + Agent Skill + CLI, en TypeScript.
-
-![Fourth Lane Bakery: one fact sheet, five random directions side by side](examples/fourth-lane-bakery/screenshots/compare.png)
-
-<p align="center"><sub>Una ficha de datos, cinco direcciones sorteadas: formulario burocrático · Bauhaus · tinta y sello · risografía a dos tintas · rótulo de tienda de Hong Kong.<br><a href="https://qybaihe.github.io/hash-design/fourth-lane-bakery/compare.html"><b>Abrir la página comparativa en vivo →</b></a> · <a href="#más-ejemplos">3 ejemplos más ↓</a></sub></p>
+</details>
 
 ---
 
@@ -26,6 +57,8 @@ Biblioteca principal + servidor MCP (stdio) + Agent Skill + CLI, en TypeScript.
 - [Desarrollo](#desarrollo) · [Documentación](#documentación) · [Limitaciones conocidas](#limitaciones-conocidas) · [Contribuir](#contribuir)
 
 ## Demo
+
+[![Fourth Lane Bakery: una ficha de datos, cinco direcciones aleatorias lado a lado](examples/fourth-lane-bakery/screenshots/compare.png)](https://qybaihe.github.io/hash-design/fourth-lane-bakery/compare.html)
 
 [`examples/fourth-lane-bakery/`](examples/fourth-lane-bakery) es una ejecución completa, de principio a fin, para una panadería ficticia: una [ficha de datos](examples/fourth-lane-bakery/facts.md) → una tirada → cinco briefs congelados → cinco vistas previas, cada una renderizada por un subagente distinto que solo podía ver su propio brief → una página comparativa lado a lado. Todo se sirve en GitHub Pages:
 
@@ -364,6 +397,7 @@ node scripts/smoke.mjs        # smoke test de MCP sobre stdio real + CLI (se eje
 node scripts/verify-fonts.mjs # comprueba en línea todas las URL de fuentes (no en CI)
 npm run example:critique      # critique de todas las vistas previas de los ejemplos frente a su brief (falla por debajo de 90)
 npm run screenshots           # capturas de todos los ejemplos con Playwright (requiere `npx playwright install chromium`)
+npm run hero                  # regenera docs/assets/hero.png y social-preview.png a partir de las capturas de un ejemplo
 ```
 
 En CI se ejecutan la compilación, la comprobación de tipos, el lint, la comprobación de formato, los tests, el smoke test por stdio y `npm pack --dry-run` en Node 20, 22 y 24.
