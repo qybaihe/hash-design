@@ -21,9 +21,10 @@ describe('Skill ↔ data consistency', () => {
     expect(applySkillGeneratedBlock(skill)).toBe(skill);
   });
 
-  it('mentions every ban and the real font pool', () => {
+  it('mentions every ban and the real font pool, and no branch library', () => {
     for (const b of BANS) expect(skill).toContain(b.id);
     expect(skill).toContain(`${DISPLAY_FONTS.length} 个标题字体 × ${BODY_FONTS.length} 个正文字体`);
+    expect(skill).not.toMatch(/list_branches|get_branch|分支库|branch library/i);
   });
 
   it('copies for Claude Code and Cursor are identical to the source', () => {
