@@ -39,12 +39,13 @@ jobs:
         run: |
           npm install -g npm@11
           node -e '
-            const [a, b, c] = process.argv[1].split(".").map(Number);
+            const v = process.argv[1];
+            const [a, b, c] = v.split(".").map(Number);
             if (a < 11 || (a === 11 && (b < 5 || (b === 5 && c < 1)))) {
-              console.error(`npm ${process.argv[1]} is too old for trusted publishing (needs >= 11.5.1)`);
+              console.error("npm " + v + " is too old for trusted publishing (needs >= 11.5.1)");
               process.exit(1);
             }
-            console.log(`npm ${process.argv[1]}`);
+            console.log("npm " + v);
           ' "$(npm --version)"
 
       - run: npm ci
