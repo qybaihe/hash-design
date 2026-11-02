@@ -4,7 +4,7 @@
 
 `hash-design-mcp` 是一个基于官方 TypeScript SDK 的 stdio [Model Context Protocol](https://modelcontextprotocol.io) server。源码：[`packages/mcp/src/server.ts`](../packages/mcp/src/server.ts)。它提供 6 个工具、4 个资源和 1 个 prompt，并向客户端发送概括工作流程的 server instructions。
 
-> 尚未发布到 npm。请从源码运行：`node /ABS/PATH/hash-design/packages/mcp/dist/bin.js`（见[手动安装](../README.zh-CN.md#手动安装)）。
+> MCP server 不发布到 npm；发布到 npm 的只有核心包 `hash-design`（库、CLI、Skill）。请从源码运行：`node /ABS/PATH/hash-design/packages/mcp/dist/bin.js`（见[手动安装](../README.zh-CN.md#手动安装)）。
 
 ## 工作目录与文件访问
 
@@ -138,7 +138,7 @@ design/hash-design/
 
 ## 客户端配置
 
-Claude Code、Cursor 和 Claude Desktop 的配置见 README 中的[手动安装](../README.zh-CN.md#手动安装)。包发布到 npm 之后，命令会变成 `npx -y hash-design-mcp`。
+Claude Code、Cursor 和 Claude Desktop 的配置见 README 中的[手动安装](../README.zh-CN.md#手动安装)。MCP server 不发布到 npm，所以没有对应的 `npx` 命令：让客户端指向克隆源码里的 `packages/mcp/dist/bin.js`。
 
 ## 测试
 

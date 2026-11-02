@@ -77,6 +77,8 @@ describe('release readiness', () => {
       for (const field of ['`qybaihe`', '`hash-design`', '`release.yml`', 'Trusted Publisher'])
         expect(text, `${doc} ${field}`).toContain(field);
       expect(text, doc).not.toMatch(/secrets\.NPM_TOKEN|New repository secret/);
+      // hash-design-mcp is not published any more: no publish or trust command for it.
+      expect(text, doc).not.toMatch(/npm publish -w hash-design-mcp|npm trust github hash-design-mcp/);
     }
   });
 });

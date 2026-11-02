@@ -13,7 +13,7 @@ hash-design is an npm-workspaces monorepo with two packages, one Skill and a ful
                  │            cli.ts / bin.ts (hash-design CLI)      skill.ts (SKILL.md access + sync block) │
                  └───────────────▲────────────────────────────────────────────────────────────────────────────┘
                                  │ imports the public API only
-                 ┌───────────────┴──── packages/mcp (npm: hash-design-mcp) ────┐
+                 ┌───────────────┴──── packages/mcp (private, not on npm) ─────┐
                  │ server.ts: 6 tools, 4 resources, 1 prompt, instructions     │
                  │ bin.ts:    stdio transport                                  │
                  └─────────────────────────────────────────────────────────────┘
@@ -92,4 +92,4 @@ The four runs under `examples/` (a bakery, a developer tool, a bicycle repair sh
 
 ## Packaging
 
-Both packages are publish-ready but **not published yet**. `prepack` in `packages/core` copies `SKILL.md` and `LICENSE` into the package so `hash-design skill install` works from an npm install; `packages/mcp` depends on `hash-design` by version. `tsbuildinfo` files are excluded from the tarballs.
+Only `packages/core` is published, as `hash-design` (0.1.0 has been on npm since 2026-11-02). Its `prepack` copies `SKILL.md` and `LICENSE` into the package so `hash-design skill install` works from an npm install, and `tsbuildinfo` files are excluded from the tarball. `packages/mcp` is private and runs from a clone; it depends on `hash-design` by version (`^<version>`), which npm satisfies by linking the workspace. Releases: [publishing.md](publishing.md).

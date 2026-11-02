@@ -13,7 +13,7 @@ hash-design 是一个 npm workspaces monorepo，包含两个包、一个 Skill �
                  │            cli.ts / bin.ts (hash-design CLI)      skill.ts (SKILL.md access + sync block) │
                  └───────────────▲────────────────────────────────────────────────────────────────────────────┘
                                  │ imports the public API only
-                 ┌───────────────┴──── packages/mcp (npm: hash-design-mcp) ────┐
+                 ┌───────────────┴──── packages/mcp (private, not on npm) ─────┐
                  │ server.ts: 6 tools, 4 resources, 1 prompt, instructions     │
                  │ bin.ts:    stdio transport                                  │
                  └─────────────────────────────────────────────────────────────┘
@@ -92,4 +92,4 @@ hash-design 是一个 npm workspaces monorepo，包含两个包、一个 Skill �
 
 ## 打包
 
-两个包都已经可以发布，但**尚未发布**。`packages/core` 的 `prepack` 会把 `SKILL.md` 和 `LICENSE` 复制进包里，这样从 npm 安装后 `hash-design skill install` 也能用；`packages/mcp` 按版本号依赖 `hash-design`。`tsbuildinfo` 文件不会打进 tarball。
+只有 `packages/core` 会发布，包名 `hash-design`（0.1.0 自 2026-11-02 起已在 npm 上）。它的 `prepack` 会把 `SKILL.md` 和 `LICENSE` 复制进包里，这样从 npm 安装后 `hash-design skill install` 也能用；`tsbuildinfo` 文件不会打进 tarball。`packages/mcp` 是 private，从克隆的源码运行；它按版本号（`^<version>`）依赖 `hash-design`，npm 通过链接工作区来满足这个依赖。发布流程见 [publishing.zh-CN.md](publishing.zh-CN.md)。

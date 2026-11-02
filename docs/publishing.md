@@ -2,24 +2,41 @@
 
 [中文](publishing.zh-CN.md) · [Back to README](../README.md)
 
-This page is for maintainers. Nothing has been published yet. Releases are published by GitHub Actions with [npm Trusted Publishing](https://docs.npmjs.com/trusted-publishers) (OIDC): no npm token is created, stored as a secret or read by the workflow. Because npm can only attach a Trusted Publisher to a package that already exists, the very first version of each package is published once by hand.
+This page is for maintainers. One package is published to npm: **`hash-design`** (`packages/core`). Releases are published by GitHub Actions with [npm Trusted Publishing](https://docs.npmjs.com/trusted-publishers) (OIDC): no npm token is created, stored as a secret or read by the workflow.
 
-In order:
+Where things stand: `hash-design@0.1.0` was published by hand on 2026-11-02 from commit `475ba16` (so the package exists and a Trusted Publisher can be attached to it). Every later version goes through the workflow, once:
 
-1. [First publish (one-time, manual)](#first-publish-one-time-manual)
-2. [Add the Trusted Publisher on npmjs.com](#add-the-trusted-publisher-on-npmjscom) (once per package)
-3. [Release steps](#release-steps) for every later version
+1. [the Trusted Publisher is added to `hash-design` on npmjs.com](#add-the-trusted-publisher-to-hash-design) (once), then
+2. each version follows the [release steps](#release-steps).
 
 ## Packages
 
-| Package           | Directory       | Contains                                              | Binary            |
-| ----------------- | --------------- | ----------------------------------------------------- | ----------------- |
-| `hash-design`     | `packages/core` | library, CLI, `skill/SKILL.md` (copied in by prepack) | `hash-design`     |
-| `hash-design-mcp` | `packages/mcp`  | stdio MCP server; depends on `hash-design`            | `hash-design-mcp` |
+| Package           | Directory       | On npm                            | Contains                                              | Binary          |
+| ----------------- | --------------- | --------------------------------- | ----------------------------------------------------- | --------------- |
+| `hash-design`     | `packages/core` | published by `release.yml`        | library, CLI, `skill/SKILL.md` (copied in by prepack) | `hash-design`   |
+| `hash-design-mcp` | `packages/mcp`  | not published (`"private": true`) | stdio MCP server; depends on `hash-design`            | in a clone only |
 
-Both names were unclaimed on the npm registry when this was written (`npm view hash-design` and `npm view hash-design-mcp` returned 404 on 2026-11-02), and both packages will be owned by the npm account `qybaihe`. npm can still refuse an unscoped name at publish time if it is too similar to an existing package; the fallback would be the `@qybaihe` scope (`@qybaihe/hash-design`, `@qybaihe/hash-design-mcp`), which would also mean changing the dependency in `packages/mcp`, the import in `packages/mcp/src`, the docs, `scripts/release-check.mjs` and the workflow's package list.
+The root `package.json` is private too. All three `package.json` files share one version: `packages/mcp` is never published, but its `^<version>` dependency on `hash-design` has to cover the workspace version, or npm would install the registry copy instead of linking `packages/core`. `npm run release:version` keeps them in step and `scripts/release-check.mjs` fails if `packages/mcp` stops being private.
 
-The root `package.json` is private and is never published. All three `package.json` files share one version.
+## Getting the MCP server
+
+The `hash-design` package does **not** contain the MCP server. `npm install hash-design` (or `npx -y hash-design …`) gives the library, the `hash-design` CLI and the Skill (`npx -y hash-design skill install`); the server, with its own dependencies (`@modelcontextprotocol/sdk`, `zod`), lives only in `packages/mcp`. To use the MCP tools, clone and build the repository and register the built entry, as in the README's [Install by hand](../README.md#install-by-hand):
+
+```bash
+git clone https://github.com/qybaihe/hash-design.git ~/hash-design
+cd ~/hash-design && npm install && npm run build
+claude mcp add hash-design -- node ~/hash-design/packages/mcp/dist/bin.js
+```
+
+There is no `npx` command for the server. An agent without MCP can use the CLI from npm instead; the Skill maps every MCP tool to a CLI command with the same options.
+
+`hash-design-mcp@0.1.0` is on npm from the one-time manual publish of 0.1.0 and will not get new versions. To tell people who find it, a maintainer can deprecate it. This only changes registry metadata and publishes nothing:
+
+```bash
+npm deprecate hash-design-mcp "No longer published: run the MCP server from https://github.com/qybaihe/hash-design (packages/mcp)"
+```
+
+If a Trusted Publisher was ever added to `hash-design-mcp`, remove it on that package's **Settings** page; the workflow never publishes it.
 
 ## The release workflow
 
@@ -29,40 +46,20 @@ The root `package.json` is private and is never published. All three `package.js
 | Trigger     | a **published GitHub Release** tagged `v<version>` (`release: types: [published]`). Pushes to `main` never publish. Running it by hand (Actions → Release → Run workflow) is a dry run: it verifies and packs, and publishes nothing. |
 | Permissions | `contents: read`, `id-token: write` (the OIDC token npm exchanges for a short-lived publish credential)                                                                                                                               |
 | Secrets     | none                                                                                                                                                                                                                                  |
+| Publishes   | `hash-design` only                                                                                                                                                                                                                    |
 
 The workflow:
 
-1. checks that the release tag is `v<version>`, that the root, `hash-design` and `hash-design-mcp` versions match, that `hash-design-mcp` depends on `^<version>`, that `CHANGELOG.md` has a `## [<version>]` section and that both manifests have their publish fields, including `repository`, which provenance is checked against (`scripts/release-check.mjs`);
+1. checks that the release tag is `v<version>`, that the root, `hash-design` and the private `hash-design-mcp` versions match, that `hash-design-mcp` is still private and depends on `^<version>`, that `CHANGELOG.md` has a `## [<version>]` section and that `hash-design` has its publish fields, including `repository`, which provenance is checked against (`scripts/release-check.mjs`);
 2. runs build, typecheck, lint, format check, tests and the stdio smoke test, on Node 24 with npm 11 (it fails if npm is older than 11.5.1, the trusted-publishing minimum);
-3. packs both tarballs and checks their contents (no tests, the Skill and LICENSE included);
-4. publishes `hash-design`, then `hash-design-mcp`, with `npm publish <tarball> --provenance --access public`. A version that is already on npm is skipped, so a failed run can simply be re-run. A package that does not exist on npm yet stops the job with a pointer to the first publish below. Versions with a pre-release part (`0.3.0-rc.1`) or releases marked as pre-release go to the `next` dist-tag instead of `latest`.
+3. packs the `hash-design` tarball and checks its contents (no tests, the Skill and LICENSE included);
+4. publishes it with `npm publish <tarball> --provenance --access public`. A version that is already on npm is skipped, so a failed run can simply be re-run. Versions with a pre-release part (`0.3.0-rc.1`) or releases marked as pre-release go to the `next` dist-tag instead of `latest`.
 
-## First publish (one-time, manual)
+## Add the Trusted Publisher to hash-design
 
-A Trusted Publisher is configured on a package's settings page, and npm's [`npm trust`](https://docs.npmjs.com/cli/v11/commands/npm-trust) docs state that "the package you're configuring must already exist on the npm registry". Trusted publishing cannot create a package, so the first version of each package is published from a maintainer's machine. Do not run this from CI and do not create a token for it; `npm login` with two-factor authentication is enough.
+Once, signed in to [npmjs.com](https://www.npmjs.com) as `qybaihe`:
 
-1. Prepare the version as in [Release steps](#release-steps) 1–4 (version bump, CHANGELOG, merged pull request).
-2. From a clean, up-to-date `main` at the merge commit:
-
-   ```bash
-   git switch main && git pull && git status        # nothing to commit
-   npm ci && npm run build && npm run check && npm run release:check
-   npm login                                        # as qybaihe, with 2FA
-   npm whoami                                       # must print qybaihe
-   npm publish -w hash-design --access public       # core first …
-   npm publish -w hash-design-mcp --access public   # … then the MCP server that depends on it
-   ```
-
-   This first version has no provenance statement: npm can only generate one from a supported CI provider.
-
-3. Publish the GitHub Release `v<version>` (Release steps 5). The workflow runs all its checks and skips both packages because that version is already on npm, which also proves the pipeline before the first automated publish.
-4. Add the Trusted Publisher to both packages (next section). After that, every version goes through the workflow.
-
-## Add the Trusted Publisher on npmjs.com
-
-Do this for **`hash-design`** and then for **`hash-design-mcp`**, signed in to [npmjs.com](https://www.npmjs.com) as `qybaihe`:
-
-1. Open the package page (`https://www.npmjs.com/package/hash-design`, then `https://www.npmjs.com/package/hash-design-mcp`) and go to its **Settings** tab.
+1. Open `https://www.npmjs.com/package/hash-design` and go to its **Settings** tab.
 2. In the **Trusted Publisher** section, under **Select your publisher**, choose **GitHub Actions**.
 3. Fill in the fields exactly:
 
@@ -81,15 +78,16 @@ The same from a terminal, with npm ≥ 11.15.0 and 2FA enabled on the account:
 
 ```bash
 npm trust github hash-design --repo qybaihe/hash-design --file release.yml --allow-publish
-npm trust github hash-design-mcp --repo qybaihe/hash-design --file release.yml --allow-publish
 ```
 
-Then, on each package's **Settings → Publishing access**, choose **Require two-factor authentication and disallow tokens** and save. Trusted publishing keeps working, because it does not use a token.
+Then, on the package's **Settings → Publishing access**, choose **Require two-factor authentication and disallow tokens** and save. Trusted publishing keeps working, because it does not use a token.
 
 Two things to keep in mind:
 
 - npm's docs say a newly created trusted publisher configuration must complete its first successful publish within 2 days. Add it when the next release is ready (or add it again if it expired before that release).
-- The workflow filename is part of the trust. If `release.yml` is ever renamed, update the Trusted Publisher on both packages in the same change.
+- The workflow filename is part of the trust. If `release.yml` is ever renamed, update the Trusted Publisher in the same change.
+
+0.1.0 was published from a maintainer's machine, so it has no provenance statement (npm only generates one from a supported CI provider). The first version published by the workflow will have one.
 
 ## Release steps
 
@@ -100,7 +98,7 @@ Two things to keep in mind:
    npm run release:version -- 0.2.0
    ```
 
-3. In `CHANGELOG.md`, move the `[Unreleased]` entries under `## [0.2.0] - YYYY-MM-DD` and update the note that says nothing is on npm yet.
+3. In `CHANGELOG.md`, move the `[Unreleased]` entries under `## [0.2.0] - YYYY-MM-DD`.
 4. Check locally, then commit and merge through a pull request:
 
    ```bash
@@ -117,17 +115,18 @@ Two things to keep in mind:
 
    A release created by another workflow with `GITHUB_TOKEN` does not trigger the publish workflow; create it yourself.
 
-6. Watch **Actions → Release**. When it is green, check `npm view hash-design version`, the provenance note on the package page, `npx -y hash-design --help` and `npx -y hash-design-mcp` (it waits for an MCP client on stdin; Ctrl-C to quit).
-7. After the first release, update the "not on npm yet" notes: the five READMEs (same change in every language), `packages/core/README.md`, `packages/mcp/README.md`, `docs/mcp-tools*.md` and the Skill, so that `npx -y hash-design` and `npx -y hash-design-mcp` become the documented install path.
+6. Watch **Actions → Release**. When it is green, check `npm view hash-design version`, the provenance note on the package page and `npx -y hash-design --help`.
 
-`npm run release:check` also runs in CI on every push and pull request, so a manifest that is no longer publishable fails CI before a release is attempted.
+`npm run release:check` also runs in CI on every push and pull request, so a manifest that is no longer publishable, or a `packages/mcp` that is no longer private, fails CI before a release is attempted.
+
+The READMEs still describe installing everything from source. With `hash-design` on npm, the CLI and the Skill can also come from `npx -y hash-design`, while the MCP server keeps coming from a clone. When the READMEs switch to that, change all five in the same way, plus `packages/core/README.md`, `docs/mcp-tools*.md` and the Skill.
 
 ## When the publish step fails
 
-| Message in the Release run                                                       | Cause and fix                                                                                                                                                                                         |
-| -------------------------------------------------------------------------------- | ----------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------- |
-| `… does not exist on npm yet`                                                    | The one-time [first publish](#first-publish-one-time-manual) has not been done for that package.                                                                                                      |
-| `npm … is too old for trusted publishing`                                        | The npm installed on the runner is older than 11.5.1; the `Use npm 11` step should prevent this.                                                                                                      |
-| An authentication error (`ENEEDAUTH`, `E401`, `E403`, `E404`) from `npm publish` | The Trusted Publisher is missing, has expired, or does not match: owner `qybaihe`, repository `hash-design`, workflow filename `release.yml`, no environment. Fix it on npmjs.com and re-run the job. |
+| Message in the Release run                                                       | Cause and fix                                                                                                                                                                                                          |
+| -------------------------------------------------------------------------------- | ---------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------- |
+| `npm … is too old for trusted publishing`                                        | The npm installed on the runner is older than 11.5.1; the `Use npm 11` step should prevent this.                                                                                                                       |
+| An authentication error (`ENEEDAUTH`, `E401`, `E403`, `E404`) from `npm publish` | The Trusted Publisher on `hash-design` is missing, has expired, or does not match: owner `qybaihe`, repository `hash-design`, workflow filename `release.yml`, no environment. Fix it on npmjs.com and re-run the job. |
+| `release check failed: … packages/mcp/package.json must stay "private": true`    | Someone made `packages/mcp` publishable again. Restore `"private": true`; `hash-design-mcp` is not published.                                                                                                          |
 
 Do not fall back to an `NPM_TOKEN` secret: the workflow does not read one.

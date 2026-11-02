@@ -98,7 +98,7 @@ Update, in the same pull request: the tool schema in `packages/mcp/src/server.ts
 
 ## Releasing
 
-Only maintainers release. Publishing a GitHub Release tagged `v<version>` runs [`.github/workflows/release.yml`](.github/workflows/release.yml), which verifies everything and publishes `hash-design` and `hash-design-mcp` to npm; pushes to `main` never publish. It authenticates with npm Trusted Publishing (OIDC), so there is no npm token or secret; the one-time manual first publish, the Trusted Publisher fields on npmjs.com and the step-by-step release are in [docs/publishing.md](docs/publishing.md). `npm run release:check` runs in CI and fails if a manifest stops being publishable.
+Only maintainers release. Publishing a GitHub Release tagged `v<version>` runs [`.github/workflows/release.yml`](.github/workflows/release.yml), which verifies everything and publishes `hash-design` (`packages/core`) to npm; pushes to `main` never publish. `packages/mcp` (`hash-design-mcp`) is private and is not published. The workflow authenticates with npm Trusted Publishing (OIDC), so there is no npm token or secret; the Trusted Publisher fields on npmjs.com and the step-by-step release are in [docs/publishing.md](docs/publishing.md). `npm run release:check` runs in CI and fails if `hash-design` stops being publishable or `packages/mcp` stops being private.
 
 ## Reporting bugs and requesting features
 
@@ -118,5 +118,5 @@ By contributing, you agree that your contributions are licensed under the [MIT L
 - **新增分支**：必须是真实世界的设计门类，有可查的参照。按 `_exemplar.ts` 的粒度写，id 加进 `BRANCH_ORDER` 并保持家族均匀分布，然后跑 `npm test`、`node scripts/verify-fonts.mjs`、`npm run sync`。
 - **改数据就要重掷示例**：库指纹会变，`examples.test.ts` 会失败。`examples/` 下的 4 个示例都要重掷：`npm run example:roll`，按 Skill 第 3 步为每份 brief 独立重做预览，`npm run example:critique`（每个预览 ≥ 90 分、无 critical/major），再跑 `npm run example:compare`、`npm run screenshots`、`npm run hero` 、`npm run hero:gif`（README 首图、动图与社交预览图取自 causeway-festival）和 `npm run showcase`（README「案例展示」里每个示例一张拼图），最后更新所有 README 的「案例展示」部分、各示例的 README、`examples/index.html` 和 `docs/mapping*.md` 里的推演。做不完可以在 PR 里说明，维护者会协助。
 - **翻译**：英文 `README.md` 是基准，其余语言是译本。代码块、命令、包名、工具名在各语言中保持一致。
-- **发布**：只有维护者发布。发布 tag 为 `v<version>` 的 GitHub Release 会触发 `.github/workflows/release.yml`，校验通过后把 `hash-design` 和 `hash-design-mcp` 发布到 npm；推送到 `main` 不会发包。认证用 npm Trusted Publishing（OIDC），不需要 npm token 或 secret；一次性的手动首发、npmjs.com 上 Trusted Publisher 的填写和完整步骤见 [docs/publishing.zh-CN.md](docs/publishing.zh-CN.md)。
+- **发布**：只有维护者发布。发布 tag 为 `v<version>` 的 GitHub Release 会触发 `.github/workflows/release.yml`，校验通过后把 `hash-design`（`packages/core`）发布到 npm；推送到 `main` 不会发包。`packages/mcp`（`hash-design-mcp`）是 private，不发布。认证用 npm Trusted Publishing（OIDC），不需要 npm token 或 secret；npmjs.com 上 Trusted Publisher 的填写和完整步骤见 [docs/publishing.zh-CN.md](docs/publishing.zh-CN.md)。`npm run release:check` 在 CI 里运行，`hash-design` 不再可发布或 `packages/mcp` 不再是 private 时会失败。
 - **安全问题**请按 [SECURITY.md](SECURITY.md) 私下报告，不要开公开 issue。

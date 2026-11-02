@@ -4,7 +4,7 @@
 
 `hash-design-mcp` is a stdio [Model Context Protocol](https://modelcontextprotocol.io) server built on the official TypeScript SDK. Source: [`packages/mcp/src/server.ts`](../packages/mcp/src/server.ts). It exposes 6 tools, 4 resources and 1 prompt, and sends server instructions that summarise the workflow to the client.
 
-> Not published on npm yet. Run it from a source checkout: `node /ABS/PATH/hash-design/packages/mcp/dist/bin.js` (see [Install by hand](../README.md#install-by-hand)).
+> The server is not published to npm; only the core package, `hash-design` (library, CLI, Skill), is. Run it from a source checkout: `node /ABS/PATH/hash-design/packages/mcp/dist/bin.js` (see [Install by hand](../README.md#install-by-hand)).
 
 ## Working directory and file access
 
@@ -138,7 +138,7 @@ design/hash-design/
 
 ## Client configuration
 
-See [Install by hand](../README.md#install-by-hand) in the README for Claude Code, Cursor and Claude Desktop. After the package is published on npm, the command will become `npx -y hash-design-mcp`.
+See [Install by hand](../README.md#install-by-hand) in the README for Claude Code, Cursor and Claude Desktop. The server is not published to npm, so there is no `npx` command for it: point the client at `packages/mcp/dist/bin.js` in a clone.
 
 ## Testing
 
