@@ -55,6 +55,8 @@ hash-design은 모델에게 더 나은 안목을 요구하지 않습니다. 대�
 
 이것은 모델의 기본 미학을 깨뜨리는 외부의 무작위 제약입니다. KV 캐시나 샘플링 temperature와는 아무 관련이 없습니다. 모델의 안목은 스타일을 고르는 데가 아니라 실행 품질(정렬, 리듬, 디테일, 가독성)에 쓰입니다.
 
+기본 결과물은 웹 페이지입니다. **시나리오**(`scenario`)를 넘기면 같은 롤의 방향이 슬라이드, 모바일 앱 화면, 대시보드, 포스터/소셜 카드, HTML 이메일이 됩니다([시나리오](#시나리오) 참고).
+
 구성은 **Agent Skill**(언제, 어떤 순서로 이 흐름을 돌릴지), **MCP 서버**(stdio, 도구 6개), **CLI**, **TypeScript 라이브러리** 네 가지이며, 모두 이 저장소에 있습니다.
 
 ## 빠른 시작
@@ -139,13 +141,14 @@ MCP 서버와 Skill을 설치했다면 에이전트에게 이렇게 요청하기
 
 > hash-design으로 "Fourth Lane Bakery"의 원페이지 사이트를 만들어 줘. 팩트: 화–일 7:00–19:00 영업, 월요일 휴무; 컨트리 브레드 ¥38; …
 
-에이전트는 롤을 실행하고, 브리프를 고정하고, 프리뷰 다섯 개를 렌더링하고, `design/hash-design/compare.html`을 작성한 다음, 멈추고 사용자가 번호로 답할 때까지 기다립니다. MCP 프롬프트를 지원하는 클라이언트에서는 `hash-design` 프롬프트(인수: `subject`, `facts`, `count`)로 같은 워크플로를 시작할 수도 있습니다.
+에이전트는 롤을 실행하고, 브리프를 고정하고, 프리뷰 다섯 개를 렌더링하고, `design/hash-design/compare.html`을 작성한 다음, 멈추고 사용자가 번호로 답할 때까지 기다립니다. MCP 프롬프트를 지원하는 클라이언트에서는 `hash-design` 프롬프트(인수: `subject`, `facts`, `count`, `scenario`)로 같은 워크플로를 시작할 수도 있습니다. 슬라이드, 앱 화면, 대시보드, 포스터, 이메일을 요청하면 에이전트가 맞는 `scenario`를 넘깁니다.
 
 ### CLI
 
 ```bash
 hash-design roll --subject "Fourth Lane Bakery" --facts-file facts.md --out design/hash-design   # 진짜 난수 방향 5개
 hash-design roll --subject "…" --light-only --brand "#c8102e" --format json                     # 제약 조건 지정
+hash-design roll --subject "Q3 review" --facts-file facts.md --scenario deck --out design/deck   # 페이지 대신 슬라이드
 hash-design brief <ref> [constraints]                                                            # 브리프 재현
 hash-design branches [--family craft]                                                            # 브랜치 라이브러리
 hash-design branch ink-and-seal                                                                  # 브랜치 하나 상세 보기
@@ -154,7 +157,7 @@ hash-design compare --roll design/hash-design/roll.json                         
 hash-design skill install --target both                                                          # Skill 설치
 ```
 
-소스 체크아웃에서는 `node packages/core/dist/bin.js …`로 실행합니다(또는 저장소 루트에서 `alias hash-design="node $PWD/packages/core/dist/bin.js"`를 설정하세요). `hash-design --help`는 모든 명령을 보여 주고, `hash-design <command> --help`(예: `hash-design roll --help`)는 해당 명령의 옵션을 출력합니다. 여기에는 제약 조건 플래그 `--light-only`, `--dark-only`, `--reduced-motion`, `--brand`, `--family`, `--include`, `--exclude`도 포함됩니다.
+소스 체크아웃에서는 `node packages/core/dist/bin.js …`로 실행합니다(또는 저장소 루트에서 `alias hash-design="node $PWD/packages/core/dist/bin.js"`를 설정하세요). `hash-design --help`는 모든 명령을 보여 주고, `hash-design <command> --help`(예: `hash-design roll --help`)는 해당 명령의 옵션을 출력합니다. 여기에는 제약 조건 플래그 `--light-only`, `--dark-only`, `--reduced-motion`, `--brand`, `--family`, `--include`, `--exclude`, `--scenario`도 포함됩니다.
 
 ### 라이브러리
 
@@ -210,15 +213,36 @@ flowchart LR
 | 10     | 스케일(scale)    | 브랜치가 허용하는 모듈러 스케일 (1.125–1.618)                                                       |
 | 11     | 표면(surface)    | 표면 3개 중 1개 (CSS 힌트 포함)                                                                     |
 | 12     | 트위스트(twist)  | 트위스트 16종. 예: "숫자를 디스플레이 요소로", "요소 하나가 그리드를 깨뜨림", "첫 화면에 버튼 없음" |
-| 13–31  | 미사용           | 브리프에 기록되며, 향후 차원을 위해 예약되어 있음                                                   |
+| 13     | 포맷(format)     | 웹이 아닌 시나리오만: 시나리오의 포맷 3–4개 중 1개(예: 슬라이드 마스터)                             |
+| 13–31  | 미사용           | 브리프에 기록되며, 향후 차원을 위해 예약되어 있음(시나리오가 바이트 13을 쓰면 14–31)                |
 
 - **충돌과 계열 분산.** 한 번의 롤 안에서 이미 쓰인 브랜치에 떨어진 해시는 다음 빈 브랜치가 나올 때까지 앞으로(+1, +2, …) 이동합니다. 아직 쓰이지 않은 **계열**(print / document / signage / screen / craft / modernist)이 남아 있는 동안에는 이미 쓰인 계열에 떨어지는 것도 충돌로 칩니다. 그래서 5개짜리 롤은 항상 서로 다른 5개 계열에 걸칩니다. 이동한 칸 수가 `probe`이며, ref는 `<hash>+<probe>` 형태로 적고 그것만으로도 재현됩니다.
 - **브랜치 순서.** 라이브러리 순서가 곧 매핑 순서입니다. 각 계열의 구성원은 링 위에 고르게 퍼져 있어서, 앞으로 이동하더라도 확률이 한 브랜치로 쏠리지 않습니다. 5개짜리 롤에서 모든 브랜치는 9–17% 확률로 등장합니다(균등 분포라면 12.5%).
-- **제약 조건은 바이트를 적용하기 전에 후보 풀을 걸러내므로**, 제약 조건도 디자인 정체성의 일부입니다: `light_only`, `dark_only`, `reduced_motion`, `brand_colors`(브랜드 색이 accent를 대체하고, accent 색상(hue)이 가장 가까운 팔레트가 선택되며 대비가 보고됩니다), `families`, `include_branches`, `exclude_branches`.
+- **제약 조건은 바이트를 적용하기 전에 후보 풀을 걸러내므로**, 제약 조건도 디자인 정체성의 일부입니다: `light_only`, `dark_only`, `reduced_motion`, `brand_colors`(브랜드 색이 accent를 대체하고, accent 색상(hue)이 가장 가까운 팔레트가 선택되며 대비가 보고됩니다), `families`, `include_branches`, `exclude_branches`, `scenario`.
 - **재현 가능.** 같은 `ref`, 같은 제약 조건, 같은 라이브러리 핑거프린트라면 언제나 같은 브리프가 나옵니다. 모든 브리프에는 알고리즘(`hash-design/v1`)과 라이브러리 핑거프린트(데이터에 대한 SHA-256의 앞 12자리 hex)가 기록됩니다.
 - **`seed`는 예시와 테스트를 재현할 때만 씁니다.** 실제 사용에서는 항상 시스템 난수에서 뽑습니다.
 
 계산 예시를 포함한 전체 명세는 [docs/mapping.md](docs/mapping.md)(영어)에 있습니다.
+
+### 시나리오
+
+`scenario`는 무엇을 디자인하는지 정합니다. 기본값 `web`은 위의 웹 페이지 워크플로 그대로이며 아무것도 바뀌지 않습니다. 나머지 다섯 가지는 롤로 뽑은 방향을 유지한 채 브리프마다 포맷, 캔버스, 출력 규칙을 더합니다.
+
+| 시나리오      | 결과물                                                                                       | 포맷(바이트 13)                            | 캔버스                                    |
+| ------------- | -------------------------------------------------------------------------------------------- | ------------------------------------------ | ----------------------------------------- |
+| `web`(기본값) | 반응형 웹 페이지, 랜딩 페이지, 원페이지 사이트                                               | —                                          | 반응형                                    |
+| `deck`        | HTML 슬라이드: 장마다 고정 캔버스, 키보드 탐색, PDF로 인쇄                                   | 풀블리드, 인덱스 레일, 문서 마스터         | 1920×1080                                 |
+| `app`         | 한 사용자 여정의 휴대폰 화면 몇 장을 나란히                                                  | 하단 탭 바, 상단 탭, 단일 흐름, 시트       | 390×844                                   |
+| `dashboard`   | 데스크톱 한 화면: 핵심 수치, 주 차트 하나, 보조 패널                                         | 사이드바, 상단 바, 월 디스플레이           | 1440×900                                  |
+| `poster`      | 아트보드 한 장: 포스터나 소셜 이미지, 스크린숏이 곧 완성본                                   | 세로 4:5, 정사각형, 스토리 9:16, 링크 카드 | 1080×1350, 1080×1080, 1080×1920, 1200×630 |
+| `email`       | 실제 메일 클라이언트에서 버티는 HTML 이메일: 테이블 레이아웃, 인라인 스타일, JavaScript 없음 | 단일 칼럼, 전폭 밴드, 다이제스트           | 600 또는 640 px 칼럼                      |
+
+- **방향은 그대로 이어집니다.** 시나리오는 브랜치 풀을 거르지 않으므로, 같은 해시는 어떤 시나리오에서도 같은 브랜치, 보이스, 레이아웃, 서체, 팔레트, 모티프, 앵커, 스케일, 표면을 얻습니다.
+- **일부 풀은 줄어듭니다.** 바이트 6과 12를 읽기 전에 그 시나리오에 맞지 않는 밀도와 트위스트를 뺍니다(슬라이드에는 `packed`도, "첫 화면에 버튼 없음"도 쓰지 않음). 그래서 밀도와 트위스트는 웹 버전과 다를 수 있습니다. 이메일은 항상 가장 정적인 모션을 씁니다.
+- **크기는 매체를 따릅니다.** 기준 글자 크기는 밀도의 값을 키우거나 범위 안으로 맞춘 것입니다(슬라이드 ×2, 포스터 ×1.75, 앱과 이메일 16–17 px, 대시보드 13–15 px). `tokens.css`에는 캔버스 크기가 들어갑니다.
+- **디자인 정체성의 일부입니다.** 다른 제약 조건처럼 ref를 재현할 때 같은 `scenario`를 넘깁니다. `web`은 아무것도 바꾸지 않습니다. 기존 ref, 브리프, 예시는 그대로 재현됩니다.
+
+`critique_page`는 시나리오마다 출력 약속(슬라이드 수와 캔버스, 휴대폰 프레임, 고정폭 숫자, 아트보드 크기, 이메일 테이블)을 검사하고, 비교 페이지는 고정 캔버스를 실제 크기에서 축소해 보여 줍니다. 시나리오 목록과 규칙은 [Open Design](https://github.com/nexu-io/open-design)의 템플릿을 참고했습니다. 자세한 내용은 [docs/mapping.md §6](docs/mapping.md#6-scenarios)(영어)에 있습니다.
 
 ### 브리프에 담기는 내용
 
@@ -232,6 +256,7 @@ flowchart LR
 - 밀도, 모서리 반경 / 테두리 / 그림자 정책, 표면(CSS 스니펫 포함), 모티프, 모션 사양
 - 트위스트, 브랜치의 반드시 할 것 / 하지 말 것 목록, 전역 금지 규칙 14개 전체
 - 바로 붙여 넣을 수 있는 `tokens.css`와 납품 전 체크리스트
+- 웹이 아닌 시나리오라면 "시나리오" 절: 포맷, 캔버스, 파일 구조, 슬라이드/화면 수, 레이아웃·앵커·모션을 옮기는 방법, 시나리오 규칙과 금지 사항
 
 브리프는 에이전트가 읽도록 작성되며 2개 국어로 되어 있습니다. 제목에는 중국어와 영어 레이블이 함께 붙고, `language`(`zh` 또는 `en`, 주제와 팩트에서 자동 감지)에 따라 콘셉트 설명, 지시문, CJK 웹폰트 로드 여부가 바뀝니다. 일부 풀 설명(보이스, 트위스트)은 현재 중국어로만 작성되어 있습니다.
 
@@ -269,16 +294,16 @@ MCP 도구 6개, 브랜치 40개, 그리고 모든 브리프에 들어가는 금
 
 ### MCP 도구
 
-| 도구                 | 하는 일                                                                                                                                                                                                                            |
-| -------------------- | ---------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------- |
-| `roll_designs`       | `subject`, `facts`, `count`(기본값 5)와 선택 항목인 `seed`, `language`, 제약 조건을 받습니다. 해시, 매핑, 방향마다 브리프 하나씩을 반환합니다. `out_dir`을 주면 `roll.json`, `ROLL.md`, `briefs/*.md`를 디스크에 고정해 저장합니다 |
-| `get_brief`          | `ref`(`<hash>` 또는 `<hash>+<probe>`)와 같은 제약 조건으로 브리프를 Markdown 또는 JSON으로 재현합니다                                                                                                                              |
-| `list_branches`      | 디자인 브랜치 40개를 나열합니다. 계열로 필터링할 수도 있습니다                                                                                                                                                                     |
-| `get_branch`         | 브랜치 하나의 모든 옵션과 토큰을 보여 줍니다                                                                                                                                                                                       |
-| `critique_page`      | HTML 문자열이나 파일을 금지 규칙과 AI 템플릿 체크리스트에 비추어 채점합니다. `brief_ref` 또는 `roll_path` + `pick`을 주면 브리프 준수도도 채점합니다                                                                               |
-| `build_compare_page` | `roll.json`으로 나란히 비교하는 `compare.html`을 만듭니다                                                                                                                                                                          |
+| 도구                 | 하는 일                                                                                                                                                                                                                                        |
+| -------------------- | ---------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------- |
+| `roll_designs`       | `subject`, `facts`, `count`(기본값 5)와 선택 항목인 `seed`, `language`, `scenario`, 제약 조건을 받습니다. 해시, 매핑, 방향마다 브리프 하나씩을 반환합니다. `out_dir`을 주면 `roll.json`, `ROLL.md`, `briefs/*.md`를 디스크에 고정해 저장합니다 |
+| `get_brief`          | `ref`(`<hash>` 또는 `<hash>+<probe>`)와 같은 제약 조건으로 브리프를 Markdown 또는 JSON으로 재현합니다                                                                                                                                          |
+| `list_branches`      | 디자인 브랜치 40개를 나열합니다. 계열로 필터링할 수도 있습니다                                                                                                                                                                                 |
+| `get_branch`         | 브랜치 하나의 모든 옵션과 토큰을 보여 줍니다                                                                                                                                                                                                   |
+| `critique_page`      | HTML 문자열이나 파일을 금지 규칙과 AI 템플릿 체크리스트에 비추어 채점합니다. `brief_ref` 또는 `roll_path` + `pick`을 주면 브리프와 시나리오 출력 약속의 준수도도 채점합니다                                                                    |
+| `build_compare_page` | `roll.json`으로 나란히 비교하는 `compare.html`을 만듭니다                                                                                                                                                                                      |
 
-리소스: `hash-design://bans`, `hash-design://workflow`(Skill), `hash-design://branches`, `hash-design://branch/{id}`. 프롬프트: `hash-design`(`subject`, `facts`, `count`).
+리소스: `hash-design://bans`, `hash-design://workflow`(Skill), `hash-design://branches`, `hash-design://branch/{id}`. 프롬프트: `hash-design`(`subject`, `facts`, `count`, `scenario`).
 
 모든 파라미터, 반환 형태, 대응하는 CLI 명령은 [docs/mcp-tools.md](docs/mcp-tools.md)(영어)에 정리되어 있습니다.
 

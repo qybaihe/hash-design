@@ -55,6 +55,8 @@ hash-design does not ask the model to have better taste. It **takes the choice a
 
 This is an external random constraint that breaks the model's default aesthetic. It has nothing to do with KV caches or sampling temperature. The model's taste is spent on execution quality (alignment, rhythm, detail, legibility), not on choosing a style.
 
+The default output is a web page. Pass a **scenario** and the same rolled directions become a slide deck, mobile app screens, a dashboard, a poster / social card or an HTML email (see [Scenarios](#scenarios)).
+
 It ships as an **Agent Skill** (when and in what order to run the workflow), an **MCP server** (stdio, six tools), a **CLI** and a **TypeScript library**, all in this repository.
 
 ## Quick start
@@ -139,13 +141,14 @@ With the MCP server and the Skill installed, just ask your agent:
 
 > Use hash-design to build a one-page site for "Fourth Lane Bakery". Facts: open Tue–Sun 7:00–19:00, closed Mondays; country loaf ¥38; …
 
-The agent rolls, freezes the briefs, renders five previews, writes `design/hash-design/compare.html`, then stops and waits for you to reply with a number. Clients that support MCP prompts can also start the same workflow with the `hash-design` prompt (arguments: `subject`, `facts`, `count`).
+The agent rolls, freezes the briefs, renders five previews, writes `design/hash-design/compare.html`, then stops and waits for you to reply with a number. Clients that support MCP prompts can also start the same workflow with the `hash-design` prompt (arguments: `subject`, `facts`, `count`, `scenario`). Asking for slides, app screens, a dashboard, a poster or an email makes the agent pass the matching `scenario`.
 
 ### CLI
 
 ```bash
 hash-design roll --subject "Fourth Lane Bakery" --facts-file facts.md --out design/hash-design   # 5 true-random directions
 hash-design roll --subject "…" --light-only --brand "#c8102e" --format json                     # with constraints
+hash-design roll --subject "Q3 review" --facts-file facts.md --scenario deck --out design/deck   # a slide deck instead of a page
 hash-design brief <ref> [constraints]                                                            # reproduce a brief
 hash-design branches [--family craft]                                                            # the branch library
 hash-design branch ink-and-seal                                                                  # one branch in detail
@@ -154,7 +157,7 @@ hash-design compare --roll design/hash-design/roll.json                         
 hash-design skill install --target both                                                          # install the Skill
 ```
 
-From a source checkout, run it as `node packages/core/dist/bin.js …` (or `alias hash-design="node $PWD/packages/core/dist/bin.js"` from the repo root). `hash-design --help` lists every command, and `hash-design <command> --help` (for example `hash-design roll --help`) prints one command's options, including the constraint flags `--light-only`, `--dark-only`, `--reduced-motion`, `--brand`, `--family`, `--include` and `--exclude`.
+From a source checkout, run it as `node packages/core/dist/bin.js …` (or `alias hash-design="node $PWD/packages/core/dist/bin.js"` from the repo root). `hash-design --help` lists every command, and `hash-design <command> --help` (for example `hash-design roll --help`) prints one command's options, including the constraint flags `--light-only`, `--dark-only`, `--reduced-motion`, `--brand`, `--family`, `--include`, `--exclude` and `--scenario`.
 
 ### Library
 
@@ -210,15 +213,36 @@ flowchart LR
 | 10    | scale     | The branch's allowed modular scales (1.125–1.618)                                                          |
 | 11    | surface   | 1 of 3 surfaces (with CSS hints)                                                                           |
 | 12    | twist     | 16 twists, e.g. "numerals as display", "one element breaks the grid", "no button above the fold"           |
-| 13–31 | unused    | Recorded in the brief, reserved for future dimensions                                                      |
+| 13    | format    | Non-web scenarios only: 1 of the scenario's 3–4 formats (e.g. a deck's slide master)                       |
+| 13–31 | unused    | Recorded in the brief, reserved for future dimensions (14–31 when a scenario uses byte 13)                 |
 
 - **Collisions and family spread.** Inside one roll, a hash that lands on a branch already used walks forward (+1, +2, …) to the next free branch. While some **family** (print / document / signage / screen / craft / modernist) is still unused, landing in an already-used family also counts as a collision, so a 5-roll always spans 5 different families. The number of steps is the `probe`; a ref is written `<hash>+<probe>` and reproduces on its own.
 - **Branch order.** Library order is mapping order. Each family's members are spread evenly around the ring, so walking forward does not funnel probability into one branch: in 5-rolls every branch appears 9–17% of the time (uniform would be 12.5%).
-- **Constraints filter the pools before the bytes are applied**, so constraints are part of a design's identity: `light_only`, `dark_only`, `reduced_motion`, `brand_colors` (the brand colour replaces the accent; the palette with the nearest accent hue is chosen and contrast is reported), `families`, `include_branches`, `exclude_branches`.
+- **Constraints filter the pools before the bytes are applied**, so constraints are part of a design's identity: `light_only`, `dark_only`, `reduced_motion`, `brand_colors` (the brand colour replaces the accent; the palette with the nearest accent hue is chosen and contrast is reported), `families`, `include_branches`, `exclude_branches`, `scenario`.
 - **Reproducible.** The same `ref`, the same constraints and the same library fingerprint always produce the same brief. Every brief records the algorithm (`hash-design/v1`) and the library fingerprint (the first 12 hex digits of a SHA-256 over the data).
 - **`seed` is only for reproducing examples and tests.** Real use always draws from system randomness.
 
 The full specification, with a worked example, is in [docs/mapping.md](docs/mapping.md).
+
+### Scenarios
+
+`scenario` says what you are designing. The default, `web`, is the page workflow above, unchanged. The other five keep the rolled direction and add a format, a canvas and output rules to every brief.
+
+| Scenario        | Delivers                                                                          | Formats (byte 13)                            | Canvas                                    |
+| --------------- | --------------------------------------------------------------------------------- | -------------------------------------------- | ----------------------------------------- |
+| `web` (default) | A responsive web page, landing page or one-page site                              | —                                            | responsive                                |
+| `deck`          | An HTML slide deck: one fixed canvas per slide, keyboard navigation, print to PDF | full-bleed, index rail, document master      | 1920×1080                                 |
+| `app`           | Several phone screens of one user journey, side by side                           | bottom tab bar, top tabs, single flow, sheet | 390×844                                   |
+| `dashboard`     | One desktop screen: headline figures, a primary chart, supporting panels          | sidebar, top bar, wall display               | 1440×900                                  |
+| `poster`        | One artboard: a poster or social image, screenshot-ready                          | portrait 4:5, square, story 9:16, link card  | 1080×1350, 1080×1080, 1080×1920, 1200×630 |
+| `email`         | An HTML email for real mail clients: table layout, inline styles, no JavaScript   | single column, full-width bands, digest      | 600 or 640 px column                      |
+
+- **The direction carries over.** The scenario does not filter the branch pool, so a hash gives the same branch, voice, layout, type, palette, motif, anchor, scale and surface in every scenario.
+- **Some pools shrink.** Densities and twists that make no sense for the scenario are removed before bytes 6 and 12 are read (no `packed` slides, no "no button above the fold" in a deck), so density and twist can differ from the web design. Emails always take the stillest motion.
+- **Sizes follow the medium.** The base text size scales or clamps the density's (slides ×2, posters ×1.75, apps and emails 16–17 px, dashboards 13–15 px), and `tokens.css` carries the canvas size.
+- **Part of the identity.** Like any constraint, pass the same `scenario` to reproduce a ref. `web` changes nothing: existing refs, briefs and the examples reproduce exactly.
+
+`critique_page` checks each scenario's output contract (slide count and canvas, phone frames, tabular figures, artboard size, email tables), and the compare page scales fixed canvases from their real size. The scenario list and rules were informed by the templates of [Open Design](https://github.com/nexu-io/open-design). Details: [docs/mapping.md §6](docs/mapping.md#6-scenarios).
 
 ### What a brief contains
 
@@ -232,6 +256,7 @@ Take [#3 Ink and seal](examples/fourth-lane-bakery/briefs/03-ink-and-seal.md) fr
 - density, radius / border / shadow policy, surface (with a CSS snippet), motif and motion spec
 - the twist, the branch's must / must-not lists and all 14 global bans
 - a paste-ready `tokens.css` and a pre-delivery checklist
+- for a non-web scenario, a Scenario section: format, canvas, file structure, slide / screen count, how the layout, anchor and motion translate, and the scenario's rules and must-nots
 
 Briefs are written for agents and are bilingual: headings carry Chinese and English labels, and `language` (`zh` or `en`, auto-detected from the subject and facts) switches the concept text, the instructions and whether CJK webfonts are loaded. Some pool descriptions (voices, twists) are currently written in Chinese only.
 
@@ -269,16 +294,16 @@ The six MCP tools, the 40 branches and the 14 bans every brief carries.
 
 ### MCP tools
 
-| Tool                 | What it does                                                                                                                                                                                                                        |
-| -------------------- | ----------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------- |
-| `roll_designs`       | Takes `subject`, `facts`, `count` (default 5), optional `seed`, `language` and constraints. Returns the hashes, the mapping and one brief per direction. With `out_dir` it freezes `roll.json`, `ROLL.md` and `briefs/*.md` to disk |
-| `get_brief`          | Reproduces a brief from a `ref` (`<hash>` or `<hash>+<probe>`) plus the same constraints, as Markdown or JSON                                                                                                                       |
-| `list_branches`      | Lists the 40 design branches, optionally filtered by family                                                                                                                                                                         |
-| `get_branch`         | Shows every option and token of one branch                                                                                                                                                                                          |
-| `critique_page`      | Scores an HTML string or file against the bans and the AI-template checklist; with `brief_ref` or `roll_path` + `pick` it also scores adherence to the brief                                                                        |
-| `build_compare_page` | Builds the side-by-side `compare.html` from a `roll.json`                                                                                                                                                                           |
+| Tool                 | What it does                                                                                                                                                                                                                                    |
+| -------------------- | ----------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------- |
+| `roll_designs`       | Takes `subject`, `facts`, `count` (default 5), optional `seed`, `language`, `scenario` and constraints. Returns the hashes, the mapping and one brief per direction. With `out_dir` it freezes `roll.json`, `ROLL.md` and `briefs/*.md` to disk |
+| `get_brief`          | Reproduces a brief from a `ref` (`<hash>` or `<hash>+<probe>`) plus the same constraints, as Markdown or JSON                                                                                                                                   |
+| `list_branches`      | Lists the 40 design branches, optionally filtered by family                                                                                                                                                                                     |
+| `get_branch`         | Shows every option and token of one branch                                                                                                                                                                                                      |
+| `critique_page`      | Scores an HTML string or file against the bans and the AI-template checklist; with `brief_ref` or `roll_path` + `pick` it also scores adherence to the brief and the scenario's output contract                                                 |
+| `build_compare_page` | Builds the side-by-side `compare.html` from a `roll.json`                                                                                                                                                                                       |
 
-Resources: `hash-design://bans`, `hash-design://workflow` (the Skill), `hash-design://branches`, `hash-design://branch/{id}`. Prompt: `hash-design` (`subject`, `facts`, `count`).
+Resources: `hash-design://bans`, `hash-design://workflow` (the Skill), `hash-design://branches`, `hash-design://branch/{id}`. Prompt: `hash-design` (`subject`, `facts`, `count`, `scenario`).
 
 Every parameter, return shape and CLI equivalent is documented in [docs/mcp-tools.md](docs/mcp-tools.md).
 

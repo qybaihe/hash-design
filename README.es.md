@@ -55,6 +55,8 @@ hash-design no le pide al modelo que tenga mejor gusto. **Le quita la decisión*
 
 Se trata de una restricción aleatoria externa que rompe la estética por defecto del modelo. No tiene nada que ver con cachés KV ni con la temperatura de muestreo. El gusto del modelo se invierte en la calidad de ejecución (alineación, ritmo, detalle, legibilidad), no en elegir un estilo.
 
+La salida por defecto es una página web. Pasa un **escenario** (`scenario`) y las mismas direcciones de la tirada se convierten en una presentación de diapositivas, pantallas de app móvil, un panel de datos, un póster o tarjeta social, o un email HTML (ver [Escenarios](#escenarios)).
+
 Se distribuye como una **Agent Skill** (cuándo y en qué orden ejecutar el flujo), un **servidor MCP** (stdio, seis herramientas), una **CLI** y una **biblioteca TypeScript**, todo en este repositorio.
 
 ## Inicio rápido
@@ -139,13 +141,14 @@ Con el servidor MCP y la Skill instalados, basta con pedírselo a tu agente:
 
 > Usa hash-design para crear una web de una sola página para "Fourth Lane Bakery". Datos: abierto mar–dom 7:00–19:00, cerrado los lunes; pan de campo ¥38; …
 
-El agente hace la tirada, congela los briefs, renderiza cinco vistas previas, escribe `design/hash-design/compare.html` y luego se detiene a esperar que respondas con un número. Los clientes compatibles con prompts MCP también pueden iniciar el mismo flujo con el prompt `hash-design` (argumentos: `subject`, `facts`, `count`).
+El agente hace la tirada, congela los briefs, renderiza cinco vistas previas, escribe `design/hash-design/compare.html` y luego se detiene a esperar que respondas con un número. Los clientes compatibles con prompts MCP también pueden iniciar el mismo flujo con el prompt `hash-design` (argumentos: `subject`, `facts`, `count`, `scenario`). Si pides diapositivas, pantallas de app, un panel, un póster o un email, el agente pasa el `scenario` correspondiente.
 
 ### CLI
 
 ```bash
 hash-design roll --subject "Fourth Lane Bakery" --facts-file facts.md --out design/hash-design   # 5 direcciones verdaderamente aleatorias
 hash-design roll --subject "…" --light-only --brand "#c8102e" --format json                     # con restricciones
+hash-design roll --subject "Q3 review" --facts-file facts.md --scenario deck --out design/deck   # diapositivas en vez de una página
 hash-design brief <ref> [constraints]                                                            # reproduce un brief
 hash-design branches [--family craft]                                                            # la biblioteca de ramas
 hash-design branch ink-and-seal                                                                  # una rama en detalle
@@ -154,7 +157,7 @@ hash-design compare --roll design/hash-design/roll.json                         
 hash-design skill install --target both                                                          # instala la Skill
 ```
 
-Desde una copia del código fuente, ejecútalo como `node packages/core/dist/bin.js …` (o con `alias hash-design="node $PWD/packages/core/dist/bin.js"` desde la raíz del repositorio). `hash-design --help` lista todos los comandos y `hash-design <command> --help` (por ejemplo, `hash-design roll --help`) muestra las opciones de un comando, incluidos los flags de restricción `--light-only`, `--dark-only`, `--reduced-motion`, `--brand`, `--family`, `--include` y `--exclude`.
+Desde una copia del código fuente, ejecútalo como `node packages/core/dist/bin.js …` (o con `alias hash-design="node $PWD/packages/core/dist/bin.js"` desde la raíz del repositorio). `hash-design --help` lista todos los comandos y `hash-design <command> --help` (por ejemplo, `hash-design roll --help`) muestra las opciones de un comando, incluidos los flags de restricción `--light-only`, `--dark-only`, `--reduced-motion`, `--brand`, `--family`, `--include`, `--exclude` y `--scenario`.
 
 ### Biblioteca
 
@@ -210,15 +213,36 @@ flowchart LR
 | 10    | scale     | Las escalas modulares que permite la rama (1.125–1.618)                                                           |
 | 11    | surface   | 1 de 3 superficies (con indicaciones de CSS)                                                                      |
 | 12    | twist     | 16 giros, p. ej. "numerales como display", "un elemento rompe la retícula", "ningún botón en la primera pantalla" |
-| 13–31 | sin uso   | Se registran en el brief, reservados para dimensiones futuras                                                     |
+| 13    | format    | Solo escenarios no web: 1 de los 3–4 formatos del escenario (p. ej., el patrón de diapositiva)                    |
+| 13–31 | sin uso   | Se registran en el brief, reservados para dimensiones futuras (14–31 cuando un escenario usa el byte 13)          |
 
 - **Colisiones y dispersión por familias.** Dentro de una misma tirada, un hash que cae en una rama ya usada avanza (+1, +2, …) hasta la siguiente rama libre. Mientras quede alguna **familia** sin usar (print / document / signage / screen / craft / modernist), caer en una familia ya usada también cuenta como colisión, así que una tirada de 5 siempre abarca 5 familias distintas. El número de pasos es el `probe`; una ref se escribe `<hash>+<probe>` y se reproduce por sí sola.
 - **Orden de las ramas.** El orden de la biblioteca es el orden del mapeo. Los miembros de cada familia se reparten de forma uniforme alrededor del anillo, de modo que avanzar no concentra la probabilidad en una sola rama: en tiradas de 5, cada rama aparece en el 9–17% de los casos (con una distribución uniforme sería el 12.5%).
-- **Las restricciones filtran los conjuntos de opciones antes de aplicar los bytes**, así que forman parte de la identidad de un diseño: `light_only`, `dark_only`, `reduced_motion`, `brand_colors` (el color de marca sustituye al acento; se elige la paleta cuyo acento tiene el tono más cercano y se informa del contraste), `families`, `include_branches`, `exclude_branches`.
+- **Las restricciones filtran los conjuntos de opciones antes de aplicar los bytes**, así que forman parte de la identidad de un diseño: `light_only`, `dark_only`, `reduced_motion`, `brand_colors` (el color de marca sustituye al acento; se elige la paleta cuyo acento tiene el tono más cercano y se informa del contraste), `families`, `include_branches`, `exclude_branches`, `scenario`.
 - **Reproducible.** La misma `ref`, las mismas restricciones y la misma huella de la biblioteca producen siempre el mismo brief. Cada brief registra el algoritmo (`hash-design/v1`) y la huella de la biblioteca (los primeros 12 dígitos hex de un SHA-256 calculado sobre los datos).
 - **`seed` solo sirve para reproducir ejemplos y tests.** El uso real siempre parte de la aleatoriedad del sistema.
 
 La especificación completa, con un ejemplo resuelto, está en [docs/mapping.md](docs/mapping.md) (en inglés).
+
+### Escenarios
+
+`scenario` indica qué estás diseñando. El valor por defecto, `web`, es el flujo de página de arriba, sin cambios. Los otros cinco conservan la dirección de la tirada y añaden a cada brief un formato, un lienzo y reglas de salida.
+
+| Escenario           | Entrega                                                                                                          | Formatos (byte 13)                                                 | Lienzo                                    |
+| ------------------- | ---------------------------------------------------------------------------------------------------------------- | ------------------------------------------------------------------ | ----------------------------------------- |
+| `web` (por defecto) | Una página web adaptable, landing page o sitio de una página                                                     | —                                                                  | adaptable                                 |
+| `deck`              | Diapositivas HTML: un lienzo fijo por diapositiva, navegación con teclado, impresión a PDF                       | a sangre, riel de índice, patrón documento                         | 1920×1080                                 |
+| `app`               | Varias pantallas de móvil de un mismo recorrido, una junto a otra                                                | barra de pestañas inferior, pestañas superiores, flujo único, hoja | 390×844                                   |
+| `dashboard`         | Una pantalla de escritorio: cifras clave, un gráfico principal, paneles de apoyo                                 | barra lateral, barra superior, pantalla mural                      | 1440×900                                  |
+| `poster`            | Una mesa de trabajo: un póster o imagen social, lista para captura                                               | vertical 4:5, cuadrado, historia 9:16, tarjeta de enlace           | 1080×1350, 1080×1080, 1080×1920, 1200×630 |
+| `email`             | Un email HTML que aguanta en clientes de correo reales: maquetación con tablas, estilos en línea, sin JavaScript | una columna, bandas a todo lo ancho, resumen                       | columna de 600 o 640 px                   |
+
+- **La dirección se conserva.** El escenario no filtra el conjunto de ramas, así que un hash da la misma rama, voz, maquetación, tipografía, paleta, motivo, ancla, escala y superficie en todos los escenarios.
+- **Algunos conjuntos se reducen.** Antes de leer los bytes 6 y 12 se quitan las densidades y los giros que no tienen sentido en el escenario (nada de `packed` ni de "sin botón en la primera pantalla" en diapositivas), así que la densidad y el giro pueden diferir de la versión web. Los emails usan siempre el movimiento más quieto.
+- **Los tamaños siguen al medio.** El tamaño base del texto escala o acota el de la densidad (diapositivas ×2, pósteres ×1,75, apps y emails 16–17 px, paneles 13–15 px), y `tokens.css` incluye el tamaño del lienzo.
+- **Forma parte de la identidad.** Como cualquier restricción, pasa el mismo `scenario` para reproducir un ref. `web` no cambia nada: los refs, briefs y ejemplos existentes se reproducen exactamente.
+
+`critique_page` comprueba el contrato de salida de cada escenario (número de diapositivas y lienzo, marcos de móvil, cifras tabulares, tamaño de la mesa de trabajo, tablas en el email), y la página de comparación escala los lienzos fijos desde su tamaño real. La lista de escenarios y sus reglas se inspiran en las plantillas de [Open Design](https://github.com/nexu-io/open-design). Detalles: [docs/mapping.md §6](docs/mapping.md#6-scenarios) (en inglés).
 
 ### Qué contiene un brief
 
@@ -232,6 +256,7 @@ Toma el brief [#3 Ink and seal](examples/fourth-lane-bakery/briefs/03-ink-and-se
 - densidad, política de radio / borde / sombra, superficie (con un fragmento de CSS), motivo y especificación de movimiento
 - el giro, las listas must / must-not de la rama y las 14 prohibiciones globales
 - un `tokens.css` listo para pegar y una lista de comprobación previa a la entrega
+- en un escenario no web, una sección Escenario: formato, lienzo, estructura de archivos, número de diapositivas o pantallas, cómo se trasladan la maquetación, el ancla y el movimiento, y las reglas y prohibiciones del escenario
 
 Los briefs están escritos para agentes y son bilingües: los encabezados llevan etiquetas en chino y en inglés, y `language` (`zh` o `en`, detectado automáticamente a partir del tema y los datos) cambia el texto del concepto, las instrucciones y si se cargan webfonts CJK. Algunas descripciones de los conjuntos de opciones (voces, giros) por ahora solo están escritas en chino.
 
@@ -269,16 +294,16 @@ Las seis herramientas MCP, las 40 ramas y las 14 prohibiciones que lleva cada br
 
 ### Herramientas MCP
 
-| Herramienta          | Qué hace                                                                                                                                                                                                                               |
-| -------------------- | -------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------- |
-| `roll_designs`       | Recibe `subject`, `facts`, `count` (5 por defecto) y, opcionalmente, `seed`, `language` y restricciones. Devuelve los hashes, el mapeo y un brief por dirección. Con `out_dir` congela `roll.json`, `ROLL.md` y `briefs/*.md` en disco |
-| `get_brief`          | Reproduce un brief a partir de una `ref` (`<hash>` o `<hash>+<probe>`) más las mismas restricciones, en Markdown o JSON                                                                                                                |
-| `list_branches`      | Lista las 40 ramas de diseño, con filtro opcional por familia                                                                                                                                                                          |
-| `get_branch`         | Muestra todas las opciones y tokens de una rama                                                                                                                                                                                        |
-| `critique_page`      | Puntúa una cadena o un archivo HTML según las prohibiciones y la lista de comprobación de plantillas típicas de IA; con `brief_ref` o `roll_path` + `pick` también puntúa la adherencia al brief                                       |
-| `build_compare_page` | Genera el `compare.html` lado a lado a partir de un `roll.json`                                                                                                                                                                        |
+| Herramienta          | Qué hace                                                                                                                                                                                                                                           |
+| -------------------- | -------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------- |
+| `roll_designs`       | Recibe `subject`, `facts`, `count` (5 por defecto) y, opcionalmente, `seed`, `language`, `scenario` y restricciones. Devuelve los hashes, el mapeo y un brief por dirección. Con `out_dir` congela `roll.json`, `ROLL.md` y `briefs/*.md` en disco |
+| `get_brief`          | Reproduce un brief a partir de una `ref` (`<hash>` o `<hash>+<probe>`) más las mismas restricciones, en Markdown o JSON                                                                                                                            |
+| `list_branches`      | Lista las 40 ramas de diseño, con filtro opcional por familia                                                                                                                                                                                      |
+| `get_branch`         | Muestra todas las opciones y tokens de una rama                                                                                                                                                                                                    |
+| `critique_page`      | Puntúa una cadena o un archivo HTML según las prohibiciones y la lista de comprobación de plantillas típicas de IA; con `brief_ref` o `roll_path` + `pick` también puntúa la adherencia al brief y al contrato de salida del escenario             |
+| `build_compare_page` | Genera el `compare.html` lado a lado a partir de un `roll.json`                                                                                                                                                                                    |
 
-Recursos: `hash-design://bans`, `hash-design://workflow` (la Skill), `hash-design://branches`, `hash-design://branch/{id}`. Prompt: `hash-design` (`subject`, `facts`, `count`).
+Recursos: `hash-design://bans`, `hash-design://workflow` (la Skill), `hash-design://branches`, `hash-design://branch/{id}`. Prompt: `hash-design` (`subject`, `facts`, `count`, `scenario`).
 
 Todos los parámetros, formas de retorno y equivalentes en la CLI están documentados en [docs/mcp-tools.md](docs/mcp-tools.md) (en inglés).
 
