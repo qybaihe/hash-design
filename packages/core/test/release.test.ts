@@ -1,5 +1,5 @@
 import { spawnSync } from 'node:child_process';
-import { readFileSync } from 'node:fs';
+import { readFileSync, readdirSync } from 'node:fs';
 import { fileURLToPath } from 'node:url';
 import { describe, expect, it } from 'vitest';
 
@@ -51,5 +51,16 @@ describe('release readiness', () => {
     expect(publish).toContain('--provenance --access public');
     expect(publish).toContain('docs/publishing.md#first-publish-one-time-manual');
     expect(wf).toContain('node scripts/release-check.mjs --tag "$TAG"');
+  });
+
+  it('docs/publishing.md gives the Trusted Publisher fields for this workflow', () => {
+    const files = readdirSync(repo('.github/workflows'));
+    expect(files).toContain('release.yml');
+    for (const doc of ['docs/publishing.md', 'docs/publishing.zh-CN.md']) {
+      const text = readFileSync(repo(doc), 'utf8');
+      for (const field of ['`qybaihe`', '`hash-design`', '`release.yml`', 'Trusted Publisher'])
+        expect(text, `${doc} ${field}`).toContain(field);
+      expect(text, doc).not.toMatch(/secrets\.NPM_TOKEN|New repository secret/);
+    }
   });
 });
