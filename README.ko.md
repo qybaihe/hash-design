@@ -17,7 +17,7 @@
 [![Agent Skill](https://img.shields.io/badge/Agent_Skill-Claude_Code_%C2%B7_Cursor-151412?style=flat-square)](#빠른-시작)
 [![MCP server](https://img.shields.io/badge/MCP_server-6_tools_%C2%B7_stdio-151412?style=flat-square)](docs/mcp-tools.md)
 [![Node.js](https://img.shields.io/badge/Node.js-%E2%89%A520-151412?style=flat-square&logo=nodedotjs&logoColor=white)](.nvmrc)
-[![npm](https://img.shields.io/badge/npm-not_yet_published-a39e93?style=flat-square)](#직접-설치)
+[![npm](https://img.shields.io/npm/v/hash-design?style=flat-square&color=151412)](https://www.npmjs.com/package/hash-design)
 [![MIT license](https://img.shields.io/badge/license-MIT-151412?style=flat-square)](LICENSE)
 
 **[라이브 예시](https://qybaihe.github.io/hash-design/) · [브랜치 목록](docs/branches.md) · [MCP 레퍼런스](docs/mcp-tools.md) · [변경 기록](CHANGELOG.md)**
@@ -27,15 +27,12 @@
 **에이전트에게 이렇게 말하세요** (Claude Code, Cursor):
 
 ```text
-https://github.com/qybaihe/hash-design 에서 hash-design을 설치해 줘 (아직 npm에 없음).
-~/hash-design에 clone해서 빌드한 다음, README.ko.md의 "직접 설치" 절차대로
-skill을 이 프로젝트에 설치하고 이 에이전트용 MCP 서버를 등록해 줘.
+이 에이전트에 hash-design skill을 설치해 줘: `npx -y hash-design skill install --dir .`를 실행하고
+`npx -y hash-design mcp`로 MCP 서버를 등록해 줘(hash-design 0.1.0이면
+`npx -y hash-design-mcp@0.1.0` 사용). 절차는 https://github.com/qybaihe/hash-design/blob/main/README.ko.md#빠른-시작 참고.
 ```
 
 </div>
-
-> [!IMPORTANT]
-> hash-design은 **아직 npm에 배포하지 않았습니다**. 소스([qybaihe/hash-design](https://github.com/qybaihe/hash-design))에서 설치하세요. `package.json`은 배포 가능한 상태이고 CI에서 `npm pack --dry-run`을 실행하지만, 릴리스 전까지 `npx hash-design`과 `npx hash-design-mcp`는 동작하지 않습니다.
 
 ---
 
@@ -57,7 +54,7 @@ hash-design은 모델에게 더 나은 안목을 요구하지 않습니다. 대�
 
 기본 결과물은 웹 페이지입니다. **시나리오**(`scenario`)를 넘기면 같은 롤의 방향이 슬라이드, 모바일 앱 화면, 대시보드, 포스터/소셜 카드, HTML 이메일이 됩니다([시나리오](#시나리오) 참고).
 
-구성은 **Agent Skill**(언제, 어떤 순서로 이 흐름을 돌릴지), **MCP 서버**(stdio, 도구 6개), **CLI**, **TypeScript 라이브러리** 네 가지이며, 모두 이 저장소에 있습니다.
+구성은 **Agent Skill**(언제, 어떤 순서로 이 흐름을 돌릴지), **MCP 서버**(stdio, 도구 6개), **CLI**, **TypeScript 라이브러리** 네 가지이며, 함께 npm의 [`hash-design`](https://www.npmjs.com/package/hash-design)으로 배포됩니다(MCP 서버는 0.2.0부터 이 패키지에 들어갑니다).
 
 ## 빠른 시작
 
@@ -66,74 +63,74 @@ hash-design은 모델에게 더 나은 안목을 요구하지 않습니다. 대�
 페이지를 만들 프로젝트에서 Claude Code나 Cursor를 열고 다음을 붙여 넣으세요:
 
 ```text
-https://github.com/qybaihe/hash-design 에서 hash-design을 설치해 줘 (아직 npm에 없음).
-~/hash-design에 clone해서 빌드한 다음, README.ko.md의 "직접 설치" 절차대로
-skill을 이 프로젝트에 설치하고 이 에이전트용 MCP 서버를 등록해 줘.
+이 에이전트에 hash-design skill을 설치해 줘: `npx -y hash-design skill install --dir .`를 실행하고
+`npx -y hash-design mcp`로 MCP 서버를 등록해 줘(hash-design 0.1.0이면
+`npx -y hash-design-mcp@0.1.0` 사용). 절차는 https://github.com/qybaihe/hash-design/blob/main/README.ko.md#빠른-시작 참고.
 ```
 
-에이전트가 이 저장소를 clone해 빌드하고, Skill을 프로젝트의 `.claude/skills/` 또는 `.cursor/skills/`에 복사한 뒤 MCP 서버를 등록합니다(Claude Code는 `claude mcp add`, Cursor는 `.cursor/mcp.json`). 끝나면 새 세션을 시작해 둘 다 불러오게 한 다음 [사용법](#사용법)으로 넘어가세요. 명령을 직접 실행하려면 아래 절차를 따르세요.
+에이전트가 Skill을 프로젝트의 `.claude/skills/`와 `.cursor/skills/`에 복사하고 MCP 서버를 등록합니다(Claude Code는 `claude mcp add`, Cursor는 `.cursor/mcp.json`). clone이나 빌드는 필요 없습니다. 끝나면 새 세션을 시작해 둘 다 불러오게 한 다음 [사용법](#사용법)으로 넘어가세요. 명령을 직접 실행하려면 아래 절차를 따르세요.
 
 ### 직접 설치
 
-Node.js ≥ 20이 필요합니다(개발용으로는 `.nvmrc`에 22가 고정되어 있습니다).
+Node.js ≥ 20과 npm(`npx`용)이 필요합니다.
+
+**Skill.** Skill은 언제 hash-design을 쓰는지, 어떤 순서로 MCP 도구를 부르는지, 프리뷰를 어떻게 독립적으로 렌더링하는지, 언제 반드시 멈춰야 하는지를 에이전트에게 알려 줍니다.
 
 ```bash
-git clone https://github.com/qybaihe/hash-design.git ~/hash-design
-cd ~/hash-design && npm install && npm run build
-# CLI entry:        ~/hash-design/packages/core/dist/bin.js
-# MCP server entry: ~/hash-design/packages/mcp/dist/bin.js
+npx -y hash-design skill install --target both --dir .      # 이 프로젝트: .claude/skills와 .cursor/skills
+npx -y hash-design skill install --target claude --global   # 또는 홈 디렉터리(모든 프로젝트)
 ```
 
-**Skill.** Skill은 에이전트에게 언제 hash-design을 써야 하는지, MCP 도구를 어떤 순서로 호출할지, 프리뷰를 어떻게 서로 독립적으로 렌더링할지, 언제 반드시 멈춰야 하는지를 알려 줍니다.
+`--target`은 `claude`, `cursor`, `both`(기본값) 중 하나입니다. [`skills/hash-design/SKILL.md`](skills/hash-design/SKILL.md)를 `.claude/skills/hash-design/SKILL.md`(Claude Code)나 `.cursor/skills/hash-design/SKILL.md`(Cursor)에 직접 복사해도 됩니다. Skill 본문은 중국어로 작성되어 있고, description에는 영어 트리거 문구가 들어 있습니다.
 
-```bash
-# 프로젝트에 설치 (.claude/skills와 .cursor/skills 양쪽에 기록)
-node ~/hash-design/packages/core/dist/bin.js skill install --target both --dir /path/to/your/project
-# 홈 디렉터리에 설치 (모든 프로젝트에서 사용 가능)
-node ~/hash-design/packages/core/dist/bin.js skill install --target claude --global
-```
+**MCP 서버.** 에이전트에 `npx -y hash-design mcp`를 등록하세요. stdio로 서버가 실행됩니다.
 
-또는 [`skills/hash-design/SKILL.md`](skills/hash-design/SKILL.md)를 `.claude/skills/hash-design/SKILL.md`(Claude Code)나 `.cursor/skills/hash-design/SKILL.md`(Cursor)에 직접 복사하세요. 이 저장소에는 두 사본이 모두 들어 있으며, 테스트가 두 사본이 원본과 똑같이 유지되도록 확인합니다. Skill 본문은 중국어로 작성되어 있고, description에는 영어 트리거 문구가 들어 있습니다.
-
-**MCP 서버.** `packages/mcp/dist/bin.js`를 에이전트에 등록합니다. 셸에서는 `~/hash-design`이 절대 경로로 펼쳐지지만, JSON 파일에는 절대 경로를 직접 적어야 합니다(아래에서는 `/ABS/PATH/hash-design`).
+> [!NOTE]
+> `hash-design mcp`는 다음 릴리스인 hash-design 0.2.0부터 제공됩니다. 지금 npm에 있는 0.1.0에서는 대신 `npx -y hash-design-mcp@0.1.0`을 등록하세요. 예전에 별도 패키지로 배포한 서버로, 도구 6개는 같지만 더 이상 업데이트되지 않습니다.
 
 #### Claude Code
 
 ```bash
-claude mcp add hash-design -- node ~/hash-design/packages/mcp/dist/bin.js
+claude mcp add hash-design -- npx -y hash-design mcp
+# hash-design 0.1.0인 경우:
+claude mcp add hash-design -- npx -y hash-design-mcp@0.1.0
 ```
 
-또는 프로젝트 수준의 `.mcp.json`을 커밋하세요.
+또는 프로젝트 단위 `.mcp.json`을 커밋합니다:
 
 ```json
 {
   "mcpServers": {
     "hash-design": {
-      "command": "node",
-      "args": ["/ABS/PATH/hash-design/packages/mcp/dist/bin.js"]
+      "command": "npx",
+      "args": ["-y", "hash-design", "mcp"]
     }
   }
 }
 ```
+
+0.1.0에서는 `args`를 `["-y", "hash-design-mcp@0.1.0"]`로 씁니다.
 
 #### Cursor
 
-`.cursor/mcp.json`(프로젝트) 또는 `~/.cursor/mcp.json`(전역)에 같은 구조로 작성합니다.
-
-```json
-{
-  "mcpServers": {
-    "hash-design": {
-      "command": "node",
-      "args": ["/ABS/PATH/hash-design/packages/mcp/dist/bin.js"]
-    }
-  }
-}
-```
+`.cursor/mcp.json`(프로젝트) 또는 `~/.cursor/mcp.json`(전역)에 위의 `.mcp.json`과 같은 구조로 씁니다.
 
 #### Claude Desktop
 
-`~/Library/Application Support/Claude/claude_desktop_config.json`(macOS) 또는 `%APPDATA%\Claude\claude_desktop_config.json`(Windows)에 위와 같은 구조로 작성합니다. Claude Desktop은 프로젝트 디렉터리에서 서버를 시작하지 않으므로, `roll_designs`를 호출할 때 `out_dir`에 **절대 경로**를 넘겨야 합니다.
+macOS는 `~/Library/Application Support/Claude/claude_desktop_config.json`, Windows는 `%APPDATA%\Claude\claude_desktop_config.json`이며 구조는 같습니다. Claude Desktop은 프로젝트 디렉터리에서 서버를 시작하지 않으므로 `roll_designs`를 호출할 때 `out_dir`에 **절대 경로**를 넘기세요. `npx`를 찾지 못하면 `which npx`가 출력하는 경로를 `command`에 쓰세요.
+
+### 소스에서 실행
+
+개발에 참여하거나 아직 릴리스되지 않은 커밋을 실행할 때([CONTRIBUTING.md](CONTRIBUTING.md) 참고):
+
+```bash
+git clone https://github.com/qybaihe/hash-design.git ~/hash-design
+cd ~/hash-design && npm install && npm run build
+node ~/hash-design/packages/core/dist/bin.js skill install --target both --dir /path/to/your/project
+claude mcp add hash-design -- node ~/hash-design/packages/core/dist/bin.js mcp
+```
+
+체크아웃에서 CLI는 `packages/core/dist/bin.js`입니다. `packages/mcp/dist/bin.js`도 같은 MCP 서버를 시작하므로, 그쪽을 가리키는 기존 설정은 그대로 동작합니다. 이 저장소에는 Skill의 `.claude/`와 `.cursor/` 사본이 들어 있고, 테스트가 원본과 똑같이 유지되도록 확인합니다.
 
 ### 사용법
 
@@ -157,7 +154,7 @@ hash-design compare --roll design/hash-design/roll.json                         
 hash-design skill install --target both                                                          # Skill 설치
 ```
 
-소스 체크아웃에서는 `node packages/core/dist/bin.js …`로 실행합니다(또는 저장소 루트에서 `alias hash-design="node $PWD/packages/core/dist/bin.js"`를 설정하세요). `hash-design --help`는 모든 명령을 보여 주고, `hash-design <command> --help`(예: `hash-design roll --help`)는 해당 명령의 옵션을 출력합니다. 여기에는 제약 조건 플래그 `--light-only`, `--dark-only`, `--reduced-motion`, `--brand`, `--family`, `--include`, `--exclude`, `--scenario`도 포함됩니다.
+`npx -y hash-design …`로 실행하거나, `npm install -g hash-design`으로 한 번 설치한 뒤 `hash-design …`을 입력하세요. 체크아웃에서는 `node packages/core/dist/bin.js …`입니다. `hash-design --help`는 모든 명령을 보여 주고, `hash-design <command> --help`(예: `hash-design roll --help`)는 해당 명령의 옵션을 출력합니다. 여기에는 제약 조건 플래그 `--light-only`, `--dark-only`, `--reduced-motion`, `--brand`, `--family`, `--include`, `--exclude`, `--scenario`도 포함됩니다.
 
 ### 라이브러리
 
@@ -172,16 +169,15 @@ const report = critiquePage({ html: '<!doctype html>…', design });
 console.log(report.score, report.adherence, report.findings);
 ```
 
-패키지가 npm에 올라가기 전까지는 소스 체크아웃에서 가져오거나(`packages/core/dist/index.js`), 체크아웃을 로컬 의존성으로 추가하세요(`npm install /ABS/PATH/hash-design/packages/core`).
+`npm install hash-design`으로 설치합니다(ES 모듈, Node.js ≥ 20, 타입 포함).
 
 ### 업데이트
 
 ```bash
-cd ~/hash-design && git pull && npm install && npm run build
-node ~/hash-design/packages/core/dist/bin.js skill install --target both --dir /path/to/your/project   # refresh the copied SKILL.md
+npx -y hash-design@latest skill install --target both --dir .   # 복사한 SKILL.md 갱신
 ```
 
-MCP 설정은 `packages/mcp/dist/bin.js`를 가리키므로 다시 빌드하면 서버도 갱신됩니다. 에이전트를 재시작하면 반영됩니다. `skill install`은 프로젝트의 기존 사본을 덮어씁니다. 업데이트로 브랜치 데이터가 바뀌면 이전 버전으로 롤한 ref는 그 버전이 있어야 재현됩니다([자주 묻는 질문](#자주-묻는-질문) 참고).
+npx는 예전에 캐시한 사본을 계속 쓸 수 있습니다. `@latest`를 붙이면 최신 릴리스를 가져옵니다(`hash-design@0.2.0`처럼 버전을 고정할 수도 있습니다). MCP 서버는 에이전트가 시작될 때마다 npx로 실행되므로 릴리스 뒤에는 에이전트를 재시작하고, 오래된 사본이 계속 실행되면 MCP 명령에 `hash-design@latest`라고 쓰세요. clone에서 쓰는 경우: `git pull && npm install && npm run build`. 업데이트로 브랜치 데이터가 바뀌면 이전 버전으로 롤한 ref는 그 버전이 있어야 재현됩니다([자주 묻는 질문](#자주-묻는-질문) 참고).
 
 ## 작동 방식
 
@@ -365,7 +361,7 @@ Skill은 Claude Code(`.claude/skills/`)와 Cursor(`.cursor/skills/`)에 설치�
 <details>
 <summary><strong>npm에 배포되어 있나요?</strong></summary>
 
-아직입니다. `package.json`은 배포 가능한 상태이고 CI에서 `npm pack --dry-run`을 실행하지만, 지금은 소스에서 설치하세요. 배포 후에는 `npx -y hash-design-mcp`와 `npx -y hash-design`을 쓸 수 있습니다.
+네. [`hash-design`](https://www.npmjs.com/package/hash-design) 0.1.0에는 라이브러리, CLI, Skill(`npx -y hash-design skill install`)이 들어 있습니다. MCP 서버는 0.2.0에서 `hash-design mcp`로 이 패키지에 합류합니다. 그전까지는 예전 별도 서버 패키지이며 더 이상 새 버전이 나오지 않는 `npx -y hash-design-mcp@0.1.0`을 쓰세요. 릴리스는 GitHub Actions에서 npm Trusted Publishing으로 배포됩니다([docs/publishing.md](docs/publishing.md), 영어).
 
 </details>
 
