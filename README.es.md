@@ -2,6 +2,10 @@
 
 [English](README.md) | [简体中文](README.zh-CN.md) | [日本語](README.ja.md) | [한국어](README.ko.md) | **Español**
 
+<p align="center"><a href="https://qybaihe.github.io/hash-design/causeway-festival/compare.html"><picture><source media="(prefers-reduced-motion: reduce)" srcset="docs/assets/hero.png"><img src="docs/assets/hero.gif" width="960" alt="Animación: en un cuadro de texto se elige /hash-design y se pide una landing para Causeway; cinco refs SHA-256 giran y se fijan; las cinco vistas previas reales (Engineering plate, Topographic map, Warm handmade, Editorial magazine, Memphis pop) aparecen una tras otra y se alinean en una fila comparativa: elige una, reproducible desde su ref"></picture></a></p>
+
+<p align="center"><sub>Resultado real, no una maqueta: <a href="examples/causeway-festival">examples/causeway-festival</a>; cada vista previa la hizo un subagente distinto a partir de un único brief congelado.<br><a href="https://qybaihe.github.io/hash-design/"><b>Ver los 4 ejemplos en vivo →</b></a> · 20 de las 40 ramas · <a href="docs/assets/hero.png">imagen fija</a> · <a href="docs/assets/hero.mp4">MP4</a></sub></p>
+
 <p align="center"><b>Que tu agente de programación deje de entregar siempre la misma página con Inter y degradado morado.</b><br>
 Un solo prompt se convierte en cinco direcciones de diseño, elegidas por hashes SHA-256 verdaderamente aleatorios y no por el modelo. Tú eliges una; cualquier dirección se puede reconstruir a partir de su ref.</p>
 
@@ -11,10 +15,6 @@ Un solo prompt se convierte en cinco direcciones de diseño, elegidas por hashes
 <a href="LICENSE"><img src="https://img.shields.io/badge/license-MIT-black.svg" alt="MIT"></a>
 <a href="#instalar-la-skill"><img src="https://img.shields.io/badge/Agent%20Skill-Claude%20Code%20%C2%B7%20Cursor-black.svg" alt="Agent Skill"></a>
 </p>
-
-[![Un prompt para la página de un festival se abre en cinco direcciones sorteadas: Engineering plate, Topographic map, Warm handmade, Editorial magazine, Memphis pop](docs/assets/hero.png)](https://qybaihe.github.io/hash-design/causeway-festival/compare.html)
-
-<p align="center"><sub>Resultado real, no una maqueta: <a href="examples/causeway-festival">examples/causeway-festival</a>; cada vista previa la hizo un subagente distinto a partir de un único brief congelado.<br><a href="https://qybaihe.github.io/hash-design/"><b>Ver los 4 ejemplos en vivo →</b></a> · 20 de las 40 ramas</sub></p>
 
 ### Inicio rápido
 
@@ -398,6 +398,7 @@ node scripts/verify-fonts.mjs # comprueba en línea todas las URL de fuentes (no
 npm run example:critique      # critique de todas las vistas previas de los ejemplos frente a su brief (falla por debajo de 90)
 npm run screenshots           # capturas de todos los ejemplos con Playwright (requiere `npx playwright install chromium`)
 npm run hero                  # regenera docs/assets/hero.png y social-preview.png a partir de las capturas de un ejemplo
+npm run hero:gif              # regenera docs/assets/hero.gif y hero.mp4 (requiere ffmpeg; usa gifski si está instalado)
 ```
 
 En CI se ejecutan la compilación, la comprobación de tipos, el lint, la comprobación de formato, los tests, el smoke test por stdio y `npm pack --dry-run` en Node 20, 22 y 24.

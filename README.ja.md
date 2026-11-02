@@ -2,6 +2,10 @@
 
 [English](README.md) | [简体中文](README.zh-CN.md) | **日本語** | [한국어](README.ko.md) | [Español](README.es.md)
 
+<p align="center"><a href="https://qybaihe.github.io/hash-design/causeway-festival/compare.html"><picture><source media="(prefers-reduced-motion: reduce)" srcset="docs/assets/hero.png"><img src="docs/assets/hero.gif" width="960" alt="アニメーション：入力欄で /hash-design を選び、Causeway のランディングページを頼む。5 つの SHA-256 ref が回ってから確定し、実際の 5 つのプレビュー（Engineering plate、Topographic map、Warm handmade、Editorial magazine、Memphis pop）が次々に現れ、比較用の 1 列に並ぶ。1 つ選べば、ref から再現できる"></picture></a></p>
+
+<p align="center"><sub>モックアップではなく実際の出力です：<a href="examples/causeway-festival">examples/causeway-festival</a>。各プレビューは、凍結されたブリーフ 1 つだけを見た別々のサブエージェントが作りました。<br><a href="https://qybaihe.github.io/hash-design/"><b>4 つのライブサンプルをすべて見る →</b></a> · 40 ブランチのうち 20 · <a href="docs/assets/hero.png">静止画</a> · <a href="docs/assets/hero.mp4">MP4</a></sub></p>
+
 <p align="center"><b>コーディングエージェントが毎回同じ「Inter と紫のグラデーション」のページを出してくるのを止めます。</b><br>
 1 つのプロンプトから 5 つのデザインの方向性を出します。選ぶのはモデルではなく、真の乱数による SHA-256 ハッシュです。あなたが 1 つ選び、どの方向性も ref から同じものを作り直せます。</p>
 
@@ -11,10 +15,6 @@
 <a href="LICENSE"><img src="https://img.shields.io/badge/license-MIT-black.svg" alt="MIT"></a>
 <a href="#skill-のインストール"><img src="https://img.shields.io/badge/Agent%20Skill-Claude%20Code%20%C2%B7%20Cursor-black.svg" alt="Agent Skill"></a>
 </p>
-
-[![フェスのページを頼む 1 つのプロンプトが、ロールで出た 5 つの方向性に分かれる：Engineering plate、Topographic map、Warm handmade、Editorial magazine、Memphis pop](docs/assets/hero.png)](https://qybaihe.github.io/hash-design/causeway-festival/compare.html)
-
-<p align="center"><sub>モックアップではなく実際の出力です：<a href="examples/causeway-festival">examples/causeway-festival</a>。各プレビューは、凍結されたブリーフ 1 つだけを見た別々のサブエージェントが作りました。<br><a href="https://qybaihe.github.io/hash-design/"><b>4 つのライブサンプルをすべて見る →</b></a> · 40 ブランチのうち 20</sub></p>
 
 ### クイックスタート
 
@@ -398,6 +398,7 @@ node scripts/verify-fonts.mjs # すべてのフォント URL をオンライン�
 npm run example:critique      # すべてのサンプルのプレビューをブリーフに照らして critique（90 未満で失敗）
 npm run screenshots           # すべてのサンプルの Playwright スクリーンショット（`npx playwright install chromium` が必要）
 npm run hero                  # サンプルのスクリーンショットから docs/assets/hero.png と social-preview.png を作り直す
+npm run hero:gif              # docs/assets/hero.gif と hero.mp4 を作り直す（ffmpeg が必要。gifski があればそちらを使う）
 ```
 
 CI では Node 20、22、24 上で、ビルド、型チェック、lint、フォーマットチェック、テスト、stdio スモークテスト、`npm pack --dry-run` を実行します。

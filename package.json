@@ -28,7 +28,8 @@
     "example:compare": "node scripts/examples.mjs compare",
     "example:critique": "node scripts/examples.mjs critique",
     "screenshots": "node scripts/screenshot.mjs",
-    "hero": "node scripts/hero.mjs"
+    "hero": "node scripts/hero.mjs",
+    "hero:gif": "node scripts/hero-gif.mjs"
   },
   "devDependencies": {
     "@eslint/js": "^10.0.1",

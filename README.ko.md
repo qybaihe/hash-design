@@ -2,6 +2,10 @@
 
 [English](README.md) | [简体中文](README.zh-CN.md) | [日本語](README.ja.md) | **한국어** | [Español](README.es.md)
 
+<p align="center"><a href="https://qybaihe.github.io/hash-design/causeway-festival/compare.html"><picture><source media="(prefers-reduced-motion: reduce)" srcset="docs/assets/hero.png"><img src="docs/assets/hero.gif" width="960" alt="애니메이션: 입력창에서 /hash-design을 고르고 Causeway 랜딩 페이지를 요청합니다. SHA-256 ref 다섯 개가 돌다가 고정되고, 실제 프리뷰 다섯 개(Engineering plate, Topographic map, Warm handmade, Editorial magazine, Memphis pop)가 차례로 나타난 뒤 비교용 한 줄로 정렬됩니다. 하나를 고르면 ref로 재현할 수 있습니다"></picture></a></p>
+
+<p align="center"><sub>목업이 아니라 실제 결과물입니다: <a href="examples/causeway-festival">examples/causeway-festival</a>. 각 프리뷰는 고정된 브리프 하나만 본 별도의 서브 에이전트가 만들었습니다.<br><a href="https://qybaihe.github.io/hash-design/"><b>라이브 예시 4개 모두 보기 →</b></a> · 브랜치 40개 중 20개 · <a href="docs/assets/hero.png">정지 이미지</a> · <a href="docs/assets/hero.mp4">MP4</a></sub></p>
+
 <p align="center"><b>코딩 에이전트가 매번 똑같은 'Inter + 보라색 그라데이션' 페이지를 내놓는 일을 끝내세요.</b><br>
 프롬프트 하나에서 디자인 방향 다섯 가지가 나옵니다. 고르는 건 모델이 아니라 진짜 난수로 만든 SHA-256 해시입니다. 그중 하나를 고르면 되고, 어떤 방향이든 ref로 똑같이 다시 만들 수 있습니다.</p>
 
@@ -11,10 +15,6 @@
 <a href="LICENSE"><img src="https://img.shields.io/badge/license-MIT-black.svg" alt="MIT"></a>
 <a href="#skill-설치"><img src="https://img.shields.io/badge/Agent%20Skill-Claude%20Code%20%C2%B7%20Cursor-black.svg" alt="Agent Skill"></a>
 </p>
-
-[![페스티벌 페이지를 요청한 프롬프트 하나가 롤로 뽑은 다섯 방향으로 갈라집니다: Engineering plate, Topographic map, Warm handmade, Editorial magazine, Memphis pop](docs/assets/hero.png)](https://qybaihe.github.io/hash-design/causeway-festival/compare.html)
-
-<p align="center"><sub>목업이 아니라 실제 결과물입니다: <a href="examples/causeway-festival">examples/causeway-festival</a>. 각 프리뷰는 고정된 브리프 하나만 본 별도의 서브 에이전트가 만들었습니다.<br><a href="https://qybaihe.github.io/hash-design/"><b>라이브 예시 4개 모두 보기 →</b></a> · 브랜치 40개 중 20개</sub></p>
 
 ### 빠른 시작
 
@@ -398,6 +398,7 @@ node scripts/verify-fonts.mjs # 모든 폰트 URL을 온라인으로 확인 (CI�
 npm run example:critique      # 모든 예시 미리보기를 브리프 기준으로 critique (90 미만이면 실패)
 npm run screenshots           # 모든 예시의 Playwright 스크린샷 (`npx playwright install chromium` 필요)
 npm run hero                  # 예시 스크린샷으로 docs/assets/hero.png와 social-preview.png를 다시 생성
+npm run hero:gif              # docs/assets/hero.gif와 hero.mp4를 다시 생성 (ffmpeg 필요, gifski가 있으면 gifski 사용)
 ```
 
 CI는 Node 20, 22, 24에서 빌드, 타입 검사, lint, 포맷 검사, 테스트, stdio 스모크 테스트, `npm pack --dry-run`을 실행합니다.

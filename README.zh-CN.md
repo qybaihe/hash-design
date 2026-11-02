@@ -2,6 +2,10 @@
 
 [English](README.md) | **简体中文** | [日本語](README.ja.md) | [한국어](README.ko.md) | [Español](README.es.md)
 
+<p align="center"><a href="https://qybaihe.github.io/hash-design/causeway-festival/compare.html"><picture><source media="(prefers-reduced-motion: reduce)" srcset="docs/assets/hero.png"><img src="docs/assets/hero.gif" width="960" alt="动画：在输入框里选中 /hash-design，提出 Causeway 落地页需求；5 个 SHA-256 ref 跳动后锁定；5 个真实预览（工程图版、地形图、手作温度、杂志编辑、孟菲斯）依次弹出，再排成一行对比：挑一个，凭 ref 可复现"></picture></a></p>
+
+<p align="center"><sub>真实产出，不是效果图：<a href="examples/causeway-festival">examples/causeway-festival</a>，每个预览由独立子 Agent 只按一份冻结的 brief 渲染。<br><a href="https://qybaihe.github.io/hash-design/"><b>浏览全部 4 个在线示例 →</b></a> · 覆盖 40 个分支中的 20 个 · <a href="docs/assets/hero.png">静态图</a> · <a href="docs/assets/hero.mp4">MP4</a></sub></p>
+
 <p align="center"><b>别再让编码 Agent 每次都交出同一张 Inter + 紫色渐变的页面。</b><br>
 一句需求，掷出 5 套设计方向：由真随机 SHA-256 哈希决定，而不是模型。你挑一个；任何一个方向都能凭 ref 原样重建。</p>
 
@@ -11,10 +15,6 @@
 <a href="LICENSE"><img src="https://img.shields.io/badge/license-MIT-black.svg" alt="MIT"></a>
 <a href="#安装-skill"><img src="https://img.shields.io/badge/Agent%20Skill-Claude%20Code%20%C2%B7%20Cursor-black.svg" alt="Agent Skill"></a>
 </p>
-
-[![一句需求展开成 5 个随机方向：工程图版、地形图、手作温度、杂志编辑、孟菲斯](docs/assets/hero.png)](https://qybaihe.github.io/hash-design/causeway-festival/compare.html)
-
-<p align="center"><sub>真实产出，不是效果图：<a href="examples/causeway-festival">examples/causeway-festival</a>，每个预览由独立子 Agent 只按一份冻结的 brief 渲染。<br><a href="https://qybaihe.github.io/hash-design/"><b>浏览全部 4 个在线示例 →</b></a> · 覆盖 40 个分支中的 20 个</sub></p>
 
 ### 快速开始
 
@@ -441,6 +441,7 @@ node scripts/verify-fonts.mjs # 联网检查所有字体 URL（不在 CI 里跑�
 npm run example:critique      # 对照 brief 批量 critique 所有示例预览（低于 90 分即失败）
 npm run screenshots           # Playwright 截图所有示例（需 npx playwright install chromium）
 npm run hero                  # 用示例截图重新生成 docs/assets/hero.png 和 social-preview.png
+npm run hero:gif              # 重新生成 docs/assets/hero.gif 和 hero.mp4（需要 ffmpeg；装了 gifski 会优先用）
 ```
 
 CI 在 Node 20、22、24 上跑 build、typecheck、lint、格式检查、测试、stdio 冒烟测试和 `npm pack --dry-run`。

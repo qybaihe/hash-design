@@ -2,6 +2,10 @@
 
 **English** | [简体中文](README.zh-CN.md) | [日本語](README.ja.md) | [한국어](README.ko.md) | [Español](README.es.md)
 
+<p align="center"><a href="https://qybaihe.github.io/hash-design/causeway-festival/compare.html"><picture><source media="(prefers-reduced-motion: reduce)" srcset="docs/assets/hero.png"><img src="docs/assets/hero.gif" width="960" alt="Animation: /hash-design is picked in a prompt box and a landing page for Causeway is requested; five SHA-256 refs tick and lock; the five real previews (Engineering plate, Topographic map, Warm handmade, Editorial magazine, Memphis pop) pop in, then line up as a compare row: pick one, reproducible from its ref"></picture></a></p>
+
+<p align="center"><sub>Real output, not a mock-up: <a href="examples/causeway-festival">examples/causeway-festival</a>, each preview built by its own sub-agent from one frozen brief.<br><a href="https://qybaihe.github.io/hash-design/"><b>Browse all 4 live examples →</b></a> · 20 of the 40 branches · <a href="docs/assets/hero.png">still image</a> · <a href="docs/assets/hero.mp4">MP4</a></sub></p>
+
 <p align="center"><b>Stop your coding agent from shipping the same Inter-and-purple-gradient page every time.</b><br>
 One prompt becomes five design directions, picked by true-random SHA-256 hashes instead of the model. You pick one; any direction can be rebuilt from its ref.</p>
 
@@ -11,10 +15,6 @@ One prompt becomes five design directions, picked by true-random SHA-256 hashes 
 <a href="LICENSE"><img src="https://img.shields.io/badge/license-MIT-black.svg" alt="MIT"></a>
 <a href="#install-the-skill"><img src="https://img.shields.io/badge/Agent%20Skill-Claude%20Code%20%C2%B7%20Cursor-black.svg" alt="Agent Skill"></a>
 </p>
-
-[![One prompt for a festival page fans out into five rolled directions: Engineering plate, Topographic map, Warm handmade, Editorial magazine, Memphis pop](docs/assets/hero.png)](https://qybaihe.github.io/hash-design/causeway-festival/compare.html)
-
-<p align="center"><sub>Real output, not a mock-up: <a href="examples/causeway-festival">examples/causeway-festival</a>, each preview built by its own sub-agent from one frozen brief.<br><a href="https://qybaihe.github.io/hash-design/"><b>Browse all 4 live examples →</b></a> · 20 of the 40 branches</sub></p>
 
 ### Quick start
 
@@ -398,6 +398,7 @@ node scripts/verify-fonts.mjs # check every font URL online (not in CI)
 npm run example:critique      # critique every example preview against its brief (fails below 90)
 npm run screenshots           # Playwright screenshots of every example (needs `npx playwright install chromium`)
 npm run hero                  # rebuild docs/assets/hero.png and social-preview.png from an example's screenshots
+npm run hero:gif              # rebuild docs/assets/hero.gif and hero.mp4 (needs ffmpeg; uses gifski if installed)
 ```
 
 CI runs build, typecheck, lint, format check, tests, the stdio smoke test and `npm pack --dry-run` on Node 20, 22 and 24.
