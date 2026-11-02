@@ -30,7 +30,9 @@
     "screenshots": "node scripts/screenshot.mjs",
     "hero": "node scripts/hero.mjs",
     "hero:gif": "node scripts/hero-gif.mjs",
-    "showcase": "node scripts/showcase.mjs"
+    "showcase": "node scripts/showcase.mjs",
+    "release:check": "node scripts/release-check.mjs --pack",
+    "release:version": "node scripts/release-version.mjs"
   },
   "devDependencies": {
     "@eslint/js": "^10.0.1",
