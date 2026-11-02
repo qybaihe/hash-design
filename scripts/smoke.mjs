@@ -27,6 +27,11 @@ assert(
   summary.includes('seed:smoke') && summary.split('\n').filter((l) => /^\| \d /.test(l)).length === 5,
   'CLI roll prints 5 designs',
 );
+const rollHelp = execFileSync(process.execPath, [cli, 'roll', '--help'], { encoding: 'utf8' });
+assert(
+  rollHelp.startsWith('hash-design roll — ') && rollHelp.includes('--light-only'),
+  'CLI roll --help prints the command help',
+);
 
 const client = new Client({ name: 'smoke', version: '0.0.0' });
 await client.connect(

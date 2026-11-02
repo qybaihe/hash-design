@@ -233,7 +233,7 @@ hash-design compare --roll design/hash-design/roll.json                         
 hash-design skill install --target both                                                          # Skill をインストール
 ```
 
-ソースのチェックアウトから使う場合は、`node packages/core/dist/bin.js …` として実行します（またはリポジトリのルートで `alias hash-design="node $PWD/packages/core/dist/bin.js"` を設定します）。`hash-design --help` を実行すると、制約フラグ `--light-only`、`--dark-only`、`--reduced-motion`、`--brand`、`--family`、`--include`、`--exclude` を含むすべてのオプションが表示されます。
+ソースのチェックアウトから使う場合は、`node packages/core/dist/bin.js …` として実行します（またはリポジトリのルートで `alias hash-design="node $PWD/packages/core/dist/bin.js"` を設定します）。`hash-design --help` ですべてのコマンドが、`hash-design <command> --help`（例：`hash-design roll --help`）でそのコマンドのオプションが表示されます。制約フラグ `--light-only`、`--dark-only`、`--reduced-motion`、`--brand`、`--family`、`--include`、`--exclude` も含まれます。
 
 ## ライブラリ
 

@@ -14,6 +14,10 @@ Neither package (`hash-design`, `hash-design-mcp`) has been published to npm yet
 - Community files: `CONTRIBUTING.md`, `CODE_OF_CONDUCT.md` (Contributor Covenant 2.1), `SECURITY.md`, this changelog, issue templates (bug report, feature request, new branch proposal) and a pull request template.
 - README badges for CI, Pages, the live demo, license, Node version and npm status.
 
+### Fixed
+
+- CLI subcommands now accept `--help` / `-h` (and `hash-design help <command>`) and print that command's options, instead of failing with `Unknown option '--help'`. Argument errors such as an unknown option now point at the command's help. A test checks that every option a command parses is documented in its help.
+
 ### Changed
 
 - The package READMEs (`packages/core/README.md`, `packages/mcp/README.md`) now say the packages are not on npm yet and show the source install.

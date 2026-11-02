@@ -233,7 +233,7 @@ hash-design compare --roll design/hash-design/roll.json                         
 hash-design skill install --target both                                                          # instala la Skill
 ```
 
-Desde una copia del código fuente, ejecútalo como `node packages/core/dist/bin.js …` (o con `alias hash-design="node $PWD/packages/core/dist/bin.js"` desde la raíz del repositorio). `hash-design --help` muestra todas las opciones, incluidos los flags de restricción `--light-only`, `--dark-only`, `--reduced-motion`, `--brand`, `--family`, `--include` y `--exclude`.
+Desde una copia del código fuente, ejecútalo como `node packages/core/dist/bin.js …` (o con `alias hash-design="node $PWD/packages/core/dist/bin.js"` desde la raíz del repositorio). `hash-design --help` lista todos los comandos y `hash-design <command> --help` (por ejemplo, `hash-design roll --help`) muestra las opciones de un comando, incluidos los flags de restricción `--light-only`, `--dark-only`, `--reduced-motion`, `--brand`, `--family`, `--include` y `--exclude`.
 
 ## Biblioteca
 

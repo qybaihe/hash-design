@@ -233,7 +233,7 @@ hash-design compare --roll design/hash-design/roll.json                         
 hash-design skill install --target both                                                          # Skill 설치
 ```
 
-소스 체크아웃에서는 `node packages/core/dist/bin.js …`로 실행합니다(또는 저장소 루트에서 `alias hash-design="node $PWD/packages/core/dist/bin.js"`를 설정하세요). `hash-design --help`는 제약 조건 플래그 `--light-only`, `--dark-only`, `--reduced-motion`, `--brand`, `--family`, `--include`, `--exclude`를 포함한 모든 옵션을 출력합니다.
+소스 체크아웃에서는 `node packages/core/dist/bin.js …`로 실행합니다(또는 저장소 루트에서 `alias hash-design="node $PWD/packages/core/dist/bin.js"`를 설정하세요). `hash-design --help`는 모든 명령을 보여 주고, `hash-design <command> --help`(예: `hash-design roll --help`)는 해당 명령의 옵션을 출력합니다. 여기에는 제약 조건 플래그 `--light-only`, `--dark-only`, `--reduced-motion`, `--brand`, `--family`, `--include`, `--exclude`도 포함됩니다.
 
 ## 라이브러리
 
