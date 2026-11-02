@@ -1,6 +1,6 @@
 ---
 name: hash-design
-description: Use when building or redesigning any web page, landing page, one-page site, poster-like page or UI mock where the result must have real design character and must NOT look AI-generated (no Inter, purple gradients, centered hero with two buttons, three identical cards). Rolls true-random hashes through the hash-design MCP server, freezes 5 distinct design briefs, renders 5 independent HTML previews plus a side-by-side compare page, waits for the user to pick one, then builds the final page and self-critiques it. Triggers - "做个页面/官网/落地页/一页站", "去 AI 味", "要有设计感", "landing page", "make it not look like AI", "give me design options".
+description: Use when building or redesigning any web page, landing page, one-page site, slide deck, mobile app screen, dashboard, poster / social card or HTML email where the result must have real design character and must NOT look AI-generated (no Inter, purple gradients, centered hero with two buttons, three identical cards). Rolls true-random hashes through the hash-design MCP server, freezes 5 distinct design briefs (with a scenario: web, deck, app, dashboard, poster or email), renders 5 independent HTML previews plus a side-by-side compare page, waits for the user to pick one, then builds the final artifact and self-critiques it. Triggers - "做个页面/官网/落地页/一页站", "做个 PPT/幻灯片", "App 界面", "数据看板", "海报", "去 AI 味", "要有设计感", "landing page", "slide deck", "make it not look like AI", "give me design options".
 ---
 
 # hash-design：用外部随机打破默认审美
@@ -9,7 +9,7 @@ LLM 做页面会塌缩到众数审美。这个 Skill 的做法是：**风格不�
 
 ## 何时使用
 
-- 用户要做/重做一个网页、落地页、一页站、活动页、作品集首页、海报式页面、UI 视觉稿。
+- 用户要做/重做一个网页、落地页、一页站、活动页、作品集首页、UI 视觉稿；或幻灯片/PPT、手机 App 界面、数据看板、海报/社交卡片、HTML 邮件。
 - 用户说"要有设计感""别像 AI 做的""给我几个方向"。
 - 不适用：纯后端、已有严格设计系统且用户要求遵守的改动（此时只用 `critique_page` 自检即可）。
 
@@ -33,6 +33,7 @@ LLM 做页面会塌缩到众数审美。这个 Skill 的做法是：**风格不�
 ```
 
 - **不要传 `seed`**。seed 只用于复现示例；真实使用必须用系统随机。
+- **场景** `scenario`：做的不是网页时传 `deck`（16:9 幻灯片）/ `app`（手机界面）/ `dashboard`（看板）/ `poster`（海报、社交卡片）/ `email`（HTML 邮件）；网页不传（默认 `web`）。它和其他约束一样是设计身份的一部分，复现时要再传一次。
 - 用户的硬约束才写进约束：`light_only` / `dark_only` / `reduced_motion` / `brand_colors`（品牌色，最多 2 个）/ `families` / `include_branches` / `exclude_branches`。不要为了"安全"擅自加约束。
 - **不要因为不喜欢结果而重掷。** 只有用户要求时才重掷。
 
@@ -56,6 +57,7 @@ LLM 做页面会塌缩到众数审美。这个 Skill 的做法是：**风格不�
 - 图片：没有真实素材就不用照片，用排版、色块、自绘 SVG、brief 母题完成视觉。
 - 必须响应式（至少 390px 手机宽度可读），`<html lang>`、`<meta viewport>` 齐全，尊重 `prefers-reduced-motion`。
 - 文件顶部写注释：`<!-- hash-design #N · <branch-id> · ref <ref> -->`。
+- **非 web 场景**：按 brief 的「场景 Scenario」一节交付（格式、画布尺寸、文件结构、数量、场景规则与禁忌），它优先于上面针对网页的要求。固定画布（幻灯片、海报）整体等比缩放，不重排；邮件不用脚本，用表格布局并内联样式。
 
 ### 4. 自检每个预览
 
@@ -120,7 +122,7 @@ LLM 做页面会塌缩到众数审美。这个 Skill 的做法是：**风格不�
 
 | MCP 工具 | CLI |
 |---|---|
-| `roll_designs` | `hash-design roll --subject "…" --facts-file facts.md --out design/hash-design` |
+| `roll_designs` | `hash-design roll --subject "…" --facts-file facts.md [--scenario deck] --out design/hash-design` |
 | `get_brief` | `hash-design brief <ref> [约束参数]` |
 | `list_branches` | `hash-design branches` |
 | `get_branch` | `hash-design branch <id>` |
