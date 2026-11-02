@@ -10,7 +10,7 @@ Neither package (`hash-design`, `hash-design-mcp`) has been published to npm yet
 ### Added
 
 - English README as the main document, with full translations in Simplified Chinese (`README.zh-CN.md`), Japanese (`README.ja.md`), Korean (`README.ko.md`) and Spanish (`README.es.md`), and a language switcher at the top of each.
-- `docs/architecture.md`, `docs/mapping.md` (the `hash-design/v1` specification with worked examples) and `docs/mcp-tools.md` (every MCP tool, resource and prompt with CLI equivalents), each with a Chinese version.
+- `docs/architecture.md`, `docs/mapping.md` (the `hash-design/v1` specification with worked examples) and `docs/mcp-tools.md` (every MCP tool, resource and prompt with CLI equivalents), each with a Chinese version, plus a `docs/README.md` index.
 - Community files: `CONTRIBUTING.md`, `CODE_OF_CONDUCT.md` (Contributor Covenant 2.1), `SECURITY.md`, this changelog, issue templates (bug report, feature request, new branch proposal) and a pull request template.
 - README badges for CI, Pages, the live demo, license, Node version and npm status.
 
