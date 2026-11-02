@@ -2,13 +2,19 @@ import { readFileSync } from 'node:fs';
 import { describe, expect, it } from 'vitest';
 import { critiquePage, renderCritique } from '../src/critique.js';
 import { BANS } from '../src/data/bans.js';
-import { BRANCHES } from '../src/data/branches/index.js';
-import { mapDesign } from '../src/mapping.js';
+import { googleFontsUrl, tokensCss } from '../src/derive.js';
+import { seededHash } from '../src/hash.js';
+import { type Design, mapDesign } from '../src/mapping.js';
 
 const fixture = (name: string) => readFileSync(new URL(`./fixtures/${name}`, import.meta.url), 'utf8');
 
-/** A hash that maps to the exemplar branch (index 0) with palette/type option 0. */
-const exemplarHash = `0000000000000000${'0'.repeat(48)}`;
+/** A minimal page built from a design's own tokens.css and font link. */
+const pageFor = (d: Design) => `<!doctype html><html lang="en"><head><meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<link rel="stylesheet" href="${googleFontsUrl(d.type, 'en')}">
+<style>${tokensCss(d, 'en')}
+h1 { font-family: var(--font-display); color: var(--accent); }</style></head>
+<body><h1>Fourth Lane</h1><p>Open Tuesday to Sunday.</p></body></html>`;
 
 describe('critique_page on an AI-template page', () => {
   const r = critiquePage({ html: fixture('slop.html') });
@@ -42,17 +48,16 @@ describe('critique_page on a page that follows a brief', () => {
   });
 
   it('reports high adherence to the matching brief', () => {
-    const d = mapDesign(exemplarHash);
-    expect(d.branch.id).toBe(BRANCHES[0]!.id);
-    expect(d.type.id).toBe(BRANCHES[0]!.type[0]!.id);
-    const r = critiquePage({ html: fixture('good.html'), design: d });
+    const d = mapDesign(seededHash('critique', 0));
+    const r = critiquePage({ html: pageFor(d), design: d });
     expect(r.adherence).toBeGreaterThanOrEqual(80);
   });
 
   it('reports low adherence to an unrelated brief', () => {
-    const other = mapDesign(`0021${'7'.repeat(60)}`); // some other branch
-    expect(other.branch.id).not.toBe(BRANCHES[0]!.id);
-    const r = critiquePage({ html: fixture('good.html'), design: other });
+    const d = mapDesign(seededHash('critique', 0));
+    const other = mapDesign(seededHash('critique', 1));
+    expect(other.type.display.family).not.toBe(d.type.display.family);
+    const r = critiquePage({ html: pageFor(d), design: other });
     expect(r.adherence!).toBeLessThan(80);
     expect(r.findings.some((f) => f.rule === 'brief-fonts' || f.rule === 'brief-palette')).toBe(true);
   });

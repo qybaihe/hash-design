@@ -115,7 +115,7 @@ LLM 做页面会塌缩到众数审美。这个 Skill 的做法是：**风格不�
 
 禁用字体：Inter, Inter Tight, Inter Display, Roboto, Roboto Flex, Open Sans, Lato, Poppins, Montserrat, Nunito, Nunito Sans, Plus Jakarta Sans, Manrope, DM Sans, Outfit, Figtree, Geist, Urbanist, Sora, Lexend, Raleway, Work Sans, Space Grotesk。
 
-分支库：40 个分支（`list_branches` 查看，`get_branch` 看细节）。
+字体池：98 个标题字体 × 62 个正文字体，由哈希字节直接选，没有风格分类。
 <!-- END GENERATED: bans -->
 
 ## MCP 工具 ↔ CLI 对照

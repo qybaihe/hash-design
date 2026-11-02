@@ -10,11 +10,12 @@ import {
   tokensCss,
   typeScale,
 } from './derive.js';
-import { rollHashes } from './hash.js';
+import { ALGORITHM, rollHashes } from './hash.js';
 import {
   type Constraints,
   type Design,
   describeConstraints,
+  libraryFingerprint,
   mapDesign,
   mapRoll,
   normalizeConstraints,
@@ -56,16 +57,16 @@ export function normalizeContent(content: Partial<Content> = {}): Content & { la
   return { subject, facts, language: content.language ?? detectLanguage(subject, ...facts) };
 }
 
-/** Roll N designs: N true-random (or seeded) hashes → deterministic, distinct designs. */
+/** Roll N designs: N true-random (or seeded) hashes → N independent, deterministic designs. */
 export function roll(opts: RollOptions = {}): Roll {
   const count = opts.count ?? 5;
-  if (count < 1 || count > 12) throw new Error(`count must be between 1 and 12 (got ${count})`);
+  if (!Number.isInteger(count) || count < 1 || count > 12)
+    throw new Error(`count must be a whole number from 1 to 12 (got ${count})`);
   const hashes = opts.hashes ?? rollHashes(count, opts.seed);
   const designs = mapRoll(hashes, opts.constraints);
-  const first = designs[0];
   return {
-    algorithm: first?.algorithm ?? 'hash-design/v1',
-    library: first?.library ?? '',
+    algorithm: ALGORITHM,
+    library: libraryFingerprint(),
     createdAt: (opts.now ?? new Date()).toISOString(),
     source: opts.hashes ? 'provided-hashes' : opts.seed !== undefined ? `seed:${opts.seed}` : 'system-random',
     constraints: normalizeConstraints(opts.constraints),
@@ -74,20 +75,56 @@ export function roll(opts: RollOptions = {}): Roll {
   };
 }
 
-/** Reproduce one design from its ref (hash[+probe]) and the constraints used for the roll. */
-export function reproduce(ref: { hash: string; probe?: number }, constraints?: Constraints): Design {
-  return mapDesign(ref.hash, { probe: ref.probe ?? 0, ...(constraints ? { constraints } : {}) });
+/** Reproduce one design from its ref (the hash) and the constraints used for the roll. */
+export function reproduce(ref: { hash: string }, constraints?: Constraints): Design {
+  return mapDesign(ref.hash, constraints ? { constraints } : {});
 }
 
-function fontLine(label: string, f: FontSpec | undefined): string {
-  if (!f) return `- **${label}**: —`;
+function fontLine(label: string, f: FontSpec, extra = ''): string {
   const ital = f.italic ? ' + italic' : '';
-  const src = f.source === 'system' ? ' (system font)' : '';
-  return `- **${label}**: ${f.family} ${f.weights.join('/')}${ital}${src} — fallback \`${f.fallback}\``;
+  return `- **${label}**: ${f.family} ${f.weights.join('/')}${ital}${extra} — fallback \`${f.fallback}\``;
 }
 
-function swatch(hex: string): string {
-  return `\`${hex}\``;
+/** One-line label for a direction (used as its title, in summaries and on the compare page). */
+export function directionLabel(d: Design): string {
+  return `${d.palette.polarity} · ${Math.round(d.palette.hue)}° · ${d.type.display.family} / ${d.type.body.family} · ${d.layout.columns} col`;
+}
+
+function registerText(r: number): string {
+  return r < 0.34 ? 'spoken and casual' : r < 0.67 ? 'plain and neutral' : 'formal and exact';
+}
+
+function blockText(l: Design['layout']): string {
+  const end = l.start + l.span - 1;
+  const before = l.start - 1;
+  const after = l.columns - end;
+  const where =
+    l.span === l.columns
+      ? 'full width'
+      : before === 0
+        ? 'flush left'
+        : after === 0
+          ? 'flush right'
+          : before === after
+            ? 'centred'
+            : before < after
+              ? 'left of centre'
+              : 'right of centre';
+  return `columns ${l.start}–${end} of ${l.columns} (${where})`;
+}
+
+function textureCss(sf: Design['surface']): string | null {
+  const o = sf.textureOpacity;
+  switch (sf.texture.id) {
+    case 'grain':
+      return `body { background-image: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='160' height='160'%3E%3Cfilter id='n'%3E%3CfeTurbulence type='fractalNoise' baseFrequency='.9'/%3E%3C/filter%3E%3Crect width='100%25' height='100%25' filter='url(%23n)' opacity='${o / 100}'/%3E%3C/svg%3E"); }`;
+    case 'line-screen':
+      return `body { background-image: repeating-linear-gradient(0deg, color-mix(in srgb, var(--ink) ${o}%, transparent) 0 1px, transparent 1px 4px); }`;
+    case 'dot-screen':
+      return `body { background-image: radial-gradient(color-mix(in srgb, var(--ink) ${o}%, transparent) 1px, transparent 1.5px); background-size: 6px 6px; }`;
+    default:
+      return null;
+  }
 }
 
 function scenarioOf(design: Design): Scenario | undefined {
@@ -147,22 +184,27 @@ export interface BriefOptions {
 export function renderBrief(design: Design, content: Partial<Content> = {}, opts: BriefOptions = {}): string {
   const c = normalizeContent(content);
   const lang = c.language;
-  const b = design.branch;
-  const pal = design.palette.colors;
-  const fontsUrl = googleFontsUrl(design.type, lang);
-  const contrastInfo = contrastReport(pal);
+  const pal = design.palette;
+  const col = pal.colors;
+  const ty = design.type;
+  const l = design.layout;
+  const a = design.anchor;
+  const sf = design.surface;
+  const mo = design.motion;
+  const v = design.voice;
+  const fontsUrl = googleFontsUrl(ty, lang);
+  const contrastInfo = contrastReport(col);
   const scale = typeScale(design);
   const n = opts.number ? `#${opts.number} ` : '';
   const out: string[] = [];
 
-  out.push(`# ${n}${b.name.zh} · ${b.name.en}`);
+  out.push(`# ${n}Direction ${design.short}`);
   out.push('');
-  out.push(`> ${lang === 'zh' ? b.concept.zh : b.concept.en}`);
+  out.push(`> ${directionLabel(design)}`);
   out.push('');
   out.push('| | |');
   out.push('|---|---|');
-  out.push(`| hash | \`${design.hash}\` |`);
-  out.push(`| ref | \`${design.ref}\` |`);
+  out.push(`| hash / ref | \`${design.hash}\` |`);
   out.push(`| algorithm / library | ${design.algorithm} / \`${design.library}\` |`);
   out.push(`| constraints | ${describeConstraints(design.constraints)} |`);
   if (design.scenario) {
@@ -172,20 +214,18 @@ export function renderBrief(design: Design, content: Partial<Content> = {}, opts
       `| scenario | ${s?.name.en} — ${f.name.en} (${f.width}×${f.height}) · scenario data \`${design.scenario.data}\` |`,
     );
   }
-  out.push(`| family | ${b.family} |`);
-  out.push(`| references | ${b.references.join('; ')} |`);
   out.push('');
   out.push(
     lang === 'zh'
-      ? '**这份 brief 是冻结的执行规格，不是灵感板。** 不要替换字体、颜色或版式，不要"顺手优化"成你习惯的样子。若与全局禁令冲突，以禁令为准；若 twist 与分支冲突，以分支为准并在页面注释中写明。'
-      : '**This brief is a frozen spec, not a mood board.** Do not swap fonts, colours or layout for ones you prefer. Global bans override everything; if the twist conflicts with the branch, the branch wins (note it in an HTML comment).',
+      ? '**这份 brief 是冻结的执行规格，不是灵感板。** 每个数值都来自哈希：不要替换字体、颜色、栅格或数值，不要"顺手优化"成你习惯的样子。若与全局禁令冲突，以禁令为准；若 twist 无法照字面执行，取最接近字面的做法，并在 HTML 注释里写明。'
+      : '**This brief is a frozen spec, not a mood board.** Every value comes from the hash: do not swap fonts, colours, the grid or the numbers for ones you prefer. Global bans override everything; if the twist cannot apply literally, apply the nearest literal reading and say so in an HTML comment.',
   );
   out.push('');
 
   if (opts.trace !== false) {
     out.push('## 映射过程 Mapping trace');
     out.push('');
-    out.push('| bytes | hex | dimension | rule | → result |');
+    out.push('| bytes | hex | parameter | rule | → result |');
     out.push('|---|---|---|---|---|');
     for (const t of design.trace) {
       const note = t.note ? ` _(${t.note})_` : '';
@@ -194,7 +234,7 @@ export function renderBrief(design: Design, content: Partial<Content> = {}, opts
       );
     }
     out.push(
-      `| ${design.scenario ? '14–31' : '13–31'} | \`${design.unusedBytes.slice(0, 12)}…\` | (unused) | recorded, not used | — |`,
+      `| ${design.scenario ? '31' : '28, 31'} | \`${design.unusedBytes}\` | (unused) | recorded, not used | — |`,
     );
     out.push('');
   }
@@ -220,39 +260,47 @@ export function renderBrief(design: Design, content: Partial<Content> = {}, opts
 
   out.push(...renderScenario(design, lang));
 
-  out.push(`## 文案语气 Voice — ${design.voice.name.zh} / ${design.voice.name.en}`);
+  out.push('## 文案语气 Voice');
   out.push('');
-  out.push(design.voice.description);
-  out.push('');
-  out.push(`Devices: ${design.voice.devices.join(' · ')}`);
-  out.push('');
-  out.push(`Example register (do not copy, match the register): “${design.voice.example}”`);
-  out.push('');
-
-  out.push(`## 版式 Layout — ${design.layout.name}`);
-  out.push('');
-  out.push(design.layout.description);
-  out.push('');
-  out.push(`- **Grid:** ${design.layout.grid}`);
-  out.push(`- **Branch grid token:** ${b.tokens.grid}`);
-  out.push('');
-  out.push('Section order (top → bottom):');
-  out.push('');
-  design.layout.structure.forEach((s, i) => out.push(`${i + 1}. ${s}`));
-  out.push('');
-  out.push(`**First-screen anchor — ${design.anchor.name}:** ${design.anchor.description}`);
+  out.push(`- **Person:** ${v.person.text}`);
+  out.push(`- **Headlines:** ${v.headline.text}`);
+  out.push(
+    `- **Sentences:** about ${v.sentenceWords} words on average (about ${v.sentenceWords * 2} characters in Chinese)`,
+  );
+  out.push(`- **Register:** ${v.register} on a 0–1 scale — ${registerText(v.register)}`);
   out.push('');
 
-  out.push(`## 字体 Typography — ${design.type.name}`);
+  out.push('## 版式 Layout');
   out.push('');
-  out.push(fontLine('Display', design.type.display));
-  out.push(fontLine('Body', design.type.body));
-  out.push(fontLine('Mono', design.type.mono));
-  out.push(`- **CJK**: display ${design.type.cjk.display}, body ${design.type.cjk.body}`);
-  out.push(`- **Setting rules:** ${design.type.notes}`);
+  const width = design.scenario?.format;
+  out.push(
+    `- **Grid:** ${l.columns} columns, ${l.gutter}px gutters, max width ${width ? `${width.width}px (${width.fixed ? 'canvas' : 'scenario width'})` : `${design.density.maxWidth}px`}`,
+  );
+  out.push(`- **Text block:** ${blockText(l)}`);
+  out.push(`- **First screen:** ${l.firstScreen}% of the viewport height`);
+  out.push(`- **Sections:** ${l.sections}, separated by ${l.separator.text}`);
+  out.push('- Below 640px wide the grid collapses to one column; separators and the anchor stay.');
   out.push('');
   out.push(
-    `Scale: **${design.scale.name}** on a ${baseSize(design)}px base → ` +
+    `**First-screen anchor:** ${a.subject.text}; about ${a.size}% of the first screen's width, centred at ${Math.round(a.x * 100)}% from the left edge, rotated ${a.rotation}°.`,
+  );
+  out.push('');
+
+  out.push('## 字体 Typography');
+  out.push('');
+  out.push(
+    fontLine(
+      'Display',
+      ty.display,
+      ` · set at ${ty.weight}, ${ty.case.text}, letter-spacing ${ty.tracking}em`,
+    ),
+  );
+  out.push(fontLine('Body', ty.body));
+  out.push(fontLine('Mono', ty.mono));
+  out.push(`- **CJK** (Chinese pages): display ${ty.cjk.display}, body ${ty.cjk.body}`);
+  out.push('');
+  out.push(
+    `Scale: ratio **${design.scale}** on a ${baseSize(design)}px base → ` +
       scale.map((s) => `${s.step}: ${s.px}px`).join(' · '),
   );
   out.push('');
@@ -265,88 +313,87 @@ export function renderBrief(design: Design, content: Partial<Content> = {}, opts
     out.push('');
   }
 
-  out.push(`## 配色 Colour — ${design.palette.name}`);
+  out.push(`## 配色 Colour — ${pal.polarity}, hue ${pal.hue}°`);
+  out.push('');
+  out.push(
+    `Computed in OKLCH: paper L ${pal.paperL} / C ${pal.paperC} at hue ${pal.hue}°; accents at chroma ${pal.accentC}, accent2 ${pal.accent2Offset}° round the wheel. Text lightness is solved for contrast (ink ≥ 7.5:1, muted ≥ 4.6:1, accents ≥ 3:1 on paper).`,
+  );
   out.push('');
   out.push('| token | hex | role |');
   out.push('|---|---|---|');
-  out.push(`| paper | ${swatch(pal.paper)} | page background |`);
-  out.push(`| ink | ${swatch(pal.ink)} | primary text |`);
-  out.push(`| muted | ${swatch(pal.muted)} | secondary text |`);
-  out.push(`| accent | ${swatch(pal.accent)} | primary accent |`);
-  out.push(`| accent2 | ${swatch(pal.accent2)} | secondary accent |`);
-  out.push(`| rule | ${swatch(pal.rule)} | lines, borders |`);
-  out.push(`| panel | ${swatch(pal.panel)} | secondary background |`);
+  out.push(`| paper | \`${col.paper}\` | page background |`);
+  out.push(`| ink | \`${col.ink}\` | primary text |`);
+  out.push(`| muted | \`${col.muted}\` | secondary text |`);
+  out.push(`| accent | \`${col.accent}\` | the anchor and one kind of mark |`);
+  out.push(`| accent2 | \`${col.accent2}\` | sparingly, under a tenth of the page |`);
+  out.push(`| rule | \`${col.rule}\` | lines, borders |`);
+  out.push(`| panel | \`${col.panel}\` | secondary background |`);
   out.push('');
-  out.push(`**Usage:** ${design.palette.usage}`);
-  if (design.paletteOverride) {
-    out.push('');
+  if (pal.brand) {
     out.push(
-      `**Brand override:** base palette \`${design.paletteOverride.basePaletteId}\`; accent → ${design.paletteOverride.accent}` +
-        (design.paletteOverride.accent2 ? `, accent2 → ${design.paletteOverride.accent2}` : '') +
-        '. Check the contrast table below before using brand colours for text.',
+      `**Brand override:** accent → ${pal.brand.accent ?? '(computed)'}${pal.brand.accent2 ? `, accent2 → ${pal.brand.accent2}` : ''}. Check the contrast table before using brand colours for text.`,
     );
+    out.push('');
   }
-  out.push('');
   out.push('Contrast (WCAG):');
   out.push('');
-  for (const l of contrastInfo.lines) out.push(`- ${l.pair}: **${l.ratio}:1** — ${l.verdict}`);
+  for (const line of contrastInfo.lines) out.push(`- ${line.pair}: **${line.ratio}:1** — ${line.verdict}`);
   out.push('');
 
-  out.push(`## 密度 Density — ${design.density.name.zh} / ${design.density.name.en}`);
+  const dn = design.density;
+  out.push(`## 密度 Density — ${dn.t}`);
   out.push('');
   out.push(
-    `${design.density.description} Base ${design.density.baseSize}px, line-height ${design.density.lineHeight}, ` +
-      `spacing unit ${design.density.unit}px, section gap ${design.density.sectionGap}px, max width ${design.density.maxWidth}px.` +
+    `${dn.t} on the density axis (0 = airiest, 1 = most packed): base ${dn.baseSize}px, line-height ${dn.lineHeight}, spacing unit ${dn.unit}px, section gap ${dn.sectionGap}px, max width ${dn.maxWidth}px.` +
       (design.scenario
         ? ` Scenario: type base ${design.scenario.baseSize}px and ${design.scenario.format.fixed ? 'canvas' : 'width'} ${design.scenario.format.width}${design.scenario.format.fixed ? `×${design.scenario.format.height}` : ''}px replace the base size and max width.`
         : ''),
   );
   out.push('');
 
-  out.push('## 形状与层次 Shape & depth');
+  out.push('## 形状与材质 Shape & surface');
   out.push('');
-  out.push(`- **Radius:** ${b.tokens.radius}`);
-  out.push(`- **Borders:** ${b.tokens.border}`);
-  out.push(`- **Shadow:** ${b.tokens.shadow}`);
-  out.push('');
-
-  out.push(`## 材质 Surface — ${design.surface.name}`);
-  out.push('');
-  out.push(design.surface.description);
-  if (design.surface.css) {
+  out.push(
+    `- **Radius:** ${sf.radius ? `${sf.radius}px on boxes and inputs` : '0 — square corners everywhere'}`,
+  );
+  out.push(
+    `- **Borders:** ${sf.border ? `${sf.border}px ${sf.borderStyle} in the rule colour` : 'none; use the separators and space'}`,
+  );
+  out.push(
+    `- **Shadow:** ${sf.shadow ? `hard offset ${sf.shadow}px ${sf.shadow}px in ink, no blur` : 'none'} (never a soft, blurred shadow)`,
+  );
+  out.push(
+    `- **Texture:** ${sf.texture.text}${sf.texture.id === 'none' ? '' : ` at ${sf.textureOpacity}% opacity`}`,
+  );
+  const tex = textureCss(sf);
+  if (tex) {
     out.push('');
     out.push('```css');
-    out.push(design.surface.css);
+    out.push(tex);
     out.push('```');
   }
   out.push('');
 
-  out.push(`## 母题 Motif — ${design.motif.name}`);
-  out.push('');
-  out.push(design.motif.description);
-  out.push('');
-
-  out.push(`## 动效 Motion — ${design.motion.name}`);
-  out.push('');
-  out.push(design.motion.description);
+  const m = design.motif;
+  out.push('## 母题 Motif');
   out.push('');
   out.push(
-    `- duration \`${design.motion.duration}\`, easing \`${design.motion.easing}\`\n- prefers-reduced-motion: ${design.motion.reduced}`,
+    `${m.shape.text[0]?.toUpperCase()}${m.shape.text.slice(1)}, each about ${m.size}px, ${m.placement.text}, at ${m.angle}°. Draw them with CSS or inline SVG in the palette colours; no icon fonts, no emoji.`,
   );
   out.push('');
 
-  out.push(`## 变数 Twist — ${design.twist.name.zh} / ${design.twist.name.en}`);
+  out.push('## 动效 Motion');
   out.push('');
-  out.push(design.twist.description);
+  out.push(
+    mo.still
+      ? 'No motion: nothing animates or transitions.'
+      : `${mo.property.text[0]?.toUpperCase()}${mo.property.text.slice(1)} changes over ${mo.duration}ms with \`${mo.easing}\`, on hover, focus and state changes, plus the anchor once on load. Never animate every section on scroll. Under prefers-reduced-motion nothing moves.`,
+  );
   out.push('');
 
-  out.push('## 必须 Must');
+  out.push('## 变数 Twist');
   out.push('');
-  for (const m of b.must) out.push(`- ${m}`);
-  out.push('');
-  out.push('## 不要 Must not (branch)');
-  out.push('');
-  for (const m of b.mustNot) out.push(`- ${m}`);
+  out.push(design.twist.text);
   out.push('');
 
   out.push('## 全局禁令 Global bans');
@@ -364,12 +411,17 @@ export function renderBrief(design: Design, content: Partial<Content> = {}, opts
   out.push('## 交付前自检 Before you ship');
   out.push('');
   out.push(
-    `- [ ] Fonts on the page are exactly: ${design.type.display.family} / ${design.type.body.family}${design.type.mono ? ` / ${design.type.mono.family}` : ''}${lang === 'zh' ? ` (+ ${design.type.cjk.display} / ${design.type.cjk.body})` : ''}`,
+    `- [ ] Fonts on the page are exactly: ${ty.display.family} / ${ty.body.family} / ${ty.mono.family}${lang === 'zh' ? ` (+ ${ty.cjk.display} / ${ty.cjk.body})` : ''}`,
   );
-  out.push(`- [ ] Every colour on the page comes from the 7 palette tokens above`);
-  out.push(`- [ ] First screen is the "${design.anchor.name}" anchor, in the "${design.layout.name}" layout`);
-  out.push(`- [ ] Copy is written in the "${design.voice.name.en}" voice using only the facts`);
-  out.push(`- [ ] Twist "${design.twist.name.en}" is visibly applied`);
+  out.push('- [ ] Every colour on the page comes from the 7 palette tokens above');
+  out.push(
+    `- [ ] ${l.columns}-column grid, text block in ${blockText(l)}, first screen built around ${a.subject.text}`,
+  );
+  out.push(`- [ ] Copy uses ${v.person.text}, headlines are ${v.headline.text}, only the facts`);
+  out.push(
+    `- [ ] Radius ${sf.radius}px, ${sf.shadow ? `hard ${sf.shadow}px shadow` : 'no shadow'}, ${sf.texture.id} texture`,
+  );
+  out.push(`- [ ] Twist applied: ${design.twist.text}`);
   if (design.scenario) {
     const s = scenarioOf(design);
     const f = design.scenario.format;
@@ -393,35 +445,24 @@ export function briefJson(design: Design, content: Partial<Content> = {}) {
     ref: design.ref,
     hash: design.hash,
     short: design.short,
-    probe: design.probe,
     algorithm: design.algorithm,
     library: design.library,
     constraints: design.constraints,
     ...(design.scenario ? { scenario: scenarioJson(design, lang) } : {}),
     content: c,
-    branch: {
-      id: design.branch.id,
-      name: design.branch.name,
-      family: design.branch.family,
-      concept: design.branch.concept,
-      references: design.branch.references,
-      tokens: design.branch.tokens,
-      must: design.branch.must,
-      mustNot: design.branch.mustNot,
-    },
-    voice: design.voice,
-    layout: design.layout,
-    anchor: design.anchor,
+    label: directionLabel(design),
+    palette: design.palette,
+    contrast: contrastReport(design.palette.colors),
     type: design.type,
     fonts: { stacks: fontStacks(design.type, lang), googleFontsUrl: googleFontsUrl(design.type, lang) },
-    palette: design.palette,
-    paletteOverride: design.paletteOverride ?? null,
-    contrast: contrastReport(design.palette.colors),
+    scale: { ratio: design.scale, steps: typeScale(design) },
     density: design.density,
-    scale: { ...design.scale, steps: typeScale(design) },
-    motion: design.motion,
+    layout: design.layout,
+    anchor: design.anchor,
     motif: design.motif,
     surface: design.surface,
+    motion: design.motion,
+    voice: design.voice,
     twist: design.twist,
     bans: BANS.map((b) => b.id),
     tokensCss: tokensCss(design, lang),
@@ -453,9 +494,9 @@ function scenarioJson(design: Design, lang: Language) {
   };
 }
 
-/** File-system friendly slug for a design in a roll: "01-supermarket-circular". */
+/** File-system friendly slug for a design in a roll: "01-4e60ca25" (number + short hash). */
 export function designSlug(design: Design, index: number): string {
-  return `${String(index + 1).padStart(2, '0')}-${design.branch.id}`;
+  return `${String(index + 1).padStart(2, '0')}-${design.short}`;
 }
 
 /** Compact overview of a roll (Markdown). */
@@ -467,12 +508,11 @@ export function renderRollSummary(r: Roll): string {
     `${r.designs.length} directions · source: ${r.source} · ${r.algorithm} · library \`${r.library}\` · constraints: ${describeConstraints(r.constraints)}`,
   );
   out.push('');
-  out.push('| # | ref (short) | branch | layout | type | palette | density | voice | twist |');
+  out.push('| # | ref (short) | colour | type | grid | anchor | density | voice | twist |');
   out.push('|---|---|---|---|---|---|---|---|---|');
   r.designs.forEach((d, i) => {
-    const probe = d.probe ? ` (+${d.probe})` : '';
     out.push(
-      `| ${i + 1} | \`${d.short}\`${probe} | **${d.branch.name.zh}** ${d.branch.name.en} | ${d.layout.name}${d.scenario ? ` · ${d.scenario.format.name.en}` : ''} | ${d.type.display.family} / ${d.type.body.family} | ${d.palette.name} | ${d.density.id} | ${d.voice.name.zh} | ${d.twist.name.zh} |`,
+      `| ${i + 1} | \`${d.short}\` | ${d.palette.polarity}, ${Math.round(d.palette.hue)}° \`${d.palette.colors.accent}\` | ${d.type.display.family} / ${d.type.body.family} | ${d.layout.columns} col${d.scenario ? ` · ${d.scenario.format.name.en}` : ''} | ${d.anchor.subject.id} | ${d.density.t} | ${d.voice.person.id} · ${d.voice.headline.id} | ${d.twist.target.id} → ${d.twist.operation.id} |`,
     );
   });
   out.push('');

@@ -1,10 +1,9 @@
-import { readFileSync } from 'node:fs';
 import { mkdtemp, readFile } from 'node:fs/promises';
 import { tmpdir } from 'node:os';
 import { join } from 'node:path';
 import { Client } from '@modelcontextprotocol/sdk/client/index.js';
 import { InMemoryTransport } from '@modelcontextprotocol/sdk/inMemory.js';
-import { BANS, BRANCHES, readSkill } from '../src/index.js';
+import { BANS, readSkill, roll } from '../src/index.js';
 import { afterAll, beforeAll, describe, expect, it } from 'vitest';
 import { createServer } from '../src/mcp.js';
 
@@ -29,14 +28,7 @@ async function call(name: string, args: Record<string, unknown>) {
   return { res, text: content.map((c) => c.text).join('\n') };
 }
 
-const EXPECTED_TOOLS = [
-  'roll_designs',
-  'get_brief',
-  'list_branches',
-  'get_branch',
-  'critique_page',
-  'build_compare_page',
-];
+const EXPECTED_TOOLS = ['roll_designs', 'get_brief', 'critique_page', 'build_compare_page'];
 
 describe('hash-design MCP server', () => {
   it('exposes the documented tools, and the Skill documents exactly those tools', async () => {
@@ -59,7 +51,9 @@ describe('hash-design MCP server', () => {
     expect(text).toContain('周一休息');
     const machine = JSON.parse((res.content as TextContent[])[1]!.text);
     expect(machine.designs).toHaveLength(5);
-    expect(new Set(machine.designs.map((d: { branch: string }) => d.branch)).size).toBe(5);
+    expect(new Set(machine.designs.map((d: { ref: string }) => d.ref)).size).toBe(5);
+    expect(machine.algorithm ?? 'hash-design/v2').toBe('hash-design/v2');
+    expect(text).not.toMatch(/\bbranch\b/i);
     expect(machine.source).toBe('seed:mcp');
   });
 
@@ -89,7 +83,8 @@ describe('hash-design MCP server', () => {
     const first = machine.designs[0];
     const { text } = await call('get_brief', { ref: first.ref, light_only: true, format: 'json' });
     const brief = JSON.parse(text);
-    expect(brief.branch.id).toBe(first.branch);
+    expect(brief.ref).toBe(first.ref);
+    expect(brief.palette.polarity).toBe('light');
     expect(brief.constraints.lightOnly).toBe(true);
   });
 
@@ -123,7 +118,7 @@ describe('hash-design MCP server', () => {
     const roll = JSON.parse(await readFile(join(dir, 'roll.json'), 'utf8'));
     expect(roll.constraints.scenario).toBe('deck');
     const first = roll.designs[0];
-    const saved = await readFile(join(dir, 'briefs', `01-${first.branch.id}.md`), 'utf8');
+    const saved = await readFile(join(dir, 'briefs', `01-${first.short}.md`), 'utf8');
     expect(saved).toContain('## 场景 Scenario');
     expect(saved).toContain('1920×1080');
     const { text } = await call('get_brief', {
@@ -135,9 +130,10 @@ describe('hash-design MCP server', () => {
     const brief = JSON.parse(text);
     expect(brief.scenario.id).toBe('deck');
     expect(brief.scenario.format.id).toBe(machine.designs[0].format);
-    // Same ref without the scenario: same branch (bytes 0–1 unchanged), no scenario section.
+    // Same ref without the scenario: same palette and type, no scenario section.
     const web = JSON.parse((await call('get_brief', { ref: first.ref, format: 'json' })).text);
-    expect(web.branch.id).toBe(brief.branch.id);
+    expect(web.palette).toEqual(brief.palette);
+    expect(web.type).toEqual(brief.type);
     expect(web.scenario).toBeUndefined();
     // critique_page applies the scenario's output checks.
     const crit = JSON.parse(
@@ -158,13 +154,15 @@ describe('hash-design MCP server', () => {
     expect(res.isError).toBe(true);
   });
 
-  it('list_branches / get_branch', async () => {
-    const list = await call('list_branches', {});
-    expect(list.text).toContain(`${BRANCHES.length} branches`);
-    const one = await call('get_branch', { id: BRANCHES[0]!.id, format: 'json' });
-    expect(JSON.parse(one.text).id).toBe(BRANCHES[0]!.id);
-    const bad = await call('get_branch', { id: 'nope' });
+  it('has no branch tools or branch constraint fields (hash-design/v2)', async () => {
+    const { tools } = await client.listTools();
+    const roll = tools.find((t) => t.name === 'roll_designs')!;
+    const props = Object.keys((roll.inputSchema as { properties: object }).properties);
+    for (const gone of ['families', 'include_branches', 'exclude_branches'])
+      expect(props).not.toContain(gone);
+    const bad = await call('get_brief', { ref: `${'a'.repeat(64)}+1` });
     expect(bad.res.isError).toBe(true);
+    expect(bad.text).toMatch(/v1/);
   });
 
   it('critique_page flags an AI-template page', async () => {
@@ -187,35 +185,31 @@ describe('hash-design MCP server', () => {
   it('serves resources and the workflow prompt', async () => {
     const { resources } = await client.listResources();
     const uris = resources.map((r) => r.uri);
-    expect(uris).toEqual(
-      expect.arrayContaining(['hash-design://bans', 'hash-design://workflow', 'hash-design://branches']),
-    );
+    expect(uris).toEqual(expect.arrayContaining(['hash-design://bans', 'hash-design://workflow']));
+    expect(uris.some((u) => u.includes('branch'))).toBe(false);
     const bans = await client.readResource({ uri: 'hash-design://bans' });
     const bansText = (bans.contents[0] as { text: string }).text;
     for (const b of BANS) expect(bansText).toContain(b.id);
-    const branch = await client.readResource({ uri: `hash-design://branch/${BRANCHES[0]!.id}` });
-    expect((branch.contents[0] as { text: string }).text).toContain(BRANCHES[0]!.name.en);
     const { prompts } = await client.listPrompts();
     expect(prompts.map((p) => p.name)).toContain('hash-design');
     const p = await client.getPrompt({ name: 'hash-design', arguments: { subject: '面包店' } });
     expect(JSON.stringify(p.messages)).toContain('roll_designs');
   });
 
-  it('reproduces the CLI-generated example roll exactly (MCP ≡ CLI)', async () => {
-    const ex = (p: string) => new URL(`../../../examples/fourth-lane-bakery/${p}`, import.meta.url);
-    const saved = JSON.parse(readFileSync(ex('roll.json'), 'utf8'));
+  it('rolls exactly what the library (and so the CLI) rolls for the same seed', async () => {
     const res = await client.callTool({
       name: 'roll_designs',
       arguments: {
-        subject: saved.content.subject,
-        facts: saved.content.facts,
-        seed: 'fourth-lane-bakery',
+        subject: '第四巷面包店',
+        facts: ['周一休息'],
+        seed: 'parity',
+        count: 4,
         detail: 'summary',
       },
     });
     const machine = JSON.parse((res.content as TextContent[])[1]!.text);
-    expect(machine.designs.map((d: { ref: string }) => d.ref)).toEqual(
-      saved.designs.map((d: { ref: string }) => d.ref),
-    );
+    const lib = roll({ seed: 'parity', count: 4, content: { subject: '第四巷面包店', facts: ['周一休息'] } });
+    expect(machine.designs.map((d: { ref: string }) => d.ref)).toEqual(lib.designs.map((d) => d.ref));
+    expect(machine.library).toBe(lib.library);
   });
 });

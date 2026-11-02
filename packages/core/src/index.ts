@@ -1,19 +1,41 @@
 /**
  * hash-design — random-hash–driven design directions.
  *
- *   roll()          true-random (or seeded) hashes → distinct designs via a fixed decision tree
+ *   roll()          true-random (or seeded) hashes → one design per hash, every byte a parameter
  *   renderBrief()   one design → frozen Markdown brief (tokens, fonts, palette, layout, bans)
  *   critiquePage()  static "AI-template" critique of an HTML page (+ brief adherence)
  *   buildComparePage() side-by-side light table for the rendered previews
  */
 export * from './types.js';
-export { BANS, BANNED_FONTS, BUZZWORDS_EN, BUZZWORDS_ZH, banIds, isBannedFont } from './data/bans.js';
-export { BRANCHES } from './data/branches/index.js';
-export { DENSITIES, DENSITY_ORDER, SCALES, SCALE_ORDER, TWISTS, VOICES } from './data/pools.js';
+export {
+  BANS,
+  BANNED_FONTS,
+  BUZZWORDS_EN,
+  BUZZWORDS_ZH,
+  FRAMEWORK_DEFAULT_HEX,
+  banIds,
+  isBannedFont,
+} from './data/bans.js';
+export { BODY_FONTS, CJK_BODY_FONTS, CJK_DISPLAY_FONTS, DISPLAY_FONTS, MONO_FONTS } from './data/fonts.js';
+export {
+  ANCHOR_SUBJECTS,
+  BORDER_STYLES,
+  DISPLAY_CASES,
+  HEADLINE_FORMS,
+  MOTIF_PLACEMENTS,
+  MOTIF_SHAPES,
+  MOTION_PROPERTIES,
+  RADII,
+  SEPARATORS,
+  TEXTURES,
+  TWIST_OPERATIONS,
+  TWIST_TARGETS,
+  VOICE_PERSONS,
+  type Primitive,
+} from './data/space.js';
 export { SCENARIOS, SCENARIO_IDS, getScenario } from './data/scenarios.js';
 export {
   ALGORITHM,
-  formatRef,
   hashBytes,
   isHash,
   parseRef,
@@ -26,19 +48,27 @@ export {
 } from './hash.js';
 export {
   BYTE_MAP,
-  branchPool,
   describeConstraints,
-  getBranch,
   libraryFingerprint,
   mapDesign,
   mapRoll,
   normalizeConstraints,
-  primaryBranchIndex,
   scenarioBaseSize,
   scenarioFingerprint,
+  twistText,
   type Constraints,
   type Design,
+  type DesignAnchor,
+  type DesignDensity,
+  type DesignLayout,
+  type DesignMotif,
+  type DesignMotion,
+  type DesignPalette,
   type DesignScenario,
+  type DesignSurface,
+  type DesignTwist,
+  type DesignType,
+  type DesignVoice,
   type MapOptions,
   type NormalizedConstraints,
   type TraceStep,
@@ -46,6 +76,7 @@ export {
 export {
   briefJson,
   designSlug,
+  directionLabel,
   normalizeContent,
   renderBrief,
   renderRoll,
@@ -85,9 +116,17 @@ export {
   type CompareEntry,
   type CompareOptions,
 } from './compare.js';
-export { contrast, hexToHsl, isLightPaper, luminance, normalizeHex, parseCssColor } from './color.js';
-export { FRAMEWORK_DEFAULT_HEX, validateBranch, validateLibrary } from './validate.js';
-export { renderBranch, renderBranchCatalog, renderBranchList } from './catalog.js';
+export {
+  contrast,
+  hexToHsl,
+  hexToOklch,
+  isLightPaper,
+  luminance,
+  normalizeHex,
+  oklchToHex,
+  parseCssColor,
+} from './color.js';
+export { brandHue, buildPalette, type PaletteParams, type Polarity } from './palette.js';
 export { writeRoll, type WrittenRoll } from './files.js';
 export {
   SKILL_BLOCK_BEGIN,

@@ -11,8 +11,9 @@ describe('compare page', () => {
     expect(entries).toHaveLength(5);
     for (const e of entries) {
       expect(html).toContain(`src="${e.preview}"`);
-      expect(html).toContain(e.branchZh);
-      expect(e.preview).toMatch(/^previews\/0\d-[a-z0-9-]+\.html$/);
+      expect(html).toContain(`<strong>${e.title}</strong>`);
+      expect(e.title).toBe(`方向 ${e.short}`);
+      expect(e.preview).toMatch(/^previews\/0\d-[0-9a-f]{8}\.html$/);
     }
     expect(html).toContain('第四巷 &lt;面包&gt;');
     expect(html).toContain('回复编号');
@@ -25,7 +26,7 @@ describe('compare page', () => {
       entries: compareEntriesFromRoll(r),
     });
     expect(html).toContain('<html lang="zh-CN">');
-    expect(compareSubtitle(r)).toMatch(/^5 个方向 · seed:compare · hash-design\/v1 · library [0-9a-f]{12}$/);
+    expect(compareSubtitle(r)).toMatch(/^5 个方向 · seed:compare · hash-design\/v2 · library [0-9a-f]{12}$/);
   });
 
   it('uses English chrome, voice and twist names for an English roll', () => {
@@ -54,9 +55,9 @@ describe('compare page', () => {
       expect(html).toContain(label);
     }
     en.designs.forEach((d, i) => {
-      expect(entries[i]!.voice).toBe(d.voice.name.en);
-      expect(entries[i]!.twist).toBe(d.twist.name.en);
-      expect(html).toContain(`<strong>${d.branch.name.en}</strong>`);
+      expect(entries[i]!.voice).toBe(`${d.voice.person.id} · ${d.voice.headline.id}`);
+      expect(entries[i]!.twist).toBe(`${d.twist.target.id} → ${d.twist.operation.id}`);
+      expect(html).toContain(`<strong>Direction ${d.short}</strong>`);
     });
     expect(html).not.toMatch(/回复编号|版式|放大看|打开整页|个方向/);
   });

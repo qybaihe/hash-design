@@ -1,6 +1,6 @@
 import { bestTextOn, contrast } from './color.js';
-import type { Design } from './mapping.js';
-import type { FontSpec, PaletteColors, TypePairing } from './types.js';
+import type { Design, DesignType } from './mapping.js';
+import type { FontSpec, PaletteColors } from './types.js';
 
 export type Language = 'zh' | 'en';
 
@@ -16,17 +16,17 @@ export interface ScaleStep {
   rem: number;
 }
 
-/** Modular type scale from step -2 to +7 around the density's base size. */
 /** Root text size: the density's base size, or the scenario's size for its canvas (slides, phone, …). */
 export function baseSize(design: Design): number {
   return design.scenario?.baseSize ?? design.density.baseSize;
 }
 
+/** Modular type scale from step -2 to +7 around the base size. */
 export function typeScale(design: Design): ScaleStep[] {
   const base = baseSize(design);
   const steps: ScaleStep[] = [];
   for (let s = -2; s <= 7; s++) {
-    const px = base * design.scale.ratio ** s;
+    const px = base * design.scale ** s;
     steps.push({ step: s, px: Math.round(px * 10) / 10, rem: Math.round((px / 16) * 1000) / 1000 });
   }
   return steps;
@@ -49,13 +49,13 @@ export interface FontStacks {
   mono: string;
 }
 
-export function fontStacks(type: TypePairing, lang: Language): FontStacks {
+export function fontStacks(type: DesignType, lang: Language): FontStacks {
   const cjkDisplay = lang === 'zh' ? type.cjk.display : undefined;
   const cjkBody = lang === 'zh' ? type.cjk.body : undefined;
   return {
     display: fontStack(type.display, cjkDisplay),
     body: fontStack(type.body, cjkBody),
-    mono: type.mono ? fontStack(type.mono) : 'ui-monospace, "SFMono-Regular", Menlo, Consolas, monospace',
+    mono: fontStack(type.mono),
   };
 }
 
@@ -75,7 +75,7 @@ function familyParam(family: string, weights: number[] | null, italic: boolean):
 }
 
 /** Google Fonts CSS2 URL covering display/body/mono (+ CJK faces for Chinese pages). */
-export function googleFontsUrl(type: TypePairing, lang: Language): string | null {
+export function googleFontsUrl(type: DesignType, lang: Language): string | null {
   const params: string[] = [];
   const seen = new Set<string>();
   const merged = new Map<string, { weights: Set<number>; italic: boolean }>();
@@ -146,8 +146,10 @@ export function tokensCss(design: Design, lang: Language): string {
   const stacks = fontStacks(design.type, lang);
   const { onAccent, onAccent2 } = contrastReport(c);
   const d = design.density;
+  const l = design.layout;
+  const sf = design.surface;
   const lines: string[] = [];
-  lines.push(`/* hash-design ${design.short} · ${design.branch.id} · ${design.palette.id} */`);
+  lines.push(`/* hash-design ${design.algorithm} · ${design.short} */`);
   lines.push(':root {');
   lines.push(`  --paper: ${c.paper};`);
   lines.push(`  --ink: ${c.ink};`);
@@ -162,6 +164,8 @@ export function tokensCss(design: Design, lang: Language): string {
   lines.push(`  --font-display: ${stacks.display};`);
   lines.push(`  --font-body: ${stacks.body};`);
   lines.push(`  --font-mono: ${stacks.mono};`);
+  lines.push(`  --display-weight: ${design.type.weight};`);
+  lines.push(`  --display-tracking: ${design.type.tracking}em;`);
   lines.push('');
   for (const s of typeScale(design)) {
     lines.push(`  --step-${s.step < 0 ? `n${-s.step}` : s.step}: ${s.rem}rem; /* ${s.px}px */`);
@@ -176,9 +180,15 @@ export function tokensCss(design: Design, lang: Language): string {
     lines.push(`  --canvas-width: ${format.width}px;`);
     lines.push(`  --canvas-height: ${format.height}px;`);
   }
+  lines.push(`  --columns: ${l.columns};`);
+  lines.push(`  --gutter: ${l.gutter}px;`);
   lines.push('');
-  lines.push(`  --motion-duration: ${design.motion.duration};`);
-  lines.push(`  --motion-easing: ${design.motion.easing};`);
+  lines.push(`  --radius: ${sf.radius}px;`);
+  lines.push(`  --border: ${sf.border}px ${sf.borderStyle} var(--rule);`);
+  lines.push(`  --shadow: ${sf.shadow ? `${sf.shadow}px ${sf.shadow}px 0 var(--ink)` : 'none'};`);
+  lines.push('');
+  lines.push(`  --motion-duration: ${design.motion.duration}ms;`);
+  lines.push(`  --motion-easing: ${design.motion.still ? 'linear' : design.motion.easing};`);
   lines.push('}');
   lines.push('');
   lines.push(`html { font-size: ${Math.round((baseSize(design) / 16) * 1000) / 10}%; }`);

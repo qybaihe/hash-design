@@ -3,7 +3,7 @@ import { contrast, hexToRgb, isPurpleBlue, parseCssColor } from './color.js';
 import { BANNED_FONTS, BANS, BUZZWORDS_EN, BUZZWORDS_ZH, isBannedFont } from './data/bans.js';
 import type { Design } from './mapping.js';
 import type { BanSeverity } from './types.js';
-import { FRAMEWORK_DEFAULT_HEX } from './validate.js';
+import { FRAMEWORK_DEFAULT_HEX } from './data/bans.js';
 
 export type Severity = BanSeverity;
 
@@ -468,7 +468,7 @@ export function critiquePage(input: CritiqueInput): CritiqueResult {
       severity: 'major',
       message: 'Row(s) of structurally identical cards (heading + text, same class).',
       evidence: cardHits.slice(0, 3).join('\n'),
-      fix: 'Regroup the information with the branch’s devices (table, list, price tags, numbered clauses); vary size and weight.',
+      fix: 'Regroup the information on the brief’s grid (a table, a list, numbered items); vary size and weight.',
     });
   }
 
@@ -558,7 +558,7 @@ export function critiquePage(input: CritiqueInput): CritiqueResult {
           .map((d) => `${d.selector} { ${d.prop}: ${d.value} }`)
           .join(' '),
       ),
-      fix: 'Follow the branch radius/shadow tokens — most branches are 0 radius with rules or hard offsets.',
+      fix: 'Follow the brief’s radius and shadow tokens: hard offsets or none, never soft blurred shadows.',
     });
   } else if (shadowCount >= 3) {
     add({
@@ -642,7 +642,7 @@ export function critiquePage(input: CritiqueInput): CritiqueResult {
       rule: 'scroll-fade-everything',
       severity: 'minor',
       message: 'Scroll-triggered fade/slide-in reveal detected.',
-      fix: 'Use only the brief motion spec, tied to the branch’s physical metaphor.',
+      fix: 'Use only the brief’s motion spec: hover, focus, state changes and the anchor once.',
     });
   }
   const animates = allDecls.some(
@@ -673,7 +673,7 @@ export function critiquePage(input: CritiqueInput): CritiqueResult {
           severity: 'minor',
           message: 'Pill badge directly above the headline.',
           evidence: snippet(prev.toString()),
-          fix: 'Remove it, or turn it into the branch’s own label device (kicker, form number, dateline…).',
+          fix: 'Remove it, or set it as a plain label in the brief’s mono face.',
         });
       }
     }
@@ -813,28 +813,40 @@ export function critiquePage(input: CritiqueInput): CritiqueResult {
         fix: 'Map every colour to one of the 7 palette tokens.',
       });
     }
-    const zeroRadius = /^0\b|^0px|^none/i.test(d.branch.tokens.radius.trim());
+    const maxRadius = d.surface.radius;
     const radiusUse = allDecls.filter(
-      (x) => x.prop === 'border-radius' && !/50%|999/.test(x.value) && (lengthPx(x.value) ?? 0) > 3,
+      (x) =>
+        x.prop === 'border-radius' &&
+        !/50%|999|var\(--radius\)/.test(x.value) &&
+        (lengthPx(x.value) ?? 0) > Math.max(3, maxRadius),
     );
-    if (zeroRadius && radiusUse.length) {
+    if (radiusUse.length) {
       points -= 10;
       add({
         rule: 'brief-shape',
         severity: 'minor',
-        message: `Branch radius policy is "${snippet(d.branch.tokens.radius, 60)}" but ${radiusUse.length} rounded declarations found.`,
-        fix: 'Remove border-radius except where the branch tokens allow it.',
+        message: `Brief radius is ${maxRadius}px but ${radiusUse.length} declarations round corners more.`,
+        evidence: radiusUse
+          .slice(0, 4)
+          .map((x) => x.value)
+          .join(', '),
+        fix: maxRadius ? `Use var(--radius) (${maxRadius}px).` : 'Square corners: remove border-radius.',
       });
     }
-    const noShadow = /^none/i.test(d.branch.tokens.shadow.trim());
     const shadowUse = allDecls.filter((x) => x.prop === 'box-shadow' && !/^none/i.test(x.value));
-    if (noShadow && shadowUse.length) {
+    const blurred = shadowUse.filter((x) => {
+      const nums = x.value.match(/-?\d*\.?\d+px/g) ?? [];
+      return nums.length >= 3 && (lengthPx(nums[2] ?? '0') ?? 0) > 0;
+    });
+    if ((!d.surface.shadow && shadowUse.length) || blurred.length) {
       points -= 10;
       add({
         rule: 'brief-shape',
         severity: 'minor',
-        message: `Branch shadow policy is "${snippet(d.branch.tokens.shadow, 60)}" but ${shadowUse.length} box-shadow declarations found.`,
-        fix: 'Remove shadows unless the branch token explicitly allows a specific one.',
+        message: d.surface.shadow
+          ? `Brief shadow is a hard ${d.surface.shadow}px offset with no blur, but ${blurred.length} blurred shadows were found.`
+          : `Brief has no shadow but ${shadowUse.length} box-shadow declarations were found.`,
+        fix: d.surface.shadow ? 'Use var(--shadow).' : 'Remove box-shadow.',
       });
     }
     if (d.scenario) {
@@ -883,7 +895,7 @@ export function renderCritique(r: CritiqueResult): string {
   out.push(`Passed: ${r.passed.join(', ') || '—'}`);
   out.push('');
   out.push(
-    `Not machine-checkable — verify by eye: does the first screen match the brief anchor? Is the copy in the brief voice? Would a designer recognise the branch (${BANS.length} bans checked, ${BANNED_FONTS.length} banned fonts)?`,
+    `Not machine-checkable — verify by eye: does the first screen match the brief anchor? Is the copy in the brief voice? Does the twist show (${BANS.length} bans checked, ${BANNED_FONTS.length} banned fonts)?`,
   );
   return out.join('\n');
 }

@@ -3,20 +3,21 @@ import type { Scenario, ScenarioId } from '../types.js';
 /**
  * Design scenarios: what kind of artifact the rolled direction is applied to.
  *
- * `web` is the default and changes nothing in the mapping. The other scenarios keep every rolled
- * dimension (branch, voice, layout, type, palette, motif, anchor, scale, surface) and add:
- *  - a format picked by byte 13 (canvas or viewport, plus a structural variant),
- *  - pool filters for density and twist (applied before bytes 6 and 12, like light_only),
+ * `web` is the default. The other scenarios keep every rolled parameter (palette, type, layout,
+ * anchor, voice, motif, surface, scale) and add:
+ *  - a format picked by byte 28 (canvas or viewport, plus a structural variant),
+ *  - a slice of the density axis and twist targets/operations to leave out (applied before bytes 11,
+ *    26 and 27 are read, like light_only),
  *  - a root text size suited to the canvas, and scenario-specific output rules.
- * Scenario data has its own fingerprint, so editing it never changes web refs or the library fingerprint.
+ * Scenario data has its own fingerprint, separate from the library fingerprint.
  */
 export const SCENARIOS: Scenario[] = [
   {
     id: 'web',
     name: { zh: '网页', en: 'Web page' },
     summary: {
-      zh: '网页 / 落地页 / 一页站（默认场景，brief 与以往完全相同）。',
-      en: 'A web page, landing page or one-page site (the default; briefs are exactly as before).',
+      zh: '网页 / 落地页 / 一页站（默认场景）。',
+      en: 'A web page, landing page or one-page site (the default).',
     },
     output: {
       zh: '一个自包含、响应式的 HTML 页面，从 390px 手机到宽屏桌面都可读。',
@@ -31,8 +32,9 @@ export const SCENARIOS: Scenario[] = [
     motion: { zh: '按 brief 的动效规格。', en: 'As the brief’s motion spec says.' },
     baseSize: { scale: 1 },
     formats: [],
-    dropDensities: [],
-    dropTwists: [],
+    densityRange: [0, 1],
+    dropTwistTargets: [],
+    dropTwistOperations: [],
     stillMotion: false,
     must: [],
     mustNot: [],
@@ -53,8 +55,8 @@ export const SCENARIOS: Scenario[] = [
       en: 'Preview: 5–7 slides (cover, one section divider, content, a data or fact slide, closing). Final deck: the slide count the user asks for, otherwise 8–14, one idea per slide.',
     },
     layout: {
-      zh: '分支版式的栅格放大到 1920×1080 作为母版栅格；它的区块顺序就是幻灯片顺序（一个区块对应一张或几张）。每张只用一种页型：封面、章节页、单句页、内容页（文字 + 视觉）、图表/数据页、引语或事实高亮页、结尾页。',
-      en: 'The branch layout’s grid, scaled to 1920×1080, is the slide master grid; its section order is the slide order (one section becomes one or more slides). Each slide is one type: cover, section divider, statement, content (text + visual), figure or data, quote or fact highlight, closing.',
+      zh: '版式栅格放大到 1920×1080 作为母版栅格；区块顺序就是幻灯片顺序（一个区块对应一张或几张）。每张只用一种页型：封面、章节页、单句页、内容页（文字 + 视觉）、图表/数据页、引语或事实高亮页、结尾页。',
+      en: 'The layout grid, scaled to 1920×1080, is the slide master grid; the section order is the slide order (one section becomes one or more slides). Each slide is one type: cover, section divider, statement, content (text + visual), figure or data, quote or fact highlight, closing.',
     },
     anchor: { zh: '首屏锚点就是封面页。', en: 'The first-screen anchor is the cover slide.' },
     motion: {
@@ -97,8 +99,9 @@ export const SCENARIOS: Scenario[] = [
         fixed: true,
       },
     ],
-    dropDensities: ['packed'],
-    dropTwists: ['no-button-above-fold'],
+    densityRange: [0, 0.7],
+    dropTwistTargets: ['navigation', 'links'],
+    dropTwistOperations: [],
     stillMotion: false,
     must: [
       {
@@ -142,8 +145,8 @@ export const SCENARIOS: Scenario[] = [
       en: 'Preview: 3 screens (entry, the main task, a detail or result). Final: one screen per step of the journey the user asks for, usually 4–6.',
     },
     layout: {
-      zh: '把分支版式当成一套屏幕系统：栅格变成 390pt 宽的屏幕栅格（左右边距 16–24pt），前几个区块构成入口屏，其余分到后面的屏。一个屏只做一件事。',
-      en: 'Read the branch layout as a screen system: its grid becomes the 390 pt screen grid (16–24 pt side margins), its first sections make the entry screen and the rest spread over the following screens. One screen, one job.',
+      zh: '把版式当成一套屏幕系统：栅格变成 390pt 宽的屏幕栅格（左右边距 16–24pt），前几个区块构成入口屏，其余分到后面的屏。一个屏只做一件事。',
+      en: 'Read the layout as a screen system: its grid becomes the 390 pt screen grid (16–24 pt side margins), its first sections make the entry screen and the rest spread over the following screens. One screen, one job.',
     },
     anchor: {
       zh: '首屏锚点是入口屏的主体元素。',
@@ -200,8 +203,9 @@ export const SCENARIOS: Scenario[] = [
         fixed: false,
       },
     ],
-    dropDensities: ['packed'],
-    dropTwists: ['no-button-above-fold', 'footer-as-colophon'],
+    densityRange: [0, 0.7],
+    dropTwistTargets: ['footer'],
+    dropTwistOperations: [],
     stillMotion: false,
     must: [
       {
@@ -248,8 +252,8 @@ export const SCENARIOS: Scenario[] = [
       en: 'One screen: 1–3 headline figures, one primary chart or table, 2–4 supporting panels. The final page adds the states the user asks for (filters, a detail drawer, empty states).',
     },
     layout: {
-      zh: '分支版式的栅格变成面板栅格；区块顺序决定面板的阅读顺序，最重要的在前。面板长什么样（细线框、卡片、图版、票据……）由分支决定，而不是后台模板的默认样子。',
-      en: 'The branch layout’s grid becomes the panel grid; its section order sets the reading order of the panels, most important first. The branch decides what a panel looks like (ruled box, card, plate, ticket…), not admin-template defaults.',
+      zh: '版式栅格变成面板栅格；区块顺序决定面板的阅读顺序，最重要的在前。面板长什么样由 brief 的分隔方式、边框、圆角和材质决定，而不是后台模板的默认样子。',
+      en: 'The layout grid becomes the panel grid; the section order sets the reading order of the panels, most important first. The brief’s separators, border, radius and surface decide what a panel looks like, not admin-template defaults.',
     },
     anchor: { zh: '首屏锚点承载核心数字。', en: 'The first-screen anchor holds the headline figures.' },
     motion: {
@@ -292,8 +296,9 @@ export const SCENARIOS: Scenario[] = [
         fixed: false,
       },
     ],
-    dropDensities: ['airy'],
-    dropTwists: ['no-button-above-fold', 'footer-as-colophon'],
+    densityRange: [0.3, 1],
+    dropTwistTargets: ['footer'],
+    dropTwistOperations: [],
     stillMotion: false,
     must: [
       {
@@ -340,8 +345,8 @@ export const SCENARIOS: Scenario[] = [
       en: 'One artboard. If the user asks for a series, each card is its own artboard of the same format and works on its own.',
     },
     layout: {
-      zh: '把分支版式压缩成一个构图：保留栅格和最强的那个区块；其余事实变成小的次要信息块，或者不放。一张画板只讲一件事。',
-      en: 'Collapse the branch layout into one composition: keep its grid and its strongest section; the other facts become one small secondary block or stay out. One message per artboard.',
+      zh: '把版式压缩成一个构图：保留栅格和最强的那个区块；其余事实变成小的次要信息块，或者不放。一张画板只讲一件事。',
+      en: 'Collapse the layout into one composition: keep its grid and its strongest section; the other facts become one small secondary block or stay out. One message per artboard.',
     },
     anchor: {
       zh: '首屏锚点就是海报主体，至少占画板一半。',
@@ -395,8 +400,9 @@ export const SCENARIOS: Scenario[] = [
         fixed: true,
       },
     ],
-    dropDensities: [],
-    dropTwists: ['nav-elsewhere', 'no-button-above-fold'],
+    densityRange: [0, 1],
+    dropTwistTargets: ['navigation', 'links', 'footer'],
+    dropTwistOperations: [],
     stillMotion: false,
     must: [
       {
@@ -436,16 +442,16 @@ export const SCENARIOS: Scenario[] = [
       en: 'One email: masthead, the main message, supporting blocks, one call to action, and a footer with the sender details from the facts.',
     },
     layout: {
-      zh: '把分支版式按区块顺序压成单栏；并排的部分在 480px 以下变成上下堆叠的表格行。',
-      en: 'Collapse the branch layout into a single column in its section order; side-by-side parts stack as table rows below 480 px.',
+      zh: '把版式按区块顺序压成单栏；并排的部分在 480px 以下变成上下堆叠的表格行。',
+      en: 'Collapse the layout into a single column in its section order; side-by-side parts stack as table rows below 480 px.',
     },
     anchor: {
       zh: '首屏锚点是顶部区块，在预览窗格里（前 300px）就能看到。',
       en: 'The first-screen anchor is the top block, visible in the preview pane (the first 300 px).',
     },
     motion: {
-      zh: '无动效：邮件客户端不能可靠地运行 CSS 动画，所以使用分支最静的动效选项。',
-      en: 'No motion: mail clients do not run CSS animation reliably, so the branch’s stillest motion option applies.',
+      zh: '无动效：邮件客户端不能可靠地运行 CSS 动画。',
+      en: 'No motion: mail clients do not run CSS animation reliably.',
     },
     baseSize: { min: 16, max: 17 },
     formats: [
@@ -483,8 +489,9 @@ export const SCENARIOS: Scenario[] = [
         fixed: false,
       },
     ],
-    dropDensities: ['packed'],
-    dropTwists: ['nav-elsewhere', 'vertical-text', 'one-element-breaks-grid'],
+    densityRange: [0, 0.7],
+    dropTwistTargets: ['navigation'],
+    dropTwistOperations: ['vertical', 'rotate', 'off-grid'],
     stillMotion: true,
     must: [
       {

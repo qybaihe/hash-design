@@ -7,8 +7,10 @@ export interface CompareEntry {
   number: number;
   ref: string;
   short: string;
-  branchZh: string;
-  branchEn: string;
+  /** "Direction <short>" — v2 directions have no names, only their hash. */
+  title: string;
+  /** One-line summary: polarity, hue, faces, columns. */
+  label: string;
   layout: string;
   display: string;
   body: string;
@@ -82,8 +84,8 @@ const esc = (s: string) =>
   s.replace(/&/g, '&amp;').replace(/</g, '&lt;').replace(/>/g, '&gt;').replace(/"/g, '&quot;');
 
 /**
- * Default file layout used by the CLI and the Skill: previews/01-<branch>.html, briefs/01-<branch>.md.
- * Voice and twist names follow the roll's language.
+ * Default file layout used by the CLI and the Skill: previews/01-<short>.html, briefs/01-<short>.md.
+ * Card titles follow the roll's language.
  */
 export function compareEntriesFromRoll(
   roll: Roll | RollJson,
@@ -101,16 +103,16 @@ export function compareEntriesFromRoll(
       number: i + 1,
       ref: d.ref,
       short: d.short,
-      branchZh: d.branch.name.zh,
-      branchEn: d.branch.name.en,
-      layout: d.layout.name,
+      title: `${lang === 'zh' ? '方向' : 'Direction'} ${d.short}`,
+      label: `${d.palette.polarity} · ${Math.round(d.palette.hue)}°`,
+      layout: `${d.layout.columns} col · ${d.layout.start}–${d.layout.start + d.layout.span - 1} · ${d.anchor.subject.id}`,
       display: type.display.family,
       body: type.body.family,
-      palette: d.palette.name,
+      palette: `${d.palette.polarity} · ${Math.round(d.palette.hue)}°`,
       colors: { ...d.palette.colors },
-      density: typeof d.density === 'string' ? d.density : d.density.id,
-      voice: d.voice.name[lang],
-      twist: d.twist.name[lang],
+      density: String(d.density.t),
+      voice: `${d.voice.person.id} · ${d.voice.headline.id}`,
+      twist: `${d.twist.target.id} → ${d.twist.operation.id}`,
       preview: `${previewDir}/${slug}.html`,
       brief: `${briefDir}/${slug}.md`,
       ...(sc && scenario
@@ -152,13 +154,13 @@ export function buildComparePage(opts: CompareOptions): string {
       <header class="frame-head">
         <span class="num">${String(e.number).padStart(2, '0')}</span>
         <div class="who">
-          <strong>${esc(en ? e.branchEn : e.branchZh)}</strong>
-          ${en ? `<span lang="zh-CN">${esc(e.branchZh)}</span>` : `<span>${esc(e.branchEn)}</span>`}
+          <strong>${esc(e.title)}</strong>
+          <span>${esc(e.label)}</span>
         </div>
         <code class="hash" title="${esc(e.ref)}">${esc(e.short)}</code>
       </header>
       <div class="screen" data-src="${esc(e.preview)}"${e.scenario?.fixed ? ` data-w="${e.scenario.width}" data-h="${e.scenario.height}"` : ''}>
-        <iframe src="${esc(e.preview)}" title="${esc(`#${e.number} ${e.branchEn}`)}" loading="lazy"></iframe>
+        <iframe src="${esc(e.preview)}" title="${esc(`#${e.number} ${e.title}`)}" loading="lazy"></iframe>
       </div>
       <dl class="spec">${e.scenario ? `\n        <dt>${t.scenario}</dt><dd>${esc(e.scenario.label)}</dd>` : ''}
         <dt>${lLayout}</dt><dd>${esc(e.layout)}</dd>

@@ -1,9 +1,7 @@
 import { existsSync, readdirSync, readFileSync } from 'node:fs';
 import { describe, expect, it } from 'vitest';
-import { renderBrief, reproduce, roll } from '../src/brief.js';
 import { parseFactsText } from '../src/cli.js';
 import { critiquePage } from '../src/critique.js';
-import { parseRef } from '../src/hash.js';
 import { libraryFingerprint } from '../src/mapping.js';
 
 const root = new URL('../../../', import.meta.url);
@@ -34,35 +32,26 @@ it('finds the examples', () => {
   expect(EXAMPLES.length).toBeGreaterThanOrEqual(4);
 });
 
-describe.each(EXAMPLES)('examples/%s', (name) => {
+/**
+ * The four example runs were rolled with hash-design/v1 (the 40-branch library that v2 removed). They are
+ * kept as records of real runs: v2 cannot reproduce their refs, so these tests check that they say so and
+ * that their rendered previews still pass the global bans; brief adherence needs v1 and is not checked here.
+ */
+describe.each(EXAMPLES)('examples/%s (hash-design/v1 record)', (name) => {
   const { ex, saved, designs } = load(name);
   const facts = parseFactsText(readFileSync(ex('facts.md'), 'utf8'));
-  const seed = String(saved.source).replace(/^seed:/, '');
-  const fresh = roll({
-    seed,
-    constraints: saved.constraints,
-    content: { subject: saved.content.subject, facts },
-  });
 
-  it('was rolled from a fixed seed with the current library (re-roll it if the data changed)', () => {
+  it('is labelled as a v1 run, from a fixed seed, with its own facts', () => {
+    expect(saved.algorithm).toBe('hash-design/v1');
+    expect(saved.library).not.toBe(libraryFingerprint());
     expect(saved.source).toMatch(/^seed:/);
-    expect(saved.library).toBe(libraryFingerprint());
-    expect(designs.map((d) => d.ref)).toEqual(fresh.designs.map((d) => d.ref));
     expect(saved.content.facts).toEqual(facts);
-    expect(saved.content.language).toBe(fresh.content.language);
+    expect(readFileSync(ex('README.md'), 'utf8')).toContain('hash-design/v1');
   });
 
-  it('frozen briefs match what the library renders today', () => {
-    fresh.designs.forEach((d, i) => {
-      const slug = designs[i]!.slug;
-      const md = readFileSync(ex(`briefs/${slug}.md`), 'utf8');
-      const expected = renderBrief(d, fresh.content, { number: i + 1 });
-      expect(md).toBe(expected.endsWith('\n') ? expected : `${expected}\n`);
-    });
-  });
-
-  it('has a preview and screenshots per brief, a compare page and a README', () => {
+  it('has a brief, a preview and screenshots per design, a compare page and a README', () => {
     for (const d of designs) {
+      expect(existsSync(ex(`briefs/${d.slug}.md`)), d.slug).toBe(true);
       expect(existsSync(ex(`previews/${d.slug}.html`)), d.slug).toBe(true);
       for (const shot of ['desktop', 'mobile']) {
         expect(existsSync(ex(`screenshots/${d.slug}-${shot}.png`)), `${d.slug}-${shot}`).toBe(true);
@@ -74,34 +63,19 @@ describe.each(EXAMPLES)('examples/%s', (name) => {
   });
 
   it.each(designs.map((d) => [d.slug, d] as const))(
-    'preview %s scores ≥ 90 with no critical or major findings',
+    'preview %s still scores ≥ 90 with no critical or major findings',
     (_slug, d) => {
       const html = readFileSync(ex(`previews/${d.slug}.html`), 'utf8');
       expect(html).toContain(`hash-design #${d.number} · ${d.branch.id} · ref ${d.ref}`);
-      const result = critiquePage({
-        html,
-        design: reproduce(parseRef(d.ref), saved.constraints),
-        facts,
-      });
+      const result = critiquePage({ html, facts });
       const serious = result.findings.filter((f) => f.severity !== 'minor');
       expect(serious, JSON.stringify(serious, null, 2)).toEqual([]);
       expect(result.score).toBeGreaterThanOrEqual(90);
-      expect(result.adherence).toBeGreaterThanOrEqual(90);
     },
   );
 });
 
 describe('the examples together', () => {
-  it('never reuse a branch, so every example shows new directions', () => {
-    const seen = new Map<string, string>();
-    for (const name of EXAMPLES) {
-      for (const d of load(name).designs) {
-        expect(seen.get(d.branch.id), `${d.branch.id} in ${name}`).toBeUndefined();
-        seen.set(d.branch.id, name);
-      }
-    }
-  });
-
   it('are all linked from the Pages index and shown in the showcase of every README', () => {
     const index = readFileSync(new URL('index.html', examplesDir), 'utf8');
     const readmes = ['README.md', 'README.zh-CN.md', 'README.ja.md', 'README.ko.md', 'README.es.md'];

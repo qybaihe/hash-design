@@ -1,5 +1,8 @@
 # 示例：二号桥单车铺
 
+> [!NOTE]
+> 这次运行用的是 **hash-design/v1**，即 40 个风格分支的库；hash-design/v2 已经用连续参数取代了它。这里作为一次真实运行的记录保留。它的 ref 和 brief 只能用 v1 复现：先检出一个 v1 提交（例如 `475ba16`），再在那里运行下面的命令。在 v2 下，同一个 seed 会掷出不同的方向。
+
 一次完整的 hash-design 运行，对象是一家开在桥洞下的单车修理铺，页面写给中文读者。店铺、人物和数字都是虚构的，事实见 [facts.md](facts.md)。
 
 - **在线对比页**：<https://qybaihe.github.io/hash-design/bridge-two-bikes/compare.html>（按 1–5 放大，D/M 切换桌面/手机）
