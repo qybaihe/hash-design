@@ -73,7 +73,8 @@ for (const p of PACKAGES) {
     );
   if (pkg.repository?.directory !== p.dir) problems.push(`${where}: repository.directory must be "${p.dir}"`);
   if (!pkg.engines?.node) problems.push(`${where}: missing engines.node`);
-  if (pkg.bin?.[p.bin] !== './dist/bin.js') problems.push(`${where}: bin.${p.bin} must be ./dist/bin.js`);
+  // npm normalises "./dist/bin.js" to "dist/bin.js" at publish time and warns that the original was invalid.
+  if (pkg.bin?.[p.bin] !== 'dist/bin.js') problems.push(`${where}: bin.${p.bin} must be dist/bin.js`);
   if (pkg.publishConfig?.access !== 'public')
     problems.push(`${where}: publishConfig.access must be "public"`);
 }

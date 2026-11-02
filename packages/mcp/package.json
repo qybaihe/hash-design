@@ -33,7 +33,7 @@
     "./package.json": "./package.json"
   },
   "bin": {
-    "hash-design-mcp": "./dist/bin.js"
+    "hash-design-mcp": "dist/bin.js"
   },
   "files": [
     "dist",
