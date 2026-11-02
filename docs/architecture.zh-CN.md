@@ -78,7 +78,7 @@ hash-design 是一个 npm workspaces monorepo，包含两个包、一个 Skill �
 
 ## 示例即回归测试夹具
 
-`examples/fourth-lane-bakery` 既是文档，也是测试夹具。`examples.test.ts` 用 seed `fourth-lane-bakery` 从 `facts.md` 重新掷骰，检查 ref、库指纹和 brief 文件是否仍然一致。因此任何数据改动都必须有意识地重新掷骰并重做预览（见 [CONTRIBUTING.md](../CONTRIBUTING.md)）。预览本身是 Agent 按 Skill 流程交付的产物，不是由代码生成的。
+`examples/` 下的 4 个示例（面包店、开发者工具、单车修理铺、音乐节）既是文档，也是测试夹具。`examples.test.ts` 找出所有带 `roll.json` 的目录，用 `roll.json` 里记录的 seed 从各自的 `facts.md` 重新掷骰，检查 ref、库指纹和 brief 文件是否仍然一致。它还检查：每个预览的 critique 不低于 90 分且没有 critical/major，任意两个示例不共用分支，Pages 首页和每份 README 都链接到每个示例。因此任何数据改动都必须有意识地重新掷骰并重做预览（见 [CONTRIBUTING.md](../CONTRIBUTING.md)）。预览本身是 Agent 按 Skill 流程交付的产物，不是由代码生成的。`scripts/examples.mjs` 列出所有示例，并负责重掷、批量 critique 和重建对比页。
 
 ## 测试与 CI
 

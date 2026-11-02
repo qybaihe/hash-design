@@ -13,14 +13,23 @@ Neither package (`hash-design`, `hash-design-mcp`) has been published to npm yet
 - `docs/architecture.md`, `docs/mapping.md` (the `hash-design/v1` specification with worked examples) and `docs/mcp-tools.md` (every MCP tool, resource and prompt with CLI equivalents), each with a Chinese version, plus a `docs/README.md` index.
 - Community files: `CONTRIBUTING.md`, `CODE_OF_CONDUCT.md` (Contributor Covenant 2.1), `SECURITY.md`, this changelog, issue templates (bug report, feature request, new branch proposal) and a pull request template.
 - README badges for CI, Pages, the live demo, license, Node version and npm status.
+- Three more full example runs. Each has a fact sheet, a fixed-seed roll, five briefs, five previews rendered by separate agents, a compare page, screenshots and a README that records the process and critique scores. No two examples share a branch, so the four examples show 20 of the 40 branches.
+  - `examples/sluice/`: Sluice, a self-hosted webhook inbox (English page, developer tool);
+  - `examples/bridge-two-bikes/`: 二号桥单车铺, a bicycle repair shop (Chinese page);
+  - `examples/causeway-festival/`: Causeway, a one-day music festival on a tidal island (English page).
+- "More examples" in every README: each new example's compare page, five desktop thumbnails and links to the live pages and the example folder. The Pages index (`examples/index.html`) now lists all four examples.
+- The compare page (`hash-design compare`, `build_compare_page`) follows the roll's language: an English roll gets English labels, buttons, instructions and voice/twist names, and `<html lang="en">`. Chinese rolls are unchanged. `compareSubtitle()` is exported from the library.
+- `scripts/examples.mjs` and the npm scripts `examples`, `example:roll`, `example:critique` and `example:compare`, which list, re-roll, critique or rebuild the compare pages of every example (or one, with `-- <name>`).
+
+### Changed
+
+- `npm run screenshots` now covers every example; `node scripts/screenshot.mjs <name|dir> [prefix]` still shoots one.
+- The package READMEs (`packages/core/README.md`, `packages/mcp/README.md`) now say the packages are not on npm yet and show the source install.
+- `examples.test.ts` checks every example instead of only the bakery: refs, briefs and library fingerprint, a preview and screenshots per brief, a critique score of at least 90 with no critical or major findings, no branch shared between examples, and links from the Pages index and every README.
 
 ### Fixed
 
 - CLI subcommands now accept `--help` / `-h` (and `hash-design help <command>`) and print that command's options, instead of failing with `Unknown option '--help'`. Argument errors such as an unknown option now point at the command's help. A test checks that every option a command parses is documented in its help.
-
-### Changed
-
-- The package READMEs (`packages/core/README.md`, `packages/mcp/README.md`) now say the packages are not on npm yet and show the source install.
 
 ## [0.1.0] - 2026-11-01
 

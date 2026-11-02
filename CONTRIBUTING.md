@@ -33,8 +33,11 @@ node scripts/smoke.mjs
 | `npm run sync`                  | Regenerate `SKILL.md`'s bans block, its `.claude/` / `.cursor/` copies and `docs/branches.md` |
 | `node scripts/smoke.mjs`        | CLI + MCP server over real stdio                                                              |
 | `node scripts/verify-fonts.mjs` | Check every Google Fonts URL online (not run in CI)                                           |
-| `npm run example:roll`          | Re-roll `examples/fourth-lane-bakery` with its fixed seed                                     |
-| `npm run screenshots`           | Playwright screenshots of the example (`npx playwright install chromium` first)               |
+| `npm run examples`              | List the example runs and their seeds (`scripts/examples.mjs`)                                |
+| `npm run example:roll`          | Re-roll every example with its fixed seed (`-- <name>` for one)                               |
+| `npm run example:critique`      | Critique every example preview against its brief; fails below 90                              |
+| `npm run example:compare`       | Rebuild every example's `compare.html`                                                        |
+| `npm run screenshots`           | Playwright screenshots of every example (`npx playwright install chromium` first)             |
 
 The code layout is described in [docs/architecture.md](docs/architecture.md), and the mapping algorithm in [docs/mapping.md](docs/mapping.md).
 
@@ -61,17 +64,17 @@ Branches are the heart of the project, and the most valuable contribution. A goo
    - no two branches share the same lead palette (paper + accent)
 5. Run `node scripts/verify-fonts.mjs` so every Google Fonts URL resolves.
 6. Run `npm run sync` to regenerate `docs/branches.md` and the Skill's generated block.
-7. **Re-roll the example** (next section). Any data change alters the library fingerprint, and `examples.test.ts` will fail until you do.
+7. **Re-roll the examples** (next section). Any data change alters the library fingerprint, and `examples.test.ts` will fail until you do.
 
-## Re-rolling the example after a data change
+## Re-rolling the examples after a data change
 
-`examples/fourth-lane-bakery` is pinned to the library fingerprint. After changing branches, pools or bans:
+The four runs under `examples/` (`fourth-lane-bakery`, `sluice`, `bridge-two-bikes`, `causeway-festival`, listed in [`scripts/examples.mjs`](scripts/examples.mjs)) are pinned to the library fingerprint. After changing branches, pools or bans:
 
-1. `npm run build && npm run example:roll` rewrites `roll.json`, `ROLL.md` and `briefs/`.
+1. `npm run build && npm run example:roll` rewrites every `roll.json`, `ROLL.md` and `briefs/`. If two examples now share a branch, `examples.test.ts` fails: move the later example to the next free seed (`<name>-2`, `<name>-3`, …) in `scripts/examples.mjs`.
 2. Render one preview per brief following the [Skill](skills/hash-design/SKILL.md), step 3: each preview is produced from **its own brief only** (separate agent sessions), as a single self-contained HTML file in `previews/NN-<branch>.html`.
-3. Check each with `node packages/core/dist/bin.js critique examples/fourth-lane-bakery/previews/NN-*.html --roll examples/fourth-lane-bakery/roll.json --pick N` and fix critical and major findings.
-4. `node packages/core/dist/bin.js compare --roll examples/fourth-lane-bakery/roll.json`, then `npm run screenshots`.
-5. Update everything that quotes the example: the demo sections of every `README*.md`, `examples/fourth-lane-bakery/README.md`, `examples/index.html`, and the worked examples and fingerprint in `docs/mapping.md` / `docs/mapping.zh-CN.md`.
+3. `npm run example:critique` must pass: every preview scores at least 90 with no critical or major findings (`examples.test.ts` checks the same).
+4. `npm run example:compare`, then `npm run screenshots`.
+5. Update everything that quotes the examples: the demo sections of every `README*.md`, each example's `README.md`, `examples/index.html`, and the worked examples and fingerprint in `docs/mapping.md` / `docs/mapping.zh-CN.md`.
 
 If that is more than you can take on, say so in the pull request; a maintainer can help with the re-roll.
 
@@ -106,6 +109,6 @@ By contributing, you agree that your contributions are licensed under the [MIT L
 - **开发**：Node ≥ 20（`.nvmrc` 为 22）。`npm install && npm run build && npm run check`，再跑 `node scripts/smoke.mjs`。
 - **提交**：沿用 Conventional Commits（`feat(core): …`、`docs: …` 等）；用户可见的改动写进 `CHANGELOG.md` 的 `[Unreleased]`；CI 必须在 Node 20/22/24 上全绿。
 - **新增分支**：必须是真实世界的设计门类，有可查的参照。按 `_exemplar.ts` 的粒度写，id 加进 `BRANCH_ORDER` 并保持家族均匀分布，然后跑 `npm test`、`node scripts/verify-fonts.mjs`、`npm run sync`。
-- **改数据就要重掷示例**：库指纹会变，`examples.test.ts` 会失败。需要 `npm run example:roll`，按 Skill 第 3 步为每份 brief 独立重做预览，跑 critique、compare、screenshots，再更新所有 README 的示例部分和 `docs/mapping*.md` 里的推演。做不完可以在 PR 里说明，维护者会协助。
+- **改数据就要重掷示例**：库指纹会变，`examples.test.ts` 会失败。`examples/` 下的 4 个示例都要重掷：`npm run example:roll`，按 Skill 第 3 步为每份 brief 独立重做预览，`npm run example:critique`（每个预览 ≥ 90 分、无 critical/major），再跑 `npm run example:compare` 和 `npm run screenshots`，最后更新所有 README 的示例部分、各示例的 README、`examples/index.html` 和 `docs/mapping*.md` 里的推演。做不完可以在 PR 里说明，维护者会协助。
 - **翻译**：英文 `README.md` 是基准，其余语言是译本。代码块、命令、包名、工具名在各语言中保持一致。
 - **安全问题**请按 [SECURITY.md](SECURITY.md) 私下报告，不要开公开 issue。

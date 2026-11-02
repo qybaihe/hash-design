@@ -23,7 +23,10 @@
     "test:watch": "vitest",
     "check": "npm run typecheck && npm run lint && npm run format:check && npm test",
     "sync": "npm run build && node scripts/sync.mjs",
-    "example:roll": "node packages/core/dist/bin.js roll --subject \"第四巷面包店\" --facts-file examples/fourth-lane-bakery/facts.md --seed fourth-lane-bakery --out examples/fourth-lane-bakery",
+    "examples": "node scripts/examples.mjs list",
+    "example:roll": "node scripts/examples.mjs roll",
+    "example:compare": "node scripts/examples.mjs compare",
+    "example:critique": "node scripts/examples.mjs critique",
     "screenshots": "node scripts/screenshot.mjs"
   },
   "devDependencies": {
