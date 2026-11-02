@@ -1,7 +1,7 @@
 #!/usr/bin/env node
-// Sets one version across the monorepo: the private root, hash-design, hash-design-mcp and
-// hash-design-mcp's dependency on hash-design (^<version>), then refreshes package-lock.json.
-// Does not commit, tag or publish.
+// Sets one version across the monorepo: the private root, hash-design (the only published package),
+// the private hash-design-mcp workspace and its dependency on hash-design (^<version>, so npm keeps
+// linking packages/core), then refreshes package-lock.json. Does not commit, tag or publish.
 //
 //   npm run release:version -- 0.2.0
 import { execFileSync } from 'node:child_process';

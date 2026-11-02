@@ -1,13 +1,13 @@
 name: Release
 
-# Publishes hash-design and hash-design-mcp to npm when a GitHub Release is published.
+# Publishes the npm package hash-design (packages/core: library, CLI, Skill) when a GitHub Release is
+# published. packages/mcp (hash-design-mcp) stays in the monorepo but is private and never published.
 # Nothing is published on pushes to main: a release needs a version bump, a CHANGELOG section and a
 # published GitHub Release tagged v<version>. Running the workflow by hand is a dry run (verify + pack).
 #
-# Authentication is npm Trusted Publishing (OIDC): no npm token or secret. Each package on npmjs.com
+# Authentication is npm Trusted Publishing (OIDC): no npm token or secret. The package on npmjs.com
 # trusts this workflow file (qybaihe/hash-design, release.yml). If this file is renamed, update the
-# Trusted Publisher on both packages. Setup, the one-time first publish and release steps:
-# docs/publishing.md.
+# Trusted Publisher on hash-design. Setup and release steps: docs/publishing.md.
 on:
   release:
     types: [published]
@@ -23,7 +23,7 @@ concurrency:
 
 jobs:
   publish:
-    name: Verify and publish to npm
+    name: Verify and publish hash-design to npm
     runs-on: ubuntu-latest
     steps:
       - uses: actions/checkout@v7
@@ -50,7 +50,7 @@ jobs:
 
       - run: npm ci
 
-      - name: Check versions, tag, CHANGELOG and package manifests
+      - name: Check version, tag, CHANGELOG and package manifests
         env:
           TAG: ${{ github.event.release.tag_name }}
         run: |
@@ -68,17 +68,16 @@ jobs:
       - name: Smoke test (CLI + MCP over real stdio)
         run: node scripts/smoke.mjs
 
-      - name: Pack the tarballs that will be published
+      - name: Pack the tarball that will be published
         run: |
           node scripts/release-check.mjs --pack
           mkdir -p release-assets
-          npm pack -w hash-design -w hash-design-mcp --pack-destination release-assets
+          npm pack -w hash-design --pack-destination release-assets
           ls -l release-assets
 
       # Trusted publishing: npm exchanges the GitHub OIDC token for a short-lived publish credential,
-      # so no npm token or repository secret is involved. A package must already exist on npm before
-      # a Trusted Publisher can be attached, so the very first version is published by hand.
-      - name: Publish to npm (core first, then the MCP server that depends on it)
+      # so no npm token or repository secret is involved.
+      - name: Publish hash-design to npm
         if: github.event_name == 'release'
         env:
           PRERELEASE: ${{ github.event.release.prerelease }}
@@ -87,19 +86,13 @@ jobs:
           VERSION=$(node -p "require('./packages/core/package.json').version")
           DIST_TAG=latest
           if [[ "$VERSION" == *-* || "$PRERELEASE" == "true" ]]; then DIST_TAG=next; fi
-          for NAME in hash-design hash-design-mcp; do
-            if npm view "${NAME}@${VERSION}" version >/dev/null 2>&1; then
-              echo "${NAME}@${VERSION} is already on npm; skipping."
-              continue
-            fi
-            if ! npm view "${NAME}" name >/dev/null 2>&1; then
-              echo "::error::${NAME} does not exist on npm yet. Trusted publishing cannot create a package: do the one-time manual first publish, then add the Trusted Publisher (docs/publishing.md#first-publish-one-time-manual)."
-              exit 1
-            fi
-            npm publish "release-assets/${NAME}-${VERSION}.tgz" --provenance --access public --tag "${DIST_TAG}"
-            echo "Published ${NAME}@${VERSION} (dist-tag ${DIST_TAG}) with provenance."
-          done
+          if npm view "hash-design@${VERSION}" version >/dev/null 2>&1; then
+            echo "hash-design@${VERSION} is already on npm; nothing to publish."
+            exit 0
+          fi
+          npm publish "release-assets/hash-design-${VERSION}.tgz" --provenance --access public --tag "${DIST_TAG}"
+          echo "Published hash-design@${VERSION} (dist-tag ${DIST_TAG}) with provenance."
 
       - name: Dry run summary
         if: github.event_name != 'release'
-        run: echo "::notice::Dry run only. Publish a GitHub Release tagged v<version> to publish to npm."
+        run: echo "::notice::Dry run only. Publish a GitHub Release tagged v<version> to publish hash-design to npm."

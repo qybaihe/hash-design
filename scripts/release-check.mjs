@@ -1,8 +1,9 @@
 #!/usr/bin/env node
-// Checks that hash-design and hash-design-mcp are ready to publish. Used by CI (`npm run release:check`)
-// and by .github/workflows/release.yml before anything is published. Publishes nothing.
+// Checks that hash-design (packages/core), the only package published to npm, is ready to publish, and
+// that packages/mcp (hash-design-mcp) stays private. Used by CI (`npm run release:check`) and by
+// .github/workflows/release.yml before anything is published. Publishes nothing.
 //
-//   node scripts/release-check.mjs                 manifests: lockstep versions, publish fields, dependency range
+//   node scripts/release-check.mjs                 manifests: lockstep versions, publish fields, mcp private
 //   node scripts/release-check.mjs --pack          … plus `npm pack --dry-run`: required files, no tests
 //   node scripts/release-check.mjs --tag v0.2.0    … plus the release tag must be v<version> and CHANGELOG.md
 //                                                  must have a "## [<version>]" section
@@ -34,12 +35,6 @@ const PACKAGES = [
       'dist/bin.js',
       'skill/SKILL.md',
     ],
-  },
-  {
-    dir: 'packages/mcp',
-    name: 'hash-design-mcp',
-    bin: 'hash-design-mcp',
-    files: ['package.json', 'README.md', 'LICENSE', 'dist/server.js', 'dist/server.d.ts', 'dist/bin.js'],
   },
 ];
 
@@ -83,7 +78,15 @@ for (const p of PACKAGES) {
     problems.push(`${where}: publishConfig.access must be "public"`);
 }
 
+// packages/mcp is a private workspace: never published, but its dependency on hash-design must keep
+// covering the workspace version, or npm installs the registry copy instead of linking packages/core.
 const mcp = readJson('packages/mcp/package.json');
+if (mcp.name !== 'hash-design-mcp') problems.push(`packages/mcp/package.json: name is "${mcp.name}"`);
+if (mcp.private !== true)
+  problems.push('packages/mcp/package.json must stay "private": true (hash-design-mcp is not published)');
+if (mcp.publishConfig) problems.push('packages/mcp/package.json: remove publishConfig (it is not published)');
+if (mcp.version !== version)
+  problems.push(`packages/mcp/package.json: version ${mcp.version} differs from ${version}`);
 if (mcp.dependencies?.['hash-design'] !== `^${version}`)
   problems.push(
     `packages/mcp depends on hash-design "${mcp.dependencies?.['hash-design']}", expected "^${version}" (run npm run release:version)`,
@@ -131,5 +134,5 @@ if (problems.length) {
   process.exit(1);
 }
 console.log(
-  `release check passed for ${PACKAGES.map((p) => `${p.name}@${version}`).join(' and ')}${values.tag ? ` (tag ${values.tag})` : ''}`,
+  `release check passed for ${PACKAGES.map((p) => `${p.name}@${version}`).join(' and ')}${values.tag ? ` (tag ${values.tag})` : ''}; hash-design-mcp stays private`,
 );

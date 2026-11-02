@@ -13,10 +13,17 @@ function check(...args: string[]) {
 }
 
 describe('release readiness', () => {
-  it('manifests are publish-ready and versions move in lockstep', () => {
+  it('hash-design is publish-ready, versions move in lockstep, hash-design-mcp stays private', () => {
     const r = check();
-    expect(r.out).toContain(`hash-design@${version} and hash-design-mcp@${version}`);
+    expect(r.out).toContain(`release check passed for hash-design@${version}; hash-design-mcp stays private`);
     expect(r.status).toBe(0);
+    const mcp = JSON.parse(readFileSync(repo('packages/mcp/package.json'), 'utf8')) as Record<
+      string,
+      unknown
+    >;
+    expect(mcp.private).toBe(true);
+    expect(mcp.publishConfig).toBeUndefined();
+    expect((mcp.dependencies as Record<string, string>)['hash-design']).toBe(`^${version}`);
   });
 
   it('accepts only the tag v<version>, whose version has a CHANGELOG section', () => {
@@ -46,11 +53,20 @@ describe('release readiness', () => {
     expect(wf).toContain('node-version: 24');
     expect(wf).toContain('registry-url: https://registry.npmjs.org');
     expect(wf).toContain('needs >= 11.5.1');
-    const publish = wf.slice(wf.indexOf('- name: Publish to npm'));
+    const publish = wf.slice(wf.indexOf('- name: Publish hash-design to npm'));
     expect(publish).toContain("if: github.event_name == 'release'");
-    expect(publish).toContain('--provenance --access public');
-    expect(publish).toContain('docs/publishing.md#first-publish-one-time-manual');
+    expect(publish).toContain(
+      'npm publish "release-assets/hash-design-${VERSION}.tgz" --provenance --access public',
+    );
+    expect(wf).toContain('npm pack -w hash-design --pack-destination release-assets');
     expect(wf).toContain('node scripts/release-check.mjs --tag "$TAG"');
+    // Only hash-design is packed or published; hash-design-mcp appears in comments at most.
+    const code = wf
+      .split('\n')
+      .filter((l) => !l.trimStart().startsWith('#'))
+      .join('\n');
+    expect(code).not.toContain('hash-design-mcp');
+    expect(code.match(/npm publish /g)).toHaveLength(1);
   });
 
   it('docs/publishing.md gives the Trusted Publisher fields for this workflow', () => {
