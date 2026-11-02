@@ -3,7 +3,7 @@
 All notable changes to this project are documented here.
 The format follows [Keep a Changelog](https://keepachangelog.com/en/1.1.0/), and the project aims to follow [Semantic Versioning](https://semver.org/spec/v2.0.0.html).
 
-Neither package (`hash-design`, `hash-design-mcp`) has been published to npm yet, and no git tag has been created. Version 0.1.0 below is the state of `main` at commit `ec5398a`.
+`hash-design@0.1.0` and `hash-design-mcp@0.1.0` were published to npm by hand on 2026-11-02, both built from commit `475ba16`. From the next version on, only `hash-design` is published, by the release workflow; `hash-design-mcp` is a private workspace in this repository and its 0.1.0 on npm will not be updated. No git tag has been created. The `[0.1.0]` section below describes `main` at commit `ec5398a`; the published 0.1.0 tarballs also contain the `[Unreleased]` changes merged by `475ba16` (up to and including design scenarios).
 
 ## [Unreleased]
 
@@ -25,10 +25,11 @@ Neither package (`hash-design`, `hash-design-mcp`) has been published to npm yet
 - Design scenarios: `scenario` (`web` default, `deck`, `app`, `dashboard`, `poster`, `email`) on `roll_designs`, `get_brief` and `critique_page`, `--scenario` on the CLI, and `Constraints.scenario` in the library. A scenario is a constraint, so it is part of a design's identity. It keeps the rolled direction (same branch, probe, voice, layout, type, palette, motif, anchor, scale and surface). It removes densities and twists that do not fit the medium before bytes 6 and 12 are read, uses byte 13 to pick a format (for example a deck's slide master or a poster's aspect ratio), and sets a canvas and a base text size. Briefs gain a Scenario section (output contract, count, how layout, anchor and motion translate, rules and must-nots). `critique_page` checks each scenario's output contract (`scenario-<id>`), and the compare page labels the scenario and scales fixed canvases from their real size. `web` normalises away, so existing refs, briefs, the examples and the library fingerprint are unchanged; scenario data has its own `scenarioFingerprint()`. The scenario list and rules draw on the templates of [nexu-io/open-design](https://github.com/nexu-io/open-design). See `docs/mapping.md` §6.
 - `scripts/hero-gif.mjs` (`npm run hero:gif`) renders an animated hero from the same example: `/hash-design` picked in a prompt box, five SHA-256 refs ticking and locking to the real ones, the five previews popping in and lining up as a compare row. Frames are captured deterministically at `t = i / fps` and encoded to `docs/assets/hero.gif` (960 px, 20 fps, 6 s loop) and `docs/assets/hero.mp4` (H.264).
 
-- npm release automation, nothing published yet: `.github/workflows/release.yml` publishes `hash-design` and then `hash-design-mcp` with provenance when a GitHub Release tagged `v<version>` is published (never on a plain push; a manual run is a dry run). It authenticates with npm Trusted Publishing (OIDC: `id-token: write`, npm ≥ 11.5.1), so no npm token or repository secret is used; because a Trusted Publisher can only be attached to an existing package, the first version of each package is published once by hand, as `docs/publishing.md` describes. `scripts/release-check.mjs` (`npm run release:check`, now also in CI instead of the bare `npm pack --dry-run`) checks lockstep versions, the tag, the CHANGELOG section, the publish fields and the tarball contents. `scripts/release-version.mjs` (`npm run release:version -- <version>`) sets one version across the workspace. Setup and steps: [docs/publishing.md](docs/publishing.md).
+- npm release automation for the one published package, `hash-design`: `.github/workflows/release.yml` publishes it with provenance when a GitHub Release tagged `v<version>` is published (never on a plain push; a manual run is a dry run). It authenticates with npm Trusted Publishing (OIDC: `id-token: write`, `contents: read`, npm ≥ 11.5.1), so no npm token or repository secret is used; the Trusted Publisher is configured on `hash-design` only. `scripts/release-check.mjs` (`npm run release:check`, now also in CI instead of the bare `npm pack --dry-run`) checks lockstep versions, the tag, the CHANGELOG section, `hash-design`'s publish fields and tarball contents, and that `packages/mcp` stays private. `scripts/release-version.mjs` (`npm run release:version -- <version>`) sets one version across the workspace. Setup and steps: [docs/publishing.md](docs/publishing.md).
 
 ### Changed
 
+- `hash-design-mcp` is no longer published to npm. `packages/mcp` stays in the repository as a private workspace (`"private": true`, so it cannot be published by accident) and the MCP server runs from a clone (`node …/packages/mcp/dist/bin.js`); the `hash-design` package (library, CLI, Skill) does not include it. The server's `--help`, its README and the docs no longer suggest `npx -y hash-design-mcp`.
 - All five READMEs share one structure, modelled on [qybaihe/bla](https://github.com/qybaihe/bla): a centred header with the GIF, badges, links, section nav and a copy-paste "tell your agent" install sentence; then What hash-design does, Quick start (Tell your agent, Install by hand, Use it, CLI, Library, Update), How it works, Examples, Reference, FAQ (which absorbs Known limitations), Documentation, Contributing and License. Install by hand clones to `~/hash-design`.
 - The READMEs' Examples section is now Showcase: one plate per example linked to its folder, a single link to the examples site, and no per-direction preview tables. `examples.test.ts` checks for the plate in every README.
 - The Fourth Lane Bakery per-direction notes moved from `README.zh-CN.md` to `examples/fourth-lane-bakery/README.md`.
@@ -44,7 +45,7 @@ Neither package (`hash-design`, `hash-design-mcp`) has been published to npm yet
 
 ## [0.1.0] - 2026-11-01
 
-First complete version, not yet published to npm.
+First complete version. Published to npm on 2026-11-02 (see the note at the top).
 
 ### Added
 
