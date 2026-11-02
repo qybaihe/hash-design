@@ -3,7 +3,11 @@ name: Release
 # Publishes hash-design and hash-design-mcp to npm when a GitHub Release is published.
 # Nothing is published on pushes to main: a release needs a version bump, a CHANGELOG section and a
 # published GitHub Release tagged v<version>. Running the workflow by hand is a dry run (verify + pack).
-# Setup and release steps: docs/publishing.md.
+#
+# Authentication is npm Trusted Publishing (OIDC): no npm token or secret. Each package on npmjs.com
+# trusts this workflow file (qybaihe/hash-design, release.yml). If this file is renamed, update the
+# Trusted Publisher on both packages. Setup, the one-time first publish and release steps:
+# docs/publishing.md.
 on:
   release:
     types: [published]
@@ -11,7 +15,7 @@ on:
 
 permissions:
   contents: read
-  id-token: write # npm provenance (and npm trusted publishing, if configured)
+  id-token: write # OIDC token for npm Trusted Publishing; provenance is generated from it
 
 concurrency:
   group: release
@@ -24,15 +28,24 @@ jobs:
     steps:
       - uses: actions/checkout@v7
 
+      # No package-manager cache in the publishing job (npm's trusted publishing guidance).
       - uses: actions/setup-node@v7
         with:
           node-version: 24
           registry-url: https://registry.npmjs.org
-          cache: npm
 
-      # Trusted publishing needs npm >= 11.5.1; provenance works with any recent npm.
-      - name: Use npm 11
-        run: npm install -g npm@11 && npm --version
+      # Trusted publishing needs Node >= 22.14.0 and npm >= 11.5.1.
+      - name: Use npm 11 (>= 11.5.1 for trusted publishing)
+        run: |
+          npm install -g npm@11
+          node -e '
+            const [a, b, c] = process.argv[1].split(".").map(Number);
+            if (a < 11 || (a === 11 && (b < 5 || (b === 5 && c < 1)))) {
+              console.error(`npm ${process.argv[1]} is too old for trusted publishing (needs >= 11.5.1)`);
+              process.exit(1);
+            }
+            console.log(`npm ${process.argv[1]}`);
+          ' "$(npm --version)"
 
       - run: npm ci
 
@@ -61,26 +74,29 @@ jobs:
           npm pack -w hash-design -w hash-design-mcp --pack-destination release-assets
           ls -l release-assets
 
+      # Trusted publishing: npm exchanges the GitHub OIDC token for a short-lived publish credential,
+      # so no npm token or repository secret is involved. A package must already exist on npm before
+      # a Trusted Publisher can be attached, so the very first version is published by hand.
       - name: Publish to npm (core first, then the MCP server that depends on it)
         if: github.event_name == 'release'
         env:
-          NODE_AUTH_TOKEN: ${{ secrets.NPM_TOKEN }}
           PRERELEASE: ${{ github.event.release.prerelease }}
         run: |
           set -euo pipefail
           VERSION=$(node -p "require('./packages/core/package.json').version")
           DIST_TAG=latest
           if [[ "$VERSION" == *-* || "$PRERELEASE" == "true" ]]; then DIST_TAG=next; fi
-          if [ -z "${NODE_AUTH_TOKEN}" ]; then
-            echo "::notice::NPM_TOKEN is not set; relying on npm trusted publishing (OIDC)."
-          fi
           for NAME in hash-design hash-design-mcp; do
             if npm view "${NAME}@${VERSION}" version >/dev/null 2>&1; then
               echo "${NAME}@${VERSION} is already on npm; skipping."
               continue
             fi
+            if ! npm view "${NAME}" name >/dev/null 2>&1; then
+              echo "::error::${NAME} does not exist on npm yet. Trusted publishing cannot create a package: do the one-time manual first publish, then add the Trusted Publisher (docs/publishing.md#first-publish-one-time-manual)."
+              exit 1
+            fi
             npm publish "release-assets/${NAME}-${VERSION}.tgz" --provenance --access public --tag "${DIST_TAG}"
-            echo "Published ${NAME}@${VERSION} (dist-tag ${DIST_TAG})."
+            echo "Published ${NAME}@${VERSION} (dist-tag ${DIST_TAG}) with provenance."
           done
 
       - name: Dry run summary

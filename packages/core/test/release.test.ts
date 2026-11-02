@@ -29,18 +29,27 @@ describe('release readiness', () => {
     }
   });
 
-  it('the release workflow publishes only from a published GitHub Release, with the token from secrets', () => {
+  it('the release workflow publishes only from a published GitHub Release, via npm Trusted Publishing (no token)', () => {
     const wf = readFileSync(repo('.github/workflows/release.yml'), 'utf8');
     const on = wf.slice(wf.indexOf('\non:'), wf.indexOf('\npermissions:'));
     expect(on).toContain('release:');
     expect(on).toContain('types: [published]');
     expect(on).not.toMatch(/\bpush:/);
-    expect(wf).toContain('id-token: write');
-    expect(wf).toContain('NODE_AUTH_TOKEN: ${{ secrets.NPM_TOKEN }}');
+    const perms = wf.slice(wf.indexOf('\npermissions:'), wf.indexOf('\nconcurrency:'));
+    expect(perms).toMatch(/^\s+contents: read\b/m);
+    expect(perms).toMatch(/^\s+id-token: write\b/m);
+    expect(perms.match(/^\s+[a-z-]+: /gm)).toHaveLength(2);
+    // OIDC only: no npm token, no secrets at all, no package-manager cache in the publishing job.
+    expect(wf).not.toMatch(/NPM_TOKEN|NODE_AUTH_TOKEN|secrets\./);
+    expect(wf).not.toMatch(/^\s+cache:/m);
     expect(wf).not.toMatch(/npm_[A-Za-z0-9]{20,}/);
+    expect(wf).toContain('node-version: 24');
+    expect(wf).toContain('registry-url: https://registry.npmjs.org');
+    expect(wf).toContain('needs >= 11.5.1');
     const publish = wf.slice(wf.indexOf('- name: Publish to npm'));
     expect(publish).toContain("if: github.event_name == 'release'");
-    expect(publish).toContain('--provenance');
+    expect(publish).toContain('--provenance --access public');
+    expect(publish).toContain('docs/publishing.md#first-publish-one-time-manual');
     expect(wf).toContain('node scripts/release-check.mjs --tag "$TAG"');
   });
 });
