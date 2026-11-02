@@ -40,6 +40,7 @@ node scripts/smoke.mjs
 | `npm run screenshots`           | Playwright screenshots of every example (`npx playwright install chromium` first)             |
 | `npm run hero`                  | Rebuild `docs/assets/hero.png` and `social-preview.png` from the example screenshots          |
 | `npm run hero:gif`              | Rebuild the animated `docs/assets/hero.gif` and `hero.mp4` (needs ffmpeg)                     |
+| `npm run showcase`              | Rebuild the README showcase plates, `docs/assets/showcase/<example>.png`                      |
 
 The code layout is described in [docs/architecture.md](docs/architecture.md), and the mapping algorithm in [docs/mapping.md](docs/mapping.md).
 
@@ -75,8 +76,8 @@ The four runs under `examples/` (`fourth-lane-bakery`, `sluice`, `bridge-two-bik
 1. `npm run build && npm run example:roll` rewrites every `roll.json`, `ROLL.md` and `briefs/`. If two examples now share a branch, `examples.test.ts` fails: move the later example to the next free seed (`<name>-2`, `<name>-3`, …) in `scripts/examples.mjs`.
 2. Render one preview per brief following the [Skill](skills/hash-design/SKILL.md), step 3: each preview is produced from **its own brief only** (separate agent sessions), as a single self-contained HTML file in `previews/NN-<branch>.html`.
 3. `npm run example:critique` must pass: every preview scores at least 90 with no critical or major findings (`examples.test.ts` checks the same).
-4. `npm run example:compare`, then `npm run screenshots`, then `npm run hero` and `npm run hero:gif` (the README hero images and the social preview are built from `examples/causeway-festival`).
-5. Update everything that quotes the examples: the demo sections of every `README*.md`, each example's `README.md`, `examples/index.html`, and the worked examples and fingerprint in `docs/mapping.md` / `docs/mapping.zh-CN.md`.
+4. `npm run example:compare`, then `npm run screenshots`, then `npm run hero`, `npm run hero:gif` (the README hero images and the social preview are built from `examples/causeway-festival`) and `npm run showcase` (one plate per example for the READMEs' Showcase section).
+5. Update everything that quotes the examples: the Showcase section of every `README*.md`, each example's `README.md`, `examples/index.html`, and the worked examples and fingerprint in `docs/mapping.md` / `docs/mapping.zh-CN.md`.
 
 If that is more than you can take on, say so in the pull request; a maintainer can help with the re-roll.
 
@@ -111,6 +112,6 @@ By contributing, you agree that your contributions are licensed under the [MIT L
 - **开发**：Node ≥ 20（`.nvmrc` 为 22）。`npm install && npm run build && npm run check`，再跑 `node scripts/smoke.mjs`。
 - **提交**：沿用 Conventional Commits（`feat(core): …`、`docs: …` 等）；用户可见的改动写进 `CHANGELOG.md` 的 `[Unreleased]`；CI 必须在 Node 20/22/24 上全绿。
 - **新增分支**：必须是真实世界的设计门类，有可查的参照。按 `_exemplar.ts` 的粒度写，id 加进 `BRANCH_ORDER` 并保持家族均匀分布，然后跑 `npm test`、`node scripts/verify-fonts.mjs`、`npm run sync`。
-- **改数据就要重掷示例**：库指纹会变，`examples.test.ts` 会失败。`examples/` 下的 4 个示例都要重掷：`npm run example:roll`，按 Skill 第 3 步为每份 brief 独立重做预览，`npm run example:critique`（每个预览 ≥ 90 分、无 critical/major），再跑 `npm run example:compare`、`npm run screenshots`、`npm run hero` 和 `npm run hero:gif`（README 首图、动图与社交预览图取自 causeway-festival），最后更新所有 README 的示例部分、各示例的 README、`examples/index.html` 和 `docs/mapping*.md` 里的推演。做不完可以在 PR 里说明，维护者会协助。
+- **改数据就要重掷示例**：库指纹会变，`examples.test.ts` 会失败。`examples/` 下的 4 个示例都要重掷：`npm run example:roll`，按 Skill 第 3 步为每份 brief 独立重做预览，`npm run example:critique`（每个预览 ≥ 90 分、无 critical/major），再跑 `npm run example:compare`、`npm run screenshots`、`npm run hero` 、`npm run hero:gif`（README 首图、动图与社交预览图取自 causeway-festival）和 `npm run showcase`（README「案例展示」里每个示例一张拼图），最后更新所有 README 的「案例展示」部分、各示例的 README、`examples/index.html` 和 `docs/mapping*.md` 里的推演。做不完可以在 PR 里说明，维护者会协助。
 - **翻译**：英文 `README.md` 是基准，其余语言是译本。代码块、命令、包名、工具名在各语言中保持一致。
 - **安全问题**请按 [SECURITY.md](SECURITY.md) 私下报告，不要开公开 issue。

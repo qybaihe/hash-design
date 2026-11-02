@@ -14,11 +14,22 @@ import { readFileSync } from 'node:fs';
 import { fileURLToPath } from 'node:url';
 
 export const EXAMPLES = [
-  { dir: 'fourth-lane-bakery', subject: '第四巷面包店', seed: 'fourth-lane-bakery' },
-  { dir: 'sluice', subject: 'Sluice — self-hosted webhook inbox', seed: 'sluice' },
-  { dir: 'bridge-two-bikes', subject: '二号桥单车铺', seed: 'bridge-two-bikes-5' },
+  {
+    dir: 'fourth-lane-bakery',
+    name: 'Fourth Lane Bakery',
+    subject: '第四巷面包店',
+    seed: 'fourth-lane-bakery',
+  },
+  { dir: 'sluice', name: 'Sluice', subject: 'Sluice — self-hosted webhook inbox', seed: 'sluice' },
+  {
+    dir: 'bridge-two-bikes',
+    name: 'Bridge No.2 Cycle Works',
+    subject: '二号桥单车铺',
+    seed: 'bridge-two-bikes-5',
+  },
   {
     dir: 'causeway-festival',
+    name: 'Causeway',
     subject: 'Causeway — a music festival on Skerrow Island',
     seed: 'causeway-festival-6',
   },
