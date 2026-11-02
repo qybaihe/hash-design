@@ -25,6 +25,8 @@ Neither package (`hash-design`, `hash-design-mcp`) has been published to npm yet
 
 ### Changed
 
+- All five READMEs share one structure, modelled on [qybaihe/bla](https://github.com/qybaihe/bla): a centred header with the GIF, badges, links, section nav and a copy-paste "tell your agent" install sentence; then What hash-design does, Quick start (Tell your agent, Install by hand, Use it, CLI, Library, Update), How it works, Examples, Reference, FAQ (which absorbs Known limitations), Documentation, Contributing and License. Install by hand clones to `~/hash-design`.
+- The Fourth Lane Bakery per-direction notes moved from `README.zh-CN.md` to `examples/fourth-lane-bakery/README.md`.
 - Every README now opens with the animated hero; readers who prefer reduced motion get the static `hero.png` through a `<picture>` source.
 - The first screen of every README: a problem-first pitch, four badges (the rest in a collapsed block), the new hero linked to the Causeway compare page, a quick start that installs from source, and a four-line overview. The Fourth Lane Bakery compare image moved to the top of each Demo section.
 - `npm run screenshots` now covers every example; `node scripts/screenshot.mjs <name|dir> [prefix]` still shoots one.
