@@ -2,9 +2,9 @@
 
 [中文](mcp-tools.zh-CN.md) · [Back to README](../README.md)
 
-`hash-design-mcp` is a stdio [Model Context Protocol](https://modelcontextprotocol.io) server built on the official TypeScript SDK. Source: [`packages/mcp/src/server.ts`](../packages/mcp/src/server.ts). It exposes 6 tools, 4 resources and 1 prompt, and sends server instructions that summarise the workflow to the client.
+The hash-design MCP server is a stdio [Model Context Protocol](https://modelcontextprotocol.io) server built on the official TypeScript SDK. It ships in the `hash-design` npm package and runs as `hash-design mcp`. Source: [`packages/core/src/mcp.ts`](../packages/core/src/mcp.ts); `packages/mcp` is a private wrapper that runs the same server from a clone. It exposes 6 tools, 4 resources and 1 prompt, and sends server instructions that summarise the workflow to the client.
 
-> The server is not published to npm; only the core package, `hash-design` (library, CLI, Skill), is. Run it from a source checkout: `node /ABS/PATH/hash-design/packages/mcp/dist/bin.js` (see [Install by hand](../README.md#install-by-hand)).
+> Register `npx -y hash-design mcp` with your client. The `mcp` command arrives in hash-design 0.2.0, the next release; 0.1.0 does not have it. Until 0.2.0 is out, use `npx -y hash-design-mcp@0.1.0` (the earlier, separately published server; same 6 tools, no longer updated) or a clone: `node /ABS/PATH/hash-design/packages/mcp/dist/bin.js`. See [Install by hand](../README.md#install-by-hand).
 
 ## Working directory and file access
 
@@ -138,8 +138,8 @@ design/hash-design/
 
 ## Client configuration
 
-See [Install by hand](../README.md#install-by-hand) in the README for Claude Code, Cursor and Claude Desktop. The server is not published to npm, so there is no `npx` command for it: point the client at `packages/mcp/dist/bin.js` in a clone.
+See [Install by hand](../README.md#install-by-hand) in the README for Claude Code, Cursor and Claude Desktop. The command is `npx -y hash-design mcp` (hash-design 0.2.0 or later); until that release, `npx -y hash-design-mcp@0.1.0`, or `node …/packages/mcp/dist/bin.js` in a clone.
 
 ## Testing
 
-`packages/mcp/test/server.test.ts` drives the server through the SDK's in-memory transport, including a test that `roll_designs` with the example seed reproduces the CLI example roll exactly. `scripts/smoke.mjs` spawns the built server over real stdio in CI.
+`packages/core/test/mcp.test.ts` drives the server through the SDK's in-memory transport, including a test that `roll_designs` with the example seed reproduces the CLI example roll exactly. `scripts/smoke.mjs` starts `hash-design mcp` and the `packages/mcp` wrapper over real stdio in CI.

@@ -2,9 +2,9 @@
 
 [English](mcp-tools.md) · [返回 README](../README.zh-CN.md)
 
-`hash-design-mcp` 是一个基于官方 TypeScript SDK 的 stdio [Model Context Protocol](https://modelcontextprotocol.io) server。源码：[`packages/mcp/src/server.ts`](../packages/mcp/src/server.ts)。它提供 6 个工具、4 个资源和 1 个 prompt，并向客户端发送概括工作流程的 server instructions。
+hash-design 的 MCP server 是一个基于官方 TypeScript SDK 的 stdio [Model Context Protocol](https://modelcontextprotocol.io) server。它包含在 npm 包 `hash-design` 里，用 `hash-design mcp` 启动。源码：[`packages/core/src/mcp.ts`](../packages/core/src/mcp.ts)；`packages/mcp` 是一个 private 包装，在克隆的源码里运行同一个 server。它提供 6 个工具、4 个资源和 1 个 prompt，并向客户端发送概括工作流程的 server instructions。
 
-> MCP server 不发布到 npm；发布到 npm 的只有核心包 `hash-design`（库、CLI、Skill）。请从源码运行：`node /ABS/PATH/hash-design/packages/mcp/dist/bin.js`（见[手动安装](../README.zh-CN.md#手动安装)）。
+> 在客户端里注册 `npx -y hash-design mcp`。`mcp` 命令从下一个版本 hash-design 0.2.0 开始提供，0.1.0 里没有。0.2.0 发布之前，用 `npx -y hash-design-mcp@0.1.0`（之前单独发布的 server，6 个工具相同，不再更新），或者克隆源码运行：`node /ABS/PATH/hash-design/packages/mcp/dist/bin.js`。见[手动安装](../README.zh-CN.md#手动安装)。
 
 ## 工作目录与文件访问
 
@@ -138,8 +138,8 @@ design/hash-design/
 
 ## 客户端配置
 
-Claude Code、Cursor 和 Claude Desktop 的配置见 README 中的[手动安装](../README.zh-CN.md#手动安装)。MCP server 不发布到 npm，所以没有对应的 `npx` 命令：让客户端指向克隆源码里的 `packages/mcp/dist/bin.js`。
+Claude Code、Cursor 和 Claude Desktop 的配置见 README 中的[手动安装](../README.zh-CN.md#手动安装)。命令是 `npx -y hash-design mcp`（hash-design 0.2.0 及以后）；在那之前用 `npx -y hash-design-mcp@0.1.0`，或克隆源码里的 `node …/packages/mcp/dist/bin.js`。
 
 ## 测试
 
-`packages/mcp/test/server.test.ts` 通过 SDK 的 in-memory transport 驱动 server，其中有一个测试检查用示例 seed 调用 `roll_designs` 能完全复现 CLI 的示例掷骰。`scripts/smoke.mjs` 在 CI 中通过真实的 stdio 启动构建好的 server。
+`packages/core/test/mcp.test.ts` 通过 SDK 的 in-memory transport 驱动 server，其中有一个测试检查用示例 seed 调用 `roll_designs` 能完全复现 CLI 的示例掷骰。`scripts/smoke.mjs` 在 CI 中通过真实的 stdio 启动 `hash-design mcp` 和 `packages/mcp` 包装。

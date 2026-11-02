@@ -11,29 +11,28 @@
 
 ## 包
 
-| 包                | 目录            | npm 上                      | 内容                                             | 命令             |
-| ----------------- | --------------- | --------------------------- | ------------------------------------------------ | ---------------- |
-| `hash-design`     | `packages/core` | 由 `release.yml` 发布       | 库、CLI、`skill/SKILL.md`（由 prepack 复制进来） | `hash-design`    |
-| `hash-design-mcp` | `packages/mcp`  | 不发布（`"private": true`） | stdio MCP server；依赖 `hash-design`             | 只在克隆的源码里 |
+| 包                | 目录            | npm 上                      | 内容                                                                                        | 命令             |
+| ----------------- | --------------- | --------------------------- | ------------------------------------------------------------------------------------------- | ---------------- |
+| `hash-design`     | `packages/core` | 由 `release.yml` 发布       | 库、CLI、`skill/SKILL.md`（由 prepack 复制进来）、MCP server（`hash-design mcp`，0.2.0 起） | `hash-design`    |
+| `hash-design-mcp` | `packages/mcp`  | 不发布（`"private": true`） | 从 `hash-design/mcp` 启动 server 的包装                                                     | 只在克隆的源码里 |
 
 根目录的 `package.json` 也是 private。三个 `package.json` 共用同一个版本号：`packages/mcp` 永远不发布，但它对 `hash-design` 的 `^<version>` 依赖必须覆盖工作区里的版本，否则 npm 会从 registry 安装一份，而不是链接 `packages/core`。`npm run release:version` 会让三者保持一致；如果 `packages/mcp` 不再是 private，`scripts/release-check.mjs` 会报错。
 
 ## 怎样获得 MCP server
 
-`hash-design` 包**不包含** MCP server。`npm install hash-design`（或 `npx -y hash-design …`）得到的是库、`hash-design` CLI 和 Skill（`npx -y hash-design skill install`）；MCP server 有自己的依赖（`@modelcontextprotocol/sdk`、`zod`），只在 `packages/mcp` 里。要用 MCP 工具，就克隆并构建仓库，再注册构建出的入口，和 README 的[手动安装](../README.zh-CN.md#手动安装)一样：
+从 0.2.0 起，`hash-design` 包含 MCP server（`packages/core/src/mcp.ts`）及其依赖（`@modelcontextprotocol/sdk`、`zod`），一个包就够了：
 
 ```bash
-git clone https://github.com/qybaihe/hash-design.git ~/hash-design
-cd ~/hash-design && npm install && npm run build
-claude mcp add hash-design -- node ~/hash-design/packages/mcp/dist/bin.js
+npx -y hash-design skill install --target both --dir .   # Skill
+claude mcp add hash-design -- npx -y hash-design mcp     # MCP server（hash-design >= 0.2.0）
 ```
 
-MCP server 没有 `npx` 命令。没有 MCP 的 Agent 可以改用 npm 上的 CLI；Skill 里有每个 MCP 工具对应的 CLI 命令，参数相同。
+hash-design 0.1.0 没有 `mcp` 命令。0.2.0 发布之前，MCP server 来自 `hash-design-mcp@0.1.0`（0.1.0 那次一次性手动发布时上了 npm，仍然可用：`claude mcp add hash-design -- npx -y hash-design-mcp@0.1.0`），或者来自克隆的源码（`node ~/hash-design/packages/mcp/dist/bin.js`）。`packages/mcp` 作为这个 private 包装留在仓库里。
 
-npm 上的 `hash-design-mcp@0.1.0` 来自 0.1.0 那次一次性的手动发布，之后不会再有新版本。为了让找到它的人知道，维护者可以把它标记为 deprecated。这只修改 registry 上的元数据，不发布任何东西：
+`hash-design-mcp` 不会再有新版本。0.2.0 发布后，维护者可以把它标记为 deprecated，让找到它的人改用新命令。这只修改 registry 上的元数据，不发布任何东西；0.2.0 之前不要运行，因为在那之前它是文档里写的备用方案：
 
 ```bash
-npm deprecate hash-design-mcp "No longer published: run the MCP server from https://github.com/qybaihe/hash-design (packages/mcp)"
+npm deprecate hash-design-mcp "Use npx -y hash-design mcp (hash-design 0.2.0 or later)"
 ```
 
 如果曾经给 `hash-design-mcp` 添加过 Trusted Publisher，到那个包的 **Settings** 页删掉它；工作流永远不会发布这个包。
@@ -119,7 +118,7 @@ npm trust github hash-design --repo qybaihe/hash-design --file release.yml --all
 
 `npm run release:check` 也会在每次 push 和 pull request 的 CI 里运行，所以包清单一旦变得不可发布，或者 `packages/mcp` 不再是 private，CI 会在发版之前就报错。
 
-各个 README 目前仍然写的是全部从源码安装。`hash-design` 已经在 npm 上，CLI 和 Skill 也可以用 `npx -y hash-design` 获得，MCP server 则仍然从克隆的源码运行。README 改成这种写法时，五个 README 要做同样的修改，`packages/core/README.md`、`docs/mcp-tools*.md` 和 Skill 也要一起改。
+0.2.0 上了 npm 之后：把五个 README、`packages/core/README.md` 和 `docs/mcp-tools*.md` 里 `hash-design-mcp@0.1.0` 的备用说明删掉，并按上面的方法把 `hash-design-mcp` 标记为 deprecated。
 
 ## 发布步骤失败时
 
