@@ -27,7 +27,8 @@
     "example:roll": "node scripts/examples.mjs roll",
     "example:compare": "node scripts/examples.mjs compare",
     "example:critique": "node scripts/examples.mjs critique",
-    "screenshots": "node scripts/screenshot.mjs"
+    "screenshots": "node scripts/screenshot.mjs",
+    "hero": "node scripts/hero.mjs"
   },
   "devDependencies": {
     "@eslint/js": "^10.0.1",
