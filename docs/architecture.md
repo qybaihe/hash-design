@@ -2,16 +2,16 @@
 
 [中文](architecture.zh-CN.md) · [Back to README](../README.md)
 
-hash-design is an npm-workspaces monorepo with two packages, one Skill and a fully worked example. Everything is TypeScript (strict, ESM, Node ≥ 20).
+hash-design is an npm-workspaces monorepo with two packages, one Skill and four recorded example runs. Everything is TypeScript (strict, ESM, Node ≥ 20).
 
 ```
                  ┌──────────────────────────── packages/core (npm: hash-design) ─────────────────────────────┐
   facts ───────► │ hash.ts ──► mapping.ts ──► brief.ts / derive.ts ──► files.ts (roll.json, ROLL.md, briefs/) │
-  constraints    │   ▲            ▲                                                                           │
-                 │   │       data/ (branches, pools, bans, scenarios) ── validate.ts                         │
-                 │ crypto     critique.ts (static HTML/CSS checks)   compare.ts (compare.html)   catalog.ts   │
+  constraints    │   ▲            ▲    └──► palette.ts / color.ts (OKLCH, contrast solving)                  │
+                 │   │       data/ (fonts, space, bans, scenarios)                                           │
+                 │ crypto     critique.ts (static HTML/CSS checks)   compare.ts (compare.html)                │
                  │            cli.ts / bin.ts (hash-design CLI)      skill.ts (SKILL.md access + sync block) │
-                 │            mcp.ts (MCP server: 6 tools, 4 resources, 1 prompt) ◄── `hash-design mcp`      │
+                 │            mcp.ts (MCP server: 4 tools, 2 resources, 1 prompt) ◄── `hash-design mcp`      │
                  └───────────────▲────────────────────────────────────────────────────────────────────────────┘
                                  │ re-exports hash-design/mcp
                  ┌───────────────┴──── packages/mcp (private wrapper) ─────────┐
@@ -24,69 +24,64 @@ hash-design is an npm-workspaces monorepo with two packages, one Skill and a ful
 
 ### `packages/core` (`hash-design`)
 
-| Module                     | Responsibility                                                                                                                                             |
-| -------------------------- | ---------------------------------------------------------------------------------------------------------------------------------------------------------- |
-| `src/hash.ts`              | `randomHash` (CSPRNG → SHA-256), `seededHash`, `rollHashes`, ref parsing/formatting (`<hash>+<probe>`), `ALGORITHM`                                        |
-| `src/mapping.ts`           | The decision tree: `mapDesign`, `mapRoll` (collisions + family spread), `branchPool`, constraints, `BYTE_MAP`, `libraryFingerprint`, `scenarioFingerprint` |
-| `src/data/branches/`       | 40 branches, one object each (`_exemplar.ts` plus four family files); `index.ts` fixes `BRANCH_ORDER` (the mapping order)                                  |
-| `src/data/pools.ts`        | Global pools: 4 densities, 7 modular scales, 14 copy voices, 16 twists                                                                                     |
-| `src/data/scenarios.ts`    | 6 scenarios (web, deck, app, dashboard, poster, email): formats, canvas, base-size rule, pool filters, output contract, rules                              |
-| `src/data/bans.ts`         | 14 global bans, 23 banned fonts, English and Chinese buzzword lists                                                                                        |
-| `src/validate.ts`          | `validateBranch` / `validateLibrary`: shape, contrast, banned fonts, framework colours, font diversity                                                     |
-| `src/derive.ts`            | Derived tokens: type scale, font stacks, Google Fonts URL, WCAG contrast report, `tokens.css`, language detection                                          |
-| `src/brief.ts`             | `roll`, `reproduce`, Markdown and JSON briefs, roll summaries, `roll.json` shape                                                                           |
-| `src/files.ts`             | `writeRoll`: freezes `roll.json`, `ROLL.md` and `briefs/NN-<branch>.md`                                                                                    |
-| `src/critique.ts`          | `critiquePage`: static HTML/CSS checks for every ban plus contrast / a11y basics and brief adherence                                                       |
-| `src/compare.ts`           | `buildComparePage`: one self-contained HTML file with scaled iframes, labels, desktop/mobile toggle, focus keys                                            |
-| `src/catalog.ts`           | Branch list / detail / catalogue rendering (used by the MCP server and `docs/branches.md`)                                                                 |
-| `src/skill.ts`             | Locates `SKILL.md` (repo or packaged copy) and renders the generated bans block                                                                            |
-| `src/cli.ts`, `src/bin.ts` | The `hash-design` CLI (`node:util` `parseArgs`, no CLI framework)                                                                                          |
-| `src/mcp.ts`               | The MCP server (`createServer`, `serveStdio`), loaded by `hash-design mcp`; exported as `hash-design/mcp`                                                  |
+| Module                     | Responsibility                                                                                                                            |
+| -------------------------- | ----------------------------------------------------------------------------------------------------------------------------------------- |
+| `src/hash.ts`              | `randomHash` (CSPRNG → SHA-256), `seededHash`, `rollHashes`, `parseRef` (a ref is the bare hash), `ALGORITHM` (`hash-design/v2`)          |
+| `src/mapping.ts`           | `mapDesign` (one hash → one design, byte by byte), `mapRoll`, constraints, `BYTE_MAP`, `libraryFingerprint`, `scenarioFingerprint`        |
+| `src/palette.ts`           | `buildPalette`: OKLCH palette from the hue / polarity / chroma bytes, with text lightness solved to the contrast floors                   |
+| `src/color.ts`             | sRGB ↔ OKLCH (gamut-mapped by chroma), WCAG relative luminance and contrast                                                               |
+| `src/data/fonts.ts`        | The flat font pool: 98 display, 62 body, 8 mono (Google Fonts), 14 CJK display and 2 CJK body faces; no style tags                        |
+| `src/data/space.ts`        | The short primitive lists bytes index into: cases, separators, anchor subjects, motif shapes and placements, textures, voice, twist       |
+| `src/data/scenarios.ts`    | 6 scenarios (web, deck, app, dashboard, poster, email): formats, canvas, base-size rule, density range, twist filters, contract, rules    |
+| `src/data/bans.ts`         | 14 global bans, 23 banned fonts, framework default colours, English and Chinese buzzword lists                                            |
+| `src/derive.ts`            | Derived tokens: type scale, font stacks, Google Fonts URL, WCAG contrast report, `tokens.css`, language detection                         |
+| `src/brief.ts`             | `roll`, `reproduce`, `directionLabel`, Markdown and JSON briefs, roll summaries, `roll.json` shape                                        |
+| `src/files.ts`             | `writeRoll`: freezes `roll.json`, `ROLL.md` and `briefs/NN-<short hash>.md`                                                               |
+| `src/critique.ts`          | `critiquePage`: static HTML/CSS checks for every ban plus contrast / a11y basics and brief adherence                                      |
+| `src/compare.ts`           | `buildComparePage`: one self-contained HTML file with scaled iframes, labels, desktop/mobile toggle, focus keys                           |
+| `src/skill.ts`             | Locates `SKILL.md` (repo or packaged copy) and renders the generated bans block                                                           |
+| `src/cli.ts`, `src/bin.ts` | The `hash-design` CLI (`node:util` `parseArgs`, no CLI framework)                                                                         |
+| `src/mcp.ts`               | The MCP server (`createServer`, `serveStdio`; 4 tools, 2 resources, 1 prompt), loaded by `hash-design mcp`; exported as `hash-design/mcp` |
 
 Runtime dependencies: `node-html-parser` (for `critique_page`), and `@modelcontextprotocol/sdk` and `zod` for the MCP server, which the CLI loads only for `hash-design mcp`.
 
 ### The MCP server (`src/mcp.ts`, `packages/mcp`)
 
-A thin adapter over the core's public API using `@modelcontextprotocol/sdk` and `zod` input schemas, run as `hash-design mcp`. `packages/mcp` (`hash-design-mcp`, private) only re-exports it, so `node packages/mcp/dist/bin.js` keeps working in a clone. Every tool has a CLI equivalent, and a test checks that `roll_designs` with the example seed returns exactly the refs of the CLI-generated example roll. See [mcp-tools.md](mcp-tools.md).
+A thin adapter over the core's public API using `@modelcontextprotocol/sdk` and `zod` input schemas, run as `hash-design mcp`. `packages/mcp` (`hash-design-mcp`, private) only re-exports it, so `node packages/mcp/dist/bin.js` keeps working in a clone. Every tool has a CLI equivalent, and a test checks that `roll_designs` with a seed returns exactly the refs of the core's `roll` with the same seed. See [mcp-tools.md](mcp-tools.md).
 
 Design choices:
 
 - **Flat constraint parameters** (`light_only`, `brand_colors`, …) rather than a nested object: models fill flat schemas more reliably.
 - **Two content blocks** from `roll_designs`: Markdown for the model to read and a small JSON block for programmatic clients.
 - **`detail: summary` by default when `out_dir` is set**, so five full briefs do not flood the context; the agent then reads each brief file on its own, which is what keeps previews independent.
-- Tool annotations mark `get_brief`, `list_branches`, `get_branch` and `critique_page` as read-only.
+- Tool annotations mark `get_brief` and `critique_page` as read-only.
 
 ## Data as code
 
-Branches are TypeScript objects, not YAML or JSON, so the compiler checks their shape and the validator can run in tests. Each branch carries:
+There is no catalogue of styles. What the mapping reads besides the hash is a handful of TypeScript lists:
 
-- id, bilingual name and concept, references, keywords, family
-- tokens (grid, radius, border, shadow policy)
-- 3 options for each of layouts, type pairings, palettes, motion, motifs, anchors and surfaces
-- 1–3 allowed densities and modular scales
-- must / must-not lists
+- **Fonts** (`data/fonts.ts`): family, the weights it really has on Google Fonts, italic, fallback class. Nothing else: no mood, era or genre tags, so a byte picks a face and nothing is implied by the pick.
+- **Primitives** (`data/space.ts`): short lists of neutral building blocks (`{ id, text }`), such as 12 motif shapes, 8 anchor subjects, 9 twist targets and 10 twist operations. They combine freely with each other and with the continuous values; no entry is tied to another.
+- **Scenarios** (`data/scenarios.ts`): each has a bilingual summary, output contract, count, notes on how layout / anchor / motion translate, a base-size rule, its formats (byte 28), its density range, the twist targets and operations it removes, and must / must-not lists. They are hashed into their own `scenarioFingerprint`. See [mapping.md §7](mapping.md#7-scenarios).
 
-Scenarios (`src/data/scenarios.ts`) are data in the same way: each has a bilingual summary, output contract, count, a note on how the branch's layout / anchor / motion translate, a base-size rule, its formats (byte 13), the densities and twists it removes, and must / must-not lists. They are hashed into their own `scenarioFingerprint`, so adding or editing a scenario leaves the library fingerprint and every web ref unchanged. See [mapping.md §6](mapping.md#6-scenarios).
-
-`validateLibrary` (run in `branches.test.ts`) enforces: 3–5 options per dimension, lowercase `#rrggbb` hex, ink/paper ≥ 7:1 and muted/paper ≥ 4.5:1 contrast, at least one light palette, no banned fonts (fallbacks included), no framework default hex values, a display family leading at most 3 branches, unique ids and names. `branches.test.ts` also checks that no two branches share the same lead palette (paper + accent). `scripts/verify-fonts.mjs` checks every Google Fonts URL online (235/235); it is not in CI because it needs the network.
+Fonts, primitives and `BYTE_MAP` are hashed into the library fingerprint, which `mapping.test.ts` pins, so any change to what a hash maps to is a visible change. `mapping.test.ts` also checks that the font pools are unique and free of banned faces, that palettes meet their contrast floors in both polarities over thousands of random hashes, and that each byte moves only its own parameters. `scripts/verify-fonts.mjs` checks every Google Fonts URL a brief can emit online; it is not in CI because it needs the network.
 
 ## Generated files
 
-`npm run sync` (build + `scripts/sync.mjs`) regenerates everything derived from the data:
+`npm run sync` (build + `scripts/sync.mjs`) regenerates what is derived from the data:
 
-- the bans block inside `skills/hash-design/SKILL.md`, between `<!-- BEGIN GENERATED: bans (npm run sync) -->` and `<!-- END GENERATED: bans -->`
+- the bans block inside `skills/hash-design/SKILL.md`, between `<!-- BEGIN GENERATED: bans (npm run sync) -->` and `<!-- END GENERATED: bans -->` (it also states the size of the font pool)
 - the copies `.claude/skills/hash-design/SKILL.md` and `.cursor/skills/hash-design/SKILL.md`
-- `docs/branches.md`
 
 `skill.test.ts` fails if any of these is stale.
 
-## The examples as regression fixtures
+## The examples: recorded v1 runs
 
-The four runs under `examples/` (a bakery, a developer tool, a bicycle repair shop and a music festival) are both documentation and test fixtures. `examples.test.ts` finds every directory with a `roll.json`, re-rolls it from its `facts.md` with the seed recorded in `roll.json`, and checks that the refs, the library fingerprint and the brief files still match. It also checks that each preview scores at least 90 on the critique with no critical or major findings, that no two examples share a branch, and that the Pages index and every README link to each example. Any data change therefore forces a deliberate re-roll and new previews (see [CONTRIBUTING.md](../CONTRIBUTING.md)). The previews themselves are hand-off artifacts produced by agents following the Skill; they are not generated by code. `scripts/examples.mjs` lists the examples and re-rolls, critiques or rebuilds their compare pages.
+The four runs under `examples/` (a bakery, a developer tool, a bicycle repair shop and a music festival) were rolled with `hash-design/v1`, the 40-branch library that v2 removed. They are kept as records of real runs (facts, frozen briefs, previews made by agents following the Skill, screenshots and compare pages), not as fixtures of the current mapping: v2 cannot reproduce their refs. `examples.test.ts` checks that each one is labelled `hash-design/v1` in its `roll.json` and README, that every brief, preview and screenshot is present, that each preview still scores at least 90 on the critique with no critical or major findings, and that the Pages index and every README link to each example. `scripts/examples.mjs` lists the examples and critiques their previews; it refuses to re-roll a v1 record or rebuild its compare page, since both need v1.
 
 ## Testing and CI
 
-- **Vitest**, 10 test files: `hash`, `mapping`, `branches`, `brief`, `critique` (with good and bad HTML fixtures), `compare`, `cli`, `skill` (sync checks), `examples`, and `mcp` (in-memory transport).
+- **Vitest**, 11 test files: `hash`, `mapping`, `scenarios`, `brief`, `critique` (with good and bad HTML fixtures), `compare`, `cli`, `skill` (sync checks), `examples`, `release` (publish readiness) and `mcp` (in-memory transport).
 - **`scripts/smoke.mjs`**: runs the built CLI and talks to `hash-design mcp` and the `packages/mcp` wrapper over a real stdio pipe.
 - **CI** (`.github/workflows/ci.yml`), on Node 20, 22 and 24: `npm ci`, build, typecheck (including tests), ESLint, Prettier check, tests, smoke test, `npm pack --dry-run` for both packages.
 - **Pages** (`.github/workflows/pages.yml`): publishes `examples/` to GitHub Pages when it changes.
