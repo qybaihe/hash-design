@@ -98,7 +98,7 @@ CLI：`hash-design critique <page.html> [--css <file>] [--brief <ref> | --roll <
 
 ### `build_compare_page`
 
-写出 `compare.html`：把每个预览放进缩放的 iframe 里并排展示，带分支 / 配色 / 字体标签、桌面 / 手机切换和聚焦模式（按键 1–9）。预览应位于 `<previews_dir>/NN-<branch>.html`，缺失的会被列出来。
+写出 `compare.html`：把每个预览放进缩放的 iframe 里并排展示，带分支 / 配色 / 字体标签、桌面 / 手机切换和聚焦模式（按键 1–9）。预览应位于 `<previews_dir>/NN-<branch>.html`，缺失的会被列出来。页面上的标签、按钮和操作说明跟随这次 roll 的语言（`roll.json` 里的 `content.language`，中文或英文）。
 
 | 参数           | 类型         | 默认值                            |
 | -------------- | ------------ | --------------------------------- |

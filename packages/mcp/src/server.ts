@@ -12,6 +12,7 @@ import {
   briefJson,
   buildComparePage,
   compareEntriesFromRoll,
+  compareSubtitle,
   critiquePage,
   getBranch,
   parseRef,
@@ -319,9 +320,10 @@ export function createServer(): McpServer {
           out,
           buildComparePage({
             title: args.title ?? r.content.subject,
-            subtitle: `${entries.length} 个方向 · ${r.source} · ${r.algorithm} · library ${r.library}`,
+            subtitle: compareSubtitle(r),
             entries,
             generatedAt: new Date().toISOString().slice(0, 10),
+            language: r.content.language,
           }),
           'utf8',
         );

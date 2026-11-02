@@ -98,7 +98,7 @@ CLI: `hash-design critique <page.html> [--css <file>] [--brief <ref> | --roll <r
 
 ### `build_compare_page`
 
-Write `compare.html`: every preview in a scaled iframe side by side, with branch / palette / type labels, a desktop / mobile toggle and a focus mode (keys 1–9). Expects previews at `<previews_dir>/NN-<branch>.html` and lists any that are missing.
+Write `compare.html`: every preview in a scaled iframe side by side, with branch / palette / type labels, a desktop / mobile toggle and a focus mode (keys 1–9). Expects previews at `<previews_dir>/NN-<branch>.html` and lists any that are missing. The page's labels, buttons and instructions follow the roll's language (`content.language` in `roll.json`: Chinese or English).
 
 | Parameter      | Type             | Default                              |
 | -------------- | ---------------- | ------------------------------------ |

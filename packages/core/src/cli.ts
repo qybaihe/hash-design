@@ -11,6 +11,7 @@ import {
   briefJson,
   buildComparePage,
   compareEntriesFromRoll,
+  compareSubtitle,
   critiquePage,
   getBranch,
   parseRef,
@@ -456,9 +457,10 @@ async function cmdCompare(args: string[]): Promise<void> {
   const missing = entries.filter((e) => !existsSync(resolve(base, e.preview))).map((e) => e.preview);
   const html = buildComparePage({
     title: values.title ?? r.content.subject,
-    subtitle: `${entries.length} 个方向 · ${r.source} · ${r.algorithm} · library ${r.library}`,
+    subtitle: compareSubtitle(r),
     entries,
     generatedAt: new Date().toISOString().slice(0, 10),
+    language: r.content.language,
   });
   await writeFile(out, html, 'utf8');
   print(`Wrote ${relative(process.cwd(), out)}`);

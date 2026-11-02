@@ -76,6 +76,7 @@ export {
 export {
   buildComparePage,
   compareEntriesFromRoll,
+  compareSubtitle,
   type CompareEntry,
   type CompareOptions,
 } from './compare.js';
