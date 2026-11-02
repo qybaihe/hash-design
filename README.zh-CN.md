@@ -22,7 +22,7 @@
 
 **[在线示例](https://qybaihe.github.io/hash-design/) · [分支目录](docs/branches.md) · [MCP 参考](docs/mcp-tools.zh-CN.md) · [更新日志](CHANGELOG.md)**
 
-[快速开始](#快速开始) · [它怎么工作](#它怎么工作) · [示例](#示例) · [参考](#参考) · [常见问题](#常见问题)
+[快速开始](#快速开始) · [它怎么工作](#它怎么工作) · [案例展示](#案例展示) · [参考](#参考) · [常见问题](#常见问题)
 
 **直接告诉你的 Agent**（Claude Code、Cursor）：
 
@@ -235,96 +235,33 @@ flowchart LR
 
 brief 是写给 Agent 看的，标题中英双语。`language`（`zh` 或 `en`，默认根据 subject 和 facts 自动判断）决定概念说明和执行指令用哪种语言，以及是否加载中文字体。文案语气、变数等部分描述目前只有中文。
 
-## 示例
+## 案例展示
 
-4 次完整运行，各有自己的事实清单和固定 seed（固定 seed 只是为了可复现）。任意两个示例都不共用分支，合起来覆盖 40 个分支中的 20 个，6 个家族都有。每个预览都由只看得到自己那份 brief 的子 Agent 独立完成，`critique_page` 全部不低于 90 分。所有示例都在[示例首页](https://qybaihe.github.io/hash-design/)。
+4 次完整运行，各有自己的事实清单和固定 seed（固定 seed 只是为了可复现）。任意两个示例都不共用分支，合起来覆盖 40 个分支中的 20 个，6 个家族都有。每个预览都由只看得到自己那份 brief 的子 Agent 独立完成，`critique_page` 全部不低于 90 分。所有示例都在[示例首页](https://qybaihe.github.io/hash-design/)。下面每张图是一次掷骰：5 个方向并排，标着分支名和 ref。
 
 ### 第四巷面包店：街区面包店 · 中文页面
 
-[![第四巷面包店：同一份事实，5 个随机方向并排对比](examples/fourth-lane-bakery/screenshots/compare.png)](https://qybaihe.github.io/hash-design/fourth-lane-bakery/compare.html)
+[![第四巷面包店：5 个随机方向并排——公文表格、包豪斯、水墨印章、Riso 双色套印、港式招牌](docs/assets/showcase/fourth-lane-bakery.png)](examples/fourth-lane-bakery)
 
-[`examples/fourth-lane-bakery/`](examples/fourth-lane-bakery) 是一次完整的端到端运行，对象是一家虚构的面包店：[事实清单](examples/fourth-lane-bakery/facts.md) → 一次掷骰 → 5 份冻结的 brief → 5 个预览（各由一个只看得到自己那份 brief 的子 Agent 渲染）→ 并排对比页。全部发布在 GitHub Pages 上：
-
-| #   | 方向（分支）                                                                                                                   | 桌面                                                                                                                          | Brief                                                               |
-| --- | ------------------------------------------------------------------------------------------------------------------------------ | ----------------------------------------------------------------------------------------------------------------------------- | ------------------------------------------------------------------- |
-| 01  | [公文表格 Bureaucratic form](https://qybaihe.github.io/hash-design/fourth-lane-bakery/previews/01-bureaucratic-form.html)      | <img src="examples/fourth-lane-bakery/screenshots/01-bureaucratic-form-desktop.png" width="260" alt="#1 公文表格，桌面">      | [brief](examples/fourth-lane-bakery/briefs/01-bureaucratic-form.md) |
-| 02  | [包豪斯 Bauhaus primary](https://qybaihe.github.io/hash-design/fourth-lane-bakery/previews/02-bauhaus-primary.html)            | <img src="examples/fourth-lane-bakery/screenshots/02-bauhaus-primary-desktop.png" width="260" alt="#2 包豪斯，桌面">          | [brief](examples/fourth-lane-bakery/briefs/02-bauhaus-primary.md)   |
-| 03  | [水墨印章 Ink and seal](https://qybaihe.github.io/hash-design/fourth-lane-bakery/previews/03-ink-and-seal.html)                | <img src="examples/fourth-lane-bakery/screenshots/03-ink-and-seal-desktop.png" width="260" alt="#3 水墨印章，桌面">           | [brief](examples/fourth-lane-bakery/briefs/03-ink-and-seal.md)      |
-| 04  | [Riso 双色套印 Risograph duotone](https://qybaihe.github.io/hash-design/fourth-lane-bakery/previews/04-risograph-duotone.html) | <img src="examples/fourth-lane-bakery/screenshots/04-risograph-duotone-desktop.png" width="260" alt="#4 Riso 双色套印，桌面"> | [brief](examples/fourth-lane-bakery/briefs/04-risograph-duotone.md) |
-| 05  | [港式招牌 Hong Kong shop sign](https://qybaihe.github.io/hash-design/fourth-lane-bakery/previews/05-hk-shop-sign.html)         | <img src="examples/fourth-lane-bakery/screenshots/05-hk-shop-sign-desktop.png" width="260" alt="#5 港式招牌，桌面">           | [brief](examples/fourth-lane-bakery/briefs/05-hk-shop-sign.md)      |
-
-- **在线对比页**：<https://qybaihe.github.io/hash-design/fourth-lane-bakery/compare.html>（按 1–5 放大，D/M 切换桌面/手机）
-- **本地打开**：`open examples/fourth-lane-bakery/compare.html`
-- 5 个预览的 `critique_page` 得分在 96–100 之间，brief 遵守度都是 100。过程和每个方向的说明见[示例说明](examples/fourth-lane-bakery/README.md)。
-
-<details><summary>手机截图与手机宽度下的对比页</summary>
-
-<img src="examples/fourth-lane-bakery/screenshots/01-bureaucratic-form-mobile.png" width="19%" alt="#1 手机"> <img src="examples/fourth-lane-bakery/screenshots/02-bauhaus-primary-mobile.png" width="19%" alt="#2 手机"> <img src="examples/fourth-lane-bakery/screenshots/03-ink-and-seal-mobile.png" width="19%" alt="#3 手机"> <img src="examples/fourth-lane-bakery/screenshots/04-risograph-duotone-mobile.png" width="19%" alt="#4 手机"> <img src="examples/fourth-lane-bakery/screenshots/05-hk-shop-sign-mobile.png" width="19%" alt="#5 手机">
-
-![手机宽度下的对比页](examples/fourth-lane-bakery/screenshots/compare-mobile.png)
-
-</details>
-
-复现这次掷骰：
-
-```bash
-npm run build
-node packages/core/dist/bin.js roll --subject "第四巷面包店" \
-  --facts-file examples/fourth-lane-bakery/facts.md --seed fourth-lane-bakery --out /tmp/fourth-lane
-# MCP 等价调用：roll_designs { subject, facts, seed: "fourth-lane-bakery" }，得到相同的 5 个 ref
-```
-
-<!-- MORE-EXAMPLES:START -->
+seed `fourth-lane-bakery` · `critique_page` 96–100 · brief 遵守度 100 · [示例目录](examples/fourth-lane-bakery)：事实清单、brief、预览和过程记录
 
 ### Sluice：自托管的 webhook 收件箱 · 英文页面
 
-[![Sluice：5 个随机方向并排对比](examples/sluice/screenshots/compare.png)](https://qybaihe.github.io/hash-design/sluice/compare.html)
+[![Sluice：5 个随机方向并排——唱片封套、美术馆图录、终端荧光、学术论文、方格实验本](docs/assets/showcase/sluice.png)](examples/sluice)
 
-<table>
-<tr>
-<td align="center"><a href="https://qybaihe.github.io/hash-design/sluice/previews/01-record-sleeve.html"><img src="examples/sluice/screenshots/01-record-sleeve-desktop.png" width="150" alt="#1 Record sleeve 桌面"></a><br><a href="https://qybaihe.github.io/hash-design/sluice/previews/01-record-sleeve.html">01 · 唱片封套</a></td>
-<td align="center"><a href="https://qybaihe.github.io/hash-design/sluice/previews/02-gallery-catalogue.html"><img src="examples/sluice/screenshots/02-gallery-catalogue-desktop.png" width="150" alt="#2 Gallery catalogue 桌面"></a><br><a href="https://qybaihe.github.io/hash-design/sluice/previews/02-gallery-catalogue.html">02 · 美术馆图录</a></td>
-<td align="center"><a href="https://qybaihe.github.io/hash-design/sluice/previews/03-terminal-phosphor.html"><img src="examples/sluice/screenshots/03-terminal-phosphor-desktop.png" width="150" alt="#3 Terminal phosphor 桌面"></a><br><a href="https://qybaihe.github.io/hash-design/sluice/previews/03-terminal-phosphor.html">03 · 终端荧光</a></td>
-<td align="center"><a href="https://qybaihe.github.io/hash-design/sluice/previews/04-academic-paper.html"><img src="examples/sluice/screenshots/04-academic-paper-desktop.png" width="150" alt="#4 Academic paper 桌面"></a><br><a href="https://qybaihe.github.io/hash-design/sluice/previews/04-academic-paper.html">04 · 学术论文</a></td>
-<td align="center"><a href="https://qybaihe.github.io/hash-design/sluice/previews/05-lab-notebook.html"><img src="examples/sluice/screenshots/05-lab-notebook-desktop.png" width="150" alt="#5 Lab notebook 桌面"></a><br><a href="https://qybaihe.github.io/hash-design/sluice/previews/05-lab-notebook.html">05 · 方格实验本</a></td>
-</tr>
-</table>
-
-**[打开在线对比页 →](https://qybaihe.github.io/hash-design/sluice/compare.html)** · [示例目录](examples/sluice)（事实、brief、过程记录） · seed `sluice` · critique 92–96 · brief 遵守度 90–100
+seed `sluice` · `critique_page` 92–96 · brief 遵守度 90–100 · [示例目录](examples/sluice)：事实清单、brief、预览和过程记录
 
 ### 二号桥单车铺：桥洞下的单车修理铺 · 中文页面
 
-[![二号桥单车铺：5 个随机方向并排对比](examples/bridge-two-bikes/screenshots/compare.png)](https://qybaihe.github.io/hash-design/bridge-two-bikes/compare.html)
+[![二号桥单车铺：5 个随机方向并排——瑞士网格、时装画册、票根、游戏说明书、老黄历](docs/assets/showcase/bridge-two-bikes.png)](examples/bridge-two-bikes)
 
-<table>
-<tr>
-<td align="center"><a href="https://qybaihe.github.io/hash-design/bridge-two-bikes/previews/01-swiss-grid.html"><img src="examples/bridge-two-bikes/screenshots/01-swiss-grid-desktop.png" width="150" alt="#1 Swiss grid 桌面"></a><br><a href="https://qybaihe.github.io/hash-design/bridge-two-bikes/previews/01-swiss-grid.html">01 · 瑞士网格</a></td>
-<td align="center"><a href="https://qybaihe.github.io/hash-design/bridge-two-bikes/previews/02-couture-lookbook.html"><img src="examples/bridge-two-bikes/screenshots/02-couture-lookbook-desktop.png" width="150" alt="#2 Couture lookbook 桌面"></a><br><a href="https://qybaihe.github.io/hash-design/bridge-two-bikes/previews/02-couture-lookbook.html">02 · 时装画册</a></td>
-<td align="center"><a href="https://qybaihe.github.io/hash-design/bridge-two-bikes/previews/03-ticket-stub.html"><img src="examples/bridge-two-bikes/screenshots/03-ticket-stub-desktop.png" width="150" alt="#3 Ticket stub 桌面"></a><br><a href="https://qybaihe.github.io/hash-design/bridge-two-bikes/previews/03-ticket-stub.html">03 · 票根</a></td>
-<td align="center"><a href="https://qybaihe.github.io/hash-design/bridge-two-bikes/previews/04-game-manual.html"><img src="examples/bridge-two-bikes/screenshots/04-game-manual-desktop.png" width="150" alt="#4 Game manual 桌面"></a><br><a href="https://qybaihe.github.io/hash-design/bridge-two-bikes/previews/04-game-manual.html">04 · 游戏说明书</a></td>
-<td align="center"><a href="https://qybaihe.github.io/hash-design/bridge-two-bikes/previews/05-chinese-almanac.html"><img src="examples/bridge-two-bikes/screenshots/05-chinese-almanac-desktop.png" width="150" alt="#5 Chinese almanac 桌面"></a><br><a href="https://qybaihe.github.io/hash-design/bridge-two-bikes/previews/05-chinese-almanac.html">05 · 老黄历</a></td>
-</tr>
-</table>
-
-**[打开在线对比页 →](https://qybaihe.github.io/hash-design/bridge-two-bikes/compare.html)** · [示例目录](examples/bridge-two-bikes)（事实、brief、过程记录） · seed `bridge-two-bikes-5` · critique 96–100 · brief 遵守度 100
+seed `bridge-two-bikes-5` · `critique_page` 96–100 · brief 遵守度 100 · [示例目录](examples/bridge-two-bikes)：事实清单、brief、预览和过程记录
 
 ### Causeway：潮汐岛上的一日音乐节 · 英文页面
 
-[![Causeway：5 个随机方向并排对比](examples/causeway-festival/screenshots/compare.png)](https://qybaihe.github.io/hash-design/causeway-festival/compare.html)
+[![Causeway：5 个随机方向并排——工程图版、地形图、手作温度、杂志编辑、孟菲斯](docs/assets/showcase/causeway-festival.png)](examples/causeway-festival)
 
-<table>
-<tr>
-<td align="center"><a href="https://qybaihe.github.io/hash-design/causeway-festival/previews/01-engineering-plate.html"><img src="examples/causeway-festival/screenshots/01-engineering-plate-desktop.png" width="150" alt="#1 Engineering plate 桌面"></a><br><a href="https://qybaihe.github.io/hash-design/causeway-festival/previews/01-engineering-plate.html">01 · 工程图版</a></td>
-<td align="center"><a href="https://qybaihe.github.io/hash-design/causeway-festival/previews/02-topographic-map.html"><img src="examples/causeway-festival/screenshots/02-topographic-map-desktop.png" width="150" alt="#2 Topographic map 桌面"></a><br><a href="https://qybaihe.github.io/hash-design/causeway-festival/previews/02-topographic-map.html">02 · 地形图</a></td>
-<td align="center"><a href="https://qybaihe.github.io/hash-design/causeway-festival/previews/03-warm-handmade.html"><img src="examples/causeway-festival/screenshots/03-warm-handmade-desktop.png" width="150" alt="#3 Warm handmade 桌面"></a><br><a href="https://qybaihe.github.io/hash-design/causeway-festival/previews/03-warm-handmade.html">03 · 手作温度</a></td>
-<td align="center"><a href="https://qybaihe.github.io/hash-design/causeway-festival/previews/04-editorial-magazine.html"><img src="examples/causeway-festival/screenshots/04-editorial-magazine-desktop.png" width="150" alt="#4 Editorial magazine 桌面"></a><br><a href="https://qybaihe.github.io/hash-design/causeway-festival/previews/04-editorial-magazine.html">04 · 杂志编辑</a></td>
-<td align="center"><a href="https://qybaihe.github.io/hash-design/causeway-festival/previews/05-memphis-pop.html"><img src="examples/causeway-festival/screenshots/05-memphis-pop-desktop.png" width="150" alt="#5 Memphis pop 桌面"></a><br><a href="https://qybaihe.github.io/hash-design/causeway-festival/previews/05-memphis-pop.html">05 · 孟菲斯</a></td>
-</tr>
-</table>
-
-**[打开在线对比页 →](https://qybaihe.github.io/hash-design/causeway-festival/compare.html)** · [示例目录](examples/causeway-festival)（事实、brief、过程记录） · seed `causeway-festival-6` · critique 96–100 · brief 遵守度 100
-
-<!-- MORE-EXAMPLES:END -->
+seed `causeway-festival-6` · `critique_page` 96–100 · brief 遵守度 100 · [示例目录](examples/causeway-festival)：事实清单、brief、预览和过程记录
 
 ## 参考
 
@@ -466,6 +403,7 @@ npm run example:critique      # 对照 brief 批量 critique 所有示例预览�
 npm run screenshots           # Playwright 截图所有示例（需 npx playwright install chromium）
 npm run hero                  # 用示例截图重新生成 docs/assets/hero.png 和 social-preview.png
 npm run hero:gif              # 重新生成 docs/assets/hero.gif 和 hero.mp4（需要 ffmpeg；装了 gifski 会优先用）
+npm run showcase              # 重新生成 docs/assets/showcase/<示例>.png，每个示例一张拼图
 ```
 
 CI 在 Node 20、22、24 上跑 build、typecheck、lint、格式检查、测试、stdio 冒烟测试和 `npm pack --dry-run`。

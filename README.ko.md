@@ -22,7 +22,7 @@
 
 **[라이브 예시](https://qybaihe.github.io/hash-design/) · [브랜치 목록](docs/branches.md) · [MCP 레퍼런스](docs/mcp-tools.md) · [변경 기록](CHANGELOG.md)**
 
-[빠른 시작](#빠른-시작) · [작동 방식](#작동-방식) · [예시](#예시) · [레퍼런스](#레퍼런스) · [자주 묻는 질문](#자주-묻는-질문)
+[빠른 시작](#빠른-시작) · [작동 방식](#작동-방식) · [쇼케이스](#쇼케이스) · [레퍼런스](#레퍼런스) · [자주 묻는 질문](#자주-묻는-질문)
 
 **에이전트에게 이렇게 말하세요** (Claude Code, Cursor):
 
@@ -235,96 +235,33 @@ flowchart LR
 
 브리프는 에이전트가 읽도록 작성되며 2개 국어로 되어 있습니다. 제목에는 중국어와 영어 레이블이 함께 붙고, `language`(`zh` 또는 `en`, 주제와 팩트에서 자동 감지)에 따라 콘셉트 설명, 지시문, CJK 웹폰트 로드 여부가 바뀝니다. 일부 풀 설명(보이스, 트위스트)은 현재 중국어로만 작성되어 있습니다.
 
-## 예시
+## 쇼케이스
 
-전체 과정을 실행한 예시 네 개입니다. 각각 자기 팩트 시트와 고정 seed를 씁니다(seed는 재현용일 뿐입니다). 두 예시가 같은 브랜치를 쓰는 일은 없어서, 네 예시를 합치면 브랜치 40개 중 20개, 여섯 패밀리를 모두 볼 수 있습니다. 각 프리뷰는 자기 브리프만 본 서브 에이전트가 만들었고, 모두 `critique_page`에서 90/100 이상입니다. 전부 [예시 목록](https://qybaihe.github.io/hash-design/)에 있습니다.
+전체 과정을 실행한 예시 네 개입니다. 각각 자기 팩트 시트와 고정 seed를 씁니다(seed는 재현용일 뿐입니다). 두 예시가 같은 브랜치를 쓰는 일은 없어서, 네 예시를 합치면 브랜치 40개 중 20개, 여섯 패밀리를 모두 볼 수 있습니다. 각 프리뷰는 자기 브리프만 본 서브 에이전트가 만들었고, 모두 `critique_page`에서 90/100 이상입니다. 전부 [예시 목록](https://qybaihe.github.io/hash-design/)에 있습니다. 아래 각 이미지는 한 번의 롤이며, 다섯 방향을 브랜치 이름과 ref와 함께 나란히 보여 줍니다.
 
 ### Fourth Lane Bakery (第四巷面包店) — 동네 빵집 · 중국어 페이지
 
-[![Fourth Lane Bakery: 팩트 시트 하나에서 나온 무작위 방향 다섯 가지를 나란히](examples/fourth-lane-bakery/screenshots/compare.png)](https://qybaihe.github.io/hash-design/fourth-lane-bakery/compare.html)
+[![Fourth Lane Bakery: 롤로 뽑은 다섯 방향을 나란히 — Bureaucratic form, Bauhaus primary, Ink and seal, Risograph duotone, Hong Kong shop sign](docs/assets/showcase/fourth-lane-bakery.png)](examples/fourth-lane-bakery)
 
-[`examples/fourth-lane-bakery/`](examples/fourth-lane-bakery)는 가상의 빵집을 대상으로 전 과정을 처음부터 끝까지 실행한 예시입니다. [팩트 시트](examples/fourth-lane-bakery/facts.md) → 한 번의 롤 → 고정된 브리프 다섯 개 → 프리뷰 다섯 개(각각 자기 브리프만 볼 수 있는 별도의 서브 에이전트가 렌더링) → 나란히 보는 비교 페이지로 이어집니다. 모든 결과물은 GitHub Pages에서 볼 수 있습니다.
-
-| #   | 방향 (브랜치)                                                                                                    | 데스크톱                                                                                                                             | 브리프                                                               |
-| --- | ---------------------------------------------------------------------------------------------------------------- | ------------------------------------------------------------------------------------------------------------------------------------ | -------------------------------------------------------------------- |
-| 01  | [Bureaucratic form](https://qybaihe.github.io/hash-design/fourth-lane-bakery/previews/01-bureaucratic-form.html) | <img src="examples/fourth-lane-bakery/screenshots/01-bureaucratic-form-desktop.png" width="260" alt="#1 Bureaucratic form, desktop"> | [브리프](examples/fourth-lane-bakery/briefs/01-bureaucratic-form.md) |
-| 02  | [Bauhaus primary](https://qybaihe.github.io/hash-design/fourth-lane-bakery/previews/02-bauhaus-primary.html)     | <img src="examples/fourth-lane-bakery/screenshots/02-bauhaus-primary-desktop.png" width="260" alt="#2 Bauhaus primary, desktop">     | [브리프](examples/fourth-lane-bakery/briefs/02-bauhaus-primary.md)   |
-| 03  | [Ink and seal](https://qybaihe.github.io/hash-design/fourth-lane-bakery/previews/03-ink-and-seal.html)           | <img src="examples/fourth-lane-bakery/screenshots/03-ink-and-seal-desktop.png" width="260" alt="#3 Ink and seal, desktop">           | [브리프](examples/fourth-lane-bakery/briefs/03-ink-and-seal.md)      |
-| 04  | [Risograph duotone](https://qybaihe.github.io/hash-design/fourth-lane-bakery/previews/04-risograph-duotone.html) | <img src="examples/fourth-lane-bakery/screenshots/04-risograph-duotone-desktop.png" width="260" alt="#4 Risograph duotone, desktop"> | [브리프](examples/fourth-lane-bakery/briefs/04-risograph-duotone.md) |
-| 05  | [Hong Kong shop sign](https://qybaihe.github.io/hash-design/fourth-lane-bakery/previews/05-hk-shop-sign.html)    | <img src="examples/fourth-lane-bakery/screenshots/05-hk-shop-sign-desktop.png" width="260" alt="#5 Hong Kong shop sign, desktop">    | [브리프](examples/fourth-lane-bakery/briefs/05-hk-shop-sign.md)      |
-
-- **라이브 비교 페이지:** <https://qybaihe.github.io/hash-design/fourth-lane-bakery/compare.html> (1–5 키로 확대, D/M 키로 데스크톱/모바일 전환)
-- **로컬:** `open examples/fourth-lane-bakery/compare.html`
-- 모든 프리뷰가 `critique_page`에서 96–100/100점, 브리프 준수도에서 100/100점을 받았습니다. 진행 과정은 예시의 [README](examples/fourth-lane-bakery/README.md)(중국어)에 기록되어 있습니다. 가게와 팩트, 문구가 중국어인 것은 이 페이지가 중국어 사용자를 위해 작성되었기 때문입니다.
-
-<details><summary>모바일 스크린샷과 휴대폰 너비에서 본 비교 페이지</summary>
-
-<img src="examples/fourth-lane-bakery/screenshots/01-bureaucratic-form-mobile.png" width="19%" alt="#1 mobile"> <img src="examples/fourth-lane-bakery/screenshots/02-bauhaus-primary-mobile.png" width="19%" alt="#2 mobile"> <img src="examples/fourth-lane-bakery/screenshots/03-ink-and-seal-mobile.png" width="19%" alt="#3 mobile"> <img src="examples/fourth-lane-bakery/screenshots/04-risograph-duotone-mobile.png" width="19%" alt="#4 mobile"> <img src="examples/fourth-lane-bakery/screenshots/05-hk-shop-sign-mobile.png" width="19%" alt="#5 mobile">
-
-![Compare page at phone width](examples/fourth-lane-bakery/screenshots/compare-mobile.png)
-
-</details>
-
-예시와 똑같은 롤을 재현하는 방법:
-
-```bash
-npm run build
-node packages/core/dist/bin.js roll --subject "第四巷面包店" \
-  --facts-file examples/fourth-lane-bakery/facts.md --seed fourth-lane-bakery --out /tmp/fourth-lane
-# MCP로 하려면: roll_designs { subject, facts, seed: "fourth-lane-bakery" } 가 같은 ref 다섯 개를 반환합니다
-```
-
-<!-- MORE-EXAMPLES:START -->
+seed `fourth-lane-bakery` · `critique_page` 96–100 · 브리프 준수도 100 · [예시 폴더](examples/fourth-lane-bakery): 팩트, 브리프, 프리뷰, 작업 과정
 
 ### Sluice — 셀프 호스팅 웹훅 수신함 · 영어 페이지
 
-[![Sluice: five rolled directions side by side](examples/sluice/screenshots/compare.png)](https://qybaihe.github.io/hash-design/sluice/compare.html)
+[![Sluice: 롤로 뽑은 다섯 방향을 나란히 — Record sleeve, Gallery catalogue, Terminal phosphor, Academic paper, Lab notebook](docs/assets/showcase/sluice.png)](examples/sluice)
 
-<table>
-<tr>
-<td align="center"><a href="https://qybaihe.github.io/hash-design/sluice/previews/01-record-sleeve.html"><img src="examples/sluice/screenshots/01-record-sleeve-desktop.png" width="150" alt="#1 Record sleeve, desktop"></a><br><a href="https://qybaihe.github.io/hash-design/sluice/previews/01-record-sleeve.html">01 · Record sleeve</a></td>
-<td align="center"><a href="https://qybaihe.github.io/hash-design/sluice/previews/02-gallery-catalogue.html"><img src="examples/sluice/screenshots/02-gallery-catalogue-desktop.png" width="150" alt="#2 Gallery catalogue, desktop"></a><br><a href="https://qybaihe.github.io/hash-design/sluice/previews/02-gallery-catalogue.html">02 · Gallery catalogue</a></td>
-<td align="center"><a href="https://qybaihe.github.io/hash-design/sluice/previews/03-terminal-phosphor.html"><img src="examples/sluice/screenshots/03-terminal-phosphor-desktop.png" width="150" alt="#3 Terminal phosphor, desktop"></a><br><a href="https://qybaihe.github.io/hash-design/sluice/previews/03-terminal-phosphor.html">03 · Terminal phosphor</a></td>
-<td align="center"><a href="https://qybaihe.github.io/hash-design/sluice/previews/04-academic-paper.html"><img src="examples/sluice/screenshots/04-academic-paper-desktop.png" width="150" alt="#4 Academic paper, desktop"></a><br><a href="https://qybaihe.github.io/hash-design/sluice/previews/04-academic-paper.html">04 · Academic paper</a></td>
-<td align="center"><a href="https://qybaihe.github.io/hash-design/sluice/previews/05-lab-notebook.html"><img src="examples/sluice/screenshots/05-lab-notebook-desktop.png" width="150" alt="#5 Lab notebook, desktop"></a><br><a href="https://qybaihe.github.io/hash-design/sluice/previews/05-lab-notebook.html">05 · Lab notebook</a></td>
-</tr>
-</table>
-
-**[라이브 비교 페이지 열기 →](https://qybaihe.github.io/hash-design/sluice/compare.html)** · [예시 폴더](examples/sluice) (팩트, 브리프, 작업 과정) · seed `sluice` · critique 92–96 · 브리프 준수도 90–100
+seed `sluice` · `critique_page` 92–96 · 브리프 준수도 90–100 · [예시 폴더](examples/sluice): 팩트, 브리프, 프리뷰, 작업 과정
 
 ### Bridge No.2 Cycle Works (二号桥单车铺) — 다리 밑 자전거 수리점 · 중국어 페이지
 
-[![Bridge No.2 Cycle Works: five rolled directions side by side](examples/bridge-two-bikes/screenshots/compare.png)](https://qybaihe.github.io/hash-design/bridge-two-bikes/compare.html)
+[![Bridge No.2 Cycle Works: 롤로 뽑은 다섯 방향을 나란히 — Swiss grid, Couture lookbook, Ticket stub, Game manual, Chinese almanac](docs/assets/showcase/bridge-two-bikes.png)](examples/bridge-two-bikes)
 
-<table>
-<tr>
-<td align="center"><a href="https://qybaihe.github.io/hash-design/bridge-two-bikes/previews/01-swiss-grid.html"><img src="examples/bridge-two-bikes/screenshots/01-swiss-grid-desktop.png" width="150" alt="#1 Swiss grid, desktop"></a><br><a href="https://qybaihe.github.io/hash-design/bridge-two-bikes/previews/01-swiss-grid.html">01 · Swiss grid</a></td>
-<td align="center"><a href="https://qybaihe.github.io/hash-design/bridge-two-bikes/previews/02-couture-lookbook.html"><img src="examples/bridge-two-bikes/screenshots/02-couture-lookbook-desktop.png" width="150" alt="#2 Couture lookbook, desktop"></a><br><a href="https://qybaihe.github.io/hash-design/bridge-two-bikes/previews/02-couture-lookbook.html">02 · Couture lookbook</a></td>
-<td align="center"><a href="https://qybaihe.github.io/hash-design/bridge-two-bikes/previews/03-ticket-stub.html"><img src="examples/bridge-two-bikes/screenshots/03-ticket-stub-desktop.png" width="150" alt="#3 Ticket stub, desktop"></a><br><a href="https://qybaihe.github.io/hash-design/bridge-two-bikes/previews/03-ticket-stub.html">03 · Ticket stub</a></td>
-<td align="center"><a href="https://qybaihe.github.io/hash-design/bridge-two-bikes/previews/04-game-manual.html"><img src="examples/bridge-two-bikes/screenshots/04-game-manual-desktop.png" width="150" alt="#4 Game manual, desktop"></a><br><a href="https://qybaihe.github.io/hash-design/bridge-two-bikes/previews/04-game-manual.html">04 · Game manual</a></td>
-<td align="center"><a href="https://qybaihe.github.io/hash-design/bridge-two-bikes/previews/05-chinese-almanac.html"><img src="examples/bridge-two-bikes/screenshots/05-chinese-almanac-desktop.png" width="150" alt="#5 Chinese almanac, desktop"></a><br><a href="https://qybaihe.github.io/hash-design/bridge-two-bikes/previews/05-chinese-almanac.html">05 · Chinese almanac</a></td>
-</tr>
-</table>
-
-**[라이브 비교 페이지 열기 →](https://qybaihe.github.io/hash-design/bridge-two-bikes/compare.html)** · [예시 폴더](examples/bridge-two-bikes) (팩트, 브리프, 작업 과정) · seed `bridge-two-bikes-5` · critique 96–100 · 브리프 준수도 100
+seed `bridge-two-bikes-5` · `critique_page` 96–100 · 브리프 준수도 100 · [예시 폴더](examples/bridge-two-bikes): 팩트, 브리프, 프리뷰, 작업 과정
 
 ### Causeway — 썰물 때만 건너가는 섬의 하루짜리 음악 축제 · 영어 페이지
 
-[![Causeway: five rolled directions side by side](examples/causeway-festival/screenshots/compare.png)](https://qybaihe.github.io/hash-design/causeway-festival/compare.html)
+[![Causeway: 롤로 뽑은 다섯 방향을 나란히 — Engineering plate, Topographic map, Warm handmade, Editorial magazine, Memphis pop](docs/assets/showcase/causeway-festival.png)](examples/causeway-festival)
 
-<table>
-<tr>
-<td align="center"><a href="https://qybaihe.github.io/hash-design/causeway-festival/previews/01-engineering-plate.html"><img src="examples/causeway-festival/screenshots/01-engineering-plate-desktop.png" width="150" alt="#1 Engineering plate, desktop"></a><br><a href="https://qybaihe.github.io/hash-design/causeway-festival/previews/01-engineering-plate.html">01 · Engineering plate</a></td>
-<td align="center"><a href="https://qybaihe.github.io/hash-design/causeway-festival/previews/02-topographic-map.html"><img src="examples/causeway-festival/screenshots/02-topographic-map-desktop.png" width="150" alt="#2 Topographic map, desktop"></a><br><a href="https://qybaihe.github.io/hash-design/causeway-festival/previews/02-topographic-map.html">02 · Topographic map</a></td>
-<td align="center"><a href="https://qybaihe.github.io/hash-design/causeway-festival/previews/03-warm-handmade.html"><img src="examples/causeway-festival/screenshots/03-warm-handmade-desktop.png" width="150" alt="#3 Warm handmade, desktop"></a><br><a href="https://qybaihe.github.io/hash-design/causeway-festival/previews/03-warm-handmade.html">03 · Warm handmade</a></td>
-<td align="center"><a href="https://qybaihe.github.io/hash-design/causeway-festival/previews/04-editorial-magazine.html"><img src="examples/causeway-festival/screenshots/04-editorial-magazine-desktop.png" width="150" alt="#4 Editorial magazine, desktop"></a><br><a href="https://qybaihe.github.io/hash-design/causeway-festival/previews/04-editorial-magazine.html">04 · Editorial magazine</a></td>
-<td align="center"><a href="https://qybaihe.github.io/hash-design/causeway-festival/previews/05-memphis-pop.html"><img src="examples/causeway-festival/screenshots/05-memphis-pop-desktop.png" width="150" alt="#5 Memphis pop, desktop"></a><br><a href="https://qybaihe.github.io/hash-design/causeway-festival/previews/05-memphis-pop.html">05 · Memphis pop</a></td>
-</tr>
-</table>
-
-**[라이브 비교 페이지 열기 →](https://qybaihe.github.io/hash-design/causeway-festival/compare.html)** · [예시 폴더](examples/causeway-festival) (팩트, 브리프, 작업 과정) · seed `causeway-festival-6` · critique 96–100 · 브리프 준수도 100
-
-<!-- MORE-EXAMPLES:END -->
+seed `causeway-festival-6` · `critique_page` 96–100 · 브리프 준수도 100 · [예시 폴더](examples/causeway-festival): 팩트, 브리프, 프리뷰, 작업 과정
 
 ## 레퍼런스
 
@@ -466,6 +403,7 @@ npm run example:critique      # 모든 예시 미리보기를 브리프 기준�
 npm run screenshots           # 모든 예시의 Playwright 스크린샷 (`npx playwright install chromium` 필요)
 npm run hero                  # 예시 스크린샷으로 docs/assets/hero.png와 social-preview.png를 다시 생성
 npm run hero:gif              # docs/assets/hero.gif와 hero.mp4를 다시 생성 (ffmpeg 필요, gifski가 있으면 gifski 사용)
+npm run showcase              # docs/assets/showcase/<예시>.png를 다시 생성 (예시마다 한 장)
 ```
 
 CI는 Node 20, 22, 24에서 빌드, 타입 검사, lint, 포맷 검사, 테스트, stdio 스모크 테스트, `npm pack --dry-run`을 실행합니다.

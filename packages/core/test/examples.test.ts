@@ -102,17 +102,17 @@ describe('the examples together', () => {
     }
   });
 
-  it('are all linked from the Pages index and every README', () => {
+  it('are all linked from the Pages index and shown in the showcase of every README', () => {
     const index = readFileSync(new URL('index.html', examplesDir), 'utf8');
     const readmes = ['README.md', 'README.zh-CN.md', 'README.ja.md', 'README.ko.md', 'README.es.md'];
     for (const name of EXAMPLES) {
       expect(index, `index.html → ${name}`).toContain(`href="${name}/compare.html"`);
+      const plate = `docs/assets/showcase/${name}.png`;
+      expect(existsSync(new URL(plate, root)), `${plate} (run npm run showcase)`).toBe(true);
       for (const file of readmes) {
         const md = readFileSync(new URL(file, root), 'utf8');
-        expect(md, `${file} → ${name}`).toContain(
-          `https://qybaihe.github.io/hash-design/${name}/compare.html`,
-        );
-        expect(md, `${file} → ${name}`).toContain(`examples/${name}/screenshots/compare.png`);
+        expect(md, `${file} → ${plate}`).toContain(`(${plate})`);
+        expect(md, `${file} → examples/${name}`).toContain(`](examples/${name})`);
       }
     }
   });

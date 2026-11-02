@@ -22,7 +22,7 @@
 
 **[Ejemplos en vivo](https://qybaihe.github.io/hash-design/) · [Catálogo de ramas](docs/branches.md) · [Referencia MCP](docs/mcp-tools.md) · [Registro de cambios](CHANGELOG.md)**
 
-[Inicio rápido](#inicio-rápido) · [Cómo funciona](#cómo-funciona) · [Ejemplos](#ejemplos) · [Referencia](#referencia) · [Preguntas frecuentes](#preguntas-frecuentes)
+[Inicio rápido](#inicio-rápido) · [Cómo funciona](#cómo-funciona) · [Galería](#galería) · [Referencia](#referencia) · [Preguntas frecuentes](#preguntas-frecuentes)
 
 **Díselo a tu agente** (Claude Code, Cursor):
 
@@ -235,96 +235,33 @@ Toma el brief [#3 Ink and seal](examples/fourth-lane-bakery/briefs/03-ink-and-se
 
 Los briefs están escritos para agentes y son bilingües: los encabezados llevan etiquetas en chino y en inglés, y `language` (`zh` o `en`, detectado automáticamente a partir del tema y los datos) cambia el texto del concepto, las instrucciones y si se cargan webfonts CJK. Algunas descripciones de los conjuntos de opciones (voces, giros) por ahora solo están escritas en chino.
 
-## Ejemplos
+## Galería
 
-Cuatro ejecuciones completas, cada una con su ficha de datos y una semilla fija que solo sirve para reproducirla. Ningún par de ejemplos comparte rama, así que juntos muestran 20 de las 40 ramas, de las seis familias. Cada vista previa la hizo un subagente que solo veía su brief, y todas puntúan al menos 90/100 en `critique_page`. Todas están en el [índice de ejemplos](https://qybaihe.github.io/hash-design/).
+Cuatro ejecuciones completas, cada una con su ficha de datos y una semilla fija que solo sirve para reproducirla. Ningún par de ejemplos comparte rama, así que juntos muestran 20 de las 40 ramas, de las seis familias. Cada vista previa la hizo un subagente que solo veía su brief, y todas puntúan al menos 90/100 en `critique_page`. Todas están en el [índice de ejemplos](https://qybaihe.github.io/hash-design/). Cada lámina de abajo es una tirada: sus cinco direcciones lado a lado, con la rama y el ref.
 
 ### Fourth Lane Bakery (第四巷面包店) — una panadería de barrio · página en chino
 
-[![Fourth Lane Bakery: una ficha de datos, cinco direcciones aleatorias lado a lado](examples/fourth-lane-bakery/screenshots/compare.png)](https://qybaihe.github.io/hash-design/fourth-lane-bakery/compare.html)
+[![Fourth Lane Bakery: cinco direcciones sorteadas lado a lado — Bureaucratic form, Bauhaus primary, Ink and seal, Risograph duotone, Hong Kong shop sign](docs/assets/showcase/fourth-lane-bakery.png)](examples/fourth-lane-bakery)
 
-[`examples/fourth-lane-bakery/`](examples/fourth-lane-bakery) es una ejecución completa, de principio a fin, para una panadería ficticia: una [ficha de datos](examples/fourth-lane-bakery/facts.md) → una tirada → cinco briefs congelados → cinco vistas previas, cada una renderizada por un subagente distinto que solo podía ver su propio brief → una página comparativa lado a lado. Todo se sirve en GitHub Pages:
-
-| #   | Dirección (rama)                                                                                                 | Escritorio                                                                                                                           | Brief                                                               |
-| --- | ---------------------------------------------------------------------------------------------------------------- | ------------------------------------------------------------------------------------------------------------------------------------ | ------------------------------------------------------------------- |
-| 01  | [Bureaucratic form](https://qybaihe.github.io/hash-design/fourth-lane-bakery/previews/01-bureaucratic-form.html) | <img src="examples/fourth-lane-bakery/screenshots/01-bureaucratic-form-desktop.png" width="260" alt="#1 Bureaucratic form, desktop"> | [brief](examples/fourth-lane-bakery/briefs/01-bureaucratic-form.md) |
-| 02  | [Bauhaus primary](https://qybaihe.github.io/hash-design/fourth-lane-bakery/previews/02-bauhaus-primary.html)     | <img src="examples/fourth-lane-bakery/screenshots/02-bauhaus-primary-desktop.png" width="260" alt="#2 Bauhaus primary, desktop">     | [brief](examples/fourth-lane-bakery/briefs/02-bauhaus-primary.md)   |
-| 03  | [Ink and seal](https://qybaihe.github.io/hash-design/fourth-lane-bakery/previews/03-ink-and-seal.html)           | <img src="examples/fourth-lane-bakery/screenshots/03-ink-and-seal-desktop.png" width="260" alt="#3 Ink and seal, desktop">           | [brief](examples/fourth-lane-bakery/briefs/03-ink-and-seal.md)      |
-| 04  | [Risograph duotone](https://qybaihe.github.io/hash-design/fourth-lane-bakery/previews/04-risograph-duotone.html) | <img src="examples/fourth-lane-bakery/screenshots/04-risograph-duotone-desktop.png" width="260" alt="#4 Risograph duotone, desktop"> | [brief](examples/fourth-lane-bakery/briefs/04-risograph-duotone.md) |
-| 05  | [Hong Kong shop sign](https://qybaihe.github.io/hash-design/fourth-lane-bakery/previews/05-hk-shop-sign.html)    | <img src="examples/fourth-lane-bakery/screenshots/05-hk-shop-sign-desktop.png" width="260" alt="#5 Hong Kong shop sign, desktop">    | [brief](examples/fourth-lane-bakery/briefs/05-hk-shop-sign.md)      |
-
-- **Página comparativa en vivo:** <https://qybaihe.github.io/hash-design/fourth-lane-bakery/compare.html> (pulsa 1–5 para ampliar y D/M para alternar entre escritorio y móvil)
-- **En local:** `open examples/fourth-lane-bakery/compare.html`
-- Todas las vistas previas obtuvieron entre 96 y 100/100 en `critique_page` y 100/100 en adherencia al brief. El [README](examples/fourth-lane-bakery/README.md) del ejemplo (en chino) documenta el proceso. La tienda, sus datos y sus textos están en chino porque la página está escrita para un público chino.
-
-<details><summary>Capturas en móvil y la página comparativa con ancho de teléfono</summary>
-
-<img src="examples/fourth-lane-bakery/screenshots/01-bureaucratic-form-mobile.png" width="19%" alt="#1 mobile"> <img src="examples/fourth-lane-bakery/screenshots/02-bauhaus-primary-mobile.png" width="19%" alt="#2 mobile"> <img src="examples/fourth-lane-bakery/screenshots/03-ink-and-seal-mobile.png" width="19%" alt="#3 mobile"> <img src="examples/fourth-lane-bakery/screenshots/04-risograph-duotone-mobile.png" width="19%" alt="#4 mobile"> <img src="examples/fourth-lane-bakery/screenshots/05-hk-shop-sign-mobile.png" width="19%" alt="#5 mobile">
-
-![Compare page at phone width](examples/fourth-lane-bakery/screenshots/compare-mobile.png)
-
-</details>
-
-Para reproducir exactamente esta tirada:
-
-```bash
-npm run build
-node packages/core/dist/bin.js roll --subject "第四巷面包店" \
-  --facts-file examples/fourth-lane-bakery/facts.md --seed fourth-lane-bakery --out /tmp/fourth-lane
-# Equivalente MCP: roll_designs { subject, facts, seed: "fourth-lane-bakery" } devuelve las mismas cinco refs
-```
-
-<!-- MORE-EXAMPLES:START -->
+Semilla `fourth-lane-bakery` · `critique_page` 96–100 · adherencia al brief 100 · [carpeta del ejemplo](examples/fourth-lane-bakery): datos, briefs, vistas previas y proceso
 
 ### Sluice — una bandeja de entrada autoalojada para webhooks · página en inglés
 
-[![Sluice: five rolled directions side by side](examples/sluice/screenshots/compare.png)](https://qybaihe.github.io/hash-design/sluice/compare.html)
+[![Sluice: cinco direcciones sorteadas lado a lado — Record sleeve, Gallery catalogue, Terminal phosphor, Academic paper, Lab notebook](docs/assets/showcase/sluice.png)](examples/sluice)
 
-<table>
-<tr>
-<td align="center"><a href="https://qybaihe.github.io/hash-design/sluice/previews/01-record-sleeve.html"><img src="examples/sluice/screenshots/01-record-sleeve-desktop.png" width="150" alt="#1 Record sleeve, desktop"></a><br><a href="https://qybaihe.github.io/hash-design/sluice/previews/01-record-sleeve.html">01 · Record sleeve</a></td>
-<td align="center"><a href="https://qybaihe.github.io/hash-design/sluice/previews/02-gallery-catalogue.html"><img src="examples/sluice/screenshots/02-gallery-catalogue-desktop.png" width="150" alt="#2 Gallery catalogue, desktop"></a><br><a href="https://qybaihe.github.io/hash-design/sluice/previews/02-gallery-catalogue.html">02 · Gallery catalogue</a></td>
-<td align="center"><a href="https://qybaihe.github.io/hash-design/sluice/previews/03-terminal-phosphor.html"><img src="examples/sluice/screenshots/03-terminal-phosphor-desktop.png" width="150" alt="#3 Terminal phosphor, desktop"></a><br><a href="https://qybaihe.github.io/hash-design/sluice/previews/03-terminal-phosphor.html">03 · Terminal phosphor</a></td>
-<td align="center"><a href="https://qybaihe.github.io/hash-design/sluice/previews/04-academic-paper.html"><img src="examples/sluice/screenshots/04-academic-paper-desktop.png" width="150" alt="#4 Academic paper, desktop"></a><br><a href="https://qybaihe.github.io/hash-design/sluice/previews/04-academic-paper.html">04 · Academic paper</a></td>
-<td align="center"><a href="https://qybaihe.github.io/hash-design/sluice/previews/05-lab-notebook.html"><img src="examples/sluice/screenshots/05-lab-notebook-desktop.png" width="150" alt="#5 Lab notebook, desktop"></a><br><a href="https://qybaihe.github.io/hash-design/sluice/previews/05-lab-notebook.html">05 · Lab notebook</a></td>
-</tr>
-</table>
-
-**[Página comparativa en vivo →](https://qybaihe.github.io/hash-design/sluice/compare.html)** · [carpeta del ejemplo](examples/sluice) (datos, briefs y proceso) · seed `sluice` · critique 92–96 · adherencia al brief 90–100
+Semilla `sluice` · `critique_page` 92–96 · adherencia al brief 90–100 · [carpeta del ejemplo](examples/sluice): datos, briefs, vistas previas y proceso
 
 ### Bridge No.2 Cycle Works (二号桥单车铺) — un taller de bicicletas bajo un puente · página en chino
 
-[![Bridge No.2 Cycle Works: five rolled directions side by side](examples/bridge-two-bikes/screenshots/compare.png)](https://qybaihe.github.io/hash-design/bridge-two-bikes/compare.html)
+[![Bridge No.2 Cycle Works: cinco direcciones sorteadas lado a lado — Swiss grid, Couture lookbook, Ticket stub, Game manual, Chinese almanac](docs/assets/showcase/bridge-two-bikes.png)](examples/bridge-two-bikes)
 
-<table>
-<tr>
-<td align="center"><a href="https://qybaihe.github.io/hash-design/bridge-two-bikes/previews/01-swiss-grid.html"><img src="examples/bridge-two-bikes/screenshots/01-swiss-grid-desktop.png" width="150" alt="#1 Swiss grid, desktop"></a><br><a href="https://qybaihe.github.io/hash-design/bridge-two-bikes/previews/01-swiss-grid.html">01 · Swiss grid</a></td>
-<td align="center"><a href="https://qybaihe.github.io/hash-design/bridge-two-bikes/previews/02-couture-lookbook.html"><img src="examples/bridge-two-bikes/screenshots/02-couture-lookbook-desktop.png" width="150" alt="#2 Couture lookbook, desktop"></a><br><a href="https://qybaihe.github.io/hash-design/bridge-two-bikes/previews/02-couture-lookbook.html">02 · Couture lookbook</a></td>
-<td align="center"><a href="https://qybaihe.github.io/hash-design/bridge-two-bikes/previews/03-ticket-stub.html"><img src="examples/bridge-two-bikes/screenshots/03-ticket-stub-desktop.png" width="150" alt="#3 Ticket stub, desktop"></a><br><a href="https://qybaihe.github.io/hash-design/bridge-two-bikes/previews/03-ticket-stub.html">03 · Ticket stub</a></td>
-<td align="center"><a href="https://qybaihe.github.io/hash-design/bridge-two-bikes/previews/04-game-manual.html"><img src="examples/bridge-two-bikes/screenshots/04-game-manual-desktop.png" width="150" alt="#4 Game manual, desktop"></a><br><a href="https://qybaihe.github.io/hash-design/bridge-two-bikes/previews/04-game-manual.html">04 · Game manual</a></td>
-<td align="center"><a href="https://qybaihe.github.io/hash-design/bridge-two-bikes/previews/05-chinese-almanac.html"><img src="examples/bridge-two-bikes/screenshots/05-chinese-almanac-desktop.png" width="150" alt="#5 Chinese almanac, desktop"></a><br><a href="https://qybaihe.github.io/hash-design/bridge-two-bikes/previews/05-chinese-almanac.html">05 · Chinese almanac</a></td>
-</tr>
-</table>
-
-**[Página comparativa en vivo →](https://qybaihe.github.io/hash-design/bridge-two-bikes/compare.html)** · [carpeta del ejemplo](examples/bridge-two-bikes) (datos, briefs y proceso) · seed `bridge-two-bikes-5` · critique 96–100 · adherencia al brief 100
+Semilla `bridge-two-bikes-5` · `critique_page` 96–100 · adherencia al brief 100 · [carpeta del ejemplo](examples/bridge-two-bikes): datos, briefs, vistas previas y proceso
 
 ### Causeway — un festival de música de un día en una isla a la que se llega con marea baja · página en inglés
 
-[![Causeway: five rolled directions side by side](examples/causeway-festival/screenshots/compare.png)](https://qybaihe.github.io/hash-design/causeway-festival/compare.html)
+[![Causeway: cinco direcciones sorteadas lado a lado — Engineering plate, Topographic map, Warm handmade, Editorial magazine, Memphis pop](docs/assets/showcase/causeway-festival.png)](examples/causeway-festival)
 
-<table>
-<tr>
-<td align="center"><a href="https://qybaihe.github.io/hash-design/causeway-festival/previews/01-engineering-plate.html"><img src="examples/causeway-festival/screenshots/01-engineering-plate-desktop.png" width="150" alt="#1 Engineering plate, desktop"></a><br><a href="https://qybaihe.github.io/hash-design/causeway-festival/previews/01-engineering-plate.html">01 · Engineering plate</a></td>
-<td align="center"><a href="https://qybaihe.github.io/hash-design/causeway-festival/previews/02-topographic-map.html"><img src="examples/causeway-festival/screenshots/02-topographic-map-desktop.png" width="150" alt="#2 Topographic map, desktop"></a><br><a href="https://qybaihe.github.io/hash-design/causeway-festival/previews/02-topographic-map.html">02 · Topographic map</a></td>
-<td align="center"><a href="https://qybaihe.github.io/hash-design/causeway-festival/previews/03-warm-handmade.html"><img src="examples/causeway-festival/screenshots/03-warm-handmade-desktop.png" width="150" alt="#3 Warm handmade, desktop"></a><br><a href="https://qybaihe.github.io/hash-design/causeway-festival/previews/03-warm-handmade.html">03 · Warm handmade</a></td>
-<td align="center"><a href="https://qybaihe.github.io/hash-design/causeway-festival/previews/04-editorial-magazine.html"><img src="examples/causeway-festival/screenshots/04-editorial-magazine-desktop.png" width="150" alt="#4 Editorial magazine, desktop"></a><br><a href="https://qybaihe.github.io/hash-design/causeway-festival/previews/04-editorial-magazine.html">04 · Editorial magazine</a></td>
-<td align="center"><a href="https://qybaihe.github.io/hash-design/causeway-festival/previews/05-memphis-pop.html"><img src="examples/causeway-festival/screenshots/05-memphis-pop-desktop.png" width="150" alt="#5 Memphis pop, desktop"></a><br><a href="https://qybaihe.github.io/hash-design/causeway-festival/previews/05-memphis-pop.html">05 · Memphis pop</a></td>
-</tr>
-</table>
-
-**[Página comparativa en vivo →](https://qybaihe.github.io/hash-design/causeway-festival/compare.html)** · [carpeta del ejemplo](examples/causeway-festival) (datos, briefs y proceso) · seed `causeway-festival-6` · critique 96–100 · adherencia al brief 100
-
-<!-- MORE-EXAMPLES:END -->
+Semilla `causeway-festival-6` · `critique_page` 96–100 · adherencia al brief 100 · [carpeta del ejemplo](examples/causeway-festival): datos, briefs, vistas previas y proceso
 
 ## Referencia
 
@@ -466,6 +403,7 @@ npm run example:critique      # critique de todas las vistas previas de los ejem
 npm run screenshots           # capturas de todos los ejemplos con Playwright (requiere `npx playwright install chromium`)
 npm run hero                  # regenera docs/assets/hero.png y social-preview.png a partir de las capturas de un ejemplo
 npm run hero:gif              # regenera docs/assets/hero.gif y hero.mp4 (requiere ffmpeg; usa gifski si está instalado)
+npm run showcase              # regenera docs/assets/showcase/<ejemplo>.png, una lámina por ejemplo
 ```
 
 En CI se ejecutan la compilación, la comprobación de tipos, el lint, la comprobación de formato, los tests, el smoke test por stdio y `npm pack --dry-run` en Node 20, 22 y 24.
