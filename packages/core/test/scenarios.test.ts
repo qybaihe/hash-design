@@ -1,5 +1,6 @@
 import { describe, expect, it } from 'vitest';
 import { briefJson, renderBrief, renderRollSummary, reproduce, roll, rollJson } from '../src/brief.js';
+import { critiquePage } from '../src/critique.js';
 import { DENSITIES, TWISTS } from '../src/data/pools.js';
 import { SCENARIOS, getScenario } from '../src/data/scenarios.js';
 import { baseSize, tokensCss, typeScale } from '../src/derive.js';
@@ -200,5 +201,71 @@ describe('scenario briefs', () => {
     expect(md).not.toContain('| scenario |');
     expect(md).toMatch(/\| 13–31 \|/);
     expect('scenario' in briefJson(r.designs[0]!, r.content)).toBe(false);
+  });
+});
+
+describe('critique_page scenario checks', () => {
+  const page = (body: string, css = '') =>
+    `<!doctype html><html lang="en"><head><meta name="viewport" content="width=device-width"><style>${css}</style></head><body>${body}</body></html>`;
+  const design = (id: Exclude<ScenarioId, 'web'>) =>
+    roll({ seed: `critique-${id}`, constraints: { scenario: id } }).designs[0]!;
+  const scenarioRules = (id: Exclude<ScenarioId, 'web'>, html: string) =>
+    critiquePage({ html, design: design(id) }).findings.filter((f) => f.rule === `scenario-${id}`);
+
+  it('flags a web page passed off as a deck, and accepts real slides', () => {
+    expect(scenarioRules('deck', page('<main><h1>Hi</h1></main>')).map((f) => f.severity)).toContain('major');
+    const slides = '<section class="slide">1</section>'.repeat(5);
+    const ok = page(
+      `${slides}<script>addEventListener('keydown',()=>{})</script>`,
+      '.slide{width:1920px;height:1080px}',
+    );
+    expect(scenarioRules('deck', ok)).toEqual([]);
+  });
+
+  it('checks the phone frame and screens for app', () => {
+    expect(scenarioRules('app', page('<main></main>'))).toHaveLength(2);
+    const ok = page(
+      '<div class="screen"></div><div class="screen"></div>',
+      '.screen{width:390px;height:844px}',
+    );
+    expect(scenarioRules('app', ok)).toEqual([]);
+  });
+
+  it('asks dashboards for tabular numerals', () => {
+    expect(scenarioRules('dashboard', page('<main>42</main>'))).toHaveLength(1);
+    expect(
+      scenarioRules('dashboard', page('<main>42</main>', 'td{font-variant-numeric:tabular-nums}')),
+    ).toEqual([]);
+  });
+
+  it('checks the poster artboard size', () => {
+    const d = design('poster');
+    const f = d.scenario!.format;
+    expect(critiquePage({ html: page('<main></main>'), design: d }).findings.map((x) => x.rule)).toContain(
+      'scenario-poster',
+    );
+    const ok = page('<main class="art"></main>', `.art{width:${f.width}px;height:${f.height}px}`);
+    expect(critiquePage({ html: ok, design: d }).findings.map((x) => x.rule)).not.toContain(
+      'scenario-poster',
+    );
+  });
+
+  it('rejects scripts and CSS-only layout in email', () => {
+    const d = design('email');
+    const w = d.scenario!.format.width;
+    const bad = critiquePage({ html: page('<div>Hi</div><script>1</script>'), design: d });
+    expect(bad.findings.filter((f) => f.rule === 'scenario-email' && f.severity === 'major')).toHaveLength(2);
+    const ok = critiquePage({
+      html: page(`<table role="presentation" width="${w}"><tr><td>Hi</td></tr></table>`),
+      design: d,
+    });
+    expect(ok.findings.filter((f) => f.rule === 'scenario-email')).toEqual([]);
+  });
+
+  it('adds no scenario checks for web designs', () => {
+    const d = roll({ seed: 'critique-web' }).designs[0]!;
+    const r = critiquePage({ html: page('<main></main>'), design: d });
+    expect(r.findings.some((f) => f.rule.startsWith('scenario-'))).toBe(false);
+    expect(r.passed.some((p) => p.startsWith('scenario-'))).toBe(false);
   });
 });
