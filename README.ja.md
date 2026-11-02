@@ -2,19 +2,50 @@
 
 [English](README.md) | [简体中文](README.zh-CN.md) | **日本語** | [한국어](README.ko.md) | [Español](README.es.md)
 
-[![CI](https://github.com/qybaihe/hash-design/actions/workflows/ci.yml/badge.svg)](https://github.com/qybaihe/hash-design/actions/workflows/ci.yml)
+<p align="center"><b>コーディングエージェントが毎回同じ「Inter と紫のグラデーション」のページを出してくるのを止めます。</b><br>
+1 つのプロンプトから 5 つのデザインの方向性を出します。選ぶのはモデルではなく、真の乱数による SHA-256 ハッシュです。あなたが 1 つ選び、どの方向性も ref から同じものを作り直せます。</p>
+
+<p align="center">
+<a href="https://github.com/qybaihe/hash-design/actions/workflows/ci.yml"><img src="https://github.com/qybaihe/hash-design/actions/workflows/ci.yml/badge.svg" alt="CI"></a>
+<a href="https://qybaihe.github.io/hash-design/"><img src="https://img.shields.io/badge/live%20demo-4%20examples-e2401c.svg" alt="ライブデモ"></a>
+<a href="LICENSE"><img src="https://img.shields.io/badge/license-MIT-black.svg" alt="MIT"></a>
+<a href="#skill-のインストール"><img src="https://img.shields.io/badge/Agent%20Skill-Claude%20Code%20%C2%B7%20Cursor-black.svg" alt="Agent Skill"></a>
+</p>
+
+[![フェスのページを頼む 1 つのプロンプトが、ロールで出た 5 つの方向性に分かれる：Engineering plate、Topographic map、Warm handmade、Editorial magazine、Memphis pop](docs/assets/hero.png)](https://qybaihe.github.io/hash-design/causeway-festival/compare.html)
+
+<p align="center"><sub>モックアップではなく実際の出力です：<a href="examples/causeway-festival">examples/causeway-festival</a>。各プレビューは、凍結されたブリーフ 1 つだけを見た別々のサブエージェントが作りました。<br><a href="https://qybaihe.github.io/hash-design/"><b>4 つのライブサンプルをすべて見る →</b></a> · 40 ブランチのうち 20</sub></p>
+
+### クイックスタート
+
+npm にはまだ公開していません。ソースからビルドし（Node ≥ 20）、Skill をプロジェクトに入れて MCP サーバーを登録します：
+
+```bash
+git clone https://github.com/qybaihe/hash-design.git && cd hash-design && npm install && npm run build
+node packages/core/dist/bin.js skill install --target both --dir /path/to/your/project   # Skill → .claude/skills + .cursor/skills
+claude mcp add hash-design -- node "$PWD/packages/mcp/dist/bin.js"                       # MCP server (Claude Code)
+```
+
+あとはエージェントにこう頼みます：
+
+> hash-design を使って、Skerrow 島で開かれる 1 日限りの音楽フェス「Causeway」の 1 ページサイトを作って。事実：2027 年 6 月 19 日（土）、長さ 1.2 km の潮の引いた道を歩いて島へ渡る……
+
+Cursor と Claude Desktop の設定：[MCP の設定](#mcp-の設定)。
+
+### 4 行でわかる仕組み
+
+1. **ロール**：システムの乱数から SHA-256 ハッシュを 5 つ作る。
+2. **マッピング**：固定の決定木が各ハッシュをブリーフに変える。ジャンル、レイアウト、フォント、16 進数のパレット、密度、モーション、ツイスト。同じ ref なら同じブリーフ。
+3. **レンダリング**：凍結されたブリーフ 1 つにつきサブエージェント 1 つが HTML プレビューを作り、比較ページで並べる。
+4. **選ぶ**：番号で答えると、エージェントがそのブリーフで最終ページを作り、`critique_page` でチェックする。
+
+<details><summary>その他のバッジ</summary>
+
 [![Pages](https://github.com/qybaihe/hash-design/actions/workflows/pages.yml/badge.svg)](https://github.com/qybaihe/hash-design/actions/workflows/pages.yml)
-[![Live demo](https://img.shields.io/badge/demo-4%20examples-e2401c.svg)](https://qybaihe.github.io/hash-design/)
-[![License: MIT](https://img.shields.io/badge/license-MIT-black.svg)](LICENSE)
 [![Node](https://img.shields.io/badge/node-%E2%89%A520%20%C2%B7%20.nvmrc%2022-black.svg)](.nvmrc)
 [![npm: not yet published](https://img.shields.io/badge/npm-not%20yet%20published-lightgrey.svg)](#インストール)
 
-**デザインの方向性は、モデルではなく真の乱数ハッシュに選ばせる。**
-TypeScript で書かれた、コアライブラリ + MCP サーバー（stdio）+ Agent Skill + CLI です。
-
-![Fourth Lane Bakery: one fact sheet, five random directions side by side](examples/fourth-lane-bakery/screenshots/compare.png)
-
-<p align="center"><sub>1 枚のファクトシートから、ロールで出た 5 つの方向性：お役所の書式 · バウハウス · 墨と印章 · リソグラフの 2 色刷り · 香港の店看板。<br><a href="https://qybaihe.github.io/hash-design/fourth-lane-bakery/compare.html"><b>ライブ比較ページを開く →</b></a> · <a href="#その他のサンプル">ほかに 3 つのサンプル ↓</a></sub></p>
+</details>
 
 ---
 
@@ -26,6 +57,8 @@ TypeScript で書かれた、コアライブラリ + MCP サーバー（stdio）
 - [開発](#開発) · [ドキュメント](#ドキュメント) · [既知の制限](#既知の制限) · [コントリビューション](#コントリビューション)
 
 ## デモ
+
+[![Fourth Lane Bakery：1 枚のファクトシートから出た 5 つのランダムな方向性を並べたもの](examples/fourth-lane-bakery/screenshots/compare.png)](https://qybaihe.github.io/hash-design/fourth-lane-bakery/compare.html)
 
 [`examples/fourth-lane-bakery/`](examples/fourth-lane-bakery) は、架空のベーカリーを題材にしたエンドツーエンドの完全な実行例です。[ファクトシート](examples/fourth-lane-bakery/facts.md) → 1 回のロール → 凍結された 5 つのブリーフ → 5 つのプレビュー（それぞれ、自分のブリーフしか見えない別々のサブエージェントがレンダリング）→ 並べて見比べられる比較ページ、という流れです。すべて GitHub Pages で公開しています。
 
@@ -364,6 +397,7 @@ node scripts/smoke.mjs        # 実際の stdio 経由の MCP + CLI のスモー
 node scripts/verify-fonts.mjs # すべてのフォント URL をオンラインで確認（CI では実行しない）
 npm run example:critique      # すべてのサンプルのプレビューをブリーフに照らして critique（90 未満で失敗）
 npm run screenshots           # すべてのサンプルの Playwright スクリーンショット（`npx playwright install chromium` が必要）
+npm run hero                  # サンプルのスクリーンショットから docs/assets/hero.png と social-preview.png を作り直す
 ```
 
 CI では Node 20、22、24 上で、ビルド、型チェック、lint、フォーマットチェック、テスト、stdio スモークテスト、`npm pack --dry-run` を実行します。

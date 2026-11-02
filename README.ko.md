@@ -2,19 +2,50 @@
 
 [English](README.md) | [简体中文](README.zh-CN.md) | [日本語](README.ja.md) | **한국어** | [Español](README.es.md)
 
-[![CI](https://github.com/qybaihe/hash-design/actions/workflows/ci.yml/badge.svg)](https://github.com/qybaihe/hash-design/actions/workflows/ci.yml)
+<p align="center"><b>코딩 에이전트가 매번 똑같은 'Inter + 보라색 그라데이션' 페이지를 내놓는 일을 끝내세요.</b><br>
+프롬프트 하나에서 디자인 방향 다섯 가지가 나옵니다. 고르는 건 모델이 아니라 진짜 난수로 만든 SHA-256 해시입니다. 그중 하나를 고르면 되고, 어떤 방향이든 ref로 똑같이 다시 만들 수 있습니다.</p>
+
+<p align="center">
+<a href="https://github.com/qybaihe/hash-design/actions/workflows/ci.yml"><img src="https://github.com/qybaihe/hash-design/actions/workflows/ci.yml/badge.svg" alt="CI"></a>
+<a href="https://qybaihe.github.io/hash-design/"><img src="https://img.shields.io/badge/live%20demo-4%20examples-e2401c.svg" alt="라이브 데모"></a>
+<a href="LICENSE"><img src="https://img.shields.io/badge/license-MIT-black.svg" alt="MIT"></a>
+<a href="#skill-설치"><img src="https://img.shields.io/badge/Agent%20Skill-Claude%20Code%20%C2%B7%20Cursor-black.svg" alt="Agent Skill"></a>
+</p>
+
+[![페스티벌 페이지를 요청한 프롬프트 하나가 롤로 뽑은 다섯 방향으로 갈라집니다: Engineering plate, Topographic map, Warm handmade, Editorial magazine, Memphis pop](docs/assets/hero.png)](https://qybaihe.github.io/hash-design/causeway-festival/compare.html)
+
+<p align="center"><sub>목업이 아니라 실제 결과물입니다: <a href="examples/causeway-festival">examples/causeway-festival</a>. 각 프리뷰는 고정된 브리프 하나만 본 별도의 서브 에이전트가 만들었습니다.<br><a href="https://qybaihe.github.io/hash-design/"><b>라이브 예시 4개 모두 보기 →</b></a> · 브랜치 40개 중 20개</sub></p>
+
+### 빠른 시작
+
+아직 npm에 배포하지 않았습니다. 소스에서 빌드하고(Node ≥ 20), 프로젝트에 Skill을 설치한 뒤 MCP 서버를 등록하세요:
+
+```bash
+git clone https://github.com/qybaihe/hash-design.git && cd hash-design && npm install && npm run build
+node packages/core/dist/bin.js skill install --target both --dir /path/to/your/project   # Skill → .claude/skills + .cursor/skills
+claude mcp add hash-design -- node "$PWD/packages/mcp/dist/bin.js"                       # MCP server (Claude Code)
+```
+
+그다음 에이전트에게 이렇게 요청하면 됩니다:
+
+> hash-design으로 Skerrow 섬에서 열리는 하루짜리 음악 페스티벌 Causeway의 원페이지 사이트를 만들어 줘. 팩트: 2027년 6월 19일 토요일, 썰물 때 드러나는 1.2km 길을 걸어서 섬에 들어감, …
+
+Cursor와 Claude Desktop 설정: [MCP 설정](#mcp-설정).
+
+### 네 줄 요약
+
+1. **롤**: 시스템 난수로 SHA-256 해시 다섯 개를 만듭니다.
+2. **매핑**: 고정된 결정 트리가 각 해시를 브리프로 바꿉니다. 장르, 레이아웃, 폰트, 16진수 팔레트, 밀도, 모션, 트위스트. 같은 ref면 같은 브리프입니다.
+3. **렌더링**: 고정된 브리프 하나당 서브 에이전트 하나가 HTML 프리뷰를 만들고, 비교 페이지가 나란히 보여 줍니다.
+4. **선택**: 번호로 답하면 에이전트가 그 브리프로 최종 페이지를 만들고 `critique_page`로 점검합니다.
+
+<details><summary>배지 더 보기</summary>
+
 [![Pages](https://github.com/qybaihe/hash-design/actions/workflows/pages.yml/badge.svg)](https://github.com/qybaihe/hash-design/actions/workflows/pages.yml)
-[![Live demo](https://img.shields.io/badge/demo-4%20examples-e2401c.svg)](https://qybaihe.github.io/hash-design/)
-[![License: MIT](https://img.shields.io/badge/license-MIT-black.svg)](LICENSE)
 [![Node](https://img.shields.io/badge/node-%E2%89%A520%20%C2%B7%20.nvmrc%2022-black.svg)](.nvmrc)
 [![npm: not yet published](https://img.shields.io/badge/npm-not%20yet%20published-lightgrey.svg)](#설치)
 
-**디자인 방향은 모델이 아니라 진짜 난수로 만든 해시가 고르게 하세요.**
-TypeScript로 작성한 코어 라이브러리 + MCP 서버(stdio) + Agent Skill + CLI입니다.
-
-![Fourth Lane Bakery: one fact sheet, five random directions side by side](examples/fourth-lane-bakery/screenshots/compare.png)
-
-<p align="center"><sub>팩트 시트 하나, 롤로 뽑은 방향 다섯 가지: 관공서 서식 · 바우하우스 · 먹과 인장 · 리소그래프 2도 인쇄 · 홍콩 가게 간판.<br><a href="https://qybaihe.github.io/hash-design/fourth-lane-bakery/compare.html"><b>라이브 비교 페이지 열기 →</b></a> · <a href="#더-많은-예시">예시 3개 더 보기 ↓</a></sub></p>
+</details>
 
 ---
 
@@ -26,6 +57,8 @@ TypeScript로 작성한 코어 라이브러리 + MCP 서버(stdio) + Agent Skill
 - [개발](#개발) · [문서](#문서) · [알려진 한계](#알려진-한계) · [기여하기](#기여하기)
 
 ## 데모
+
+[![Fourth Lane Bakery: 팩트 시트 하나에서 나온 무작위 방향 다섯 가지를 나란히](examples/fourth-lane-bakery/screenshots/compare.png)](https://qybaihe.github.io/hash-design/fourth-lane-bakery/compare.html)
 
 [`examples/fourth-lane-bakery/`](examples/fourth-lane-bakery)는 가상의 빵집을 대상으로 전 과정을 처음부터 끝까지 실행한 예시입니다. [팩트 시트](examples/fourth-lane-bakery/facts.md) → 한 번의 롤 → 고정된 브리프 다섯 개 → 프리뷰 다섯 개(각각 자기 브리프만 볼 수 있는 별도의 서브 에이전트가 렌더링) → 나란히 보는 비교 페이지로 이어집니다. 모든 결과물은 GitHub Pages에서 볼 수 있습니다.
 
@@ -364,6 +397,7 @@ node scripts/smoke.mjs        # 실제 stdio 기반 MCP + CLI 스모크 테스�
 node scripts/verify-fonts.mjs # 모든 폰트 URL을 온라인으로 확인 (CI에서는 실행 안 함)
 npm run example:critique      # 모든 예시 미리보기를 브리프 기준으로 critique (90 미만이면 실패)
 npm run screenshots           # 모든 예시의 Playwright 스크린샷 (`npx playwright install chromium` 필요)
+npm run hero                  # 예시 스크린샷으로 docs/assets/hero.png와 social-preview.png를 다시 생성
 ```
 
 CI는 Node 20, 22, 24에서 빌드, 타입 검사, lint, 포맷 검사, 테스트, stdio 스모크 테스트, `npm pack --dry-run`을 실행합니다.

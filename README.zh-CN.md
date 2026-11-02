@@ -2,19 +2,50 @@
 
 [English](README.md) | **简体中文** | [日本語](README.ja.md) | [한국어](README.ko.md) | [Español](README.es.md)
 
-[![CI](https://github.com/qybaihe/hash-design/actions/workflows/ci.yml/badge.svg)](https://github.com/qybaihe/hash-design/actions/workflows/ci.yml)
+<p align="center"><b>别再让编码 Agent 每次都交出同一张 Inter + 紫色渐变的页面。</b><br>
+一句需求，掷出 5 套设计方向：由真随机 SHA-256 哈希决定，而不是模型。你挑一个；任何一个方向都能凭 ref 原样重建。</p>
+
+<p align="center">
+<a href="https://github.com/qybaihe/hash-design/actions/workflows/ci.yml"><img src="https://github.com/qybaihe/hash-design/actions/workflows/ci.yml/badge.svg" alt="CI"></a>
+<a href="https://qybaihe.github.io/hash-design/"><img src="https://img.shields.io/badge/live%20demo-4%20examples-e2401c.svg" alt="在线演示"></a>
+<a href="LICENSE"><img src="https://img.shields.io/badge/license-MIT-black.svg" alt="MIT"></a>
+<a href="#安装-skill"><img src="https://img.shields.io/badge/Agent%20Skill-Claude%20Code%20%C2%B7%20Cursor-black.svg" alt="Agent Skill"></a>
+</p>
+
+[![一句需求展开成 5 个随机方向：工程图版、地形图、手作温度、杂志编辑、孟菲斯](docs/assets/hero.png)](https://qybaihe.github.io/hash-design/causeway-festival/compare.html)
+
+<p align="center"><sub>真实产出，不是效果图：<a href="examples/causeway-festival">examples/causeway-festival</a>，每个预览由独立子 Agent 只按一份冻结的 brief 渲染。<br><a href="https://qybaihe.github.io/hash-design/"><b>浏览全部 4 个在线示例 →</b></a> · 覆盖 40 个分支中的 20 个</sub></p>
+
+### 快速开始
+
+尚未发布到 npm。从源码构建（Node ≥ 20），把 Skill 装进你的项目，再注册 MCP server：
+
+```bash
+git clone https://github.com/qybaihe/hash-design.git && cd hash-design && npm install && npm run build
+node packages/core/dist/bin.js skill install --target both --dir /path/to/your/project   # Skill → .claude/skills + .cursor/skills
+claude mcp add hash-design -- node "$PWD/packages/mcp/dist/bin.js"                       # MCP server (Claude Code)
+```
+
+然后对 Agent 说：
+
+> 用 hash-design 给「第四巷面包店」做一个单页网站。事实：周二至周日 7:00–19:00 营业，周一休息……
+
+Cursor 与 Claude Desktop 配置见 [配置 MCP](#配置-mcp)。
+
+### 四行讲清原理
+
+1. **掷**：用系统随机数生成 5 个 SHA-256 哈希。
+2. **映射**：固定决策树把每个哈希变成一份 brief：风格、版式、字体、色值、密度、动效、变数。同一 ref，同一份 brief。
+3. **渲染**：5 个子 Agent 各按一份冻结的 brief 做 HTML 预览，再生成并排对比页。
+4. **挑选**：你回一个编号，Agent 按那份 brief 做终稿，并用 `critique_page` 自检。
+
+<details><summary>更多徽章</summary>
+
 [![Pages](https://github.com/qybaihe/hash-design/actions/workflows/pages.yml/badge.svg)](https://github.com/qybaihe/hash-design/actions/workflows/pages.yml)
-[![Live demo](https://img.shields.io/badge/demo-4%20examples-e2401c.svg)](https://qybaihe.github.io/hash-design/)
-[![License: MIT](https://img.shields.io/badge/license-MIT-black.svg)](LICENSE)
 [![Node](https://img.shields.io/badge/node-%E2%89%A520%20%C2%B7%20.nvmrc%2022-black.svg)](.nvmrc)
 [![npm: not yet published](https://img.shields.io/badge/npm-not%20yet%20published-lightgrey.svg)](#安装)
 
-**用真随机哈希替 AI 定设计方向，不让模型自己挑风格。**
-核心库 + MCP server（stdio）+ Agent Skill + CLI，TypeScript 实现。
-
-![第四巷面包店：同一份事实，5 个随机方向并排对比](examples/fourth-lane-bakery/screenshots/compare.png)
-
-<p align="center"><sub>同一份事实清单，掷出 5 个方向：公文表格 · 包豪斯 · 水墨印章 · Riso 双色套印 · 港式招牌。<br><a href="https://qybaihe.github.io/hash-design/fourth-lane-bakery/compare.html"><b>打开在线对比页 →</b></a> · <a href="#更多示例">另外 3 个示例 ↓</a></sub></p>
+</details>
 
 ---
 
@@ -26,6 +57,8 @@
 - [示例详解](#示例第四巷面包店) · [开发](#开发) · [文档](#文档) · [已知局限](#已知局限) · [参与贡献](#参与贡献)
 
 ## 在线演示
+
+[![第四巷面包店：同一份事实，5 个随机方向并排对比](examples/fourth-lane-bakery/screenshots/compare.png)](https://qybaihe.github.io/hash-design/fourth-lane-bakery/compare.html)
 
 - **并排对比页**：<https://qybaihe.github.io/hash-design/fourth-lane-bakery/compare.html>（按 1–5 放大，D/M 切换桌面/手机）
 - **示例首页**：<https://qybaihe.github.io/hash-design/>
@@ -407,6 +440,7 @@ node scripts/smoke.mjs        # 真实 stdio 上的 MCP + CLI 冒烟测试（CI 
 node scripts/verify-fonts.mjs # 联网检查所有字体 URL（不在 CI 里跑）
 npm run example:critique      # 对照 brief 批量 critique 所有示例预览（低于 90 分即失败）
 npm run screenshots           # Playwright 截图所有示例（需 npx playwright install chromium）
+npm run hero                  # 用示例截图重新生成 docs/assets/hero.png 和 social-preview.png
 ```
 
 CI 在 Node 20、22、24 上跑 build、typecheck、lint、格式检查、测试、stdio 冒烟测试和 `npm pack --dry-run`。

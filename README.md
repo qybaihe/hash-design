@@ -2,19 +2,50 @@
 
 **English** | [简体中文](README.zh-CN.md) | [日本語](README.ja.md) | [한국어](README.ko.md) | [Español](README.es.md)
 
-[![CI](https://github.com/qybaihe/hash-design/actions/workflows/ci.yml/badge.svg)](https://github.com/qybaihe/hash-design/actions/workflows/ci.yml)
+<p align="center"><b>Stop your coding agent from shipping the same Inter-and-purple-gradient page every time.</b><br>
+One prompt becomes five design directions, picked by true-random SHA-256 hashes instead of the model. You pick one; any direction can be rebuilt from its ref.</p>
+
+<p align="center">
+<a href="https://github.com/qybaihe/hash-design/actions/workflows/ci.yml"><img src="https://github.com/qybaihe/hash-design/actions/workflows/ci.yml/badge.svg" alt="CI"></a>
+<a href="https://qybaihe.github.io/hash-design/"><img src="https://img.shields.io/badge/live%20demo-4%20examples-e2401c.svg" alt="Live demo"></a>
+<a href="LICENSE"><img src="https://img.shields.io/badge/license-MIT-black.svg" alt="MIT"></a>
+<a href="#install-the-skill"><img src="https://img.shields.io/badge/Agent%20Skill-Claude%20Code%20%C2%B7%20Cursor-black.svg" alt="Agent Skill"></a>
+</p>
+
+[![One prompt for a festival page fans out into five rolled directions: Engineering plate, Topographic map, Warm handmade, Editorial magazine, Memphis pop](docs/assets/hero.png)](https://qybaihe.github.io/hash-design/causeway-festival/compare.html)
+
+<p align="center"><sub>Real output, not a mock-up: <a href="examples/causeway-festival">examples/causeway-festival</a>, each preview built by its own sub-agent from one frozen brief.<br><a href="https://qybaihe.github.io/hash-design/"><b>Browse all 4 live examples →</b></a> · 20 of the 40 branches</sub></p>
+
+### Quick start
+
+Not on npm yet. Build from source (Node ≥ 20), install the Skill into your project and register the MCP server:
+
+```bash
+git clone https://github.com/qybaihe/hash-design.git && cd hash-design && npm install && npm run build
+node packages/core/dist/bin.js skill install --target both --dir /path/to/your/project   # Skill → .claude/skills + .cursor/skills
+claude mcp add hash-design -- node "$PWD/packages/mcp/dist/bin.js"                       # MCP server (Claude Code)
+```
+
+Then ask your agent:
+
+> Use hash-design to build a one-page site for Causeway, a one-day music festival on Skerrow Island. Facts: Saturday 19 June 2027; reached on foot over a 1.2 km tidal causeway; …
+
+Cursor and Claude Desktop: [Configure MCP](#configure-mcp).
+
+### How it works, in four lines
+
+1. **Roll** five SHA-256 hashes from system randomness.
+2. **Map** each hash through a fixed decision tree to a brief: genre, layout, fonts, hex palette, density, motion, twist. Same ref, same brief.
+3. **Render** five HTML previews, one sub-agent per frozen brief, plus a compare page that puts them side by side.
+4. **Pick** a number. The agent builds the final page from that brief and checks it with `critique_page`.
+
+<details><summary>More badges</summary>
+
 [![Pages](https://github.com/qybaihe/hash-design/actions/workflows/pages.yml/badge.svg)](https://github.com/qybaihe/hash-design/actions/workflows/pages.yml)
-[![Live demo](https://img.shields.io/badge/demo-4%20examples-e2401c.svg)](https://qybaihe.github.io/hash-design/)
-[![License: MIT](https://img.shields.io/badge/license-MIT-black.svg)](LICENSE)
 [![Node](https://img.shields.io/badge/node-%E2%89%A520%20%C2%B7%20.nvmrc%2022-black.svg)](.nvmrc)
 [![npm: not yet published](https://img.shields.io/badge/npm-not%20yet%20published-lightgrey.svg)](#install)
 
-**Let a true-random hash pick the design direction, not the model.**
-Core library + MCP server (stdio) + Agent Skill + CLI, in TypeScript.
-
-![Fourth Lane Bakery: one fact sheet, five random directions side by side](examples/fourth-lane-bakery/screenshots/compare.png)
-
-<p align="center"><sub>One fact sheet, five rolled directions: bureaucratic form · Bauhaus · ink and seal · risograph duotone · Hong Kong shop sign.<br><a href="https://qybaihe.github.io/hash-design/fourth-lane-bakery/compare.html"><b>Open the live compare page →</b></a> · <a href="#more-examples">3 more examples ↓</a></sub></p>
+</details>
 
 ---
 
@@ -26,6 +57,8 @@ Core library + MCP server (stdio) + Agent Skill + CLI, in TypeScript.
 - [Development](#development) · [Documentation](#documentation) · [Known limitations](#known-limitations) · [Contributing](#contributing)
 
 ## Demo
+
+[![Fourth Lane Bakery: one fact sheet, five random directions side by side](examples/fourth-lane-bakery/screenshots/compare.png)](https://qybaihe.github.io/hash-design/fourth-lane-bakery/compare.html)
 
 [`examples/fourth-lane-bakery/`](examples/fourth-lane-bakery) is a full end-to-end run for a fictional bakery: a [fact sheet](examples/fourth-lane-bakery/facts.md) → one roll → five frozen briefs → five previews, each rendered by a separate sub-agent that could only see its own brief → a side-by-side compare page. All of it is served on GitHub Pages:
 
@@ -364,6 +397,7 @@ node scripts/smoke.mjs        # MCP over real stdio + CLI smoke test (runs in CI
 node scripts/verify-fonts.mjs # check every font URL online (not in CI)
 npm run example:critique      # critique every example preview against its brief (fails below 90)
 npm run screenshots           # Playwright screenshots of every example (needs `npx playwright install chromium`)
+npm run hero                  # rebuild docs/assets/hero.png and social-preview.png from an example's screenshots
 ```
 
 CI runs build, typecheck, lint, format check, tests, the stdio smoke test and `npm pack --dry-run` on Node 20, 22 and 24.
