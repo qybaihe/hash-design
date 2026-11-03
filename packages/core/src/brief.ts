@@ -14,6 +14,8 @@ import { ALGORITHM, rollHashes } from './hash.js';
 import {
   type Constraints,
   type Design,
+  DEFAULT_COUNT,
+  MAX_COUNT,
   describeConstraints,
   libraryFingerprint,
   mapDesign,
@@ -59,9 +61,9 @@ export function normalizeContent(content: Partial<Content> = {}): Content & { la
 
 /** Roll N designs: N true-random (or seeded) hashes → N independent, deterministic designs. */
 export function roll(opts: RollOptions = {}): Roll {
-  const count = opts.count ?? 5;
-  if (!Number.isInteger(count) || count < 1 || count > 12)
-    throw new Error(`count must be a whole number from 1 to 12 (got ${count})`);
+  const count = opts.count ?? DEFAULT_COUNT;
+  if (!Number.isInteger(count) || count < 1 || count > MAX_COUNT)
+    throw new Error(`count must be a whole number from 1 to ${MAX_COUNT} (got ${count})`);
   const hashes = opts.hashes ?? rollHashes(count, opts.seed);
   const designs = mapRoll(hashes, opts.constraints);
   return {

@@ -736,6 +736,15 @@ export function mapDesign(hash: string, opts: MapOptions = {}): Design {
   };
 }
 
+/** Directions per roll when no count is given. */
+export const DEFAULT_COUNT = 5;
+/**
+ * Directions per roll at most. The algorithm has no limit (every hash maps on its own), but each
+ * direction becomes its own brief and its own independently rendered preview, and the compare page
+ * focuses the first nine by number key; 12 keeps one roll reviewable in one sitting.
+ */
+export const MAX_COUNT = 12;
+
 /** Map a roll: N hashes → N independent designs (one hash, one direction; nothing is shared or walked). */
 export function mapRoll(hashes: readonly string[], constraints: Constraints = {}): Design[] {
   return hashes.map((hash) => mapDesign(hash, { constraints }));

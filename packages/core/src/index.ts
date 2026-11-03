@@ -48,6 +48,8 @@ export {
 } from './hash.js';
 export {
   BYTE_MAP,
+  DEFAULT_COUNT,
+  MAX_COUNT,
   describeConstraints,
   libraryFingerprint,
   mapDesign,
