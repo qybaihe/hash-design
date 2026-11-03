@@ -1,6 +1,7 @@
 import { describe, expect, it } from 'vitest';
 import {
   SCENARIO_IDS,
+  readSkill,
   renderReply,
   roll,
   rollJson,
@@ -101,6 +102,29 @@ describe('reply protocol', () => {
       expect(renderReply(en).split('\n').at(-1)).toContain(nouns[id][0]);
       expect(renderReply(zh).split('\n').at(-1)).toContain(nouns[id][1]);
     }
+  });
+
+  it('SKILL.md documents the same shape and answers the renderer asks for', () => {
+    const skill = readSkill();
+    const r = rollFor(RUNS[0]!);
+    const ask = renderReply(r).split('\n').at(-1)!;
+    for (const word of [
+      '**render**',
+      '**reroll**',
+      'Reply with a number to build that direction as the final',
+    ])
+      expect(ask).toContain(word);
+    expect(skill).toContain(
+      'Reply with a number to build that direction as the final <page|deck|app screens|dashboard|poster|email>, **render** to see all N as previews side by side first, or **reroll** for a new set.',
+    );
+    expect(skill).toContain(
+      '1. **<Display face>** / <Body face> — <light|dark> paper, hue <H>° · <C>-column grid · anchor: <subject>[ · <format>] · `<short ref>`',
+    );
+    // The sketch's fields appear in the same order in a real line.
+    const line = renderReply(r).split('\n')[2]!;
+    expect(line).toMatch(/^1\. \*\*.+\*\* \/ .+ — (light|dark) paper, hue \d+° · \d+-column grid · anchor: /);
+    expect(skill).toContain('--format reply');
+    expect(skill).toMatch(/范围 1–12/);
   });
 
   it('dark paper and brand colours still give one plain line per direction', () => {
