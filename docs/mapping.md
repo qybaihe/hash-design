@@ -6,11 +6,11 @@ This page specifies how a 256-bit hash becomes a design direction. In `hash-desi
 
 ## 1. Where hashes come from
 
-| Mode                 | Source                                           | `source` field in `roll.json` |
-| -------------------- | ------------------------------------------------ | ----------------------------- |
-| Real use (default)   | `sha256(crypto.randomBytes(32))`, the OS CSPRNG  | `system-random`               |
-| Examples and tests   | `sha256("hash-design/v2:<seed>:<index>")`        | `seed:<seed>`                 |
-| Library callers only | `roll({ hashes: [...] })` with hashes you supply | `provided-hashes`             |
+| Mode                 | Source                                                    | `source` field in `roll.json` |
+| -------------------- | --------------------------------------------------------- | ----------------------------- |
+| Real use (default)   | `sha256(crypto.getRandomValues(32 bytes))`, the OS CSPRNG | `system-random`               |
+| Examples and tests   | `sha256("hash-design/v2:<seed>:<index>")`                 | `seed:<seed>`                 |
+| Library callers only | `roll({ hashes: [...] })` with hashes you supply          | `provided-hashes`             |
 
 `seed` exists so that examples and tests are reproducible. The Skill, the MCP prompt and the server instructions all tell agents never to pass a seed for real work.
 

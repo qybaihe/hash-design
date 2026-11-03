@@ -1,19 +1,19 @@
 # hash-design roll — 二号桥单车铺
 
-5 directions · source: seed:bridge-two-bikes-5 · hash-design/v1 · library `c7b166fe6ec0` · constraints: none
+5 directions · source: seed:bridge-two-bikes · hash-design/v2 · library `bd20321c36ab` · constraints: none
 
-| # | ref (short) | branch | layout | type | palette | density | voice | twist |
+| # | ref (short) | colour | type | grid | anchor | density | voice | twist |
 |---|---|---|---|---|---|---|---|---|
-| 1 | `0377a498` | **瑞士网格** Swiss grid | Numbered index | Archivo / Archivo | Tonhalle night | airy | 问答访谈 | 首屏无按钮 |
-| 2 | `92818df9` (+1) | **时装画册** Couture lookbook | Look sequence | Italiana / Cormorant Garamond | Noir & champagne | airy | 田野笔记 | 强调色配给 |
-| 3 | `a4906350` (+1) | **票根** Ticket stub | Oversized card ticket | Bevan / Old Standard TT | Buff railway card | packed | 田野笔记 | 首屏无按钮 |
-| 4 | `40257aad` | **游戏说明书** Game manual | Strategy-guide spread | Press Start 2P / Chakra Petch | Title-screen black | regular | 问答访谈 | 分节编号 |
-| 5 | `67d7ad96` (+1) | **老黄历** Chinese almanac | Tear-off day sheet | Limelight / Cormorant Garamond | Celadon poster | regular | 配方步骤 | 粗线分区 |
+| 1 | `40c6776a` | light, 91° `#987900` | Libre Bodoni / Old Standard TT | 10 col | grid-diagram | 0.424 | i · label | section-heads → vertical |
+| 2 | `ff97f5eb` | light, 359° `#d6668e` | Michroma / Libre Franklin | 7 col | number | 0.376 | we · imperative | numbers → invert |
+| 3 | `b924a406` | light, 260° `#3d7eed` | Homemade Apple / Hanken Grotesk | 6 col | initial | 0.808 | none · two-words | section-heads → repeat |
+| 4 | `f3b1e77a` | light, 343° `#d160aa` | Alfa Slab One / Hanken Grotesk | 8 col | word | 0.431 | we · statement | headline → invert |
+| 5 | `6ef0bf96` | light, 156° `#00995a` | Xanh Mono / Libre Baskerville | 9 col | initial | 0.478 | we · label | headline → vertical |
 
 Full refs (reproduce any brief with `get_brief` / `hash-design brief <ref>` + the same constraints):
 
-1. `0377a498f0119f4f640840bd7c48820d0f2eac30756f28efeba4029b5ab4d846`
-2. `92818df99d3eaeee4ab934e524f41bb56abca6ae73320d8fd48b647aa658fca8+1`
-3. `a49063502037857ce8846937fc2524f991fdbcb094a46c682d1c676cae47326b+1`
-4. `40257aad1bad4bda9c195b35779c75d0dc3ba971b03c888c15bdc1e83321779a`
-5. `67d7ad9674f570e3e07cbb0c1f19b566c77b87bc276073a8351bf230f4054d01+1`
+1. `40c6776af6502e673a46946c3932a15634b90305cb479ac5f8f7b82997572213`
+2. `ff97f5eb7af797dedf971e60545913ce41ba9815941b805785faec5e78028650`
+3. `b924a406afcf83926ccff8ce5da78e3572110c1bdf752a9b17b3caeb8ef64f26`
+4. `f3b1e77a9af302d06082ad6e19cffb7ede96eefb3dcca2619177519ad6f0bd99`
+5. `6ef0bf969f3cbf602400997a7e378c74429955cf879684fdb1e9d8338faed12e`

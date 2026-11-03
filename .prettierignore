@@ -6,5 +6,7 @@ coverage
 package-lock.json
 .claude/skills
 .cursor/skills
+.agents/skills
 skills
 packages/core/test/fixtures
+site/dist

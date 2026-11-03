@@ -1,0 +1,416 @@
+<!-- hash-design #1 · 484a15b6 · ref 484a15b64867e03aaf0d0be02da68ff09776e4bbfbdcfdc23070083359cf770d -->
+<!doctype html>
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>Sluice — a self-hosted inbox for webhooks</title>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=EB+Garamond:ital,wght@0,400;0,500;1,400;1,500&family=Young+Serif&family=Share+Tech+Mono&display=swap">
+<!--
+  Twist (cta · vertical · 5): applied literally. The one primary call to action,
+  "Install Sluice", is set with writing-mode: vertical-rl as a tall rail in column 8
+  of the first screen. Below 640px the text grid collapses to one column and the
+  rail stays beside it, so the twist survives on phones.
+  Anchor: the motif (20-unit hairline rules at 131deg) drawn at full scale,
+  69% of the first screen's width, centred 40% from the left, rotated -0.5deg.
+-->
+<style>
+/* hash-design hash-design/v2 · 484a15b6 */
+:root {
+  --paper: #131001;
+  --ink: #cfccb2;
+  --muted: #7f7e70;
+  --accent: #897c15;
+  --on-accent: #000000;
+  --accent2: #4b7db6;
+  --on-accent2: #000000;
+  --rule: #3d3a1f;
+  --panel: #1f1c04;
+
+  --font-display: "EB Garamond", Garamond, "Times New Roman", serif;
+  --font-body: "Young Serif", Georgia, serif;
+  --font-mono: "Share Tech Mono", "Courier New", monospace;
+  --display-weight: 500;
+  --display-tracking: -0.028em;
+
+  --step-n2: 0.761rem; /* 12.2px */
+  --step-n1: 0.831rem; /* 13.3px */
+  --step-0: 0.906rem; /* 14.5px */
+  --step-1: 0.989rem; /* 15.8px */
+  --step-2: 1.079rem; /* 17.3px */
+  --step-3: 1.177rem; /* 18.8px */
+  --step-4: 1.284rem; /* 20.5px */
+  --step-5: 1.401rem; /* 22.4px */
+  --step-6: 1.528rem; /* 24.5px */
+  --step-7: 1.667rem; /* 26.7px */
+  --leading: 1.39;
+
+  --space-1: 5px;
+  --space-2: 10px;
+  --space-3: 15px;
+  --space-4: 20px;
+  --space-5: 25px;
+  --space-6: 30px;
+  --space-7: 35px;
+  --space-8: 40px;
+  --section-gap: 49px;
+  --max-width: 1400px;
+  --columns: 8;
+  --gutter: 5px;
+
+  --radius: 0px;
+  --border: 3px dotted var(--rule);
+  --shadow: none;
+
+  --motion-duration: 580ms;
+  --motion-easing: cubic-bezier(0, 1.2, 0.63, 1);
+}
+
+html { font-size: 90.6%; }
+body { background: var(--paper); color: var(--ink); font-family: var(--font-body); line-height: var(--leading); }
+@media (prefers-reduced-motion: reduce) {
+  *, *::before, *::after { animation: none !important; transition: none !important; }
+}
+/* end tokens.css */
+
+/* the scale continued at the same 1.091 ratio, for the one headline */
+:root {
+  --step-10: calc(var(--step-7) * 1.2986); /* 34.7px */
+  --step-14: calc(var(--step-7) * 1.8398); /* 49.1px */
+  --pad: var(--space-6);
+  --edge: calc(max(0px, (100vw - var(--max-width)) / 2) + var(--pad));
+}
+
+*, *::before, *::after { box-sizing: border-box; }
+html { overflow-x: clip; }
+body {
+  margin: 0;
+  font-size: var(--step-0);
+  background-image: radial-gradient(color-mix(in srgb, var(--ink) 10.8%, transparent) 1px, transparent 1.5px);
+  background-size: 6px 6px;
+  overflow-x: clip;
+}
+p, ul, dl, dd, figure, pre { margin: 0; }
+
+a { color: inherit; text-decoration-color: var(--accent); text-underline-offset: 3px;
+    transition: color var(--motion-duration) var(--motion-easing), background-color var(--motion-duration) var(--motion-easing); }
+a:hover { color: var(--accent); }
+a:focus-visible { outline: 2px solid var(--accent2); outline-offset: 3px; }
+
+.grid {
+  display: grid;
+  grid-template-columns: repeat(var(--columns), minmax(0, 1fr));
+  column-gap: var(--gutter);
+  max-width: var(--max-width);
+  margin-inline: auto;
+  padding-inline: var(--pad);
+}
+.text { grid-column: 3 / 8; }
+
+.display, h1, h2, h3 {
+  font-family: var(--font-display);
+  font-weight: var(--display-weight);
+  font-variant-caps: all-small-caps;
+  letter-spacing: var(--display-tracking);
+  line-height: 1.04;
+  margin: 0;
+}
+.mono { font-family: var(--font-mono); }
+
+/* motif marker: one 20px hairline rule at 131deg */
+.mk::before, .ul > li::before, .tick {
+  content: "";
+  display: inline-block;
+  width: 20px;
+  height: 0;
+  border-top: 1px solid var(--accent);
+  transform: rotate(131deg);
+}
+.mk::before { vertical-align: 0.32em; margin-right: var(--space-3); }
+
+/* ---------- first screen ---------- */
+.first {
+  min-height: 76vh;
+  min-height: 76svh;
+  display: flex;
+  flex-direction: column;
+}
+.first > .grid { width: 100%; }
+.bar { padding-block: var(--space-3); align-items: baseline; }
+.bar .name { grid-column: 1 / 3; font-size: var(--step-5); }
+.bar nav { grid-column: 3 / 8; display: flex; flex-wrap: wrap; gap: var(--space-1) var(--space-5); font-size: var(--step-n1); }
+.bar nav a { text-decoration: none; color: var(--muted); }
+.bar nav a:hover, .bar nav a:focus-visible { color: var(--ink); }
+.bar .ver { grid-column: 8; justify-self: end; font-size: var(--step-n1); color: var(--muted); }
+
+.intro {
+  flex: 1;
+  grid-template-rows: auto 1fr;
+  padding-bottom: var(--space-6);
+}
+.intro .text { grid-row: 1; padding-top: var(--space-6); }
+.kicker { font-size: var(--step-n1); color: var(--muted); margin-bottom: var(--space-2); }
+h1 { font-size: clamp(var(--step-7), 3.4vw + 0.5rem, var(--step-14)); margin-bottom: var(--space-3); }
+.lede { font-size: var(--step-2); max-width: 36em; }
+
+.anchor {
+  grid-column: 1 / -1;
+  grid-row: 2;
+  align-self: end;
+  justify-self: start;
+  width: 69vw;
+  margin: var(--space-6) 0 0 calc(5.5vw - var(--edge));
+  transform: rotate(-0.5deg);
+  transform-origin: 50% 50%;
+}
+.motif { display: block; width: 100%; height: auto; color: var(--accent);
+         animation: settle var(--motion-duration) var(--motion-easing) both; }
+@keyframes settle { from { color: var(--rule); } to { color: var(--accent); } }
+.motif line { stroke: currentColor; stroke-width: 1; vector-effect: non-scaling-stroke; }
+.motif .bank line { stroke: var(--rule); }
+.motif .blue { stroke: var(--accent2); }
+.motif pattern line { stroke: currentColor; }
+.motif .lbl { font-family: var(--font-mono); font-size: 13px; fill: var(--muted); }
+
+.cta {
+  grid-column: 8;
+  grid-row: 1 / span 2;
+  justify-self: end;
+  align-self: stretch;
+  writing-mode: vertical-rl;
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  gap: var(--space-6);
+  margin-top: var(--space-6);
+  padding: var(--space-5) var(--space-3);
+  background: var(--accent);
+  color: var(--on-accent);
+  border: var(--border);
+  border-radius: var(--radius);
+  box-shadow: var(--shadow);
+  font-family: var(--font-display);
+  font-weight: var(--display-weight);
+  font-variant-caps: all-small-caps;
+  letter-spacing: var(--display-tracking);
+  font-size: var(--step-7);
+  line-height: 1;
+  text-decoration: none;
+}
+.cta .go { display: inline-block; width: 20px; height: 20px; position: relative; }
+.cta .go::before { content: ""; position: absolute; left: 0; top: 9px; width: 20px; border-top: 1px solid currentColor; transform: rotate(131deg); }
+.cta:hover, .cta:focus-visible { background: var(--ink); color: var(--paper); outline: none; }
+
+/* ---------- sections ---------- */
+hr.rule {
+  border: 0;
+  border-top: 1px solid var(--rule);
+  margin: 0 auto;
+  width: calc(100% - 2 * var(--pad));
+  max-width: calc(var(--max-width) - 2 * var(--pad));
+}
+.sec { padding-block: var(--section-gap); row-gap: var(--space-4); }
+.head { display: flex; align-items: baseline; gap: var(--space-3); }
+h2 { font-size: var(--step-10); }
+h3 { font-size: var(--step-6); margin-bottom: var(--space-2); }
+
+.cols { display: grid; grid-template-columns: repeat(5, minmax(0, 1fr)); gap: var(--space-4) var(--gutter); }
+.say { font-size: var(--step-2); }
+.say + .say { margin-top: var(--space-1); }
+
+.ul { list-style: none; padding: 0; }
+.ul > li { position: relative; padding-left: var(--space-6); }
+.ul > li + li { margin-top: var(--space-1); }
+.ul > li::before { position: absolute; left: 0; top: 0.72em; }
+
+table.builds { border-collapse: collapse; font-family: var(--font-mono); font-size: var(--step-n1); margin-top: var(--space-3); }
+table.builds caption { text-align: left; color: var(--muted); padding-bottom: var(--space-1); }
+table.builds th, table.builds td { padding: var(--space-1) var(--space-4) var(--space-1) 0; text-align: left; font-weight: 400; }
+table.builds thead th { color: var(--muted); border-bottom: var(--border); }
+table.builds td { text-align: center; }
+.tick { vertical-align: middle; }
+.sr { position: absolute; width: 1px; height: 1px; overflow: hidden; clip: rect(0 0 0 0); white-space: nowrap; }
+
+.cmd { border: var(--border); background: var(--panel); }
+.cmd .lab { display: block; font-family: var(--font-mono); font-size: var(--step-n2); color: var(--muted); padding: var(--space-1) var(--space-3) 0; }
+.cmd pre { font-family: var(--font-mono); font-size: var(--step-0); padding: var(--space-1) var(--space-3) var(--space-3); white-space: pre-wrap; overflow-wrap: anywhere; }
+.cmd .p { color: var(--muted); user-select: none; }
+
+/* spec sheet */
+.spec > div {
+  display: grid;
+  grid-template-columns: 7rem minmax(0, 1fr) 10.5rem;
+  column-gap: var(--space-3);
+  align-items: baseline;
+  padding-block: var(--space-2);
+  border-bottom: var(--border);
+}
+.spec > div:first-child { border-top: var(--border); }
+.spec dt { font-family: var(--font-mono); font-size: var(--step-n1); color: var(--muted); }
+.spec dt::before { content: ""; display: inline-block; width: 20px; border-top: 1px solid var(--accent); transform: rotate(131deg); vertical-align: middle; margin-right: var(--space-2); }
+.spec dd { font-size: var(--step-1); }
+.spec dd code { font-family: var(--font-mono); background: var(--panel); padding: 0 var(--space-1); }
+.spec .big { grid-column: 3; justify-self: end; font-family: var(--font-display); font-weight: var(--display-weight); font-variant-caps: all-small-caps; letter-spacing: var(--display-tracking); font-size: var(--step-7); line-height: 1; color: var(--accent); }
+.spec .big.low { font-size: var(--step-4); color: var(--ink); }
+
+.colophon { font-size: var(--step-n1); border-collapse: collapse; width: 100%; }
+.colophon th { font-family: var(--font-mono); font-weight: 400; color: var(--muted); text-align: left; padding: var(--space-1) var(--space-3) var(--space-1) 0; white-space: nowrap; vertical-align: baseline; }
+.colophon td { padding: var(--space-1) 0; border-bottom: var(--border); }
+.colophon tr:first-child td, .colophon tr:first-child th { border-top: var(--border); }
+.nots { font-size: var(--step-7); }
+.nots li + li { margin-top: var(--space-1); }
+
+footer { padding-block: var(--space-4) var(--space-8); color: var(--muted); font-size: var(--step-n2); }
+footer p { grid-column: 3 / 8; font-family: var(--font-mono); }
+
+/* ---------- wide-ish tablets ---------- */
+@media (max-width: 900px) {
+  .spec > div { grid-template-columns: 6rem minmax(0, 1fr); }
+  .spec .big { grid-column: 2; justify-self: start; margin-top: var(--space-1); }
+}
+
+/* ---------- below 640px: one column; rules and anchor stay ---------- */
+@media (max-width: 639px) {
+  :root { --pad: var(--space-3); }
+  .grid { grid-template-columns: minmax(0, 1fr); }
+  .text, .bar .name, .bar nav, .bar .ver, footer p { grid-column: 1; }
+  .bar .ver { justify-self: start; }
+  .intro { grid-template-columns: minmax(0, 1fr) auto; column-gap: var(--space-3); }
+  .intro .text { grid-column: 1; padding-top: var(--space-3); }
+  .cta { grid-column: 2; font-size: var(--step-5); padding: var(--space-4) var(--space-2); margin-top: var(--space-3); }
+  h1 { font-size: var(--step-10); }
+  .anchor { margin-top: var(--space-5); align-self: center; }
+  .motif .lbl { display: none; }
+  .cols { grid-template-columns: minmax(0, 1fr); }
+  .cols > * { grid-column: 1 !important; }
+  h2 { font-size: var(--step-7); }
+  .nots { font-size: var(--step-5); }
+  .spec > div { grid-template-columns: minmax(0, 1fr); }
+  .spec .big { grid-column: 1; }
+}
+</style>
+</head>
+<body>
+
+<header class="first">
+  <div class="bar grid">
+    <span class="name display">Sluice</span>
+    <nav class="mono" aria-label="Sections">
+      <a href="#binary">One binary</a>
+      <a href="#deliveries">Every delivery</a>
+      <a href="#maker">Who made me</a>
+    </nav>
+    <span class="ver mono">v0.9.2</span>
+  </div>
+
+  <div class="intro grid">
+    <div class="text">
+      <p class="kicker mono">Sluice — a self-hosted inbox for webhooks</p>
+      <h1>I hold your webhooks.</h1>
+      <p class="lede">You get a public URL. I store every delivery. Then I forward it. To your local service. Or an internal one.</p>
+    </div>
+
+    <a class="cta" href="#install"><span>Install Sluice</span><span class="go" aria-hidden="true"></span></a>
+
+    <figure class="anchor">
+    <svg class="motif" viewBox="0 0 1000 420" role="img" aria-labelledby="motif-t" preserveAspectRatio="xMidYMid meet">
+      <title id="motif-t">Deliveries held. Then forwarded.</title>
+      <defs>
+        <pattern id="r131" patternUnits="userSpaceOnUse" width="14" height="24">
+          <line x1="13.56" y1="4.45" x2="0.44" y2="19.55"/>
+        </pattern>
+      </defs>
+      <g class="bank"><line x1="0" y1="22" x2="1000" y2="22"/><line x1="0" y1="398" x2="1000" y2="398"/></g>
+      <g class="held" fill="url(#r131)"><rect x="14" y="28" width="42" height="24"/><rect x="84" y="28" width="84" height="24"/><rect x="182" y="28" width="70" height="24"/><rect x="280" y="28" width="42" height="24"/><rect x="336" y="28" width="98" height="24"/><rect x="448" y="28" width="84" height="24"/><rect x="0" y="52" width="84" height="24"/><rect x="98" y="52" width="42" height="24"/><rect x="168" y="52" width="112" height="24"/><rect x="294" y="52" width="28" height="24"/><rect x="336" y="52" width="28" height="24"/><rect x="392" y="52" width="28" height="24"/><rect x="434" y="52" width="70" height="24"/><rect x="518" y="52" width="14" height="24"/><rect x="14" y="76" width="42" height="24"/><rect x="84" y="76" width="28" height="24"/><rect x="126" y="76" width="112" height="24"/><rect x="266" y="76" width="28" height="24"/><rect x="308" y="76" width="84" height="24"/><rect x="420" y="76" width="28" height="24"/><rect x="476" y="76" width="28" height="24"/><rect x="518" y="76" width="14" height="24"/><rect x="14" y="100" width="70" height="24"/><rect x="112" y="100" width="112" height="24"/><rect x="238" y="100" width="42" height="24"/><rect x="308" y="100" width="42" height="24"/><rect x="378" y="100" width="42" height="24"/><rect x="448" y="100" width="28" height="24"/><rect x="490" y="100" width="42" height="24"/><rect x="14" y="124" width="28" height="24"/><rect x="56" y="124" width="112" height="24"/><rect x="182" y="124" width="28" height="24"/><rect x="238" y="124" width="84" height="24"/><rect x="336" y="124" width="84" height="24"/><rect x="448" y="124" width="84" height="24"/><rect x="0" y="148" width="84" height="24"/><rect x="112" y="148" width="112" height="24"/><rect x="252" y="148" width="98" height="24"/><rect x="378" y="148" width="42" height="24"/><rect x="448" y="148" width="84" height="24"/><rect x="0" y="172" width="56" height="24"/><rect x="70" y="172" width="70" height="24"/><rect x="154" y="172" width="28" height="24"/><rect x="196" y="172" width="28" height="24"/><rect x="238" y="172" width="28" height="24"/><rect x="280" y="172" width="28" height="24"/><rect x="322" y="172" width="42" height="24"/><rect x="392" y="172" width="70" height="24"/><rect x="476" y="172" width="56" height="24"/><rect x="28" y="196" width="56" height="24"/><rect x="112" y="196" width="98" height="24"/><rect x="238" y="196" width="42" height="24"/><rect x="308" y="196" width="28" height="24"/><rect x="350" y="196" width="28" height="24"/><rect x="392" y="196" width="28" height="24"/><rect x="434" y="196" width="98" height="24"/><rect x="14" y="220" width="42" height="24"/><rect x="84" y="220" width="84" height="24"/><rect x="182" y="220" width="70" height="24"/><rect x="280" y="220" width="42" height="24"/><rect x="336" y="220" width="98" height="24"/><rect x="448" y="220" width="84" height="24"/><rect x="0" y="244" width="84" height="24"/><rect x="98" y="244" width="42" height="24"/><rect x="168" y="244" width="112" height="24"/><rect x="294" y="244" width="28" height="24"/><rect x="336" y="244" width="28" height="24"/><rect x="392" y="244" width="28" height="24"/><rect x="434" y="244" width="70" height="24"/><rect x="518" y="244" width="14" height="24"/><rect x="14" y="268" width="42" height="24"/><rect x="84" y="268" width="28" height="24"/><rect x="126" y="268" width="112" height="24"/><rect x="266" y="268" width="28" height="24"/><rect x="308" y="268" width="84" height="24"/><rect x="420" y="268" width="28" height="24"/><rect x="476" y="268" width="28" height="24"/><rect x="518" y="268" width="14" height="24"/><rect x="14" y="292" width="70" height="24"/><rect x="112" y="292" width="112" height="24"/><rect x="238" y="292" width="42" height="24"/><rect x="308" y="292" width="42" height="24"/><rect x="378" y="292" width="42" height="24"/><rect x="448" y="292" width="28" height="24"/><rect x="490" y="292" width="42" height="24"/><rect x="0" y="316" width="532" height="24"/><rect x="0" y="340" width="532" height="24"/><rect x="0" y="364" width="532" height="24"/></g>
+      <g class="gate"><line x1="559.56" y1="22.45" x2="546.44" y2="37.55"/><line x1="559.56" y1="27.45" x2="546.44" y2="42.55"/><line x1="559.56" y1="32.45" x2="546.44" y2="47.55"/><line x1="559.56" y1="37.45" x2="546.44" y2="52.55"/><line x1="559.56" y1="42.45" x2="546.44" y2="57.55"/><line x1="559.56" y1="47.45" x2="546.44" y2="62.55"/><line x1="559.56" y1="52.45" x2="546.44" y2="67.55"/><line x1="559.56" y1="57.45" x2="546.44" y2="72.55"/><line x1="559.56" y1="62.45" x2="546.44" y2="77.55"/><line x1="559.56" y1="67.45" x2="546.44" y2="82.55"/><line x1="559.56" y1="72.45" x2="546.44" y2="87.55"/><line x1="559.56" y1="77.45" x2="546.44" y2="92.55"/><line x1="559.56" y1="82.45" x2="546.44" y2="97.55"/><line x1="559.56" y1="87.45" x2="546.44" y2="102.55"/><line x1="559.56" y1="92.45" x2="546.44" y2="107.55"/><line x1="559.56" y1="97.45" x2="546.44" y2="112.55"/><line x1="559.56" y1="102.45" x2="546.44" y2="117.55"/><line x1="559.56" y1="107.45" x2="546.44" y2="122.55"/><line x1="559.56" y1="112.45" x2="546.44" y2="127.55"/><line x1="559.56" y1="117.45" x2="546.44" y2="132.55"/><line x1="559.56" y1="122.45" x2="546.44" y2="137.55"/><line x1="559.56" y1="127.45" x2="546.44" y2="142.55"/><line x1="559.56" y1="132.45" x2="546.44" y2="147.55"/><line x1="559.56" y1="137.45" x2="546.44" y2="152.55"/><line x1="559.56" y1="142.45" x2="546.44" y2="157.55"/><line x1="559.56" y1="147.45" x2="546.44" y2="162.55"/><line x1="559.56" y1="152.45" x2="546.44" y2="167.55"/><line x1="559.56" y1="157.45" x2="546.44" y2="172.55"/><line x1="559.56" y1="162.45" x2="546.44" y2="177.55"/><line x1="559.56" y1="167.45" x2="546.44" y2="182.55"/><line x1="559.56" y1="172.45" x2="546.44" y2="187.55"/><line x1="559.56" y1="177.45" x2="546.44" y2="192.55"/><line x1="559.56" y1="182.45" x2="546.44" y2="197.55"/><line x1="559.56" y1="187.45" x2="546.44" y2="202.55"/><line x1="559.56" y1="192.45" x2="546.44" y2="207.55"/><line x1="559.56" y1="197.45" x2="546.44" y2="212.55"/><line x1="559.56" y1="202.45" x2="546.44" y2="217.55"/><line x1="559.56" y1="207.45" x2="546.44" y2="222.55"/><line x1="559.56" y1="212.45" x2="546.44" y2="227.55"/><line x1="559.56" y1="217.45" x2="546.44" y2="232.55"/><line x1="559.56" y1="222.45" x2="546.44" y2="237.55"/><line x1="559.56" y1="227.45" x2="546.44" y2="242.55"/><line x1="559.56" y1="232.45" x2="546.44" y2="247.55"/><line x1="559.56" y1="237.45" x2="546.44" y2="252.55"/><line x1="559.56" y1="242.45" x2="546.44" y2="257.55"/><line x1="559.56" y1="247.45" x2="546.44" y2="262.55"/><line x1="559.56" y1="252.45" x2="546.44" y2="267.55"/><line x1="559.56" y1="257.45" x2="546.44" y2="272.55"/><line x1="559.56" y1="262.45" x2="546.44" y2="277.55"/><line x1="559.56" y1="267.45" x2="546.44" y2="282.55"/><line x1="559.56" y1="272.45" x2="546.44" y2="287.55"/><line x1="559.56" y1="277.45" x2="546.44" y2="292.55"/><line x1="559.56" y1="282.45" x2="546.44" y2="297.55"/><line x1="538" y1="300" x2="568" y2="300"/></g>
+      <g class="flow"><line x1="580.56" y1="320.45" x2="567.44" y2="335.55"/><line x1="594.56" y1="320.45" x2="581.44" y2="335.55"/><line x1="609.75" y1="320.45" x2="596.63" y2="335.55"/><line x1="626.23" y1="320.45" x2="613.11" y2="335.55"/><line x1="644.11" y1="320.45" x2="630.99" y2="335.55"/><line x1="663.52" y1="320.45" x2="650.39" y2="335.55"/><line x1="684.57" y1="320.45" x2="671.45" y2="335.55"/><line x1="707.41" y1="320.45" x2="694.29" y2="335.55"/><line x1="732.19" y1="320.45" x2="719.07" y2="335.55"/><line x1="759.08" y1="320.45" x2="745.96" y2="335.55"/><line x1="788.25" y1="320.45" x2="775.13" y2="335.55"/><line x1="819.91" y1="320.45" x2="806.78" y2="335.55"/><line x1="854.25" y1="320.45" x2="841.13" y2="335.55"/><line x1="891.51" y1="320.45" x2="878.39" y2="335.55"/><line x1="931.95" y1="320.45" x2="918.82" y2="335.55"/><line x1="975.81" y1="320.45" x2="962.69" y2="335.55"/><line x1="585.56" y1="344.45" x2="572.44" y2="359.55"/><line x1="599.56" y1="344.45" x2="586.44" y2="359.55"/><line x1="614.75" y1="344.45" x2="601.63" y2="359.55"/><line x1="631.23" y1="344.45" x2="618.11" y2="359.55"/><line x1="649.11" y1="344.45" x2="635.99" y2="359.55"/><line x1="668.52" y1="344.45" x2="655.39" y2="359.55"/><line x1="689.57" y1="344.45" x2="676.45" y2="359.55"/><line x1="712.41" y1="344.45" x2="699.29" y2="359.55"/><line x1="737.19" y1="344.45" x2="724.07" y2="359.55"/><line class="blue" x1="764.08" y1="344.45" x2="750.96" y2="359.55"/><line x1="793.25" y1="344.45" x2="780.13" y2="359.55"/><line x1="824.91" y1="344.45" x2="811.78" y2="359.55"/><line x1="859.25" y1="344.45" x2="846.13" y2="359.55"/><line x1="896.51" y1="344.45" x2="883.39" y2="359.55"/><line x1="936.95" y1="344.45" x2="923.82" y2="359.55"/><line x1="980.81" y1="344.45" x2="967.69" y2="359.55"/><line x1="582.56" y1="368.45" x2="569.44" y2="383.55"/><line x1="596.56" y1="368.45" x2="583.44" y2="383.55"/><line x1="611.75" y1="368.45" x2="598.63" y2="383.55"/><line x1="628.23" y1="368.45" x2="615.11" y2="383.55"/><line x1="646.11" y1="368.45" x2="632.99" y2="383.55"/><line x1="665.52" y1="368.45" x2="652.39" y2="383.55"/><line x1="686.57" y1="368.45" x2="673.45" y2="383.55"/><line x1="709.41" y1="368.45" x2="696.29" y2="383.55"/><line x1="734.19" y1="368.45" x2="721.07" y2="383.55"/><line x1="761.08" y1="368.45" x2="747.96" y2="383.55"/><line x1="790.25" y1="368.45" x2="777.13" y2="383.55"/><line x1="821.91" y1="368.45" x2="808.78" y2="383.55"/><line x1="856.25" y1="368.45" x2="843.13" y2="383.55"/><line x1="893.51" y1="368.45" x2="880.39" y2="383.55"/><line x1="933.95" y1="368.45" x2="920.82" y2="383.55"/><line x1="977.81" y1="368.45" x2="964.69" y2="383.55"/></g>
+      <g class="lbl" aria-hidden="true"><text x="0" y="14">public URL</text><text x="553" y="14" text-anchor="middle">sluice</text><text x="1000" y="300" text-anchor="end">localhost:3000</text></g>
+    </svg>
+    </figure>
+  </div>
+</header>
+
+<main>
+  <hr class="rule">
+  <section class="sec grid" id="binary" aria-labelledby="h-binary">
+    <div class="text head"><h2 class="mk" id="h-binary">I am one binary.</h2></div>
+    <div class="text cols">
+      <div style="grid-column: 1 / 4">
+        <p class="say">One static binary. About 11 MB.</p>
+        <p class="say">Linux, macOS, Windows. amd64 and arm64.</p>
+        <table class="builds">
+          <caption>Builds</caption>
+          <thead><tr><th scope="col">os</th><th scope="col">amd64</th><th scope="col">arm64</th></tr></thead>
+          <tbody>
+            <tr><th scope="row">Linux</th><td><span class="tick"></span><span class="sr">yes</span></td><td><span class="tick"></span><span class="sr">yes</span></td></tr>
+            <tr><th scope="row">macOS</th><td><span class="tick"></span><span class="sr">yes</span></td><td><span class="tick"></span><span class="sr">yes</span></td></tr>
+            <tr><th scope="row">Windows</th><td><span class="tick"></span><span class="sr">yes</span></td><td><span class="tick"></span><span class="sr">yes</span></td></tr>
+          </tbody>
+        </table>
+      </div>
+      <div style="grid-column: 4 / 6">
+        <h3>I keep one SQLite file.</h3>
+        <ul class="ul">
+          <li>No Redis.</li>
+          <li>No Postgres.</li>
+          <li>No queue to run.</li>
+        </ul>
+      </div>
+      <div class="cmd" id="install" style="grid-column: 1 / 4">
+        <span class="lab">install</span>
+        <pre><span class="p">$ </span>curl -fsSL https://sluice.example/install.sh | sh</pre>
+      </div>
+      <div class="cmd" style="grid-column: 4 / 6">
+        <span class="lab">start</span>
+        <pre><span class="p">$ </span>sluice serve --forward http://localhost:3000</pre>
+      </div>
+    </div>
+  </section>
+
+  <hr class="rule">
+  <section class="sec grid" id="deliveries" aria-labelledby="h-deliveries">
+    <div class="text head"><h2 class="mk" id="h-deliveries">I keep every delivery.</h2></div>
+    <dl class="text spec">
+      <div><dt>retry</dt><dd>A forward fails. I retry. Exponential backoff. Up to 72 hours.</dd><span class="big">72 hours</span></div>
+      <div><dt>replay</dt><dd>Any stored delivery. I send it again. <code>sluice replay &lt;delivery-id&gt;</code></dd></div>
+      <div><dt>verify</dt><dd>I check HMAC-SHA256 signatures. Older than 5 minutes? Rejected.</dd><span class="big low">5 minutes</span></div>
+      <div><dt>search</dt><dd>My web UI: port 8081. Search by path. By header. By body text.</dd></div>
+      <div><dt>retain</dt><dd>I keep deliveries 30 days. That is the default. Change it: <code>--retain</code></dd><span class="big">30 days</span></div>
+      <div><dt>speed</dt><dd>1,800 deliveries per second. A 2-vCPU VM. The project's own benchmark.</dd><span class="big">1,800/sec</span></div>
+    </dl>
+  </section>
+
+  <hr class="rule">
+  <section class="sec grid" id="maker" aria-labelledby="h-maker">
+    <div class="text head"><h2 class="mk" id="h-maker">Ines Okafor made me.</h2></div>
+    <div class="text cols">
+      <div style="grid-column: 1 / 4">
+        <p class="say">She lost a weekend of payment webhooks.</p>
+        <p class="say">Then she started me. That was 2023.</p>
+        <ul class="ul nots display" style="margin-top: var(--space-5)">
+          <li>No hosted service.</li>
+          <li>No account.</li>
+          <li>No telemetry.</li>
+        </ul>
+      </div>
+      <div style="grid-column: 4 / 6">
+        <table class="colophon">
+          <tr><th scope="row">written in</th><td>Go</td></tr>
+          <tr><th scope="row">licence</th><td>MIT</td></tr>
+          <tr><th scope="row">contributors</th><td>41</td></tr>
+          <tr><th scope="row">version</th><td>0.9.2</td></tr>
+          <tr><th scope="row">released</th><td>14 October 2026</td></tr>
+        </table>
+      </div>
+    </div>
+  </section>
+</main>
+
+<footer class="grid">
+  <p>Sluice 0.9.2 · MIT licence · self-hosted</p>
+</footer>
+
+</body>
+</html>

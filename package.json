@@ -15,7 +15,7 @@
   "scripts": {
     "build": "tsc -b packages/core packages/mcp",
     "clean": "rm -rf packages/*/dist packages/*/*.tsbuildinfo",
-    "typecheck": "tsc -b packages/core packages/mcp && tsc -p tsconfig.test.json --noEmit",
+    "typecheck": "tsc -b packages/core packages/mcp && tsc -p tsconfig.test.json --noEmit && tsc -p site/tsconfig.json",
     "lint": "eslint .",
     "format": "prettier --write .",
     "format:check": "prettier --check .",
@@ -23,6 +23,7 @@
     "test:watch": "vitest",
     "check": "npm run typecheck && npm run lint && npm run format:check && npm test",
     "sync": "npm run build && node scripts/sync.mjs",
+    "sync:check": "node scripts/sync.mjs --check",
     "examples": "node scripts/examples.mjs list",
     "example:roll": "node scripts/examples.mjs roll",
     "example:compare": "node scripts/examples.mjs compare",
@@ -31,6 +32,9 @@
     "hero": "node scripts/hero.mjs",
     "hero:gif": "node scripts/hero-gif.mjs",
     "showcase": "node scripts/showcase.mjs",
+    "site:dev": "vite --config site/vite.config.ts",
+    "site:build": "vite build --config site/vite.config.ts",
+    "site:preview": "vite preview --config site/vite.config.ts",
     "release:check": "node scripts/release-check.mjs --pack",
     "release:version": "node scripts/release-version.mjs"
   },
@@ -42,6 +46,7 @@
     "prettier": "^3.9.10",
     "typescript": "~6.0.3",
     "typescript-eslint": "^8.72.1",
+    "vite": "^8.3.5",
     "vitest": "^4.1.12"
   }
 }

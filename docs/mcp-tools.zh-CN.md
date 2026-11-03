@@ -4,7 +4,7 @@
 
 hash-design 的 MCP server 是一个基于官方 TypeScript SDK 的 stdio [Model Context Protocol](https://modelcontextprotocol.io) server。它包含在 npm 包 `hash-design` 里，用 `hash-design mcp` 启动。源码：[`packages/core/src/mcp.ts`](../packages/core/src/mcp.ts)；`packages/mcp` 是一个 private 包装，在克隆的源码里运行同一个 server。它提供 4 个工具、2 个资源和 1 个 prompt，并向客户端发送概括工作流程的 server instructions。
 
-> 在客户端里注册 `npx -y hash-design mcp`（hash-design 0.2.0 及以后），或者克隆源码运行：`node /ABS/PATH/hash-design/packages/mcp/dist/bin.js`。见[手动安装](../README.zh-CN.md#手动安装)。
+> 在客户端里注册 `npx -y hash-design mcp`（hash-design 0.2.0 及以后），或者克隆源码运行：`node /ABS/PATH/hash-design/packages/mcp/dist/bin.js`。见英文 README 的[手动安装](../README.md#install-by-hand)。
 
 ## 工作目录与文件访问
 
@@ -159,7 +159,7 @@ design/hash-design/
 
 ## 客户端配置
 
-Claude Code、Cursor 和 Claude Desktop 的配置见 README 中的[手动安装](../README.zh-CN.md#手动安装)。命令是 `npx -y hash-design mcp`（hash-design 0.2.0 及以后），或克隆源码里的 `node …/packages/mcp/dist/bin.js`。
+Claude Code、Cursor 和 Claude Desktop 的配置见英文 README 的[手动安装](../README.md#install-by-hand)。命令是 `npx -y hash-design mcp`（hash-design 0.2.0 及以后），或克隆源码里的 `node …/packages/mcp/dist/bin.js`。
 
 ## 测试
 

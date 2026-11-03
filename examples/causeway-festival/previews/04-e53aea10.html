@@ -1,0 +1,609 @@
+<!-- hash-design #4 · e53aea10 · ref e53aea1015641f05538eb15f105881456fef8688c32ff5b23718bea54346ef5b -->
+<!doctype html>
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>Causeway · a one-day music festival on Skerrow Island · Saturday 19 June 2027</title>
+<meta name="description" content="Causeway, a one-day music festival on Skerrow Island, reached on foot over a 1.2 km tidal causeway. Saturday 19 June 2027.">
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Hanken+Grotesk:ital,wght@0,300;0,400;0,500;1,300;1,400;1,500&family=Atkinson+Hyperlegible:ital,wght@0,400;0,700;1,400;1,700&family=Share+Tech+Mono&display=swap">
+<!--
+  Twist (brief): "Repeat the navigation 2 times in a row."
+  Applied literally: the masthead holds two identical <nav> bars, one straight after the other,
+  same links, same order, same styling. Nothing else on the page repeats.
+-->
+<style>
+/* hash-design hash-design/v2 · e53aea10 */
+:root {
+  --paper: #f8f6f8;
+  --ink: #3c353d;
+  --muted: #766c77;
+  --accent: #a47baa;
+  --on-accent: #000000;
+  --accent2: #90925c;
+  --on-accent2: #000000;
+  --rule: #c3bdc4;
+  --panel: #ebe5ec;
+
+  --font-display: "Hanken Grotesk", "Helvetica Neue", Arial, sans-serif;
+  --font-body: "Atkinson Hyperlegible", Verdana, Arial, sans-serif;
+  --font-mono: "Share Tech Mono", "Courier New", monospace;
+  --display-weight: 500;
+  --display-tracking: 0.094em;
+
+  --step-n2: 0.491rem; /* 7.9px */
+  --step-n1: 0.712rem; /* 11.4px */
+  --step-0: 1.031rem; /* 16.5px */
+  --step-1: 1.494rem; /* 23.9px */
+  --step-2: 2.165rem; /* 34.6px */
+  --step-3: 3.137rem; /* 50.2px */
+  --step-4: 4.546rem; /* 72.7px */
+  --step-5: 6.587rem; /* 105.4px */
+  --step-6: 9.545rem; /* 152.7px */
+  --step-7: 13.831rem; /* 221.3px */
+  --leading: 1.54;
+
+  --space-1: 8px;
+  --space-2: 16px;
+  --space-3: 24px;
+  --space-4: 32px;
+  --space-5: 40px;
+  --space-6: 48px;
+  --space-7: 56px;
+  --space-8: 64px;
+  --section-gap: 117px;
+  --max-width: 1210px;
+  --columns: 9;
+  --gutter: 16px;
+
+  --radius: 0px;
+  --border: 0px dashed var(--rule);
+  --shadow: 6px 6px 0 var(--ink);
+
+  --motion-duration: 500ms;
+  --motion-easing: cubic-bezier(0.51, 1, 0.63, 1);
+}
+
+html { font-size: 103.1%; }
+body { background: var(--paper); color: var(--ink); font-family: var(--font-body); line-height: var(--leading); }
+@media (prefers-reduced-motion: reduce) {
+  *, *::before, *::after { animation: none !important; transition: none !important; }
+}
+
+/* ---------- surface ---------- */
+:root {
+  --dots: radial-gradient(color-mix(in srgb, var(--ink) 4.2%, transparent) 1px, transparent 1.5px);
+  --colour-change: color var(--motion-duration) var(--motion-easing), background-color var(--motion-duration) var(--motion-easing);
+}
+*, *::before, *::after { box-sizing: border-box; border-radius: var(--radius); }
+body {
+  margin: 0;
+  font-size: var(--step-0);
+  background-image: var(--dots);
+  background-size: 6px 6px;
+  -webkit-font-smoothing: antialiased;
+}
+h1, h2, h3, p, dl, dd, ul, ol, figure { margin: 0; }
+ul, ol { padding: 0; list-style: none; }
+
+/* ---------- grid: 9 columns, 16px gutters, 1210px ---------- */
+.wrap {
+  width: min(100% - 2 * var(--space-6), var(--max-width));
+  margin-inline: auto;
+  display: grid;
+  grid-template-columns: repeat(var(--columns), minmax(0, 1fr));
+  column-gap: var(--gutter);
+}
+.tb { grid-column: 2 / 8; }            /* text block: columns 2–7 of 9 */
+.aside { grid-column: 8 / 10; }
+
+/* ---------- type ---------- */
+.display, h1, h2, h3 {
+  font-family: var(--font-display);
+  font-weight: var(--display-weight);
+  font-variant-caps: all-small-caps;
+  letter-spacing: var(--display-tracking);
+  line-height: 1.08;
+}
+h1 { font-size: var(--step-4); }
+h2 { font-size: var(--step-3); }
+h3 { font-size: var(--step-1); line-height: 1.2; }
+.mono { font-family: var(--font-mono); letter-spacing: 0.02em; }
+.label {
+  font-family: var(--font-mono);
+  font-size: var(--step-0);
+  color: var(--muted);
+}
+p + p { margin-top: var(--space-2); }
+
+a { color: inherit; text-decoration-color: var(--accent); text-decoration-thickness: 2px; text-underline-offset: 4px; transition: var(--colour-change); }
+a:hover { background-color: var(--accent); color: var(--on-accent); }
+a:focus-visible { outline: 2px solid var(--ink); outline-offset: 2px; background-color: var(--accent); color: var(--on-accent); }
+
+/* ---------- bands: 6 sections, alternating paper / panel ---------- */
+.band { position: relative; padding-block: calc(var(--section-gap) / 2); }
+.band--paper { background-color: transparent; }
+.band--panel { background-color: var(--panel); background-image: var(--dots); background-size: 6px 6px; }
+.band .num { grid-column: 1 / 2; padding-top: 0.9em; }
+
+/* ---------- masthead: the navigation, twice ---------- */
+.masthead { position: relative; z-index: 2; }
+.nav { padding-block: var(--space-2); }
+.nav + .nav { padding-top: 0; }
+.nav .wrap { align-items: baseline; row-gap: var(--space-1); }
+.nav .mark {
+  grid-column: 1 / 3;
+  font-family: var(--font-display);
+  font-weight: var(--display-weight);
+  font-variant-caps: all-small-caps;
+  letter-spacing: var(--display-tracking);
+  font-size: var(--step-1);
+  text-decoration: none;
+  line-height: 1;
+  justify-self: start;
+  padding: 2px 4px 4px;
+  margin-left: -4px;
+}
+.nav .when { grid-column: 3 / 5; font-size: var(--step-0); color: var(--muted); }
+.nav ul { grid-column: 5 / 10; display: flex; flex-wrap: wrap; justify-content: flex-end; gap: 0 var(--space-1); }
+.nav ul a {
+  display: inline-block;
+  text-decoration: none;
+  padding: 2px var(--space-1);
+  font-size: var(--step-0);
+}
+.nav ul a:hover, .nav ul a:focus-visible { background-color: var(--accent); color: var(--on-accent); }
+
+/* ---------- section 1: first screen, 73% of the viewport ---------- */
+.hero {
+  min-height: 73vh;
+  display: grid;
+  align-items: center;
+  overflow: hidden;
+  padding-block: var(--space-6) var(--space-8);
+}
+.anchor {
+  /* the motif at full scale: 56% of the first screen's width, centred on the right edge, rotated 7° */
+  position: absolute;
+  width: 56%;
+  aspect-ratio: 1;
+  left: 100%;
+  top: 50%;
+  transform: translate(-50%, -50%) rotate(7deg);
+  color: var(--accent);
+  animation: anchor-ink var(--motion-duration) var(--motion-easing) 200ms both;
+  pointer-events: none;
+}
+@keyframes anchor-ink { from { color: var(--rule); } to { color: var(--accent); } }
+.anchor .ring { fill: none; stroke: currentColor; }
+.anchor .core { fill: currentColor; }
+.anchor .path { stroke: var(--ink); stroke-width: 5; stroke-dasharray: 2 13; stroke-linecap: square; fill: none; }
+.anchor .path-end { fill: var(--accent2); }
+.anchor .tag { fill: var(--ink); font-family: var(--font-mono); font-size: 21px; letter-spacing: 0.08em; }
+.hero .wrap { position: relative; z-index: 1; }
+.hero .label { margin-bottom: var(--space-3); }
+.hero h1 { max-width: 13em; }
+.hero .lede { margin-top: var(--space-4); max-width: 31em; font-size: var(--step-1); line-height: 1.4; }
+.quick {
+  margin-top: var(--space-5);
+  display: grid;
+  grid-template-columns: repeat(3, max-content);
+  gap: var(--space-1) var(--space-5);
+}
+.quick dt { font-family: var(--font-mono); font-size: var(--step-0); color: var(--muted); }
+.quick dd { font-family: var(--font-mono); font-size: var(--step-1); line-height: 1.2; }
+.hero .go { display: inline-block; margin-top: var(--space-5); font-weight: 700; padding: 2px 4px; margin-left: -4px; }
+
+/* ---------- motif along the page edges ---------- */
+.edged { position: relative; overflow: hidden; }
+.edge {
+  position: absolute;
+  top: 0;
+  width: 32px;
+  height: 100%;
+  z-index: 1;
+  pointer-events: none;
+  color: var(--accent);
+}
+.edge-l { left: 8px; }
+.edge-r { right: 8px; }
+.ringlet { fill: none; stroke: currentColor; stroke-width: 1.25; }
+.ringlet-tick { stroke: var(--ink); stroke-width: 1.25; }
+
+/* ---------- section 2: crossing ---------- */
+.crossing h2, .lineup h2, .tickets h2, .island h2, .trust h2 { margin-bottom: var(--space-4); }
+.crossing .aside { align-self: end; }
+.boots {
+  background-color: var(--paper);
+  box-shadow: var(--shadow);
+  padding: var(--space-3);
+}
+.boots .display { font-size: var(--step-2); line-height: 1; margin-bottom: var(--space-1); }
+.tide {
+  grid-column: 2 / 9;
+  margin-top: var(--space-7);
+  background-color: var(--paper);
+  box-shadow: var(--shadow);
+  padding: var(--space-4) var(--space-4) var(--space-3);
+}
+.tide-track { position: relative; height: 56px; background-color: var(--panel); }
+.tide-track .win { position: absolute; top: 0; bottom: 0; background-color: var(--accent); }
+.tide-track .last { position: absolute; top: -10px; bottom: -10px; width: 4px; margin-left: -2px; background-color: var(--accent2); }
+.tide-scale { position: relative; height: 1.6em; margin-top: var(--space-1); font-family: var(--font-mono); font-size: var(--step-n1); color: var(--muted); }
+.tide-scale span { position: absolute; transform: translateX(-50%); }
+.tide-scale--top { margin-top: 0; margin-bottom: var(--space-1); }
+.tide-track .shut { position: absolute; top: 0; bottom: 0; display: flex; align-items: center; justify-content: center; font-family: var(--font-mono); font-size: var(--step-0); color: var(--ink); }
+.tide-key { margin-top: var(--space-3); display: grid; grid-template-columns: repeat(3, auto); gap: var(--space-2) var(--space-4); justify-content: start; }
+.tide-key div { display: grid; grid-template-columns: 14px auto; column-gap: var(--space-1); align-items: baseline; }
+.tide-key i { display: block; width: 14px; height: 14px; background-color: var(--accent); align-self: center; }
+.tide-key i.k2 { background-color: var(--accent2); width: 4px; justify-self: center; }
+.tide-key dt { font-size: var(--step-0); color: var(--muted); grid-column: 2; }
+.tide-key dd { font-family: var(--font-mono); font-size: var(--step-1); line-height: 1.2; grid-column: 2; }
+.tide-key i { grid-row: 1; }
+
+/* ---------- section 3: line-up ---------- */
+.stage-field { grid-column: 2 / 6; margin-top: var(--space-6); }
+.stage-boat { grid-column: 6 / 10; margin-top: var(--space-6); padding-top: var(--space-1); }
+.stage-field h3, .stage-boat h3 { margin-bottom: var(--space-2); }
+.stage-field .where, .stage-boat .where { font-family: var(--font-mono); color: var(--muted); font-size: var(--step-0); margin-bottom: var(--space-3); }
+.stage-field li {
+  font-family: var(--font-display);
+  font-weight: var(--display-weight);
+  font-variant-caps: all-small-caps;
+  letter-spacing: var(--display-tracking);
+  font-size: var(--step-2);
+  line-height: 1.15;
+  padding-block: var(--space-1);
+}
+.stage-field li::before {
+  content: "";
+  display: inline-block;
+  width: 0.42em; height: 0.42em;
+  margin-right: 0.45em;
+  background-image: radial-gradient(circle closest-side, var(--accent) 0 30%, transparent 30% 58%, var(--accent) 58% 82%, transparent 82%);
+  vertical-align: 0.06em;
+}
+.stage-boat ol { counter-reset: set; }
+.stage-boat li {
+  display: grid;
+  grid-template-columns: 2.4em 1fr;
+  align-items: baseline;
+  padding: var(--space-1) var(--space-2);
+  font-size: var(--step-1);
+  line-height: 1.3;
+}
+.stage-boat li:nth-child(odd) { background-color: var(--panel); }
+.stage-boat li::before { counter-increment: set; content: counter(set, decimal-leading-zero); font-family: var(--font-mono); font-size: var(--step-0); color: var(--muted); }
+.stage-boat li small { grid-column: 2; font-size: var(--step-0); color: var(--muted); }
+
+/* ---------- section 4: tickets ---------- */
+.prices {
+  grid-column: 2 / 7;
+  margin-top: var(--space-6);
+  background-color: var(--paper);
+  box-shadow: var(--shadow);
+  padding: var(--space-3) var(--space-4);
+}
+.prices div { display: flex; justify-content: space-between; align-items: baseline; gap: var(--space-2); padding-block: var(--space-2); }
+.prices div + div { margin-top: var(--space-1); background-image: linear-gradient(var(--rule), var(--rule)); background-size: 100% 1px; background-repeat: no-repeat; }
+.prices dt { font-size: var(--step-1); }
+.prices dt small { display: block; font-family: var(--font-mono); font-size: var(--step-0); color: var(--muted); }
+.prices dd { font-family: var(--font-display); font-weight: var(--display-weight); letter-spacing: 0.02em; line-height: 1; }
+.prices .p1 dd { font-size: var(--step-4); }
+.prices .p2 dd { font-size: var(--step-3); }
+.prices .p3 dd { font-size: var(--step-2); font-variant-caps: all-small-caps; letter-spacing: var(--display-tracking); }
+.prices .p3 dd::after { content: ""; display: inline-block; width: 0.5em; height: 0.5em; margin-left: 0.3em; background-color: var(--accent2); vertical-align: 0.05em; }
+.tickets .sale { grid-column: 7 / 10; margin-top: var(--space-6); align-self: end; padding-left: var(--space-3); }
+.sale .label { margin-bottom: var(--space-1); }
+.sale .big { font-family: var(--font-mono); font-size: var(--step-2); line-height: 1.1; }
+.sale .big + .label { margin-top: var(--space-4); }
+
+/* ---------- section 5: island ---------- */
+.island .tb { align-self: center; }
+.cup { grid-column: 8 / 10; align-self: center; }
+.cup svg { display: block; width: 100%; height: auto; color: var(--accent); }
+.cup .rim { fill: var(--paper); stroke: currentColor; stroke-width: 10; }
+.cup .wall { fill: none; stroke: currentColor; stroke-width: 2; }
+.cup .handle { fill: none; stroke: var(--ink); stroke-width: 10; }
+.cup .price { fill: var(--ink); font-family: var(--font-display); font-weight: 500; font-size: 64px; letter-spacing: 0.02em; }
+.cup figcaption { margin-top: var(--space-1); font-family: var(--font-mono); font-size: var(--step-0); color: var(--muted); }
+.rules { margin-top: var(--space-4); display: grid; gap: var(--space-1); }
+.rules li { display: grid; grid-template-columns: var(--space-4) 1fr; }
+.rules li::before { content: "\2014"; color: var(--muted); }
+
+/* ---------- section 6: trust ---------- */
+.trust .aside { align-self: start; }
+.year {
+  font-family: var(--font-display);
+  font-weight: var(--display-weight);
+  font-size: var(--step-6);
+  line-height: 0.85;
+  letter-spacing: 0.02em;
+}
+.year + .label { margin-top: var(--space-2); }
+
+/* ---------- footer ---------- */
+.foot { padding-block: var(--space-6) var(--space-7); }
+.foot .tb { display: flex; flex-wrap: wrap; gap: var(--space-1) var(--space-4); font-family: var(--font-mono); font-size: var(--step-0); color: var(--muted); }
+
+/* ---------- below 640px: one column ---------- */
+@media (max-width: 960px) {
+  .tb { grid-column: 1 / 8; }
+  .aside, .cup { grid-column: 8 / 10; }
+  .stage-field { grid-column: 1 / 6; }
+  .prices { grid-column: 1 / 7; }
+  .tide { grid-column: 1 / 10; }
+  .band .num { display: none; }
+  .nav .when { display: none; }
+  .nav ul { grid-column: 3 / 10; }
+}
+@media (max-width: 639px) {
+  .wrap { grid-template-columns: minmax(0, 1fr); width: calc(100% - 2 * var(--space-3)); }
+  .tb, .aside, .cup, .stage-field, .stage-boat, .prices, .tickets .sale, .tide, .nav .mark, .nav ul { grid-column: 1 / -1; }
+  .nav ul { justify-content: space-between; gap: 0; margin-inline: -4px; }
+  .nav ul a { padding: 2px 4px; }
+  .nav .mark { font-size: var(--step-1); }
+  h1 { font-size: var(--step-2); }
+  h2 { font-size: var(--step-2); }
+  .hero { min-height: 73vh; padding-block: var(--space-4) var(--space-6); }
+  .hero h1 { max-width: none; padding-right: 18%; }
+  .hero .lede { font-size: var(--step-0); line-height: var(--leading); padding-right: 26%; }
+  .quick { grid-template-columns: max-content max-content; gap: var(--space-1) var(--space-4); }
+  .anchor .tag { display: none; }
+  .edge { width: 32px; }
+  .edge-l { left: -16px; }
+  .edge-r { right: -16px; }
+  .aside, .cup, .stage-boat, .tickets .sale { margin-top: var(--space-5); }
+  .tickets .sale { padding-left: 0; }
+  .cup { max-width: 220px; }
+  .tide { padding: var(--space-3) var(--space-2) var(--space-2); }
+  .tide-key { grid-template-columns: 1fr; }
+  .stage-field li { font-size: var(--step-1); }
+  .stage-boat li { font-size: var(--step-0); }
+  .prices { padding: var(--space-2) var(--space-3); }
+  .prices .p1 dd { font-size: var(--step-3); }
+  .prices .p2 dd { font-size: var(--step-2); }
+  .prices .p3 dd { font-size: var(--step-1); }
+  .year { font-size: var(--step-5); }
+  .band { padding-block: var(--space-8); }
+}
+</style>
+</head>
+<body>
+
+<!-- shared motif: a 32px set of concentric rings, rotated 97° (the tick shows the angle) -->
+<svg width="0" height="0" style="position:absolute" aria-hidden="true" focusable="false">
+  <defs>
+    <pattern id="ringlets" width="32" height="48" patternUnits="userSpaceOnUse">
+      <g transform="translate(16 24) rotate(97)">
+        <circle class="ringlet" r="15"/>
+        <circle class="ringlet" r="10.5"/>
+        <circle class="ringlet" r="6"/>
+        <line class="ringlet-tick" x1="6" y1="0" x2="15" y2="0"/>
+      </g>
+    </pattern>
+  </defs>
+</svg>
+
+<header class="masthead">
+  <!-- twist: the navigation, repeated 2 times in a row -->
+  <nav class="nav" aria-label="Main">
+    <div class="wrap">
+      <a class="mark" href="#top">Causeway</a>
+      <span class="when mono">Sat 19 June 2027</span>
+      <ul>
+        <li><a href="#crossing">Crossing</a></li>
+        <li><a href="#lineup">Line-up</a></li>
+        <li><a href="#tickets">Tickets</a></li>
+        <li><a href="#island">Island</a></li>
+        <li><a href="#trust">Trust</a></li>
+      </ul>
+    </div>
+  </nav>
+  <nav class="nav" aria-label="Main, repeated">
+    <div class="wrap">
+      <a class="mark" href="#top">Causeway</a>
+      <span class="when mono">Sat 19 June 2027</span>
+      <ul>
+        <li><a href="#crossing">Crossing</a></li>
+        <li><a href="#lineup">Line-up</a></li>
+        <li><a href="#tickets">Tickets</a></li>
+        <li><a href="#island">Island</a></li>
+        <li><a href="#trust">Trust</a></li>
+      </ul>
+    </div>
+  </nav>
+</header>
+
+<main>
+  <!-- 1 / 6 · paper · first screen -->
+  <section class="band band--paper hero" id="top" aria-labelledby="h-top">
+    <svg class="anchor" viewBox="-500 -500 1000 1000" aria-hidden="true" focusable="false">
+      <circle class="ring" r="488" stroke-width="2"/>
+      <circle class="ring" r="452" stroke-width="2"/>
+      <circle class="ring" r="410" stroke-width="12"/>
+      <circle class="ring" r="366" stroke-width="2"/>
+      <circle class="ring" r="330" stroke-width="2"/>
+      <circle class="ring" r="292" stroke-width="8"/>
+      <circle class="ring" r="250" stroke-width="2"/>
+      <circle class="ring" r="216" stroke-width="2"/>
+      <circle class="ring" r="180" stroke-width="6"/>
+      <circle class="ring" r="140" stroke-width="2"/>
+      <circle class="ring" r="108" stroke-width="2"/>
+      <circle class="core" r="64"/>
+      <line class="path" x1="-72" y1="0" x2="-500" y2="0"/>
+      <rect class="path-end" x="-504" y="-9" width="18" height="18"/>
+      <text class="tag" x="-478" y="-22">1.2 KM · TIDAL CAUSEWAY</text>
+      <text class="tag" x="-478" y="42">SKERROW ISLAND →</text>
+    </svg>
+    <div class="wrap">
+      <div class="tb">
+        <p class="label">Skerrow Island · Saturday 19 June 2027 · year four</p>
+        <h1 id="h-top">A music festival at the far end of a tidal causeway?</h1>
+        <p class="lede">Yep, one day of music on Skerrow Island, Saturday 19 June 2027. The way over is on foot, across a 1.2 km tidal causeway.</p>
+        <dl class="quick">
+          <div><dt>Arrivals</dt><dd>09:40–13:10</dd></div>
+          <div><dt>Departures</dt><dd>22:15–01:30</dd></div>
+          <div><dt>Capacity</dt><dd>900</dd></div>
+        </dl>
+        <a class="go" href="#crossing">Tide windows first, then the music</a>
+      </div>
+    </div>
+  </section>
+
+  <div class="edged">
+    <svg class="edge edge-l" aria-hidden="true" focusable="false"><rect width="100%" height="100%" fill="url(#ringlets)"/></svg>
+    <svg class="edge edge-r" aria-hidden="true" focusable="false"><rect width="100%" height="100%" fill="url(#ringlets)"/></svg>
+
+    <!-- 2 / 6 · panel -->
+    <section class="band band--panel crossing" id="crossing" aria-labelledby="h-crossing">
+      <div class="wrap">
+        <p class="num label">Crossing</p>
+        <div class="tb">
+          <h2 id="h-crossing">So when's the causeway actually open?</h2>
+          <p>Two windows on the day, set by that day's tide times. Arrivals cross between 09:40 and 13:10, and departures between 22:15 and 01:30.</p>
+          <p>No crossings at all outside those windows, in either direction. The harbour boat is there for emergencies only, not for late arrivals.</p>
+          <p>The last set ends at 21:45, with time to walk back to the causeway.</p>
+        </div>
+        <div class="aside">
+          <div class="boots">
+            <p class="display">Boots.</p>
+            <p>Parts of the causeway are wet sand and seaweed, so trainers are a bad idea.</p>
+          </div>
+        </div>
+        <figure class="tide">
+          <div class="tide-scale tide-scale--top" aria-hidden="true">
+            <span style="left:75%">21:45</span>
+          </div>
+          <div class="tide-track" aria-hidden="true">
+            <span class="win" style="left:3.92%;width:20.59%"></span>
+            <span class="shut" style="left:24.51%;width:50.49%">no crossing</span>
+            <span class="last" style="left:75%"></span>
+            <span class="win" style="left:77.94%;width:19.12%"></span>
+          </div>
+          <div class="tide-scale" aria-hidden="true">
+            <span style="left:3.92%">09:40</span>
+            <span style="left:24.51%">13:10</span>
+            <span style="left:77.94%">22:15</span>
+            <span style="left:97.06%">01:30</span>
+          </div>
+          <dl class="tide-key">
+            <div><i></i><dt>Arrivals cross</dt><dd>09:40–13:10</dd></div>
+            <div><i class="k2"></i><dt>Last set ends</dt><dd>21:45</dd></div>
+            <div><i></i><dt>Departures cross</dt><dd>22:15–01:30</dd></div>
+          </dl>
+        </figure>
+      </div>
+    </section>
+
+    <!-- 3 / 6 · paper -->
+    <section class="band band--paper lineup" id="lineup" aria-labelledby="h-lineup">
+      <div class="wrap">
+        <p class="num label">Line-up</p>
+        <div class="tb">
+          <h2 id="h-lineup">Who's playing, and on which stage?</h2>
+          <p>Two stages: the Field out in the open, and the Boathouse indoors with room for 220 people.</p>
+        </div>
+        <div class="stage-field">
+          <h3>The Field</h3>
+          <p class="where">outdoors</p>
+          <ul>
+            <li>The Lantern Choir</li>
+            <li>Mara Quist</li>
+            <li>Seven Herons</li>
+            <li>Low Orbit Brass</li>
+          </ul>
+        </div>
+        <div class="stage-boat">
+          <h3>The Boathouse</h3>
+          <p class="where">indoors · 220 people</p>
+          <ol>
+            <li><span>Ada Fenwick</span><small>solo cello</small></li>
+            <li><span>Tomasz &amp; the Weir</span></li>
+            <li><span>Kelp</span></li>
+            <li><span>Ruth Ono Trio</span></li>
+          </ol>
+        </div>
+      </div>
+    </section>
+
+    <!-- 4 / 6 · panel -->
+    <section class="band band--panel tickets" id="tickets" aria-labelledby="h-tickets">
+      <div class="wrap">
+        <p class="num label">Tickets</p>
+        <div class="tb">
+          <h2 id="h-tickets">How much does a ticket cost?</h2>
+          <p>Three prices, sorted by age, and kids under 12 get in for free. Tickets go on sale on 1 March 2027, and capacity is 900 people.</p>
+        </div>
+        <dl class="prices">
+          <div class="p1"><dt>Adult</dt><dd>£54</dd></div>
+          <div class="p2"><dt>Ages 12–17</dt><dd>£27</dd></div>
+          <div class="p3"><dt>Under 12</dt><dd>Free</dd></div>
+        </dl>
+        <div class="sale">
+          <p class="label">On sale</p>
+          <p class="big">1 March 2027</p>
+          <p class="label">Capacity</p>
+          <p class="big">900 people</p>
+        </div>
+      </div>
+    </section>
+
+    <!-- 5 / 6 · paper -->
+    <section class="band band--paper island" id="island" aria-labelledby="h-island">
+      <div class="wrap">
+        <p class="num label">Island</p>
+        <div class="tb">
+          <h2 id="h-island">What's there to eat, and what about cups?</h2>
+          <p>Food comes from two island kitchens, and both cash and card work fine.</p>
+          <ul class="rules">
+            <li>No single-use plastic anywhere on the island, not even one cup.</li>
+            <li>So bring a cup, or buy an enamel one there for £6.</li>
+          </ul>
+        </div>
+        <figure class="cup">
+          <svg viewBox="0 0 240 200" aria-hidden="true" focusable="false">
+            <path class="handle" d="M186 72 h22 a20 20 0 0 1 0 40 h-22"/>
+            <circle class="rim" cx="110" cy="100" r="80"/>
+            <circle class="wall" cx="110" cy="100" r="64"/>
+            <circle class="wall" cx="110" cy="100" r="50"/>
+            <text class="price" x="110" y="122" text-anchor="middle">£6</text>
+          </svg>
+          <figcaption>Enamel cup, seen from above</figcaption>
+        </figure>
+      </div>
+    </section>
+
+    <!-- 6 / 6 · panel -->
+    <section class="band band--panel trust" id="trust" aria-labelledby="h-trust">
+      <div class="wrap">
+        <p class="num label">Trust</p>
+        <div class="tb">
+          <h2 id="h-trust">Who runs the festival, and where does the money go?</h2>
+          <p>The Skerrow Island Trust runs the festival, and the Trust is a volunteer charity. Every bit of profit goes to repairing the sea wall.</p>
+          <p>Fourth year running, then, since the first Causeway was held back in 2024.</p>
+        </div>
+        <div class="aside">
+          <p class="year">4th</p>
+          <p class="label">year · first held 2024</p>
+        </div>
+      </div>
+    </section>
+
+    <footer class="foot">
+      <div class="wrap">
+        <div class="tb">
+          <span>Causeway</span>
+          <span>Skerrow Island</span>
+          <span>Saturday 19 June 2027</span>
+          <span>Skerrow Island Trust</span>
+        </div>
+      </div>
+    </footer>
+  </div>
+</main>
+
+</body>
+</html>

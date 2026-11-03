@@ -26,7 +26,9 @@ hash-design 是一个 npm workspaces monorepo，包含两个包、一个 Skill �
 
 | 模块                       | 职责                                                                                                                                                 |
 | -------------------------- | ---------------------------------------------------------------------------------------------------------------------------------------------------- |
-| `src/hash.ts`              | `randomHash`（CSPRNG → SHA-256）、`seededHash`、`rollHashes`、`parseRef`（ref 就是哈希本身）、`ALGORITHM`（`hash-design/v2`）                        |
+| `src/hash.ts`              | `randomHash`（`crypto.getRandomValues` → SHA-256）、`seededHash`、`rollHashes`、`parseRef`（ref 就是哈希本身）、`ALGORITHM`（`hash-design/v2`）      |
+| `src/sha256.ts`            | 纯 TypeScript 的 SHA-256（不依赖 `node:crypto`），哈希和指纹在浏览器里原样运行                                                                       |
+| `src/browser.ts`           | 浏览器入口，导出为 `hash-design/browser`：除 `critique`、`files`、`skill`、CLI 和 MCP server 之外的全部；`index.ts` 重新导出它                       |
 | `src/mapping.ts`           | `mapDesign`（一个哈希逐字节映射成一个设计）、`mapRoll`、约束、`BYTE_MAP`、`libraryFingerprint`、`scenarioFingerprint`、`DEFAULT_COUNT` / `MAX_COUNT` |
 | `src/palette.ts`           | `buildPalette`：由色相 / 深浅 / 彩度字节构建 OKLCH 配色，文字颜色的明度按对比度下限解出                                                              |
 | `src/color.ts`             | sRGB ↔ OKLCH（按降低彩度做色域映射）、WCAG 相对亮度与对比度                                                                                          |
@@ -69,22 +71,23 @@ hash-design 是一个 npm workspaces monorepo，包含两个包、一个 Skill �
 
 ## 生成的文件
 
-`npm run sync`（build + `scripts/sync.mjs`）会重新生成由数据派生的内容：
+仓库里只有一个 Skill 文件：`skills/hash-design/SKILL.md`。`hash-design skill install` 把它复制到 `.claude/skills/`、`.agents/skills/`、`.cursor/skills/` 或任意 `--to` 目录；`npm pack` 把它作为 `packages/core/skill/SKILL.md` 打进包里（`scripts/prepack-core.mjs`）。这些副本都在 gitignore 里，没有任何东西被提交两份。
 
-- `skills/hash-design/SKILL.md` 里位于 `<!-- BEGIN GENERATED: bans (npm run sync) -->` 和 `<!-- END GENERATED: bans -->` 之间的禁令块（也写明字体池大小）
-- 副本 `.claude/skills/hash-design/SKILL.md` 和 `.cursor/skills/hash-design/SKILL.md`
+`npm run sync`（build + `scripts/sync.mjs`）重新生成它里面位于 `<!-- BEGIN GENERATED: bans (npm run sync) -->` 和 `<!-- END GENERATED: bans -->` 之间的禁令块（也写明字体池大小）。CI 运行 `node scripts/sync.mjs --check`：禁令块过期，或者仓库里还跟踪着别的 `SKILL.md`，就失败；`skill.test.ts` 检查同样的事，并检查即使本地残留了 prepack 副本，源码目录读到的仍是这个唯一的文件。
 
-其中任何一个过期，`skill.test.ts` 都会失败。
+## 示例
 
-## 示例：记录下来的 v1 运行
+`examples/` 下的 4 个示例（面包店、开发者工具、单车修理铺、音乐节）是 `hash-design/v2` 的运行：事实、用固定 seed（文件夹名）的一次掷骰、冻结的 brief、每份 brief 一个子 Agent 按 Skill 流程做的预览、截图和对比页。`examples.test.ts` 检查：每次掷骰能用 seed 和当前库指纹复现；磁盘上的每份 brief 都和它的 ref 渲染出来的一字不差；每个预览和截图都在；每个预览 critique 不低于 90 分、brief 遵守度不低于 80，且没有 critical/major；Pages 首页和 README 链接到每个示例。`scripts/examples.mjs` 负责重掷、批量 critique、重建对比页和 Pages 首页；`scripts/showcase.mjs`、`hero.mjs` 和 `hero-gif.mjs` 用掷骰结果和截图生成 README 的展示图和首图。
 
-`examples/` 下的 4 个示例（面包店、开发者工具、单车修理铺、音乐节）是用 `hash-design/v1`（v2 删除的那个 40 分支库）掷出来的。它们作为真实运行的记录保留（事实、冻结的 brief、Agent 按 Skill 流程做的预览、截图和对比页），而不是当前映射的测试夹具：v2 无法复现它们的 ref。`examples.test.ts` 检查：每个示例的 `roll.json` 和 README 都标明 `hash-design/v1`；每个 brief、预览和截图都在；每个预览的 critique 仍不低于 90 分且没有 critical/major；Pages 首页和每份 README 都链接到每个示例。`scripts/examples.mjs` 列出示例并批量 critique 预览；它拒绝重掷 v1 记录或重建其对比页，因为两者都需要 v1。
+## 网站
+
+`site/` 是项目网站，一个静态 Vite 构建（`npm run site:build` → `site/dist/`，由 Cloudflare Pages 部署，见 [deploy-cloudflare-pages.md](deploy-cloudflare-pages.md)，英文）。`site/build/content.ts` 在构建时用代码和示例运行填充 `site/index.html`：版本号、数量、库指纹、场景、[映射规范](mapping.zh-CN.md)里示例哈希的字节图，以及每个示例的 seed、ref、字体、critique 分数和遵守度。构建时从 `docs/assets/` 复制首图和展示图。演示、字节图和"从 ref 重建"都引入 `hash-design/browser`，所以网页掷骰和 CLI 用的是同一份代码；`site/src/rebuild.ts` 生成某个方向的 brief 以及能打印同一份 brief 的 `npx -y hash-design brief …` 命令。
 
 ## 测试与 CI
 
-- **Vitest**，11 个测试文件：`hash`、`mapping`、`scenarios`、`brief`、`critique`（带好/坏两类 HTML 夹具）、`compare`、`cli`、`skill`（同步检查）、`examples`、`release`（发布就绪检查），以及 `mcp`（in-memory transport）。
+- **Vitest**，`packages/core/test` 下 15 个测试文件：`hash`、`mapping`、`count`（N）、`scenarios`、`brief`、`reply`、`critique`（带好/坏两类 HTML 夹具）、`compare`、`cli`、`skill`（同步检查）、`examples`、`readmes`（完整 README 和四个简版）、`release`（发布就绪检查）、`mcp`（in-memory transport），以及 `browser`（纯 TypeScript SHA-256 对照 `node:crypto` 和 FIPS 向量；用 Vite 打包 `hash-design/browser`，不含 Node 内置模块，映射结果与库完全一致）。`site/test` 下 2 个：`parity` 把 `site/src/rebuild.ts` 打包成浏览器代码，检查它生成的 brief 与 CLI 用相同参数输出的内容完全一致（多个 ref × 全部场景 × 多个主题 × 多组约束），并把页面显示的命令交给 `/bin/sh` 实际运行一遍；`content` 用 `BYTE_MAP`、README 的安装命令、示例运行和仓库里的媒体文件核对页面内容。
 - **`scripts/smoke.mjs`**：运行构建好的 CLI，并通过真实的 stdio 管道与 `hash-design mcp` 和 `packages/mcp` 包装通信。
-- **CI**（`.github/workflows/ci.yml`），在 Node 20、22 和 24 上依次跑：`npm ci`、build、typecheck（含测试）、ESLint、Prettier 检查、测试、冒烟测试，以及两个包的 `npm pack --dry-run`。
+- **CI**（`.github/workflows/ci.yml`），在 Node 20、22 和 24 上依次跑：`npm ci`、build、单一 Skill 检查（`npm run sync:check`）、typecheck（含测试和网站）、ESLint、Prettier 检查、测试、冒烟测试、发布检查（`npm pack --dry-run` 的内容）和网站构建（`npm run site:build`）。
 - **Pages**（`.github/workflows/pages.yml`）：`examples/` 有改动时发布到 GitHub Pages。
 
 ## 打包

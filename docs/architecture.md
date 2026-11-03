@@ -26,7 +26,9 @@ hash-design is an npm-workspaces monorepo with two packages, one Skill and four 
 
 | Module                     | Responsibility                                                                                                                                                    |
 | -------------------------- | ----------------------------------------------------------------------------------------------------------------------------------------------------------------- |
-| `src/hash.ts`              | `randomHash` (CSPRNG → SHA-256), `seededHash`, `rollHashes`, `parseRef` (a ref is the bare hash), `ALGORITHM` (`hash-design/v2`)                                  |
+| `src/hash.ts`              | `randomHash` (`crypto.getRandomValues` → SHA-256), `seededHash`, `rollHashes`, `parseRef` (a ref is the bare hash), `ALGORITHM` (`hash-design/v2`)                |
+| `src/sha256.ts`            | Pure TypeScript SHA-256 (no `node:crypto`), so hashing and the fingerprints run unchanged in a browser                                                            |
+| `src/browser.ts`           | The browser entry, exported as `hash-design/browser`: everything except `critique`, `files`, `skill`, the CLI and the MCP server. `index.ts` re-exports it        |
 | `src/mapping.ts`           | `mapDesign` (one hash → one design, byte by byte), `mapRoll`, constraints, `BYTE_MAP`, `libraryFingerprint`, `scenarioFingerprint`, `DEFAULT_COUNT` / `MAX_COUNT` |
 | `src/palette.ts`           | `buildPalette`: OKLCH palette from the hue / polarity / chroma bytes, with text lightness solved to the contrast floors                                           |
 | `src/color.ts`             | sRGB ↔ OKLCH (gamut-mapped by chroma), WCAG relative luminance and contrast                                                                                       |
@@ -69,22 +71,23 @@ Fonts, primitives and `BYTE_MAP` are hashed into the library fingerprint, which 
 
 ## Generated files
 
-`npm run sync` (build + `scripts/sync.mjs`) regenerates what is derived from the data:
+`skills/hash-design/SKILL.md` is the only Skill file in the repository. `hash-design skill install` copies it into `.claude/skills/`, `.agents/skills/`, `.cursor/skills/` or any `--to` folder, and `npm pack` ships it as `packages/core/skill/SKILL.md` (`scripts/prepack-core.mjs`). Those copies are gitignored; nothing is checked in twice.
 
-- the bans block inside `skills/hash-design/SKILL.md`, between `<!-- BEGIN GENERATED: bans (npm run sync) -->` and `<!-- END GENERATED: bans -->` (it also states the size of the font pool)
-- the copies `.claude/skills/hash-design/SKILL.md` and `.cursor/skills/hash-design/SKILL.md`
+`npm run sync` (build + `scripts/sync.mjs`) regenerates the bans block inside it, between `<!-- BEGIN GENERATED: bans (npm run sync) -->` and `<!-- END GENERATED: bans -->` (the block also states the size of the font pool). CI runs `node scripts/sync.mjs --check`, which fails if the block is stale or another `SKILL.md` is tracked; `skill.test.ts` checks the same, and that a checkout reads the canonical file even when a leftover prepack copy exists.
 
-`skill.test.ts` fails if any of these is stale.
+## The examples
 
-## The examples: recorded v1 runs
+The four runs under `examples/` (a bakery, a developer tool, a bicycle repair shop and a music festival) are `hash-design/v2` runs: facts, a roll from a fixed seed (the folder name), frozen briefs, previews made by one sub-agent per brief following the Skill, screenshots and a compare page. `examples.test.ts` checks that each roll reproduces from its seed and the current library fingerprint, that every brief on disk is exactly what its ref renders, that every preview and screenshot is present, that each preview scores at least 90 on the critique with brief adherence of at least 80 and no critical or major findings, and that the Pages index and the README link to each example. `scripts/examples.mjs` re-rolls, critiques and rebuilds the compare pages and the Pages index; `scripts/showcase.mjs`, `hero.mjs` and `hero-gif.mjs` build the README plates and hero from the rolls and screenshots.
 
-The four runs under `examples/` (a bakery, a developer tool, a bicycle repair shop and a music festival) were rolled with `hash-design/v1`, the 40-branch library that v2 removed. They are kept as records of real runs (facts, frozen briefs, previews made by agents following the Skill, screenshots and compare pages), not as fixtures of the current mapping: v2 cannot reproduce their refs. `examples.test.ts` checks that each one is labelled `hash-design/v1` in its `roll.json` and README, that every brief, preview and screenshot is present, that each preview still scores at least 90 on the critique with no critical or major findings, and that the Pages index and every README link to each example. `scripts/examples.mjs` lists the examples and critiques their previews; it refuses to re-roll a v1 record or rebuild its compare page, since both need v1.
+## The website
+
+`site/` is the project website, a static Vite build (`npm run site:build` → `site/dist/`, deployed by Cloudflare Pages: [deploy-cloudflare-pages.md](deploy-cloudflare-pages.md)). `site/build/content.ts` fills `site/index.html` at build time from the code and the example runs: the version, the counts, the library fingerprint, the scenarios, the byte map of the worked example of [mapping.md](mapping.md), and each example's seed, refs, faces, critique scores and adherence. The build copies the hero and showcase media from `docs/assets/`. The demo, the byte map and "rebuild from a ref" import `hash-design/browser`, so the page rolls with the same code as the CLI; `site/src/rebuild.ts` builds a direction's brief and the `npx -y hash-design brief …` command that prints it.
 
 ## Testing and CI
 
-- **Vitest**, 11 test files: `hash`, `mapping`, `scenarios`, `brief`, `critique` (with good and bad HTML fixtures), `compare`, `cli`, `skill` (sync checks), `examples`, `release` (publish readiness) and `mcp` (in-memory transport).
+- **Vitest**, 15 test files in `packages/core/test`: `hash`, `mapping`, `count` (N), `scenarios`, `brief`, `reply`, `critique` (with good and bad HTML fixtures), `compare`, `cli`, `skill` (sync checks), `examples`, `readmes` (the full README and the four short versions), `release` (publish readiness), `mcp` (in-memory transport) and `browser` (the pure SHA-256 against `node:crypto` and the FIPS vectors, and `hash-design/browser` bundled by Vite with no Node built-ins, mapping exactly as the library does). Two in `site/test`: `parity` bundles `site/src/rebuild.ts` for the browser and checks that its brief equals the CLI's stdout for the same arguments (refs × every scenario × subjects × constraints), also with the shown command run through `/bin/sh`; `content` checks the page against `BYTE_MAP`, the README install commands, the example runs and the repository media.
 - **`scripts/smoke.mjs`**: runs the built CLI and talks to `hash-design mcp` and the `packages/mcp` wrapper over a real stdio pipe.
-- **CI** (`.github/workflows/ci.yml`), on Node 20, 22 and 24: `npm ci`, build, typecheck (including tests), ESLint, Prettier check, tests, smoke test, `npm pack --dry-run` for both packages.
+- **CI** (`.github/workflows/ci.yml`), on Node 20, 22 and 24: `npm ci`, build, the one-Skill check (`npm run sync:check`), typecheck (including tests and the site), ESLint, Prettier check, tests, smoke test, the release check (`npm pack --dry-run` contents) and the website build (`npm run site:build`).
 - **Pages** (`.github/workflows/pages.yml`): publishes `examples/` to GitHub Pages when it changes.
 
 ## Packaging

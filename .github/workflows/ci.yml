@@ -29,6 +29,8 @@ jobs:
           cache: npm
       - run: npm ci
       - run: npm run build
+      - name: One Skill file, generated block current
+        run: npm run sync:check
       - run: npm run typecheck
       - run: npm run lint
       - run: npm run format:check
@@ -37,3 +39,5 @@ jobs:
         run: node scripts/smoke.mjs
       - name: Release readiness (manifests, lockstep versions, npm pack --dry-run contents)
         run: npm run release:check
+      - name: Website builds (site/ → site/dist, the Cloudflare Pages build command)
+        run: npm run site:build

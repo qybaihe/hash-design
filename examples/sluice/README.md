@@ -1,8 +1,5 @@
 # Example: Sluice
 
-> [!NOTE]
-> This run was made with **hash-design/v1**, the 40-branch genre library that hash-design/v2 replaced with continuous parameters. It is kept as a record of a real run. Its refs and briefs reproduce only with v1: check out a v1 commit such as `475ba16` and run the commands below there. Under v2 the same seed rolls different directions.
-
 A full hash-design run for an English-language developer tool: Sluice, a self-hosted inbox for webhooks. The product, its maintainer and its numbers are fictional; the facts are in [facts.md](facts.md).
 
 - **Live compare page:** <https://qybaihe.github.io/hash-design/sluice/compare.html> (press 1–5 to zoom, D/M to switch desktop/mobile)
@@ -12,89 +9,75 @@ A full hash-design run for an English-language developer tool: Sluice, a self-ho
 
 ## Process
 
-1. **Roll.** The fixed seed only makes the example reproducible; leave `--seed` out in real use.
+1. **Roll.** The roll uses `hash-design/v2` with library `bd20321c36ab`. The seed is the folder name and was used once, with no re-rolls; it only makes the example reproducible, so leave `--seed` out in real use.
 
    ```bash
    npm run build
    node packages/core/dist/bin.js roll --subject "Sluice — self-hosted webhook inbox" \
-     --facts-file examples/sluice/facts.md --seed sluice --out examples/sluice
+     --facts-file examples/sluice/facts.md --seed sluice \
+     --out examples/sluice
    ```
 
-   The MCP equivalent, `roll_designs { subject, facts, seed: "sluice", out_dir }`, returns the same five refs. `npm run example:roll -- sluice` runs the same command from the list in [`scripts/examples.mjs`](../../scripts/examples.mjs).
+   The MCP equivalent, `roll_designs { subject, facts, seed: "sluice", out_dir }`, returns the same five refs, and `npm run example:roll -- sluice` runs the same command from [`scripts/examples.mjs`](../../scripts/examples.mjs).
 
-   Seed rule for the examples: try `<name>`, `<name>-2`, `<name>-3`, … and keep the first seed whose five branches appear in no earlier example. `sluice` was clean on the first try.
+2. **Freeze.** The roll writes [roll.json](roll.json), [ROLL.md](ROLL.md) and [briefs/](briefs). From here on the briefs are fixed specs; `examples.test.ts` checks that each one is exactly what its ref reproduces.
 
-2. **Freeze.** The roll writes [roll.json](roll.json), [ROLL.md](ROLL.md) and [briefs/](briefs). From here on the briefs are fixed specs.
+3. **Render.** Following steps 4–5 of the [Skill](../../skills/hash-design/SKILL.md), each preview was built by its own sub-agent that could not see the others. Each one read only its brief and `facts.md`, wrote one self-contained HTML file (inline CSS and SVG, no images, no frameworks) and checked itself with the critique and Playwright screenshots at least twice. In review, three agents changed something after their first critique: #1 and #5 removed section numbers the facts don’t contain, and #4 removed a second Copy button that read as a centred hero with two buttons.
 
-3. **Render.** Following step 3 of the [Skill](../../skills/hash-design/SKILL.md), each preview was built by its own sub-agent that could not see the others. Each one read only its brief and `facts.md`, wrote one self-contained HTML file (inline CSS and SVG, no images, no frameworks), and checked itself with the critique and Playwright screenshots at least twice. The pages are in English. Some brief text (voice, twist) is written in Chinese; the agents applied it in English.
+4. **Critique.** `npm run example:critique -- sluice`, or per page `hash-design critique previews/NN-*.html --roll roll.json --pick N --facts-file facts.md`:
 
-4. **Critique.** `npm run example:critique -- sluice`, or per page `hash-design critique previews/NN-*.html --roll roll.json --pick N`:
+   | # | ref | display / body | critique | brief adherence |
+   | --- | --- | --- | --- | --- |
+   | 1 | `484a15b6` | EB Garamond / Young Serif | 100 | 100 |
+   | 2 | `599481a7` | Zen Old Mincho / Josefin Sans | 100 | 100 |
+   | 3 | `1cd7911b` | Permanent Marker / IBM Plex Sans Condensed | 100 | 100 |
+   | 4 | `6f5edb67` | Cormorant SC / Overpass | 100 | 100 |
+   | 5 | `08b46918` | Bodoni Moda / Literata | 100 | 100 |
 
-   | #   | Branch            | critique | brief adherence | Minor findings kept                                                                         |
-   | --- | ----------------- | -------- | --------------- | ------------------------------------------------------------------------------------------- |
-   | 1   | Record sleeve     | 96       | 100             | `5:00` and `72:00:00` (the facts' 5 minutes and 72 hours set as track times), steps 01–03   |
-   | 2   | Gallery catalogue | 96       | 100             | plate and clause numbers (Pl. 1–12, 1.1–4.8)                                                |
-   | 3   | Terminal phosphor | 92       | 90              | section numbers 01–11; the 18px rounded CRT bezel, which the brief allows as the only curve |
-   | 4   | Academic paper    | 96       | 100             | subsection numbers 1.1–6.3                                                                  |
-   | 5   | Lab notebook      | 96       | 100             | "Book 3 · p. 47" (the brief asks for it), section numbers 1.1–2.5                           |
+   No critical, major or minor findings on any of the five.
 
-   No critical or major findings. Apart from the bezel, every minor finding is the "number not in the facts" check firing on numbering that the layout or twist requires.
-
-5. **Compare.** `hash-design compare --roll examples/sluice/roll.json` writes [compare.html](compare.html). For an English roll the page's labels are English.
+5. **Compare.** `hash-design compare --roll examples/sluice/roll.json` writes [compare.html](compare.html).
 
 6. **Pick.** The Skill stops here and waits for the user to reply with a number. The example ends here.
 
 ## The five directions
 
-### 01 · Record sleeve
+### 01 · EB Garamond / Young Serif
 
-<a href="https://qybaihe.github.io/hash-design/sluice/previews/01-record-sleeve.html"><img src="screenshots/01-record-sleeve-desktop.png" width="74%" alt="#1 Record sleeve, desktop"></a> <img src="screenshots/01-record-sleeve-mobile.png" width="22%" alt="#1 Record sleeve, mobile">
+<a href="https://qybaihe.github.io/hash-design/sluice/previews/01-484a15b6.html"><img src="screenshots/01-484a15b6-desktop.png" width="74%" alt="#1 EB Garamond / Young Serif, desktop"></a> <img src="screenshots/01-484a15b6-mobile.png" width="22%" alt="#1 EB Garamond / Young Serif, mobile">
 
-`2519cd97` · layout Blue Note crop · type League Gothic / Libre Franklin · palette Factory black · voice catalogue entry · twist one element breaks the grid · [brief](briefs/01-record-sleeve.md)
+`484a15b6` · dark paper, hue 102° · 8-column grid · anchor: motif · twist: The primary call to action: set vertically (writing-mode: vertical-rl). · [brief](briefs/01-484a15b6.md)
 
-The first screen is a square LP sleeve on a 12 × 12 grid: "SLUICE" in League Gothic, so large that the edges of the square crop it, with a red catalogue label reading "SLUICE 0.9.2". The record slides out of the sleeve and off the screen, the one element allowed off the grid; its label is etched with facts only. The back cover lists the facts as SIDE A / SIDE B tracks with right-aligned values, and puts "MIT" in the price slot of the catalogue entry.
+Dark olive. “I hold your webhooks.” is set in EB Garamond small caps in columns 3–7 with a short first-person lede; the anchor below is a diagram of hairline rules at 131°, held in rows behind a gate, with three rows passing under it towards `localhost:3000`. “Install Sluice” runs vertically as a tall olive bar in column 8, also on phones.
 
-### 02 · Gallery catalogue
+### 02 · Zen Old Mincho / Josefin Sans
 
-<a href="https://qybaihe.github.io/hash-design/sluice/previews/02-gallery-catalogue.html"><img src="screenshots/02-gallery-catalogue-desktop.png" width="74%" alt="#2 Gallery catalogue, desktop"></a> <img src="screenshots/02-gallery-catalogue-mobile.png" width="22%" alt="#2 Gallery catalogue, mobile">
+<a href="https://qybaihe.github.io/hash-design/sluice/previews/02-599481a7.html"><img src="screenshots/02-599481a7-desktop.png" width="74%" alt="#2 Zen Old Mincho / Josefin Sans, desktop"></a> <img src="screenshots/02-599481a7-mobile.png" width="22%" alt="#2 Zen Old Mincho / Josefin Sans, mobile">
 
-`169a48c2+1` · layout Archive checklist · type Cormorant / EB Garamond · palette White cube · voice technical manual · twist navigation not on top · [brief](briefs/02-gallery-catalogue.md)
+`599481a7` · light paper, hue 126° · 9-column grid · anchor: headline · twist: Repeat the footer 4 times in a row. · [brief](briefs/02-599481a7.md)
 
-An exhibition of the software. The entrance wall is mostly empty: title, dates and the rooms index, which is the only navigation and settles into the left rail as you scroll (a strip at the bottom on phones). Each fact becomes one of 12 numbered works with a drawn plate and a tombstone label: the retries are eight lines whose gaps double, the benchmark is exactly 1,800 dots, and "no hosted service, no account, no telemetry" is a blank white sheet. One red dot marks Pl. 7, _Replay_. The text reads like a manual: numbered clauses and imperative steps.
+The lowercase olive Zen Old Mincho headline “11 mb keeps every webhook sent to you.” is 52% of the width and tilted 1.5°, over one lead sentence and the install command. Large dots in groups of three lean at 80° down both edges, one of them pink, and the footer is repeated four times at the bottom.
 
-### 03 · Terminal phosphor
+### 03 · Permanent Marker / IBM Plex Sans Condensed
 
-<a href="https://qybaihe.github.io/hash-design/sluice/previews/03-terminal-phosphor.html"><img src="screenshots/03-terminal-phosphor-desktop.png" width="74%" alt="#3 Terminal phosphor, desktop"></a> <img src="screenshots/03-terminal-phosphor-mobile.png" width="22%" alt="#3 Terminal phosphor, mobile">
+<a href="https://qybaihe.github.io/hash-design/sluice/previews/03-1cd7911b.html"><img src="screenshots/03-1cd7911b-desktop.png" width="74%" alt="#3 Permanent Marker / IBM Plex Sans Condensed, desktop"></a> <img src="screenshots/03-1cd7911b-mobile.png" width="22%" alt="#3 Permanent Marker / IBM Plex Sans Condensed, mobile">
 
-`16333b21` · layout Man page · type IBM Plex Mono / Fira Code · palette P3 amber phosphor · voice personal letter · twist numbered sections · [brief](briefs/03-terminal-phosphor.md)
+`1cd7911b` · light paper, hue 41° · 10-column grid · anchor: number · twist: The footer: inverted: paper-coloured on ink. · [brief](briefs/03-1cd7911b.md)
 
-`$ man sluice` on amber phosphor over green-bar paper: a reverse-video status bar made of facts, an ASCII banner in a double-line frame, and a pinned side pane with the section menu and an "at a glance" panel with `. . . :` leaders. The 11 man-page sections carry large reverse-video numbers. DESCRIPTION is a letter from the maintainer ("Hello —", the lost weekend of payment webhooks, "I hope it saves you a weekend"), signed in AUTHORS with a P.S. The page ends on a prompt with the install command and a blinking cursor, the only thing that moves.
+“1,800” in orange Permanent Marker fills 90% of the width, tilted −1.5°, with a caption saying it is deliveries per second from the project’s own benchmark on a 2-vCPU VM. Half-circles at 43° run down both edges and mark the platform table; eight sections alternate bands, and the footer is inverted, paper on ink.
 
-### 04 · Academic paper
+### 04 · Cormorant SC / Overpass
 
-<a href="https://qybaihe.github.io/hash-design/sluice/previews/04-academic-paper.html"><img src="screenshots/04-academic-paper-desktop.png" width="74%" alt="#4 Academic paper, desktop"></a> <img src="screenshots/04-academic-paper-mobile.png" width="22%" alt="#4 Academic paper, mobile">
+<a href="https://qybaihe.github.io/hash-design/sluice/previews/04-6f5edb67.html"><img src="screenshots/04-6f5edb67-desktop.png" width="74%" alt="#4 Cormorant SC / Overpass, desktop"></a> <img src="screenshots/04-6f5edb67-mobile.png" width="22%" alt="#4 Cormorant SC / Overpass, mobile">
 
-`8fcd60e5+2` · layout Tufte handout · type Crimson Pro / Crimson Pro · palette Preprint white · voice logbook · twist time as structure · [brief](briefs/04-academic-paper.md)
+`6f5edb67` · light paper, hue 157° · 9-column grid · anchor: motif · twist: Set the footer at 0.34× the size it would normally get. · [brief](briefs/04-6f5edb67.md)
 
-A technical note as PDF pages: a preprint-style side stamp, a centred italic title, the abstract in a framed panel and "Conditions at release" in the margin. The paper follows one delivery along a time axis, with _T_ the moment it arrives: §2 before _T_ (install, start), §3 _T_ − 5 min (signature and age check), §4 _T_ (store, forward), §5 _T_ + 72 h (retries), §6 _T_ + 30 d (search, replay, retention). The margin runs a signed log ("— I. O."), and the figures, tables and references are built only from the facts.
+“SLUICE” and “a self-hosted inbox for webhooks” in Cormorant SC capitals at the top left, short second-person lines and the install box at the bottom. The anchor is one solid green cross with a hard ink shadow, 98% of the width and turned −8°; small crosses at 126° run down both edges. The footer is a small box over 3 of the 9 columns.
 
-### 05 · Lab notebook
+### 05 · Bodoni Moda / Literata
 
-<a href="https://qybaihe.github.io/hash-design/sluice/previews/05-lab-notebook.html"><img src="screenshots/05-lab-notebook-desktop.png" width="74%" alt="#5 Lab notebook, desktop"></a> <img src="screenshots/05-lab-notebook-mobile.png" width="22%" alt="#5 Lab notebook, mobile">
+<a href="https://qybaihe.github.io/hash-design/sluice/previews/05-08b46918.html"><img src="screenshots/05-08b46918-desktop.png" width="74%" alt="#5 Bodoni Moda / Literata, desktop"></a> <img src="screenshots/05-08b46918-mobile.png" width="22%" alt="#5 Bodoni Moda / Literata, mobile">
 
-`58912b84+5` · layout Dated entries · type Caveat / IBM Plex Mono · palette Green computation pad · voice field notes · twist numbered sections · [brief](briefs/05-lab-notebook.md)
+`08b46918` · light paper, hue 12° · 12-column grid · anchor: fact-list · twist: Set the links at 3.6× the size it would normally get. · [brief](briefs/05-08b46918.md)
 
-A page of a squared lab notebook. Entry 1 opens with the aim, "catch every webhook, keep it, pass it on", and a line drawing of Sluice as a canal sluice: an intake funnel for the public URL, a screen for the HMAC check, a gate for the binary, a tank for the SQLite file and a sight glass for the web UI. Data is in mono, handwriting only for labels and remarks. Corrections are struck through and initialled ("localhost:~~8081~~ 3000 I.O."), and the "Witnessed by" line is left blank because the facts name no witness.
-
-## Files
-
-```
-facts.md            the fact sheet (the only content a page may state)
-roll.json / ROLL.md the five hashes, mapping, constraints and each brief as JSON
-briefs/             five frozen briefs
-previews/           five preview pages
-compare.html        side-by-side compare page
-screenshots/        desktop first screen / full page / mobile per preview, compare page (desktop and phone width)
-```
-
-Screenshots come from `npm run screenshots` (run `npx playwright install chromium` first). [`packages/core/test/examples.test.ts`](../../packages/core/test/examples.test.ts) keeps this roll, its briefs and the critique scores in step with the library.
+A dusty-rose block holds the fact list in two columns under “Sluice” in Bodoni, rotated −1.5° so its right edge runs off the page, with paper-coloured half-circle markers. Every link (contents, `install.sh`, `localhost:8081`) is set at 3.6× the body size in Bodoni italic.

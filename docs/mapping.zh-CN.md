@@ -6,11 +6,11 @@
 
 ## 1. 哈希从哪里来
 
-| 模式             | 来源                                                  | `roll.json` 中的 `source` 字段 |
-| ---------------- | ----------------------------------------------------- | ------------------------------ |
-| 真实使用（默认） | `sha256(crypto.randomBytes(32))`，即操作系统的 CSPRNG | `system-random`                |
-| 示例和测试       | `sha256("hash-design/v2:<seed>:<index>")`             | `seed:<seed>`                  |
-| 仅限库调用方     | `roll({ hashes: [...] })`，哈希由你提供               | `provided-hashes`              |
+| 模式             | 来源                                                           | `roll.json` 中的 `source` 字段 |
+| ---------------- | -------------------------------------------------------------- | ------------------------------ |
+| 真实使用（默认） | `sha256(crypto.getRandomValues(32 字节))`，即操作系统的 CSPRNG | `system-random`                |
+| 示例和测试       | `sha256("hash-design/v2:<seed>:<index>")`                      | `seed:<seed>`                  |
+| 仅限库调用方     | `roll({ hashes: [...] })`，哈希由你提供                        | `provided-hashes`              |
 
 `seed` 的存在是为了让示例和测试可复现。Skill、MCP prompt 和 server instructions 都会告诉 Agent：真实工作中永远不要传 seed。
 

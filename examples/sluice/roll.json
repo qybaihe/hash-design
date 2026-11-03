@@ -1,16 +1,13 @@
 {
-  "algorithm": "hash-design/v1",
-  "library": "c7b166fe6ec0",
-  "createdAt": "2026-11-02T08:07:42.340Z",
+  "algorithm": "hash-design/v2",
+  "library": "bd20321c36ab",
+  "createdAt": "2026-11-03T11:21:11.829Z",
   "source": "seed:sluice",
   "constraints": {
     "lightOnly": false,
     "darkOnly": false,
     "reducedMotion": false,
-    "brandColors": [],
-    "families": [],
-    "include": [],
-    "exclude": []
+    "brandColors": []
   },
   "content": {
     "subject": "Sluice — self-hosted webhook inbox",
@@ -37,21 +34,17 @@
   "designs": [
     {
       "number": 1,
-      "slug": "01-record-sleeve",
-      "ref": "2519cd97b1cb7a53fa192b21d16d98d41c08c45046f0969f12665848f49d9f97",
-      "hash": "2519cd97b1cb7a53fa192b21d16d98d41c08c45046f0969f12665848f49d9f97",
-      "short": "2519cd97",
-      "probe": 0,
-      "algorithm": "hash-design/v1",
-      "library": "c7b166fe6ec0",
+      "slug": "01-484a15b6",
+      "ref": "484a15b64867e03aaf0d0be02da68ff09776e4bbfbdcfdc23070083359cf770d",
+      "hash": "484a15b64867e03aaf0d0be02da68ff09776e4bbfbdcfdc23070083359cf770d",
+      "short": "484a15b6",
+      "algorithm": "hash-design/v2",
+      "library": "bd20321c36ab",
       "constraints": {
         "lightOnly": false,
         "darkOnly": false,
         "reducedMotion": false,
-        "brandColors": [],
-        "families": [],
-        "include": [],
-        "exclude": []
+        "brandColors": []
       },
       "content": {
         "subject": "Sluice — self-hosted webhook inbox",
@@ -75,529 +68,68 @@
         ],
         "language": "en"
       },
-      "branch": {
-        "id": "record-sleeve",
-        "name": {
-          "zh": "唱片封套",
-          "en": "Record sleeve"
-        },
-        "family": "print",
-        "concept": {
-          "zh": "五十到八十年代的黑胶封套：正面是一个正方形——狠狠裁切的照片、巨大的字，或几乎什么都没有；背面是密密的曲目表、录音信息和目录号。Blue Note 的爵士张力，ECM 的冷静留白，Factory 的编号与克制。",
-          "en": "The 1950s–80s LP sleeve: the front is a square — a brutally cropped photo, enormous type, or almost nothing; the back is a dense track listing, recording credits and a catalogue number. Blue Note's jazz tension, ECM's cool silence, Factory's numbering and restraint."
-        },
-        "references": [
-          "Reid Miles — Blue Note Records sleeves (1956–67)",
-          "Barbara Wojirsch & Dieter Rehm — ECM Records covers",
-          "Peter Saville — Factory Records (FAC numbers, \"Unknown Pleasures\", \"Power, Corruption & Lies\")",
-          "Alex Steinweiss — Columbia Records sleeves (1940s)",
-          "Hipgnosis — sleeves for Pink Floyd and Led Zeppelin"
-        ],
-        "tokens": {
-          "grid": "Square module: the cover is 1:1 at min(92vw, 88vh) with an internal 12×12 square grid; the back cover uses 3 columns with 12px gutters.",
-          "radius": "0 for sleeves; the disc is a circle (border-radius: 50%) with a label circle at 33% of its diameter.",
-          "border": "No borders on the cover; back-cover credits use 1px rules; a 12px spine strip where needed.",
-          "shadow": "none. Wear is shown with a ring-wear mark (thin radial ring) instead of a shadow."
-        },
-        "must": [
-          "The first screen contains a perfect 1:1 square composition.",
-          "A catalogue number and an ordered listing (A1, A2… or 01, 02…) appear on the page.",
-          "Type or image is cropped by the square edge at least once — or, in the ECM option, the square is ≥85% empty."
-        ],
-        "mustNot": [
-          "No wide rectangular hero banner; the cover is square.",
-          "No streaming-app UI: no circular play buttons, progress bars or heart icons.",
-          "No invented track names, credits or durations — only items from the facts."
-        ]
-      },
-      "voice": {
-        "id": "catalogue-entry",
-        "name": {
-          "zh": "商品目录",
-          "en": "Catalogue entry"
-        },
-        "description": "邮购目录条目：货号、品名、规格、价格，每条结构一致，靠排版而非形容词取胜。",
-        "devices": [
-          "货号 No.",
-          "品名 + 规格",
-          "价格右对齐",
-          "库存/批次说明"
-        ],
-        "example": "No.07 黑麦面包 · 750 g · 每日限 12 个 · ¥42"
-      },
-      "layout": {
-        "id": "blue-note-crop",
-        "name": "Blue Note crop",
-        "description": "Reid Miles-style: an extreme tight crop (photo or giant letters) fills two thirds of the square; the title stacks in condensed caps against one edge inside a single strong colour band.",
-        "grid": "12×12 square grid; crop occupies rows 1–8, type band rows 9–12; type may bleed off the square edge.",
-        "structure": [
-          "Square with a photo or letterform crop in rows 1–8, tinted in one colour",
-          "Type band: name in giant condensed caps, title in a contrasting weight",
-          "Catalogue label top-right in the \"BLUE NOTE 1577\" manner, using the subject's own code",
-          "Under the sleeve: session details table (date, place, people) with 1px rules"
-        ]
-      },
-      "anchor": {
-        "id": "cropped-giant-type",
-        "name": "Cropped giant type",
-        "description": "The name in condensed caps so large the square edges cut it; only 60–70% of the letters are visible."
-      },
-      "type": {
-        "id": "league-franklin",
-        "name": "League Gothic + Libre Franklin",
-        "display": {
-          "family": "League Gothic",
-          "weights": [
-            400
-          ],
-          "fallback": "Impact, \"Arial Narrow\", sans-serif",
-          "source": "google"
-        },
-        "body": {
-          "family": "Libre Franklin",
-          "weights": [
-            400,
-            700,
-            900
-          ],
-          "italic": true,
-          "fallback": "\"Franklin Gothic Medium\", Arial, sans-serif",
-          "source": "google"
-        },
-        "cjk": {
-          "display": "ZCOOL QingKe HuangYou",
-          "body": "Noto Sans SC"
-        },
-        "notes": "League Gothic uppercase at huge sizes (up to 30vw), line-height 0.82, tracking 0; it is allowed to be cut by the square edge. Libre Franklin 900 for the title line in mixed case, 400 for credits at 13px/1.5. Durations in tabular figures, right-aligned."
-      },
-      "fonts": {
-        "stacks": {
-          "display": "\"League Gothic\", Impact, \"Arial Narrow\", sans-serif",
-          "body": "\"Libre Franklin\", \"Franklin Gothic Medium\", Arial, sans-serif",
-          "mono": "ui-monospace, \"SFMono-Regular\", Menlo, Consolas, monospace"
-        },
-        "googleFontsUrl": "https://fonts.googleapis.com/css2?family=League+Gothic&family=Libre+Franklin:ital,wght@0,400;0,700;0,900;1,400;1,700;1,900&display=swap"
-      },
+      "label": "dark · 102° · EB Garamond / Young Serif · 8 col",
       "palette": {
-        "id": "factory-black",
-        "name": "Factory black",
+        "polarity": "dark",
+        "hue": 101.66,
+        "paperL": 0.173,
+        "paperC": 0.032,
+        "accentC": 0.115,
+        "accent2Offset": 151.18,
         "colors": {
-          "paper": "#0e0e0e",
-          "ink": "#f0eee9",
-          "muted": "#a7a49d",
-          "accent": "#e8452c",
-          "accent2": "#f2c230",
-          "rule": "#3a3a3a",
-          "panel": "#1c1c1c"
-        },
-        "usage": "Black sleeve and page; off-white type; red and yellow as small solid colour-code blocks or a single line of type (<10%); grey rules on the back cover."
+          "paper": "#131001",
+          "ink": "#cfccb2",
+          "muted": "#7f7e70",
+          "accent": "#897c15",
+          "accent2": "#4b7db6",
+          "rule": "#3d3a1f",
+          "panel": "#1f1c04"
+        }
       },
-      "paletteOverride": null,
       "contrast": {
         "lines": [
           {
             "pair": "ink on paper",
-            "ratio": 16.65,
+            "ratio": 11.73,
             "verdict": "AAA — any text"
           },
           {
             "pair": "muted on paper",
-            "ratio": 7.76,
-            "verdict": "AAA — any text"
+            "ratio": 4.65,
+            "verdict": "AA — body text OK"
           },
           {
             "pair": "ink on panel",
-            "ratio": 14.7,
+            "ratio": 10.55,
             "verdict": "AAA — any text"
           },
           {
             "pair": "accent on paper",
-            "ratio": 4.89,
+            "ratio": 4.5,
             "verdict": "AA — body text OK"
           },
           {
             "pair": "accent2 on paper",
-            "ratio": 11.52,
-            "verdict": "AAA — any text"
+            "ratio": 4.45,
+            "verdict": "large text / UI marks only (≥24px or bold ≥19px)"
           },
           {
             "pair": "#000000 on accent",
-            "ratio": 5.32,
+            "ratio": 4.96,
             "verdict": "AA — body text OK"
           },
           {
             "pair": "#000000 on accent2",
-            "ratio": 12.53,
-            "verdict": "AAA — any text"
+            "ratio": 4.91,
+            "verdict": "AA — body text OK"
           }
         ],
         "onAccent": "#000000",
         "onAccent2": "#000000"
       },
-      "density": {
-        "id": "airy",
-        "name": {
-          "zh": "疏朗",
-          "en": "Airy"
-        },
-        "baseSize": 18,
-        "lineHeight": 1.65,
-        "unit": 10,
-        "sectionGap": 168,
-        "maxWidth": 1080,
-        "description": "大留白，一屏只讲一件事；正文行长 60–68 字符（中文 30–36 字）。"
-      },
-      "scale": {
-        "id": "perfect-fifth",
-        "name": "Perfect fifth 1.5",
-        "ratio": 1.5,
-        "steps": [
-          {
-            "step": -2,
-            "px": 8,
-            "rem": 0.5
-          },
-          {
-            "step": -1,
-            "px": 12,
-            "rem": 0.75
-          },
-          {
-            "step": 0,
-            "px": 18,
-            "rem": 1.125
-          },
-          {
-            "step": 1,
-            "px": 27,
-            "rem": 1.688
-          },
-          {
-            "step": 2,
-            "px": 40.5,
-            "rem": 2.531
-          },
-          {
-            "step": 3,
-            "px": 60.8,
-            "rem": 3.797
-          },
-          {
-            "step": 4,
-            "px": 91.1,
-            "rem": 5.695
-          },
-          {
-            "step": 5,
-            "px": 136.7,
-            "rem": 8.543
-          },
-          {
-            "step": 6,
-            "px": 205,
-            "rem": 12.814
-          },
-          {
-            "step": 7,
-            "px": 307.5,
-            "rem": 19.222
-          }
-        ]
-      },
-      "motion": {
-        "id": "still",
-        "name": "Still sleeve",
-        "description": "No motion; hover underlines a title and turns its duration to accent.",
-        "duration": "0ms",
-        "easing": "linear",
-        "reduced": "Nothing to change."
-      },
-      "motif": {
-        "id": "side-a-side-b",
-        "name": "Side A / Side B",
-        "description": "Any ordered facts listed as SIDE A / SIDE B with A1…B4 numbering, titles and right-aligned tabular durations or values."
-      },
-      "surface": {
-        "id": "laminated-flipback",
-        "name": "Laminated flipback",
-        "description": "Crisp, flat front; the back cover has a 6px folded flipback strip on its left edge.",
-        "css": ".sleeve { background: var(--panel); } .back { position: relative; } .back::before { content: \"\"; position: absolute; inset: 0 auto 0 0; width: 6px; background: var(--rule); }"
-      },
-      "twist": {
-        "id": "one-element-breaks-grid",
-        "name": {
-          "zh": "唯一越界",
-          "en": "One element breaks the grid"
-        },
-        "description": "全页恰好一个元素打破栅格：旋转、出血或越过边距。其余一切严格对齐。"
-      },
-      "bans": [
-        "generic-sans",
-        "purple-blue-gradient",
-        "centered-hero-two-buttons",
-        "identical-cards",
-        "glassmorphism",
-        "emoji-icons",
-        "buzzword-copy",
-        "soft-shadow-rounded",
-        "invented-facts",
-        "tailwind-default-palette",
-        "scroll-fade-everything",
-        "pill-badge-sparkle",
-        "placeholder-content",
-        "template-sections"
-      ],
-      "tokensCss": "/* hash-design 2519cd97 · record-sleeve · factory-black */\n:root {\n  --paper: #0e0e0e;\n  --ink: #f0eee9;\n  --muted: #a7a49d;\n  --accent: #e8452c;\n  --on-accent: #000000;\n  --accent2: #f2c230;\n  --on-accent2: #000000;\n  --rule: #3a3a3a;\n  --panel: #1c1c1c;\n\n  --font-display: \"League Gothic\", Impact, \"Arial Narrow\", sans-serif;\n  --font-body: \"Libre Franklin\", \"Franklin Gothic Medium\", Arial, sans-serif;\n  --font-mono: ui-monospace, \"SFMono-Regular\", Menlo, Consolas, monospace;\n\n  --step-n2: 0.5rem; /* 8px */\n  --step-n1: 0.75rem; /* 12px */\n  --step-0: 1.125rem; /* 18px */\n  --step-1: 1.688rem; /* 27px */\n  --step-2: 2.531rem; /* 40.5px */\n  --step-3: 3.797rem; /* 60.8px */\n  --step-4: 5.695rem; /* 91.1px */\n  --step-5: 8.543rem; /* 136.7px */\n  --step-6: 12.814rem; /* 205px */\n  --step-7: 19.222rem; /* 307.5px */\n  --leading: 1.65;\n\n  --space-1: 10px;\n  --space-2: 20px;\n  --space-3: 30px;\n  --space-4: 40px;\n  --space-5: 50px;\n  --space-6: 60px;\n  --space-7: 70px;\n  --space-8: 80px;\n  --section-gap: 168px;\n  --max-width: 1080px;\n\n  --motion-duration: 0ms;\n  --motion-easing: linear;\n}\n\nhtml { font-size: 112.5%; }\nbody { background: var(--paper); color: var(--ink); font-family: var(--font-body); line-height: var(--leading); }\n@media (prefers-reduced-motion: reduce) {\n  *, *::before, *::after { animation: none !important; transition: none !important; }\n}",
-      "trace": [
-        {
-          "dimension": "branch",
-          "bytes": [
-            0,
-            1
-          ],
-          "hex": "25 19",
-          "rule": "0x2519 = 9497; 9497 mod 40 = 17",
-          "poolSize": 40,
-          "index": 17,
-          "result": "record-sleeve"
-        },
-        {
-          "dimension": "voice",
-          "bytes": [
-            2
-          ],
-          "hex": "cd",
-          "rule": "0xcd = 205; 205 mod 14 = 9",
-          "poolSize": 14,
-          "index": 9,
-          "result": "catalogue-entry"
-        },
-        {
-          "dimension": "layout",
-          "bytes": [
-            3
-          ],
-          "hex": "97",
-          "rule": "0x97 = 151; 151 mod 3 = 1",
-          "poolSize": 3,
-          "index": 1,
-          "result": "blue-note-crop"
-        },
-        {
-          "dimension": "type",
-          "bytes": [
-            4
-          ],
-          "hex": "b1",
-          "rule": "0xb1 = 177; 177 mod 3 = 0",
-          "poolSize": 3,
-          "index": 0,
-          "result": "league-franklin"
-        },
-        {
-          "dimension": "palette",
-          "bytes": [
-            5
-          ],
-          "hex": "cb",
-          "rule": "0xcb = 203; 203 mod 3 = 2",
-          "poolSize": 3,
-          "index": 2,
-          "result": "factory-black"
-        },
-        {
-          "dimension": "density",
-          "bytes": [
-            6
-          ],
-          "hex": "7a",
-          "rule": "0x7a = 122; 122 mod 2 = 0",
-          "poolSize": 2,
-          "index": 0,
-          "result": "airy"
-        },
-        {
-          "dimension": "motion",
-          "bytes": [
-            7
-          ],
-          "hex": "53",
-          "rule": "0x53 = 83; 83 mod 3 = 2",
-          "poolSize": 3,
-          "index": 2,
-          "result": "still"
-        },
-        {
-          "dimension": "motif",
-          "bytes": [
-            8
-          ],
-          "hex": "fa",
-          "rule": "0xfa = 250; 250 mod 3 = 1",
-          "poolSize": 3,
-          "index": 1,
-          "result": "side-a-side-b"
-        },
-        {
-          "dimension": "anchor",
-          "bytes": [
-            9
-          ],
-          "hex": "19",
-          "rule": "0x19 = 25; 25 mod 3 = 1",
-          "poolSize": 3,
-          "index": 1,
-          "result": "cropped-giant-type"
-        },
-        {
-          "dimension": "scale",
-          "bytes": [
-            10
-          ],
-          "hex": "2b",
-          "rule": "0x2b = 43; 43 mod 3 = 1",
-          "poolSize": 3,
-          "index": 1,
-          "result": "perfect-fifth"
-        },
-        {
-          "dimension": "surface",
-          "bytes": [
-            11
-          ],
-          "hex": "21",
-          "rule": "0x21 = 33; 33 mod 3 = 0",
-          "poolSize": 3,
-          "index": 0,
-          "result": "laminated-flipback"
-        },
-        {
-          "dimension": "twist",
-          "bytes": [
-            12
-          ],
-          "hex": "d1",
-          "rule": "0xd1 = 209; 209 mod 16 = 1",
-          "poolSize": 16,
-          "index": 1,
-          "result": "one-element-breaks-grid"
-        }
-      ]
-    },
-    {
-      "number": 2,
-      "slug": "02-gallery-catalogue",
-      "ref": "169a48c29375c592d4dead9d02f92a5a2036e89e793758bff47dd47b0acd0691+1",
-      "hash": "169a48c29375c592d4dead9d02f92a5a2036e89e793758bff47dd47b0acd0691",
-      "short": "169a48c2",
-      "probe": 1,
-      "algorithm": "hash-design/v1",
-      "library": "c7b166fe6ec0",
-      "constraints": {
-        "lightOnly": false,
-        "darkOnly": false,
-        "reducedMotion": false,
-        "brandColors": [],
-        "families": [],
-        "include": [],
-        "exclude": []
-      },
-      "content": {
-        "subject": "Sluice — self-hosted webhook inbox",
-        "facts": [
-          "Name: Sluice — a self-hosted inbox for webhooks",
-          "What it does: gives you a public URL for webhooks, stores every delivery, and forwards it to your local or internal service",
-          "One static binary, about 11 MB, for Linux, macOS and Windows on amd64 and arm64",
-          "Storage: a single SQLite file; no Redis, no Postgres, no queue to run",
-          "Install: curl -fsSL https://sluice.example/install.sh | sh",
-          "Start: sluice serve --forward http://localhost:3000",
-          "Retries failed forwards with exponential backoff for up to 72 hours",
-          "Replay any stored delivery: sluice replay <delivery-id>",
-          "Verifies HMAC-SHA256 signatures and rejects deliveries older than 5 minutes",
-          "Web UI on port 8081: search deliveries by path, header or body text",
-          "Keeps deliveries for 30 days by default; change it with --retain",
-          "1,800 deliveries per second on a 2-vCPU VM, in the project's own benchmark",
-          "No hosted service, no account, no telemetry",
-          "Written in Go; MIT licence; 41 contributors",
-          "Current version 0.9.2, released 14 October 2026",
-          "Maintainer: Ines Okafor, who started it in 2023 after losing a weekend of payment webhooks"
-        ],
-        "language": "en"
-      },
-      "branch": {
-        "id": "gallery-catalogue",
-        "name": {
-          "zh": "美术馆图录",
-          "en": "Gallery catalogue"
-        },
-        "family": "signage",
-        "concept": {
-          "zh": "白立方展厅的墙面说明与展览图录：一面墙只挂一件作品，旁边一张小小的展签写着作者、标题、年代、材质、尺寸。图录里大量留白、连续的图版编号、档案灰——克制本身就是权威。",
-          "en": "White-cube wall texts and exhibition catalogues: one work per wall, a small label beside it giving artist, title, year, medium and dimensions. In the catalogue: wide margins, continuous plate numbers, archival grey — restraint is the authority."
-        },
-        "references": [
-          "MoMA exhibition catalogues and wall labels (1960s–)",
-          "Wim Crouwel — Stedelijk Museum Amsterdam catalogues (1964–85)",
-          "documenta 5 catalogue, Kassel (1972)",
-          "Brian O’Doherty — Inside the White Cube (1976)",
-          "Steidl and Walther König artist monographs"
-        ],
-        "tokens": {
-          "grid": "Catalogue grid: 12 col, 24px gutter, outer margins ≥ 12vw on desktop; a hanging line at 40% of viewport height on which works/plates are centred; captions on a 4px baseline grid.",
-          "radius": "0 everywhere — images, labels, buttons.",
-          "border": "Almost none: 1px solid var(--rule) hairlines for the running head and under plate captions; images unbordered except white-on-white works (1px var(--rule)).",
-          "shadow": "none. Foam-board labels are shown by a 1px var(--rule) outline, not by shadow."
-        },
-        "must": [
-          "Every work or item has a tombstone with maker, title and year from the facts — omit a line rather than invent it.",
-          "At least 40% of each first screen is empty wall.",
-          "Titles of works are italic; plate numbers are continuous.",
-          "The exhibition title is never larger than 72px."
-        ],
-        "mustNot": [
-          "No carousels, hover-zoom or captions overlaid on images.",
-          "No centred or justified body text; labels are flush-left ragged-right.",
-          "No more than one accent mark per screen."
-        ]
-      },
-      "voice": {
-        "id": "technical-manual",
-        "name": {
-          "zh": "技术手册",
-          "en": "Technical manual"
-        },
-        "description": "说明书口吻：编号条款、动词开头、规格写全，零形容词。",
-        "devices": [
-          "1.1 / 1.2 编号",
-          "规格表",
-          "注意/警告框",
-          "动词开头的步骤"
-        ],
-        "example": "3.2 取货：报预订号 → 核对 → 取走。逾时 30 分钟释放库存。"
-      },
-      "layout": {
-        "id": "checklist-index",
-        "name": "Archive checklist",
-        "description": "An archival register: tombstone entries in a measured grid with plate boxes and accession-style numbers, sections in a sticky left rail.",
-        "grid": "12 col; left 2 col sticky section rail; entries span 3 col each (4:3 plate box + 5-line tombstone); 48px row gap.",
-        "structure": [
-          "Register header: title, date range, number of works (from the facts)",
-          "Sticky section labels in the left rail",
-          "Entries: number, plate box, tombstone lines",
-          "Notes on the works: numbered endnotes",
-          "Credits and lenders"
-        ]
-      },
-      "anchor": {
-        "id": "vinyl-title-wall",
-        "name": "Vinyl title wall",
-        "description": "The entry wall: exhibition title in vinyl lettering top-left at modest size, dates and venue below, everything else empty wall."
-      },
       "type": {
-        "id": "cormorant-catalogue",
-        "name": "Cormorant + EB Garamond",
         "display": {
-          "family": "Cormorant",
+          "family": "EB Garamond",
           "weights": [
             400,
             500
@@ -607,181 +139,179 @@
           "source": "google"
         },
         "body": {
-          "family": "EB Garamond",
+          "family": "Young Serif",
           "weights": [
-            400,
-            500
+            400
           ],
-          "italic": true,
-          "fallback": "Garamond, Georgia, serif",
+          "fallback": "Georgia, serif",
+          "source": "google"
+        },
+        "mono": {
+          "family": "Share Tech Mono",
+          "weights": [
+            400
+          ],
+          "fallback": "\"Courier New\", monospace",
           "source": "google"
         },
         "cjk": {
-          "display": "Noto Serif SC",
+          "display": "ZCOOL QingKe HuangYou",
           "body": "Noto Serif SC"
         },
-        "notes": "Titles of works always italic. Exhibition title Cormorant 400 at ≤ 64px — the catalogue never shouts. Plate numbers in all-small-caps (\"Pl. 12\"); old-style figures in running text, lining in dimensions (\"120 × 90 cm\" with a true ×). Body 17px/1.6, max 58ch."
+        "case": {
+          "id": "small-caps",
+          "text": "small caps (font-variant-caps: all-small-caps)"
+        },
+        "weight": 500,
+        "tracking": -0.028
       },
       "fonts": {
         "stacks": {
-          "display": "Cormorant, Garamond, \"Times New Roman\", serif",
-          "body": "\"EB Garamond\", Garamond, Georgia, serif",
-          "mono": "ui-monospace, \"SFMono-Regular\", Menlo, Consolas, monospace"
+          "display": "\"EB Garamond\", Garamond, \"Times New Roman\", serif",
+          "body": "\"Young Serif\", Georgia, serif",
+          "mono": "\"Share Tech Mono\", \"Courier New\", monospace"
         },
-        "googleFontsUrl": "https://fonts.googleapis.com/css2?family=Cormorant:ital,wght@0,400;0,500;1,400;1,500&family=EB+Garamond:ital,wght@0,400;0,500;1,400;1,500&display=swap"
-      },
-      "palette": {
-        "id": "white-cube",
-        "name": "White cube",
-        "colors": {
-          "paper": "#fafaf7",
-          "ink": "#161616",
-          "muted": "#5e5e5a",
-          "accent": "#c8332b",
-          "accent2": "#7d7a72",
-          "rule": "#d8d6cf",
-          "panel": "#efeee9"
-        },
-        "usage": "Wall paper ≥ 85% of the area; ink text; muted for credit lines and dimensions; accent only as the 10px red dot and the current room number; panel behind the checklist."
-      },
-      "paletteOverride": null,
-      "contrast": {
-        "lines": [
-          {
-            "pair": "ink on paper",
-            "ratio": 17.31,
-            "verdict": "AAA — any text"
-          },
-          {
-            "pair": "muted on paper",
-            "ratio": 6.23,
-            "verdict": "AA — body text OK"
-          },
-          {
-            "pair": "ink on panel",
-            "ratio": 15.58,
-            "verdict": "AAA — any text"
-          },
-          {
-            "pair": "accent on paper",
-            "ratio": 5.07,
-            "verdict": "AA — body text OK"
-          },
-          {
-            "pair": "accent2 on paper",
-            "ratio": 4.1,
-            "verdict": "large text / UI marks only (≥24px or bold ≥19px)"
-          },
-          {
-            "pair": "#ffffff on accent",
-            "ratio": 5.3,
-            "verdict": "AA — body text OK"
-          },
-          {
-            "pair": "#000000 on accent2",
-            "ratio": 4.9,
-            "verdict": "AA — body text OK"
-          }
-        ],
-        "onAccent": "#ffffff",
-        "onAccent2": "#000000"
-      },
-      "density": {
-        "id": "regular",
-        "name": {
-          "zh": "常规",
-          "en": "Regular"
-        },
-        "baseSize": 17,
-        "lineHeight": 1.55,
-        "unit": 8,
-        "sectionGap": 112,
-        "maxWidth": 1200,
-        "description": "常规阅读节奏；区块之间用明确的分隔（线、色块或编号），不靠空白硬撑。"
+        "googleFontsUrl": "https://fonts.googleapis.com/css2?family=EB+Garamond:ital,wght@0,400;0,500;1,400;1,500&family=Young+Serif&family=Share+Tech+Mono&display=swap"
       },
       "scale": {
-        "id": "golden",
-        "name": "Golden ratio 1.618",
-        "ratio": 1.618,
+        "ratio": 1.091,
         "steps": [
           {
             "step": -2,
-            "px": 6.5,
-            "rem": 0.406
+            "px": 12.2,
+            "rem": 0.761
           },
           {
             "step": -1,
-            "px": 10.5,
-            "rem": 0.657
+            "px": 13.3,
+            "rem": 0.831
           },
           {
             "step": 0,
-            "px": 17,
-            "rem": 1.063
+            "px": 14.5,
+            "rem": 0.906
           },
           {
             "step": 1,
-            "px": 27.5,
-            "rem": 1.719
+            "px": 15.8,
+            "rem": 0.989
           },
           {
             "step": 2,
-            "px": 44.5,
-            "rem": 2.782
+            "px": 17.3,
+            "rem": 1.079
           },
           {
             "step": 3,
-            "px": 72,
-            "rem": 4.501
+            "px": 18.8,
+            "rem": 1.177
           },
           {
             "step": 4,
-            "px": 116.5,
-            "rem": 7.282
+            "px": 20.5,
+            "rem": 1.284
           },
           {
             "step": 5,
-            "px": 188.5,
-            "rem": 11.782
+            "px": 22.4,
+            "rem": 1.401
           },
           {
             "step": 6,
-            "px": 305,
-            "rem": 19.063
+            "px": 24.5,
+            "rem": 1.528
           },
           {
             "step": 7,
-            "px": 493.5,
-            "rem": 30.845
+            "px": 26.7,
+            "rem": 1.667
           }
         ]
       },
-      "motion": {
-        "id": "still-wall",
-        "name": "Still wall",
-        "description": "No motion; links are 1px underlines offset 3px.",
-        "duration": "0ms",
-        "easing": "linear",
-        "reduced": "Nothing to change."
+      "density": {
+        "t": 0.878,
+        "baseSize": 14.5,
+        "lineHeight": 1.39,
+        "unit": 5,
+        "sectionGap": 49,
+        "maxWidth": 1400
+      },
+      "layout": {
+        "columns": 8,
+        "gutter": 5,
+        "span": 5,
+        "start": 3,
+        "firstScreen": 76,
+        "sections": 3,
+        "separator": {
+          "id": "rules",
+          "text": "hairline rules in the rule colour"
+        }
+      },
+      "anchor": {
+        "subject": {
+          "id": "motif",
+          "text": "the motif drawn at full scale"
+        },
+        "size": 69,
+        "x": 0.4,
+        "rotation": -0.5
       },
       "motif": {
-        "id": "red-dot",
-        "name": "Red dot",
-        "description": "A single 10px solid accent circle — the gallery \"sold\" dot — used at most once per screen for the one item that matters."
+        "shape": {
+          "id": "rules",
+          "text": "hairline rules"
+        },
+        "size": 20,
+        "placement": {
+          "id": "markers",
+          "text": "as list and heading markers"
+        },
+        "angle": 131
       },
       "surface": {
-        "id": "uncoated-stock",
-        "name": "Uncoated stock",
-        "description": "Uncoated catalogue paper with a barely visible fibre grain.",
-        "css": "background-color: var(--paper); background-image: radial-gradient(rgba(0,0,0,.025) .6px, transparent .8px); background-size: 4px 5px;"
+        "radius": 0,
+        "border": 3,
+        "borderStyle": "dotted",
+        "shadow": 0,
+        "texture": {
+          "id": "dot-screen",
+          "text": "a fine dot screen (radial-gradient pattern)"
+        },
+        "textureOpacity": 10.8
+      },
+      "motion": {
+        "still": false,
+        "property": {
+          "id": "colour",
+          "text": "colour (color / background-color)"
+        },
+        "duration": 580,
+        "easing": "cubic-bezier(0, 1.2, 0.63, 1)"
+      },
+      "voice": {
+        "person": {
+          "id": "i",
+          "text": "first person singular (\"I\")"
+        },
+        "headline": {
+          "id": "statement",
+          "text": "a plain statement"
+        },
+        "sentenceWords": 3,
+        "register": 0.47
       },
       "twist": {
-        "id": "nav-elsewhere",
-        "name": {
-          "zh": "导航不在顶部",
-          "en": "Navigation not on top"
+        "target": {
+          "id": "cta",
+          "text": "the primary call to action"
         },
-        "description": "导航放在底部、侧边竖排或做成目录/索引，而不是顶部横条。"
+        "operation": {
+          "id": "vertical",
+          "text": "set vertically (writing-mode: vertical-rl)"
+        },
+        "amount": 5,
+        "text": "The primary call to action: set vertically (writing-mode: vertical-rl)."
       },
       "bans": [
         "generic-sans",
@@ -799,161 +329,286 @@
         "placeholder-content",
         "template-sections"
       ],
-      "tokensCss": "/* hash-design 169a48c2 · gallery-catalogue · white-cube */\n:root {\n  --paper: #fafaf7;\n  --ink: #161616;\n  --muted: #5e5e5a;\n  --accent: #c8332b;\n  --on-accent: #ffffff;\n  --accent2: #7d7a72;\n  --on-accent2: #000000;\n  --rule: #d8d6cf;\n  --panel: #efeee9;\n\n  --font-display: Cormorant, Garamond, \"Times New Roman\", serif;\n  --font-body: \"EB Garamond\", Garamond, Georgia, serif;\n  --font-mono: ui-monospace, \"SFMono-Regular\", Menlo, Consolas, monospace;\n\n  --step-n2: 0.406rem; /* 6.5px */\n  --step-n1: 0.657rem; /* 10.5px */\n  --step-0: 1.063rem; /* 17px */\n  --step-1: 1.719rem; /* 27.5px */\n  --step-2: 2.782rem; /* 44.5px */\n  --step-3: 4.501rem; /* 72px */\n  --step-4: 7.282rem; /* 116.5px */\n  --step-5: 11.782rem; /* 188.5px */\n  --step-6: 19.063rem; /* 305px */\n  --step-7: 30.845rem; /* 493.5px */\n  --leading: 1.55;\n\n  --space-1: 8px;\n  --space-2: 16px;\n  --space-3: 24px;\n  --space-4: 32px;\n  --space-5: 40px;\n  --space-6: 48px;\n  --space-7: 56px;\n  --space-8: 64px;\n  --section-gap: 112px;\n  --max-width: 1200px;\n\n  --motion-duration: 0ms;\n  --motion-easing: linear;\n}\n\nhtml { font-size: 106.3%; }\nbody { background: var(--paper); color: var(--ink); font-family: var(--font-body); line-height: var(--leading); }\n@media (prefers-reduced-motion: reduce) {\n  *, *::before, *::after { animation: none !important; transition: none !important; }\n}",
+      "tokensCss": "/* hash-design hash-design/v2 · 484a15b6 */\n:root {\n  --paper: #131001;\n  --ink: #cfccb2;\n  --muted: #7f7e70;\n  --accent: #897c15;\n  --on-accent: #000000;\n  --accent2: #4b7db6;\n  --on-accent2: #000000;\n  --rule: #3d3a1f;\n  --panel: #1f1c04;\n\n  --font-display: \"EB Garamond\", Garamond, \"Times New Roman\", serif;\n  --font-body: \"Young Serif\", Georgia, serif;\n  --font-mono: \"Share Tech Mono\", \"Courier New\", monospace;\n  --display-weight: 500;\n  --display-tracking: -0.028em;\n\n  --step-n2: 0.761rem; /* 12.2px */\n  --step-n1: 0.831rem; /* 13.3px */\n  --step-0: 0.906rem; /* 14.5px */\n  --step-1: 0.989rem; /* 15.8px */\n  --step-2: 1.079rem; /* 17.3px */\n  --step-3: 1.177rem; /* 18.8px */\n  --step-4: 1.284rem; /* 20.5px */\n  --step-5: 1.401rem; /* 22.4px */\n  --step-6: 1.528rem; /* 24.5px */\n  --step-7: 1.667rem; /* 26.7px */\n  --leading: 1.39;\n\n  --space-1: 5px;\n  --space-2: 10px;\n  --space-3: 15px;\n  --space-4: 20px;\n  --space-5: 25px;\n  --space-6: 30px;\n  --space-7: 35px;\n  --space-8: 40px;\n  --section-gap: 49px;\n  --max-width: 1400px;\n  --columns: 8;\n  --gutter: 5px;\n\n  --radius: 0px;\n  --border: 3px dotted var(--rule);\n  --shadow: none;\n\n  --motion-duration: 580ms;\n  --motion-easing: cubic-bezier(0, 1.2, 0.63, 1);\n}\n\nhtml { font-size: 90.6%; }\nbody { background: var(--paper); color: var(--ink); font-family: var(--font-body); line-height: var(--leading); }\n@media (prefers-reduced-motion: reduce) {\n  *, *::before, *::after { animation: none !important; transition: none !important; }\n}",
       "trace": [
         {
-          "dimension": "branch",
+          "dimension": "hue",
           "bytes": [
             0,
             1
           ],
-          "hex": "16 9a",
-          "rule": "0x169a = 5786; 5786 mod 40 = 26; collision → +1 = 27",
-          "poolSize": 40,
-          "index": 27,
-          "result": "gallery-catalogue",
-          "note": "primary branch (or its family) already used in this roll; walked forward 1 step(s)"
+          "hex": "48 4a",
+          "rule": "0x484a = 18506; 18506/65536 × 360",
+          "result": "101.66°"
         },
         {
-          "dimension": "voice",
+          "dimension": "polarity · paper lightness",
           "bytes": [
             2
           ],
-          "hex": "48",
-          "rule": "0x48 = 72; 72 mod 14 = 2",
-          "poolSize": 14,
-          "index": 2,
-          "result": "technical-manual"
+          "hex": "15",
+          "rule": "21 < 77 → dark; L = 0.14 + 21/76 × 0.12",
+          "result": "dark, L 0.173"
         },
         {
-          "dimension": "layout",
+          "dimension": "paper chroma",
           "bytes": [
             3
           ],
-          "hex": "c2",
-          "rule": "0xc2 = 194; 194 mod 3 = 2",
-          "poolSize": 3,
-          "index": 2,
-          "result": "checklist-index"
+          "hex": "b6",
+          "rule": "182/255 × 0.045",
+          "result": "0.032"
         },
         {
-          "dimension": "type",
+          "dimension": "accent chroma",
           "bytes": [
             4
           ],
-          "hex": "93",
-          "rule": "0x93 = 147; 147 mod 3 = 0",
-          "poolSize": 3,
-          "index": 0,
-          "result": "cormorant-catalogue"
+          "hex": "48",
+          "rule": "0.07 + 72/255 × 0.16",
+          "result": "0.115"
         },
         {
-          "dimension": "palette",
+          "dimension": "accent2 hue offset",
           "bytes": [
             5
           ],
-          "hex": "75",
-          "rule": "0x75 = 117; 117 mod 3 = 0",
-          "poolSize": 3,
-          "index": 0,
-          "result": "white-cube"
+          "hex": "67",
+          "rule": "30 + 103/255 × 300",
+          "result": "+151.18°"
+        },
+        {
+          "dimension": "display face",
+          "bytes": [
+            6
+          ],
+          "hex": "e0",
+          "rule": "224 mod 98 = 28",
+          "result": "EB Garamond"
+        },
+        {
+          "dimension": "body face",
+          "bytes": [
+            7
+          ],
+          "hex": "3a",
+          "rule": "58 mod 62 = 58",
+          "result": "Young Serif"
+        },
+        {
+          "dimension": "display case · weight",
+          "bytes": [
+            8
+          ],
+          "hex": "af",
+          "rule": "175 mod 4 = 3; ⌊175/4⌋ mod 2",
+          "result": "small-caps, 500"
+        },
+        {
+          "dimension": "display tracking",
+          "bytes": [
+            9
+          ],
+          "hex": "0d",
+          "rule": "−0.04 + 13/255 × 0.24",
+          "result": "-0.028em"
+        },
+        {
+          "dimension": "type scale ratio",
+          "bytes": [
+            10
+          ],
+          "hex": "0b",
+          "rule": "1.067 + 11/255 × 0.551",
+          "result": "1.091"
         },
         {
           "dimension": "density",
           "bytes": [
-            6
-          ],
-          "hex": "c5",
-          "rule": "0xc5 = 197; 197 mod 2 = 1",
-          "poolSize": 2,
-          "index": 1,
-          "result": "regular"
-        },
-        {
-          "dimension": "motion",
-          "bytes": [
-            7
-          ],
-          "hex": "92",
-          "rule": "0x92 = 146; 146 mod 3 = 2",
-          "poolSize": 3,
-          "index": 2,
-          "result": "still-wall"
-        },
-        {
-          "dimension": "motif",
-          "bytes": [
-            8
-          ],
-          "hex": "d4",
-          "rule": "0xd4 = 212; 212 mod 3 = 2",
-          "poolSize": 3,
-          "index": 2,
-          "result": "red-dot"
-        },
-        {
-          "dimension": "anchor",
-          "bytes": [
-            9
-          ],
-          "hex": "de",
-          "rule": "0xde = 222; 222 mod 3 = 0",
-          "poolSize": 3,
-          "index": 0,
-          "result": "vinyl-title-wall"
-        },
-        {
-          "dimension": "scale",
-          "bytes": [
-            10
-          ],
-          "hex": "ad",
-          "rule": "0xad = 173; 173 mod 3 = 2",
-          "poolSize": 3,
-          "index": 2,
-          "result": "golden"
-        },
-        {
-          "dimension": "surface",
-          "bytes": [
             11
           ],
-          "hex": "9d",
-          "rule": "0x9d = 157; 157 mod 3 = 1",
-          "poolSize": 3,
-          "index": 1,
-          "result": "uncoated-stock"
+          "hex": "e0",
+          "rule": "t = 224/255",
+          "result": "t 0.878: base 14.5px, line-height 1.39, unit 5px"
         },
         {
-          "dimension": "twist",
+          "dimension": "grid columns · gutter",
           "bytes": [
             12
           ],
-          "hex": "02",
-          "rule": "0x02 = 2; 2 mod 16 = 2",
-          "poolSize": 16,
-          "index": 2,
-          "result": "nav-elsewhere"
+          "hex": "2d",
+          "rule": "3 + 45 mod 10; unit × (1 + ⌊45/10⌋ mod 4)",
+          "result": "8 columns, 5px gutter"
+        },
+        {
+          "dimension": "text block span · start",
+          "bytes": [
+            13
+          ],
+          "hex": "a6",
+          "rule": "span 6/15, start 10/15",
+          "result": "columns 3–7 of 8"
+        },
+        {
+          "dimension": "first-screen height",
+          "bytes": [
+            14
+          ],
+          "hex": "8f",
+          "rule": "45 + 143/255 × 55",
+          "result": "76%"
+        },
+        {
+          "dimension": "sections · separator",
+          "bytes": [
+            15
+          ],
+          "hex": "f0",
+          "rule": "3 + 240 mod 6; ⌊240/6⌋ mod 5",
+          "result": "3 sections, rules"
+        },
+        {
+          "dimension": "anchor subject · size",
+          "bytes": [
+            16
+          ],
+          "hex": "97",
+          "rule": "151 mod 8; 25 + ⌊151/8⌋/31 × 75",
+          "result": "motif, 69%"
+        },
+        {
+          "dimension": "anchor position · rotation",
+          "bytes": [
+            17
+          ],
+          "hex": "76",
+          "rule": "x 6/15; ((7) − 7.5)/7.5 × 8",
+          "result": "x 0.4, -0.5°"
+        },
+        {
+          "dimension": "motif shape · size",
+          "bytes": [
+            18
+          ],
+          "hex": "e4",
+          "rule": "228 mod 12; unit × (1 + ⌊228/12⌋ mod 8)",
+          "result": "rules, 20px"
+        },
+        {
+          "dimension": "motif placement · angle",
+          "bytes": [
+            19
+          ],
+          "hex": "bb",
+          "rule": "187 mod 4; ⌊187/4⌋ × 180/63",
+          "result": "markers, 131°"
+        },
+        {
+          "dimension": "radius · border",
+          "bytes": [
+            20
+          ],
+          "hex": "fb",
+          "rule": "RADII[251 mod 8]; ⌊251/8⌋ mod 4; ⌊251/32⌋ mod 4",
+          "result": "0px radius, 3px dotted border"
+        },
+        {
+          "dimension": "shadow · texture",
+          "bytes": [
+            21
+          ],
+          "hex": "dc",
+          "rule": "220 & 3; (220 >> 2) & 3; 3 + 13 × 0.6",
+          "result": "no shadow, dot-screen 10.8%"
+        },
+        {
+          "dimension": "motion property · duration",
+          "bytes": [
+            22
+          ],
+          "hex": "fd",
+          "rule": "⌊253/64⌋; (253 mod 64)/63 × 600",
+          "result": "colour, 580ms"
+        },
+        {
+          "dimension": "easing",
+          "bytes": [
+            23
+          ],
+          "hex": "c2",
+          "rule": "194 ≥ 32 → cubic-bezier from bits",
+          "result": "cubic-bezier(0, 1.2, 0.63, 1)"
+        },
+        {
+          "dimension": "voice person · headline form",
+          "bytes": [
+            24
+          ],
+          "hex": "30",
+          "rule": "48 mod 4; ⌊48/4⌋ mod 6",
+          "result": "i, statement"
+        },
+        {
+          "dimension": "sentence length · register",
+          "bytes": [
+            25
+          ],
+          "hex": "70",
+          "rule": "3 + (112 & 15); (112 >> 4)/15",
+          "result": "3 words, register 0.47"
+        },
+        {
+          "dimension": "twist target",
+          "bytes": [
+            26
+          ],
+          "hex": "08",
+          "rule": "8 mod 9",
+          "result": "cta"
+        },
+        {
+          "dimension": "twist operation · amount",
+          "bytes": [
+            27
+          ],
+          "hex": "33",
+          "rule": "51 mod 10; ⌊51/10⌋",
+          "result": "vertical, 5"
+        },
+        {
+          "dimension": "CJK display face",
+          "bytes": [
+            29
+          ],
+          "hex": "cf",
+          "rule": "207 mod 14",
+          "result": "ZCOOL QingKe HuangYou",
+          "note": "used on Chinese pages"
+        },
+        {
+          "dimension": "mono face",
+          "bytes": [
+            30
+          ],
+          "hex": "77",
+          "rule": "119 mod 8",
+          "result": "Share Tech Mono"
         }
       ]
     },
     {
-      "number": 3,
-      "slug": "03-terminal-phosphor",
-      "ref": "16333b219df7a0a92644b8fb7726cd03bd7f1e76a8813242ad514385cb25a357",
-      "hash": "16333b219df7a0a92644b8fb7726cd03bd7f1e76a8813242ad514385cb25a357",
-      "short": "16333b21",
-      "probe": 0,
-      "algorithm": "hash-design/v1",
-      "library": "c7b166fe6ec0",
+      "number": 2,
+      "slug": "02-599481a7",
+      "ref": "599481a7a798601d36af352c4c6d9d5258964970e32c07c18a784219d3840aca",
+      "hash": "599481a7a798601d36af352c4c6d9d5258964970e32c07c18a784219d3840aca",
+      "short": "599481a7",
+      "algorithm": "hash-design/v2",
+      "library": "bd20321c36ab",
       "constraints": {
         "lightOnly": false,
         "darkOnly": false,
         "reducedMotion": false,
-        "brandColors": [],
-        "families": [],
-        "include": [],
-        "exclude": []
+        "brandColors": []
       },
       "content": {
         "subject": "Sluice — self-hosted webhook inbox",
@@ -977,92 +632,88 @@
         ],
         "language": "en"
       },
-      "branch": {
-        "id": "terminal-phosphor",
-        "name": {
-          "zh": "终端荧光",
-          "en": "Terminal phosphor"
-        },
-        "family": "screen",
-        "concept": {
-          "zh": "大型机与哑终端的屏幕：黑底上发光的绿色或琥珀色等宽字，制表符画出的方框和表格，提示符后面一个闪烁的光标。结构来自 man page：NAME、SYNOPSIS、DESCRIPTION，一切都装进 80 列。",
-          "en": "The screen of a mainframe or dumb terminal: green or amber phosphor monospace on black, box-drawing characters for panels and tables, a blinking cursor after the prompt. Structure comes from the man page — NAME, SYNOPSIS, DESCRIPTION — and everything fits in 80 columns."
-        },
-        "references": [
-          "DEC VT100 / VT220 terminals (1978–83)",
-          "IBM 3270 display stations and ISPF panels",
-          "Unix Programmer’s Manual and the man(1) page format, Bell Labs (1971–79)",
-          "Lear Siegler ADM-3A and Zenith Z-19 green/amber phosphor screens",
-          "IBM 1403 line printer and green-bar continuous paper"
-        ],
-        "tokens": {
-          "grid": "Character grid: everything in ch and line units — 80ch max width (132ch for wide tables), line-height 1.25; columns are integer ch widths (e.g. 24ch | 56ch); spacing in whole lines, never px gaps that break the cell grid.",
-          "radius": "0 for all UI. The only curve is the optional CRT bezel around the whole screen (border-radius 18px on the outer frame).",
-          "border": "Boxes drawn with box-drawing characters (┌─┐│└┘, double ╔═╗ for the primary panel) as text, or at most 1px solid var(--accent); nothing thicker.",
-          "shadow": "none on elements. Phosphor bloom only as text-shadow: 0 0 2px currentColor (≤ 3px blur); nothing else glows."
-        },
-        "must": [
-          "All text is monospace on a ch grid; line length ≤ 80ch (132ch for tables).",
-          "At least one structure borrowed from terminals: prompt + output, man-page sections, or a PF-key form panel.",
-          "Emphasis by reverse video, brightness (accent) or underline — never size jumps larger than 2×, except one ASCII banner."
-        ],
-        "mustNot": [
-          "No neon blur, chromatic aberration or \"matrix rain\".",
-          "No proportional fonts anywhere, including nav and buttons.",
-          "No invented system output or hacker jargon — every line carries a fact.",
-          "No rounded buttons; controls are [ bracketed ] or underlined fields."
-        ]
+      "label": "light · 126° · Zen Old Mincho / Josefin Sans · 9 col",
+      "palette": {
+        "polarity": "light",
+        "hue": 125.97,
+        "paperL": 0.925,
+        "paperC": 0.029,
+        "accentC": 0.175,
+        "accent2Offset": 208.82,
+        "colors": {
+          "paper": "#e1ead5",
+          "ink": "#333b27",
+          "muted": "#63685c",
+          "accent": "#668a00",
+          "accent2": "#c160af",
+          "rule": "#a9b49a",
+          "panel": "#d1dcc2"
+        }
       },
-      "voice": {
-        "id": "personal-letter",
-        "name": {
-          "zh": "亲笔信",
-          "en": "Personal letter"
-        },
-        "description": "写给一个具体读者的信：第一人称、第二人称、具体的回忆和邀请，有落款。",
-        "devices": [
-          "称呼",
-          "第一人称回忆",
-          "落款与日期",
-          "附言 P.S."
+      "contrast": {
+        "lines": [
+          {
+            "pair": "ink on paper",
+            "ratio": 9.43,
+            "verdict": "AAA — any text"
+          },
+          {
+            "pair": "muted on paper",
+            "ratio": 4.62,
+            "verdict": "AA — body text OK"
+          },
+          {
+            "pair": "ink on panel",
+            "ratio": 8.2,
+            "verdict": "AAA — any text"
+          },
+          {
+            "pair": "accent on paper",
+            "ratio": 3.26,
+            "verdict": "large text / UI marks only (≥24px or bold ≥19px)"
+          },
+          {
+            "pair": "accent2 on paper",
+            "ratio": 3.05,
+            "verdict": "large text / UI marks only (≥24px or bold ≥19px)"
+          },
+          {
+            "pair": "#000000 on accent",
+            "ratio": 5.2,
+            "verdict": "AA — body text OK"
+          },
+          {
+            "pair": "#000000 on accent2",
+            "ratio": 5.56,
+            "verdict": "AA — body text OK"
+          }
         ],
-        "example": "你好——如果你周六早上路过，门会开着，桌上有刚切的面包。"
-      },
-      "layout": {
-        "id": "man-page",
-        "name": "Man page",
-        "description": "The page reads as a man page: header line, NAME, SYNOPSIS, DESCRIPTION, OPTIONS, SEE ALSO, with 7ch indentation.",
-        "grid": "One 80ch column at 2ch from the left; section heads at col 0, body indented 7ch, option flags hanging-indented 7ch / 14ch.",
-        "structure": [
-          "Header line: TITLE(1) at both ends with the manual name centred",
-          "NAME: the title — one-line summary",
-          "SYNOPSIS: the core offer written as a command with [options]",
-          "DESCRIPTION: paragraphs indented 7ch",
-          "OPTIONS / FILES / SEE ALSO built from the facts; footer line with date and version"
-        ]
-      },
-      "anchor": {
-        "id": "ascii-banner",
-        "name": "ASCII banner",
-        "description": "The title as a large block-character banner (█ ▀ ▄) inside a double-line ╔═╗ frame."
+        "onAccent": "#000000",
+        "onAccent2": "#000000"
       },
       "type": {
-        "id": "plex-3270",
-        "name": "IBM Plex Mono + Fira Code",
         "display": {
-          "family": "IBM Plex Mono",
+          "family": "Zen Old Mincho",
           "weights": [
-            600,
+            400,
             700
           ],
-          "fallback": "\"Courier New\", monospace",
+          "fallback": "\"Songti SC\", \"Yu Mincho\", serif",
           "source": "google"
         },
         "body": {
-          "family": "Fira Code",
+          "family": "Josefin Sans",
           "weights": [
             400,
-            500
+            600
+          ],
+          "fallback": "\"Century Gothic\", sans-serif",
+          "source": "google"
+        },
+        "mono": {
+          "family": "Courier Prime",
+          "weights": [
+            400
           ],
           "fallback": "\"Courier New\", monospace",
           "source": "google"
@@ -1071,99 +722,598 @@
           "display": "Noto Sans SC",
           "body": "Noto Sans SC"
         },
-        "notes": "Mainframe panel voice: titles in Plex Mono 700 uppercase at 1–2× body only (no big type on a 3270). Body Fira Code 15px with font-variant-ligatures: none. Field labels followed by \". . . :\" leaders; protected text in muted, input in ink."
+        "case": {
+          "id": "lower",
+          "text": "lowercase"
+        },
+        "weight": 700,
+        "tracking": 0.125
       },
       "fonts": {
         "stacks": {
-          "display": "\"IBM Plex Mono\", \"Courier New\", monospace",
-          "body": "\"Fira Code\", \"Courier New\", monospace",
-          "mono": "ui-monospace, \"SFMono-Regular\", Menlo, Consolas, monospace"
+          "display": "\"Zen Old Mincho\", \"Songti SC\", \"Yu Mincho\", serif",
+          "body": "\"Josefin Sans\", \"Century Gothic\", sans-serif",
+          "mono": "\"Courier Prime\", \"Courier New\", monospace"
         },
-        "googleFontsUrl": "https://fonts.googleapis.com/css2?family=IBM+Plex+Mono:wght@600;700&family=Fira+Code:wght@400;500&display=swap"
+        "googleFontsUrl": "https://fonts.googleapis.com/css2?family=Zen+Old+Mincho:wght@400;700&family=Josefin+Sans:wght@400;600&family=Courier+Prime&display=swap"
       },
+      "scale": {
+        "ratio": 1.182,
+        "steps": [
+          {
+            "step": -2,
+            "px": 12.5,
+            "rem": 0.783
+          },
+          {
+            "step": -1,
+            "px": 14.8,
+            "rem": 0.925
+          },
+          {
+            "step": 0,
+            "px": 17.5,
+            "rem": 1.094
+          },
+          {
+            "step": 1,
+            "px": 20.7,
+            "rem": 1.293
+          },
+          {
+            "step": 2,
+            "px": 24.4,
+            "rem": 1.528
+          },
+          {
+            "step": 3,
+            "px": 28.9,
+            "rem": 1.806
+          },
+          {
+            "step": 4,
+            "px": 34.2,
+            "rem": 2.135
+          },
+          {
+            "step": 5,
+            "px": 40.4,
+            "rem": 2.524
+          },
+          {
+            "step": 6,
+            "px": 47.7,
+            "rem": 2.983
+          },
+          {
+            "step": 7,
+            "px": 56.4,
+            "rem": 3.526
+          }
+        ]
+      },
+      "density": {
+        "t": 0.173,
+        "baseSize": 17.5,
+        "lineHeight": 1.6,
+        "unit": 9,
+        "sectionGap": 144,
+        "maxWidth": 1140
+      },
+      "layout": {
+        "columns": 9,
+        "gutter": 36,
+        "span": 8,
+        "start": 1,
+        "firstScreen": 79,
+        "sections": 7,
+        "separator": {
+          "id": "space",
+          "text": "space only: the section gap, no lines or fills"
+        }
+      },
+      "anchor": {
+        "subject": {
+          "id": "headline",
+          "text": "the headline, set as large as the width allows"
+        },
+        "size": 52,
+        "x": 0.4,
+        "rotation": 1.5
+      },
+      "motif": {
+        "shape": {
+          "id": "dots",
+          "text": "dots"
+        },
+        "size": 63,
+        "placement": {
+          "id": "edges",
+          "text": "along the page edges"
+        },
+        "angle": 80
+      },
+      "surface": {
+        "radius": 0,
+        "border": 0,
+        "borderStyle": "dotted",
+        "shadow": 0,
+        "texture": {
+          "id": "dot-screen",
+          "text": "a fine dot screen (radial-gradient pattern)"
+        },
+        "textureOpacity": 4.2
+      },
+      "motion": {
+        "still": false,
+        "property": {
+          "id": "opacity",
+          "text": "opacity"
+        },
+        "duration": 70,
+        "easing": "cubic-bezier(0, 1.2, 0.37, 1)"
+      },
+      "voice": {
+        "person": {
+          "id": "you",
+          "text": "second person (\"you\")"
+        },
+        "headline": {
+          "id": "number-first",
+          "text": "starts with a number from the facts"
+        },
+        "sentenceWords": 11,
+        "register": 0.47
+      },
+      "twist": {
+        "target": {
+          "id": "footer",
+          "text": "the footer"
+        },
+        "operation": {
+          "id": "repeat",
+          "text": "repeated"
+        },
+        "amount": 2,
+        "text": "Repeat the footer 4 times in a row."
+      },
+      "bans": [
+        "generic-sans",
+        "purple-blue-gradient",
+        "centered-hero-two-buttons",
+        "identical-cards",
+        "glassmorphism",
+        "emoji-icons",
+        "buzzword-copy",
+        "soft-shadow-rounded",
+        "invented-facts",
+        "tailwind-default-palette",
+        "scroll-fade-everything",
+        "pill-badge-sparkle",
+        "placeholder-content",
+        "template-sections"
+      ],
+      "tokensCss": "/* hash-design hash-design/v2 · 599481a7 */\n:root {\n  --paper: #e1ead5;\n  --ink: #333b27;\n  --muted: #63685c;\n  --accent: #668a00;\n  --on-accent: #000000;\n  --accent2: #c160af;\n  --on-accent2: #000000;\n  --rule: #a9b49a;\n  --panel: #d1dcc2;\n\n  --font-display: \"Zen Old Mincho\", \"Songti SC\", \"Yu Mincho\", serif;\n  --font-body: \"Josefin Sans\", \"Century Gothic\", sans-serif;\n  --font-mono: \"Courier Prime\", \"Courier New\", monospace;\n  --display-weight: 700;\n  --display-tracking: 0.125em;\n\n  --step-n2: 0.783rem; /* 12.5px */\n  --step-n1: 0.925rem; /* 14.8px */\n  --step-0: 1.094rem; /* 17.5px */\n  --step-1: 1.293rem; /* 20.7px */\n  --step-2: 1.528rem; /* 24.4px */\n  --step-3: 1.806rem; /* 28.9px */\n  --step-4: 2.135rem; /* 34.2px */\n  --step-5: 2.524rem; /* 40.4px */\n  --step-6: 2.983rem; /* 47.7px */\n  --step-7: 3.526rem; /* 56.4px */\n  --leading: 1.6;\n\n  --space-1: 9px;\n  --space-2: 18px;\n  --space-3: 27px;\n  --space-4: 36px;\n  --space-5: 45px;\n  --space-6: 54px;\n  --space-7: 63px;\n  --space-8: 72px;\n  --section-gap: 144px;\n  --max-width: 1140px;\n  --columns: 9;\n  --gutter: 36px;\n\n  --radius: 0px;\n  --border: 0px dotted var(--rule);\n  --shadow: none;\n\n  --motion-duration: 70ms;\n  --motion-easing: cubic-bezier(0, 1.2, 0.37, 1);\n}\n\nhtml { font-size: 109.4%; }\nbody { background: var(--paper); color: var(--ink); font-family: var(--font-body); line-height: var(--leading); }\n@media (prefers-reduced-motion: reduce) {\n  *, *::before, *::after { animation: none !important; transition: none !important; }\n}",
+      "trace": [
+        {
+          "dimension": "hue",
+          "bytes": [
+            0,
+            1
+          ],
+          "hex": "59 94",
+          "rule": "0x5994 = 22932; 22932/65536 × 360",
+          "result": "125.97°"
+        },
+        {
+          "dimension": "polarity · paper lightness",
+          "bytes": [
+            2
+          ],
+          "hex": "81",
+          "rule": "129 ≥ 77 → light; L = 0.90 + 52/178 × 0.085",
+          "result": "light, L 0.925"
+        },
+        {
+          "dimension": "paper chroma",
+          "bytes": [
+            3
+          ],
+          "hex": "a7",
+          "rule": "167/255 × 0.045",
+          "result": "0.029"
+        },
+        {
+          "dimension": "accent chroma",
+          "bytes": [
+            4
+          ],
+          "hex": "a7",
+          "rule": "0.07 + 167/255 × 0.16",
+          "result": "0.175"
+        },
+        {
+          "dimension": "accent2 hue offset",
+          "bytes": [
+            5
+          ],
+          "hex": "98",
+          "rule": "30 + 152/255 × 300",
+          "result": "+208.82°"
+        },
+        {
+          "dimension": "display face",
+          "bytes": [
+            6
+          ],
+          "hex": "60",
+          "rule": "96 mod 98 = 96",
+          "result": "Zen Old Mincho"
+        },
+        {
+          "dimension": "body face",
+          "bytes": [
+            7
+          ],
+          "hex": "1d",
+          "rule": "29 mod 62 = 29",
+          "result": "Josefin Sans"
+        },
+        {
+          "dimension": "display case · weight",
+          "bytes": [
+            8
+          ],
+          "hex": "36",
+          "rule": "54 mod 4 = 2; ⌊54/4⌋ mod 2",
+          "result": "lower, 700"
+        },
+        {
+          "dimension": "display tracking",
+          "bytes": [
+            9
+          ],
+          "hex": "af",
+          "rule": "−0.04 + 175/255 × 0.24",
+          "result": "0.125em"
+        },
+        {
+          "dimension": "type scale ratio",
+          "bytes": [
+            10
+          ],
+          "hex": "35",
+          "rule": "1.067 + 53/255 × 0.551",
+          "result": "1.182"
+        },
+        {
+          "dimension": "density",
+          "bytes": [
+            11
+          ],
+          "hex": "2c",
+          "rule": "t = 44/255",
+          "result": "t 0.173: base 17.5px, line-height 1.6, unit 9px"
+        },
+        {
+          "dimension": "grid columns · gutter",
+          "bytes": [
+            12
+          ],
+          "hex": "4c",
+          "rule": "3 + 76 mod 10; unit × (1 + ⌊76/10⌋ mod 4)",
+          "result": "9 columns, 36px gutter"
+        },
+        {
+          "dimension": "text block span · start",
+          "bytes": [
+            13
+          ],
+          "hex": "6d",
+          "rule": "span 13/15, start 6/15",
+          "result": "columns 1–8 of 9"
+        },
+        {
+          "dimension": "first-screen height",
+          "bytes": [
+            14
+          ],
+          "hex": "9d",
+          "rule": "45 + 157/255 × 55",
+          "result": "79%"
+        },
+        {
+          "dimension": "sections · separator",
+          "bytes": [
+            15
+          ],
+          "hex": "52",
+          "rule": "3 + 82 mod 6; ⌊82/6⌋ mod 5",
+          "result": "7 sections, space"
+        },
+        {
+          "dimension": "anchor subject · size",
+          "bytes": [
+            16
+          ],
+          "hex": "58",
+          "rule": "88 mod 8; 25 + ⌊88/8⌋/31 × 75",
+          "result": "headline, 52%"
+        },
+        {
+          "dimension": "anchor position · rotation",
+          "bytes": [
+            17
+          ],
+          "hex": "96",
+          "rule": "x 6/15; ((9) − 7.5)/7.5 × 8",
+          "result": "x 0.4, 1.5°"
+        },
+        {
+          "dimension": "motif shape · size",
+          "bytes": [
+            18
+          ],
+          "hex": "49",
+          "rule": "73 mod 12; unit × (1 + ⌊73/12⌋ mod 8)",
+          "result": "dots, 63px"
+        },
+        {
+          "dimension": "motif placement · angle",
+          "bytes": [
+            19
+          ],
+          "hex": "70",
+          "rule": "112 mod 4; ⌊112/4⌋ × 180/63",
+          "result": "edges, 80°"
+        },
+        {
+          "dimension": "radius · border",
+          "bytes": [
+            20
+          ],
+          "hex": "e3",
+          "rule": "RADII[227 mod 8]; ⌊227/8⌋ mod 4; ⌊227/32⌋ mod 4",
+          "result": "0px radius, 0px dotted border"
+        },
+        {
+          "dimension": "shadow · texture",
+          "bytes": [
+            21
+          ],
+          "hex": "2c",
+          "rule": "44 & 3; (44 >> 2) & 3; 3 + 2 × 0.6",
+          "result": "no shadow, dot-screen 4.2%"
+        },
+        {
+          "dimension": "motion property · duration",
+          "bytes": [
+            22
+          ],
+          "hex": "07",
+          "rule": "⌊7/64⌋; (7 mod 64)/63 × 600",
+          "result": "opacity, 70ms"
+        },
+        {
+          "dimension": "easing",
+          "bytes": [
+            23
+          ],
+          "hex": "c1",
+          "rule": "193 ≥ 32 → cubic-bezier from bits",
+          "result": "cubic-bezier(0, 1.2, 0.37, 1)"
+        },
+        {
+          "dimension": "voice person · headline form",
+          "bytes": [
+            24
+          ],
+          "hex": "8a",
+          "rule": "138 mod 4; ⌊138/4⌋ mod 6",
+          "result": "you, number-first"
+        },
+        {
+          "dimension": "sentence length · register",
+          "bytes": [
+            25
+          ],
+          "hex": "78",
+          "rule": "3 + (120 & 15); (120 >> 4)/15",
+          "result": "11 words, register 0.47"
+        },
+        {
+          "dimension": "twist target",
+          "bytes": [
+            26
+          ],
+          "hex": "42",
+          "rule": "66 mod 9",
+          "result": "footer"
+        },
+        {
+          "dimension": "twist operation · amount",
+          "bytes": [
+            27
+          ],
+          "hex": "19",
+          "rule": "25 mod 10; ⌊25/10⌋",
+          "result": "repeat, 2"
+        },
+        {
+          "dimension": "CJK display face",
+          "bytes": [
+            29
+          ],
+          "hex": "84",
+          "rule": "132 mod 14",
+          "result": "Noto Sans SC",
+          "note": "used on Chinese pages"
+        },
+        {
+          "dimension": "mono face",
+          "bytes": [
+            30
+          ],
+          "hex": "0a",
+          "rule": "10 mod 8",
+          "result": "Courier Prime"
+        }
+      ]
+    },
+    {
+      "number": 3,
+      "slug": "03-1cd7911b",
+      "ref": "1cd7911b8574fe1900d372c843e42efbd961ed3c5dbc6436b17d4b2c7bbc2304",
+      "hash": "1cd7911b8574fe1900d372c843e42efbd961ed3c5dbc6436b17d4b2c7bbc2304",
+      "short": "1cd7911b",
+      "algorithm": "hash-design/v2",
+      "library": "bd20321c36ab",
+      "constraints": {
+        "lightOnly": false,
+        "darkOnly": false,
+        "reducedMotion": false,
+        "brandColors": []
+      },
+      "content": {
+        "subject": "Sluice — self-hosted webhook inbox",
+        "facts": [
+          "Name: Sluice — a self-hosted inbox for webhooks",
+          "What it does: gives you a public URL for webhooks, stores every delivery, and forwards it to your local or internal service",
+          "One static binary, about 11 MB, for Linux, macOS and Windows on amd64 and arm64",
+          "Storage: a single SQLite file; no Redis, no Postgres, no queue to run",
+          "Install: curl -fsSL https://sluice.example/install.sh | sh",
+          "Start: sluice serve --forward http://localhost:3000",
+          "Retries failed forwards with exponential backoff for up to 72 hours",
+          "Replay any stored delivery: sluice replay <delivery-id>",
+          "Verifies HMAC-SHA256 signatures and rejects deliveries older than 5 minutes",
+          "Web UI on port 8081: search deliveries by path, header or body text",
+          "Keeps deliveries for 30 days by default; change it with --retain",
+          "1,800 deliveries per second on a 2-vCPU VM, in the project's own benchmark",
+          "No hosted service, no account, no telemetry",
+          "Written in Go; MIT licence; 41 contributors",
+          "Current version 0.9.2, released 14 October 2026",
+          "Maintainer: Ines Okafor, who started it in 2023 after losing a weekend of payment webhooks"
+        ],
+        "language": "en"
+      },
+      "label": "light · 41° · Permanent Marker / IBM Plex Sans Condensed · 10 col",
       "palette": {
-        "id": "p3-amber",
-        "name": "P3 amber phosphor",
+        "polarity": "light",
+        "hue": 40.56,
+        "paperL": 0.932,
+        "paperC": 0.005,
+        "accentC": 0.153,
+        "accent2Offset": 166.47,
         "colors": {
-          "paper": "#120b02",
-          "ink": "#ffb84a",
-          "muted": "#c4842a",
-          "accent": "#ffe2a8",
-          "accent2": "#ff7a1a",
-          "rule": "#5a3a0c",
-          "panel": "#1e1305"
-        },
-        "usage": "Warm amber monochrome: ink for text, pale accent for headings and the cursor, orange accent2 only for errors; rule-brown box lines; panel for inactive panes."
+          "paper": "#ece7e6",
+          "ink": "#403531",
+          "muted": "#72645f",
+          "accent": "#ce5f34",
+          "accent2": "#0093a1",
+          "rule": "#bbafab",
+          "panel": "#e2d7d3"
+        }
       },
-      "paletteOverride": null,
       "contrast": {
         "lines": [
           {
             "pair": "ink on paper",
-            "ratio": 11.36,
+            "ratio": 9.67,
             "verdict": "AAA — any text"
           },
           {
             "pair": "muted on paper",
-            "ratio": 6.22,
+            "ratio": 4.63,
             "verdict": "AA — body text OK"
           },
           {
             "pair": "ink on panel",
-            "ratio": 10.61,
+            "ratio": 8.41,
             "verdict": "AAA — any text"
           },
           {
             "pair": "accent on paper",
-            "ratio": 15.54,
-            "verdict": "AAA — any text"
+            "ratio": 3.23,
+            "verdict": "large text / UI marks only (≥24px or bold ≥19px)"
           },
           {
             "pair": "accent2 on paper",
-            "ratio": 7.49,
-            "verdict": "AAA — any text"
+            "ratio": 3.01,
+            "verdict": "large text / UI marks only (≥24px or bold ≥19px)"
           },
           {
             "pair": "#000000 on accent",
-            "ratio": 16.7,
-            "verdict": "AAA — any text"
+            "ratio": 5.31,
+            "verdict": "AA — body text OK"
           },
           {
             "pair": "#000000 on accent2",
-            "ratio": 8.05,
-            "verdict": "AAA — any text"
+            "ratio": 5.69,
+            "verdict": "AA — body text OK"
           }
         ],
         "onAccent": "#000000",
         "onAccent2": "#000000"
       },
-      "density": {
-        "id": "compact",
-        "name": {
-          "zh": "紧凑",
-          "en": "Compact"
+      "type": {
+        "display": {
+          "family": "Permanent Marker",
+          "weights": [
+            400
+          ],
+          "fallback": "\"Marker Felt\", cursive",
+          "source": "google"
         },
-        "baseSize": 15,
-        "lineHeight": 1.45,
-        "unit": 6,
-        "sectionGap": 64,
-        "maxWidth": 1320,
-        "description": "信息密集，多栏并行；用细线和对齐建立秩序，首屏就能看到 3 个以上信息块。"
+        "body": {
+          "family": "IBM Plex Sans Condensed",
+          "weights": [
+            400,
+            500,
+            600
+          ],
+          "fallback": "\"Arial Narrow\", sans-serif",
+          "source": "google"
+        },
+        "mono": {
+          "family": "Cousine",
+          "weights": [
+            400,
+            700
+          ],
+          "fallback": "\"Courier New\", Courier, monospace",
+          "source": "google"
+        },
+        "cjk": {
+          "display": "Noto Sans SC",
+          "body": "Noto Sans SC"
+        },
+        "case": {
+          "id": "as-written",
+          "text": "as written (sentence case)"
+        },
+        "weight": 400,
+        "tracking": 0.159
+      },
+      "fonts": {
+        "stacks": {
+          "display": "\"Permanent Marker\", \"Marker Felt\", cursive",
+          "body": "\"IBM Plex Sans Condensed\", \"Arial Narrow\", sans-serif",
+          "mono": "Cousine, \"Courier New\", Courier, monospace"
+        },
+        "googleFontsUrl": "https://fonts.googleapis.com/css2?family=Permanent+Marker&family=IBM+Plex+Sans+Condensed:wght@400;500;600&family=Cousine:wght@400;700&display=swap"
       },
       "scale": {
-        "id": "major-second",
-        "name": "Major second 1.125",
-        "ratio": 1.125,
+        "ratio": 1.313,
         "steps": [
           {
             "step": -2,
-            "px": 11.9,
-            "rem": 0.741
+            "px": 8.7,
+            "rem": 0.544
           },
           {
             "step": -1,
-            "px": 13.3,
-            "rem": 0.833
+            "px": 11.4,
+            "rem": 0.714
           },
           {
             "step": 0,
@@ -1172,67 +1322,125 @@
           },
           {
             "step": 1,
-            "px": 16.9,
-            "rem": 1.055
+            "px": 19.7,
+            "rem": 1.231
           },
           {
             "step": 2,
-            "px": 19,
-            "rem": 1.187
+            "px": 25.9,
+            "rem": 1.616
           },
           {
             "step": 3,
-            "px": 21.4,
-            "rem": 1.335
+            "px": 34,
+            "rem": 2.122
           },
           {
             "step": 4,
-            "px": 24,
-            "rem": 1.502
+            "px": 44.6,
+            "rem": 2.786
           },
           {
             "step": 5,
-            "px": 27,
-            "rem": 1.689
+            "px": 58.5,
+            "rem": 3.658
           },
           {
             "step": 6,
-            "px": 30.4,
-            "rem": 1.901
+            "px": 76.9,
+            "rem": 4.804
           },
           {
             "step": 7,
-            "px": 34.2,
-            "rem": 2.138
+            "px": 100.9,
+            "rem": 6.307
           }
         ]
       },
-      "motion": {
-        "id": "cursor-blink",
-        "name": "Cursor blink",
-        "description": "A block cursor (█, 1ch × 1.25em) after the last prompt blinks 530ms on / 530ms off — the only moving thing on the screen.",
-        "duration": "1060ms",
-        "easing": "steps(2, jump-none)",
-        "reduced": "Solid cursor, no blink."
+      "density": {
+        "t": 0.784,
+        "baseSize": 15,
+        "lineHeight": 1.41,
+        "unit": 5,
+        "sectionGap": 61,
+        "maxWidth": 1360
+      },
+      "layout": {
+        "columns": 10,
+        "gutter": 15,
+        "span": 5,
+        "start": 6,
+        "firstScreen": 55,
+        "sections": 8,
+        "separator": {
+          "id": "bands",
+          "text": "full-width bands alternating paper and panel"
+        }
+      },
+      "anchor": {
+        "subject": {
+          "id": "number",
+          "text": "one number taken from the facts"
+        },
+        "size": 90,
+        "x": 0.07,
+        "rotation": -1.5
       },
       "motif": {
-        "id": "reverse-video",
-        "name": "Reverse video",
-        "description": "Headings, the selected menu item and the status bar in reverse video (accent background, paper text) spanning whole ch widths."
+        "shape": {
+          "id": "half-circles",
+          "text": "half circles"
+        },
+        "size": 20,
+        "placement": {
+          "id": "edges",
+          "text": "along the page edges"
+        },
+        "angle": 43
       },
       "surface": {
-        "id": "greenbar-paper",
-        "name": "Green-bar paper",
-        "description": "Continuous line-printer paper: 3 lines of panel tint, 3 lines of paper, tractor holes in the margins.",
-        "css": "background-color: var(--paper); background-image: repeating-linear-gradient(to bottom, var(--panel) 0 3.75em, transparent 3.75em 7.5em);"
+        "radius": 4,
+        "border": 3,
+        "borderStyle": "dashed",
+        "shadow": 0,
+        "texture": {
+          "id": "dot-screen",
+          "text": "a fine dot screen (radial-gradient pattern)"
+        },
+        "textureOpacity": 9.6
+      },
+      "motion": {
+        "still": false,
+        "property": {
+          "id": "transform",
+          "text": "position (transform: translate)"
+        },
+        "duration": 340,
+        "easing": "cubic-bezier(0.64, 0.2, 0.63, 1)"
+      },
+      "voice": {
+        "person": {
+          "id": "we",
+          "text": "first person plural (\"we\")"
+        },
+        "headline": {
+          "id": "label",
+          "text": "a label: a noun phrase, no verb"
+        },
+        "sentenceWords": 16,
+        "register": 0.47
       },
       "twist": {
-        "id": "numbered-sections",
-        "name": {
-          "zh": "分节编号",
-          "en": "Numbered sections"
+        "target": {
+          "id": "footer",
+          "text": "the footer"
         },
-        "description": "每个区块有显眼的编号（§1、No.2、03…），编号本身是设计元素。"
+        "operation": {
+          "id": "invert",
+          "text": "inverted: paper-coloured on ink"
+        },
+        "amount": 4,
+        "text": "The footer: inverted: paper-coloured on ink."
       },
       "bans": [
         "generic-sans",
@@ -1250,160 +1458,286 @@
         "placeholder-content",
         "template-sections"
       ],
-      "tokensCss": "/* hash-design 16333b21 · terminal-phosphor · p3-amber */\n:root {\n  --paper: #120b02;\n  --ink: #ffb84a;\n  --muted: #c4842a;\n  --accent: #ffe2a8;\n  --on-accent: #000000;\n  --accent2: #ff7a1a;\n  --on-accent2: #000000;\n  --rule: #5a3a0c;\n  --panel: #1e1305;\n\n  --font-display: \"IBM Plex Mono\", \"Courier New\", monospace;\n  --font-body: \"Fira Code\", \"Courier New\", monospace;\n  --font-mono: ui-monospace, \"SFMono-Regular\", Menlo, Consolas, monospace;\n\n  --step-n2: 0.741rem; /* 11.9px */\n  --step-n1: 0.833rem; /* 13.3px */\n  --step-0: 0.938rem; /* 15px */\n  --step-1: 1.055rem; /* 16.9px */\n  --step-2: 1.187rem; /* 19px */\n  --step-3: 1.335rem; /* 21.4px */\n  --step-4: 1.502rem; /* 24px */\n  --step-5: 1.689rem; /* 27px */\n  --step-6: 1.901rem; /* 30.4px */\n  --step-7: 2.138rem; /* 34.2px */\n  --leading: 1.45;\n\n  --space-1: 6px;\n  --space-2: 12px;\n  --space-3: 18px;\n  --space-4: 24px;\n  --space-5: 30px;\n  --space-6: 36px;\n  --space-7: 42px;\n  --space-8: 48px;\n  --section-gap: 64px;\n  --max-width: 1320px;\n\n  --motion-duration: 1060ms;\n  --motion-easing: steps(2, jump-none);\n}\n\nhtml { font-size: 93.8%; }\nbody { background: var(--paper); color: var(--ink); font-family: var(--font-body); line-height: var(--leading); }\n@media (prefers-reduced-motion: reduce) {\n  *, *::before, *::after { animation: none !important; transition: none !important; }\n}",
+      "tokensCss": "/* hash-design hash-design/v2 · 1cd7911b */\n:root {\n  --paper: #ece7e6;\n  --ink: #403531;\n  --muted: #72645f;\n  --accent: #ce5f34;\n  --on-accent: #000000;\n  --accent2: #0093a1;\n  --on-accent2: #000000;\n  --rule: #bbafab;\n  --panel: #e2d7d3;\n\n  --font-display: \"Permanent Marker\", \"Marker Felt\", cursive;\n  --font-body: \"IBM Plex Sans Condensed\", \"Arial Narrow\", sans-serif;\n  --font-mono: Cousine, \"Courier New\", Courier, monospace;\n  --display-weight: 400;\n  --display-tracking: 0.159em;\n\n  --step-n2: 0.544rem; /* 8.7px */\n  --step-n1: 0.714rem; /* 11.4px */\n  --step-0: 0.938rem; /* 15px */\n  --step-1: 1.231rem; /* 19.7px */\n  --step-2: 1.616rem; /* 25.9px */\n  --step-3: 2.122rem; /* 34px */\n  --step-4: 2.786rem; /* 44.6px */\n  --step-5: 3.658rem; /* 58.5px */\n  --step-6: 4.804rem; /* 76.9px */\n  --step-7: 6.307rem; /* 100.9px */\n  --leading: 1.41;\n\n  --space-1: 5px;\n  --space-2: 10px;\n  --space-3: 15px;\n  --space-4: 20px;\n  --space-5: 25px;\n  --space-6: 30px;\n  --space-7: 35px;\n  --space-8: 40px;\n  --section-gap: 61px;\n  --max-width: 1360px;\n  --columns: 10;\n  --gutter: 15px;\n\n  --radius: 4px;\n  --border: 3px dashed var(--rule);\n  --shadow: none;\n\n  --motion-duration: 340ms;\n  --motion-easing: cubic-bezier(0.64, 0.2, 0.63, 1);\n}\n\nhtml { font-size: 93.8%; }\nbody { background: var(--paper); color: var(--ink); font-family: var(--font-body); line-height: var(--leading); }\n@media (prefers-reduced-motion: reduce) {\n  *, *::before, *::after { animation: none !important; transition: none !important; }\n}",
       "trace": [
         {
-          "dimension": "branch",
+          "dimension": "hue",
           "bytes": [
             0,
             1
           ],
-          "hex": "16 33",
-          "rule": "0x1633 = 5683; 5683 mod 40 = 3",
-          "poolSize": 40,
-          "index": 3,
-          "result": "terminal-phosphor"
+          "hex": "1c d7",
+          "rule": "0x1cd7 = 7383; 7383/65536 × 360",
+          "result": "40.56°"
         },
         {
-          "dimension": "voice",
+          "dimension": "polarity · paper lightness",
           "bytes": [
             2
           ],
-          "hex": "3b",
-          "rule": "0x3b = 59; 59 mod 14 = 3",
-          "poolSize": 14,
-          "index": 3,
-          "result": "personal-letter"
+          "hex": "91",
+          "rule": "145 ≥ 77 → light; L = 0.90 + 68/178 × 0.085",
+          "result": "light, L 0.932"
         },
         {
-          "dimension": "layout",
+          "dimension": "paper chroma",
           "bytes": [
             3
           ],
-          "hex": "21",
-          "rule": "0x21 = 33; 33 mod 3 = 0",
-          "poolSize": 3,
-          "index": 0,
-          "result": "man-page"
+          "hex": "1b",
+          "rule": "27/255 × 0.045",
+          "result": "0.005"
         },
         {
-          "dimension": "type",
+          "dimension": "accent chroma",
           "bytes": [
             4
           ],
-          "hex": "9d",
-          "rule": "0x9d = 157; 157 mod 3 = 1",
-          "poolSize": 3,
-          "index": 1,
-          "result": "plex-3270"
+          "hex": "85",
+          "rule": "0.07 + 133/255 × 0.16",
+          "result": "0.153"
         },
         {
-          "dimension": "palette",
+          "dimension": "accent2 hue offset",
           "bytes": [
             5
           ],
-          "hex": "f7",
-          "rule": "0xf7 = 247; 247 mod 3 = 1",
-          "poolSize": 3,
-          "index": 1,
-          "result": "p3-amber"
+          "hex": "74",
+          "rule": "30 + 116/255 × 300",
+          "result": "+166.47°"
+        },
+        {
+          "dimension": "display face",
+          "bytes": [
+            6
+          ],
+          "hex": "fe",
+          "rule": "254 mod 98 = 58",
+          "result": "Permanent Marker"
+        },
+        {
+          "dimension": "body face",
+          "bytes": [
+            7
+          ],
+          "hex": "19",
+          "rule": "25 mod 62 = 25",
+          "result": "IBM Plex Sans Condensed"
+        },
+        {
+          "dimension": "display case · weight",
+          "bytes": [
+            8
+          ],
+          "hex": "00",
+          "rule": "0 mod 4 = 0; ⌊0/4⌋ mod 1",
+          "result": "as-written, 400"
+        },
+        {
+          "dimension": "display tracking",
+          "bytes": [
+            9
+          ],
+          "hex": "d3",
+          "rule": "−0.04 + 211/255 × 0.24",
+          "result": "0.159em"
+        },
+        {
+          "dimension": "type scale ratio",
+          "bytes": [
+            10
+          ],
+          "hex": "72",
+          "rule": "1.067 + 114/255 × 0.551",
+          "result": "1.313"
         },
         {
           "dimension": "density",
           "bytes": [
-            6
-          ],
-          "hex": "a0",
-          "rule": "0xa0 = 160; 160 mod 2 = 0",
-          "poolSize": 2,
-          "index": 0,
-          "result": "compact"
-        },
-        {
-          "dimension": "motion",
-          "bytes": [
-            7
-          ],
-          "hex": "a9",
-          "rule": "0xa9 = 169; 169 mod 3 = 1",
-          "poolSize": 3,
-          "index": 1,
-          "result": "cursor-blink"
-        },
-        {
-          "dimension": "motif",
-          "bytes": [
-            8
-          ],
-          "hex": "26",
-          "rule": "0x26 = 38; 38 mod 3 = 2",
-          "poolSize": 3,
-          "index": 2,
-          "result": "reverse-video"
-        },
-        {
-          "dimension": "anchor",
-          "bytes": [
-            9
-          ],
-          "hex": "44",
-          "rule": "0x44 = 68; 68 mod 3 = 2",
-          "poolSize": 3,
-          "index": 2,
-          "result": "ascii-banner"
-        },
-        {
-          "dimension": "scale",
-          "bytes": [
-            10
-          ],
-          "hex": "b8",
-          "rule": "0xb8 = 184; 184 mod 2 = 0",
-          "poolSize": 2,
-          "index": 0,
-          "result": "major-second"
-        },
-        {
-          "dimension": "surface",
-          "bytes": [
             11
           ],
-          "hex": "fb",
-          "rule": "0xfb = 251; 251 mod 3 = 2",
-          "poolSize": 3,
-          "index": 2,
-          "result": "greenbar-paper"
+          "hex": "c8",
+          "rule": "t = 200/255",
+          "result": "t 0.784: base 15px, line-height 1.41, unit 5px"
         },
         {
-          "dimension": "twist",
+          "dimension": "grid columns · gutter",
           "bytes": [
             12
           ],
-          "hex": "77",
-          "rule": "0x77 = 119; 119 mod 16 = 7",
-          "poolSize": 16,
-          "index": 7,
-          "result": "numbered-sections"
+          "hex": "43",
+          "rule": "3 + 67 mod 10; unit × (1 + ⌊67/10⌋ mod 4)",
+          "result": "10 columns, 15px gutter"
+        },
+        {
+          "dimension": "text block span · start",
+          "bytes": [
+            13
+          ],
+          "hex": "e4",
+          "rule": "span 4/15, start 14/15",
+          "result": "columns 6–10 of 10"
+        },
+        {
+          "dimension": "first-screen height",
+          "bytes": [
+            14
+          ],
+          "hex": "2e",
+          "rule": "45 + 46/255 × 55",
+          "result": "55%"
+        },
+        {
+          "dimension": "sections · separator",
+          "bytes": [
+            15
+          ],
+          "hex": "fb",
+          "rule": "3 + 251 mod 6; ⌊251/6⌋ mod 5",
+          "result": "8 sections, bands"
+        },
+        {
+          "dimension": "anchor subject · size",
+          "bytes": [
+            16
+          ],
+          "hex": "d9",
+          "rule": "217 mod 8; 25 + ⌊217/8⌋/31 × 75",
+          "result": "number, 90%"
+        },
+        {
+          "dimension": "anchor position · rotation",
+          "bytes": [
+            17
+          ],
+          "hex": "61",
+          "rule": "x 1/15; ((6) − 7.5)/7.5 × 8",
+          "result": "x 0.07, -1.5°"
+        },
+        {
+          "dimension": "motif shape · size",
+          "bytes": [
+            18
+          ],
+          "hex": "ed",
+          "rule": "237 mod 12; unit × (1 + ⌊237/12⌋ mod 8)",
+          "result": "half-circles, 20px"
+        },
+        {
+          "dimension": "motif placement · angle",
+          "bytes": [
+            19
+          ],
+          "hex": "3c",
+          "rule": "60 mod 4; ⌊60/4⌋ × 180/63",
+          "result": "edges, 43°"
+        },
+        {
+          "dimension": "radius · border",
+          "bytes": [
+            20
+          ],
+          "hex": "5d",
+          "rule": "RADII[93 mod 8]; ⌊93/8⌋ mod 4; ⌊93/32⌋ mod 4",
+          "result": "4px radius, 3px dashed border"
+        },
+        {
+          "dimension": "shadow · texture",
+          "bytes": [
+            21
+          ],
+          "hex": "bc",
+          "rule": "188 & 3; (188 >> 2) & 3; 3 + 11 × 0.6",
+          "result": "no shadow, dot-screen 9.6%"
+        },
+        {
+          "dimension": "motion property · duration",
+          "bytes": [
+            22
+          ],
+          "hex": "64",
+          "rule": "⌊100/64⌋; (100 mod 64)/63 × 600",
+          "result": "transform, 340ms"
+        },
+        {
+          "dimension": "easing",
+          "bytes": [
+            23
+          ],
+          "hex": "36",
+          "rule": "54 ≥ 32 → cubic-bezier from bits",
+          "result": "cubic-bezier(0.64, 0.2, 0.63, 1)"
+        },
+        {
+          "dimension": "voice person · headline form",
+          "bytes": [
+            24
+          ],
+          "hex": "b1",
+          "rule": "177 mod 4; ⌊177/4⌋ mod 6",
+          "result": "we, label"
+        },
+        {
+          "dimension": "sentence length · register",
+          "bytes": [
+            25
+          ],
+          "hex": "7d",
+          "rule": "3 + (125 & 15); (125 >> 4)/15",
+          "result": "16 words, register 0.47"
+        },
+        {
+          "dimension": "twist target",
+          "bytes": [
+            26
+          ],
+          "hex": "4b",
+          "rule": "75 mod 9",
+          "result": "footer"
+        },
+        {
+          "dimension": "twist operation · amount",
+          "bytes": [
+            27
+          ],
+          "hex": "2c",
+          "rule": "44 mod 10; ⌊44/10⌋",
+          "result": "invert, 4"
+        },
+        {
+          "dimension": "CJK display face",
+          "bytes": [
+            29
+          ],
+          "hex": "bc",
+          "rule": "188 mod 14",
+          "result": "Noto Sans SC",
+          "note": "used on Chinese pages"
+        },
+        {
+          "dimension": "mono face",
+          "bytes": [
+            30
+          ],
+          "hex": "23",
+          "rule": "35 mod 8",
+          "result": "Cousine"
         }
       ]
     },
     {
       "number": 4,
-      "slug": "04-academic-paper",
-      "ref": "8fcd60e5d98790da96425ffc1d4521251f6a91724c110d23559e8a91b3e9596e+2",
-      "hash": "8fcd60e5d98790da96425ffc1d4521251f6a91724c110d23559e8a91b3e9596e",
-      "short": "8fcd60e5",
-      "probe": 2,
-      "algorithm": "hash-design/v1",
-      "library": "c7b166fe6ec0",
+      "slug": "04-6f5edb67",
+      "ref": "6f5edb678505792a5df56fcaf6fcfb16f70d7cb066532939b252c0df0136a59b",
+      "hash": "6f5edb678505792a5df56fcaf6fcfb16f70d7cb066532939b252c0df0136a59b",
+      "short": "6f5edb67",
+      "algorithm": "hash-design/v2",
+      "library": "bd20321c36ab",
       "constraints": {
         "lightOnly": false,
         "darkOnly": false,
         "reducedMotion": false,
-        "brandColors": [],
-        "families": [],
-        "include": [],
-        "exclude": []
+        "brandColors": []
       },
       "content": {
         "subject": "Sluice — self-hosted webhook inbox",
@@ -1427,263 +1761,251 @@
         ],
         "language": "en"
       },
-      "branch": {
-        "id": "academic-paper",
-        "name": {
-          "zh": "学术论文",
-          "en": "Academic paper"
-        },
-        "family": "document",
-        "concept": {
-          "zh": "LaTeX 排出的研究论文：标题和作者居中，摘要单独成块，章节按 1、1.1 编号，图注表注都有编号，页脚有脚注，文末是参考文献。可信感来自严格的编号体系和交叉引用，而不是装饰。",
-          "en": "A research paper typeset in LaTeX: title and authors centred, a set-off abstract, sections numbered 1 and 1.1, numbered figure and table captions, footnotes and a references list. Authority comes from the numbering system and cross-references, not from decoration."
-        },
-        "references": [
-          "Donald Knuth, TeX and Computer Modern (1978–86); the AMS amsart document class",
-          "Edward Tufte’s handouts and the tufte-latex class (sidenotes, margin figures)",
-          "Physical Review Letters and Nature two-column journal pages",
-          "Simon Fear, the booktabs LaTeX package (1995) — three-rule tables",
-          "arXiv preprints, 1991–"
-        ],
-        "tokens": {
-          "grid": "Text block 34em (≈ 600px) single column, or 2 × 20em columns with a 2em gap; page margins in the LaTeX article proportion (text width ≈ 62% of the page); baseline = 1.25 × body size; floats span one column or the full text width.",
-          "radius": "0 everywhere.",
-          "border": "booktabs only: \\toprule and \\bottomrule 1.5px ink, \\midrule 1px ink, no vertical rules in tables; abstract framed by a 1px ink box or none; footnote separator 1px ink at 40% of the text width.",
-          "shadow": "none."
-        },
-        "must": [
-          "Sections, figures and tables are numbered, and every one is referenced in the text.",
-          "A delimited abstract (or an epigraph in the Tufte layout) precedes section 1.",
-          "Tables use only horizontal rules.",
-          "Claims are tied to sources listed in the references, taken from the facts."
-        ],
-        "mustNot": [
-          "No cards, badges, icons or call-to-action buttons; links are inline text.",
-          "No coloured section backgrounds; colour is limited to links and figure data.",
-          "No invented authors, DOIs, journals or citations that are not in the facts."
-        ]
-      },
-      "voice": {
-        "id": "logbook",
-        "name": {
-          "zh": "值班日志",
-          "en": "Logbook"
-        },
-        "description": "船长/值班日志：按条目记录，时间戳 + 事件 + 签名缩写，事实化、略带幽默。",
-        "devices": [
-          "时间戳",
-          "事件代码",
-          "签名缩写",
-          "天气/状态栏"
-        ],
-        "example": "0630 炉温达标。0700 开门，门外 4 人。—— L."
-      },
-      "layout": {
-        "id": "tufte-handout",
-        "name": "Tufte handout",
-        "description": "A wide right margin carries sidenotes, margin figures and citations next to the text they support; there are no footnotes at the bottom.",
-        "grid": "12 columns: text spans 1–7 (≈ 55%), sidenote column spans 9–12; full-width figures span 1–12; sidenote numbers superscript in text and on the baseline in the margin.",
-        "structure": [
-          "Title in large italic + author in small caps; an epigraph instead of an abstract",
-          "Section headings in italic; paragraphs open with “new thought” small caps",
-          "Body paragraphs with sidenotes and margin figures alongside",
-          "One full-width figure or small-multiples table",
-          "Bibliography as short sidenote citations plus a compact list at the end"
-        ]
-      },
-      "anchor": {
-        "id": "title-abstract",
-        "name": "Title + abstract",
-        "description": "The first screen is the centred title block plus the set-off abstract — dense, quiet and complete."
-      },
-      "type": {
-        "id": "tufte-crimson",
-        "name": "Crimson Pro",
-        "display": {
-          "family": "Crimson Pro",
-          "weights": [
-            400
-          ],
-          "italic": true,
-          "fallback": "Palatino, \"Book Antiqua\", serif",
-          "source": "google"
-        },
-        "body": {
-          "family": "Crimson Pro",
-          "weights": [
-            400,
-            600
-          ],
-          "italic": true,
-          "fallback": "Palatino, \"Book Antiqua\", serif",
-          "source": "google"
-        },
-        "cjk": {
-          "display": "ZCOOL XiaoWei",
-          "body": "Noto Serif SC"
-        },
-        "notes": "Crimson Pro 400 italic for the title (2.4×) and section headings (1.4×), never bold; body 400 at 19px/1.5, ragged-right; paragraph openers in font-variant-caps: all-small-caps with 0.05em tracking; sidenotes at 0.75× with the number on the baseline. Oldstyle figures (onum) in prose, lining in tables."
-      },
-      "fonts": {
-        "stacks": {
-          "display": "\"Crimson Pro\", Palatino, \"Book Antiqua\", serif",
-          "body": "\"Crimson Pro\", Palatino, \"Book Antiqua\", serif",
-          "mono": "ui-monospace, \"SFMono-Regular\", Menlo, Consolas, monospace"
-        },
-        "googleFontsUrl": "https://fonts.googleapis.com/css2?family=Crimson+Pro:ital,wght@0,400;0,600;1,400;1,600&display=swap"
-      },
+      "label": "light · 157° · Cormorant SC / Overpass · 9 col",
       "palette": {
-        "id": "preprint-white",
-        "name": "Preprint white",
+        "polarity": "light",
+        "hue": 156.61,
+        "paperL": 0.968,
+        "paperC": 0.018,
+        "accentC": 0.153,
+        "accent2Offset": 35.88,
         "colors": {
-          "paper": "#fdfdfb",
-          "ink": "#111111",
-          "muted": "#4a4a4a",
-          "accent": "#8c1515",
-          "accent2": "#1d5e3a",
-          "rule": "#222222",
-          "panel": "#f2f1ec"
-        },
-        "usage": "Practically monochrome: ink on white for ~97% of the page. Dark red (accent) only for cross-reference links (Fig. 1, Eq. 3, §2); green (accent2) only for citation brackets [12]; panel for the abstract box."
+          "paper": "#ebf8f0",
+          "ink": "#2b3d32",
+          "muted": "#647169",
+          "accent": "#009c5d",
+          "accent2": "#009d9a",
+          "rule": "#afc3b6",
+          "panel": "#d8ebdf"
+        }
       },
-      "paletteOverride": null,
       "contrast": {
         "lines": [
           {
             "pair": "ink on paper",
-            "ratio": 18.54,
+            "ratio": 10.58,
             "verdict": "AAA — any text"
           },
           {
             "pair": "muted on paper",
-            "ratio": 8.7,
-            "verdict": "AAA — any text"
+            "ratio": 4.68,
+            "verdict": "AA — body text OK"
           },
           {
             "pair": "ink on panel",
-            "ratio": 16.7,
+            "ratio": 9.29,
             "verdict": "AAA — any text"
           },
           {
             "pair": "accent on paper",
-            "ratio": 9.23,
-            "verdict": "AAA — any text"
+            "ratio": 3.25,
+            "verdict": "large text / UI marks only (≥24px or bold ≥19px)"
           },
           {
             "pair": "accent2 on paper",
-            "ratio": 7.6,
-            "verdict": "AAA — any text"
+            "ratio": 3.06,
+            "verdict": "large text / UI marks only (≥24px or bold ≥19px)"
           },
           {
-            "pair": "#ffffff on accent",
-            "ratio": 9.4,
-            "verdict": "AAA — any text"
+            "pair": "#000000 on accent",
+            "ratio": 5.91,
+            "verdict": "AA — body text OK"
           },
           {
-            "pair": "#ffffff on accent2",
-            "ratio": 7.74,
-            "verdict": "AAA — any text"
+            "pair": "#000000 on accent2",
+            "ratio": 6.29,
+            "verdict": "AA — body text OK"
           }
         ],
-        "onAccent": "#ffffff",
-        "onAccent2": "#ffffff"
+        "onAccent": "#000000",
+        "onAccent2": "#000000"
       },
-      "density": {
-        "id": "regular",
-        "name": {
-          "zh": "常规",
-          "en": "Regular"
+      "type": {
+        "display": {
+          "family": "Cormorant SC",
+          "weights": [
+            500,
+            600
+          ],
+          "fallback": "Garamond, Georgia, serif",
+          "source": "google"
         },
-        "baseSize": 17,
-        "lineHeight": 1.55,
-        "unit": 8,
-        "sectionGap": 112,
-        "maxWidth": 1200,
-        "description": "常规阅读节奏；区块之间用明确的分隔（线、色块或编号），不靠空白硬撑。"
+        "body": {
+          "family": "Overpass",
+          "weights": [
+            400,
+            600
+          ],
+          "fallback": "Arial, sans-serif",
+          "source": "google"
+        },
+        "mono": {
+          "family": "Overpass Mono",
+          "weights": [
+            400,
+            600
+          ],
+          "fallback": "\"Courier New\", monospace",
+          "source": "google"
+        },
+        "cjk": {
+          "display": "ZCOOL XiaoWei",
+          "body": "Noto Sans SC"
+        },
+        "case": {
+          "id": "upper",
+          "text": "UPPERCASE"
+        },
+        "weight": 600,
+        "tracking": 0.191
+      },
+      "fonts": {
+        "stacks": {
+          "display": "\"Cormorant SC\", Garamond, Georgia, serif",
+          "body": "Overpass, Arial, sans-serif",
+          "mono": "\"Overpass Mono\", \"Courier New\", monospace"
+        },
+        "googleFontsUrl": "https://fonts.googleapis.com/css2?family=Cormorant+SC:wght@500;600&family=Overpass:wght@400;600&family=Overpass+Mono:wght@400;600&display=swap"
       },
       "scale": {
-        "id": "major-third",
-        "name": "Major third 1.25",
-        "ratio": 1.25,
+        "ratio": 1.307,
         "steps": [
           {
             "step": -2,
-            "px": 10.9,
-            "rem": 0.68
+            "px": 8.8,
+            "rem": 0.549
           },
           {
             "step": -1,
-            "px": 13.6,
-            "rem": 0.85
+            "px": 11.5,
+            "rem": 0.717
           },
           {
             "step": 0,
-            "px": 17,
-            "rem": 1.063
+            "px": 15,
+            "rem": 0.938
           },
           {
             "step": 1,
-            "px": 21.3,
-            "rem": 1.328
+            "px": 19.6,
+            "rem": 1.225
           },
           {
             "step": 2,
-            "px": 26.6,
-            "rem": 1.66
+            "px": 25.6,
+            "rem": 1.601
           },
           {
             "step": 3,
-            "px": 33.2,
-            "rem": 2.075
+            "px": 33.5,
+            "rem": 2.093
           },
           {
             "step": 4,
-            "px": 41.5,
-            "rem": 2.594
+            "px": 43.8,
+            "rem": 2.736
           },
           {
             "step": 5,
-            "px": 51.9,
-            "rem": 3.242
+            "px": 57.2,
+            "rem": 3.576
           },
           {
             "step": 6,
-            "px": 64.8,
-            "rem": 4.053
+            "px": 74.8,
+            "rem": 4.673
           },
           {
             "step": 7,
-            "px": 81.1,
-            "rem": 5.066
+            "px": 97.7,
+            "rem": 6.108
           }
         ]
       },
-      "motion": {
-        "id": "still",
-        "name": "Still",
-        "description": "No motion: links are coloured, hover adds a 1px underline.",
-        "duration": "0ms",
-        "easing": "linear",
-        "reduced": "Nothing to change."
+      "density": {
+        "t": 0.792,
+        "baseSize": 15,
+        "lineHeight": 1.41,
+        "unit": 5,
+        "sectionGap": 60,
+        "maxWidth": 1370
+      },
+      "layout": {
+        "columns": 9,
+        "gutter": 5,
+        "span": 8,
+        "start": 2,
+        "firstScreen": 99,
+        "sections": 7,
+        "separator": {
+          "id": "space",
+          "text": "space only: the section gap, no lines or fills"
+        }
+      },
+      "anchor": {
+        "subject": {
+          "id": "motif",
+          "text": "the motif drawn at full scale"
+        },
+        "size": 98,
+        "x": 0.87,
+        "rotation": -8
       },
       "motif": {
-        "id": "numbered-captions",
-        "name": "Numbered captions",
-        "description": "Run-in bold “Figure 3.” / “Table 2.” labels with smaller caption text; every float is referenced from the body."
+        "shape": {
+          "id": "crosses",
+          "text": "small crosses (+)"
+        },
+        "size": 15,
+        "placement": {
+          "id": "edges",
+          "text": "along the page edges"
+        },
+        "angle": 126
       },
       "surface": {
-        "id": "pdf-page",
-        "name": "PDF page",
-        "description": "A white page on a grey reader background with a hairline edge, like a PDF at 100% zoom.",
-        "css": "body { background: var(--panel); } main { background: var(--paper); max-width: 816px; margin: 32px auto; padding: 96px 72px; outline: 1px solid var(--rule); }"
+        "radius": 8,
+        "border": 0,
+        "borderStyle": "dotted",
+        "shadow": 6,
+        "texture": {
+          "id": "none",
+          "text": "flat colour, no texture"
+        },
+        "textureOpacity": 6
+      },
+      "motion": {
+        "still": false,
+        "property": {
+          "id": "opacity",
+          "text": "opacity"
+        },
+        "duration": 390,
+        "easing": "cubic-bezier(0.77, 0.2, 0.37, 1)"
+      },
+      "voice": {
+        "person": {
+          "id": "you",
+          "text": "second person (\"you\")"
+        },
+        "headline": {
+          "id": "label",
+          "text": "a label: a noun phrase, no verb"
+        },
+        "sentenceWords": 5,
+        "register": 0.33
       },
       "twist": {
-        "id": "time-as-structure",
-        "name": {
-          "zh": "时间为骨",
-          "en": "Time as structure"
+        "target": {
+          "id": "footer",
+          "text": "the footer"
         },
-        "description": "用真实的时间/日期（营业时间、出炉时刻、日程）作为页面的主结构轴。"
+        "operation": {
+          "id": "undersize",
+          "text": "set far smaller than expected"
+        },
+        "amount": 22,
+        "text": "Set the footer at 0.34× the size it would normally get."
       },
       "bans": [
         "generic-sans",
@@ -1701,161 +2023,286 @@
         "placeholder-content",
         "template-sections"
       ],
-      "tokensCss": "/* hash-design 8fcd60e5 · academic-paper · preprint-white */\n:root {\n  --paper: #fdfdfb;\n  --ink: #111111;\n  --muted: #4a4a4a;\n  --accent: #8c1515;\n  --on-accent: #ffffff;\n  --accent2: #1d5e3a;\n  --on-accent2: #ffffff;\n  --rule: #222222;\n  --panel: #f2f1ec;\n\n  --font-display: \"Crimson Pro\", Palatino, \"Book Antiqua\", serif;\n  --font-body: \"Crimson Pro\", Palatino, \"Book Antiqua\", serif;\n  --font-mono: ui-monospace, \"SFMono-Regular\", Menlo, Consolas, monospace;\n\n  --step-n2: 0.68rem; /* 10.9px */\n  --step-n1: 0.85rem; /* 13.6px */\n  --step-0: 1.063rem; /* 17px */\n  --step-1: 1.328rem; /* 21.3px */\n  --step-2: 1.66rem; /* 26.6px */\n  --step-3: 2.075rem; /* 33.2px */\n  --step-4: 2.594rem; /* 41.5px */\n  --step-5: 3.242rem; /* 51.9px */\n  --step-6: 4.053rem; /* 64.8px */\n  --step-7: 5.066rem; /* 81.1px */\n  --leading: 1.55;\n\n  --space-1: 8px;\n  --space-2: 16px;\n  --space-3: 24px;\n  --space-4: 32px;\n  --space-5: 40px;\n  --space-6: 48px;\n  --space-7: 56px;\n  --space-8: 64px;\n  --section-gap: 112px;\n  --max-width: 1200px;\n\n  --motion-duration: 0ms;\n  --motion-easing: linear;\n}\n\nhtml { font-size: 106.3%; }\nbody { background: var(--paper); color: var(--ink); font-family: var(--font-body); line-height: var(--leading); }\n@media (prefers-reduced-motion: reduce) {\n  *, *::before, *::after { animation: none !important; transition: none !important; }\n}",
+      "tokensCss": "/* hash-design hash-design/v2 · 6f5edb67 */\n:root {\n  --paper: #ebf8f0;\n  --ink: #2b3d32;\n  --muted: #647169;\n  --accent: #009c5d;\n  --on-accent: #000000;\n  --accent2: #009d9a;\n  --on-accent2: #000000;\n  --rule: #afc3b6;\n  --panel: #d8ebdf;\n\n  --font-display: \"Cormorant SC\", Garamond, Georgia, serif;\n  --font-body: Overpass, Arial, sans-serif;\n  --font-mono: \"Overpass Mono\", \"Courier New\", monospace;\n  --display-weight: 600;\n  --display-tracking: 0.191em;\n\n  --step-n2: 0.549rem; /* 8.8px */\n  --step-n1: 0.717rem; /* 11.5px */\n  --step-0: 0.938rem; /* 15px */\n  --step-1: 1.225rem; /* 19.6px */\n  --step-2: 1.601rem; /* 25.6px */\n  --step-3: 2.093rem; /* 33.5px */\n  --step-4: 2.736rem; /* 43.8px */\n  --step-5: 3.576rem; /* 57.2px */\n  --step-6: 4.673rem; /* 74.8px */\n  --step-7: 6.108rem; /* 97.7px */\n  --leading: 1.41;\n\n  --space-1: 5px;\n  --space-2: 10px;\n  --space-3: 15px;\n  --space-4: 20px;\n  --space-5: 25px;\n  --space-6: 30px;\n  --space-7: 35px;\n  --space-8: 40px;\n  --section-gap: 60px;\n  --max-width: 1370px;\n  --columns: 9;\n  --gutter: 5px;\n\n  --radius: 8px;\n  --border: 0px dotted var(--rule);\n  --shadow: 6px 6px 0 var(--ink);\n\n  --motion-duration: 390ms;\n  --motion-easing: cubic-bezier(0.77, 0.2, 0.37, 1);\n}\n\nhtml { font-size: 93.8%; }\nbody { background: var(--paper); color: var(--ink); font-family: var(--font-body); line-height: var(--leading); }\n@media (prefers-reduced-motion: reduce) {\n  *, *::before, *::after { animation: none !important; transition: none !important; }\n}",
       "trace": [
         {
-          "dimension": "branch",
+          "dimension": "hue",
           "bytes": [
             0,
             1
           ],
-          "hex": "8f cd",
-          "rule": "0x8fcd = 36813; 36813 mod 40 = 13; collision → +2 = 15",
-          "poolSize": 40,
-          "index": 15,
-          "result": "academic-paper",
-          "note": "primary branch (or its family) already used in this roll; walked forward 2 step(s)"
+          "hex": "6f 5e",
+          "rule": "0x6f5e = 28510; 28510/65536 × 360",
+          "result": "156.61°"
         },
         {
-          "dimension": "voice",
+          "dimension": "polarity · paper lightness",
           "bytes": [
             2
           ],
-          "hex": "60",
-          "rule": "0x60 = 96; 96 mod 14 = 12",
-          "poolSize": 14,
-          "index": 12,
-          "result": "logbook"
+          "hex": "db",
+          "rule": "219 ≥ 77 → light; L = 0.90 + 142/178 × 0.085",
+          "result": "light, L 0.968"
         },
         {
-          "dimension": "layout",
+          "dimension": "paper chroma",
           "bytes": [
             3
           ],
-          "hex": "e5",
-          "rule": "0xe5 = 229; 229 mod 3 = 1",
-          "poolSize": 3,
-          "index": 1,
-          "result": "tufte-handout"
+          "hex": "67",
+          "rule": "103/255 × 0.045",
+          "result": "0.018"
         },
         {
-          "dimension": "type",
+          "dimension": "accent chroma",
           "bytes": [
             4
           ],
-          "hex": "d9",
-          "rule": "0xd9 = 217; 217 mod 3 = 1",
-          "poolSize": 3,
-          "index": 1,
-          "result": "tufte-crimson"
+          "hex": "85",
+          "rule": "0.07 + 133/255 × 0.16",
+          "result": "0.153"
         },
         {
-          "dimension": "palette",
+          "dimension": "accent2 hue offset",
           "bytes": [
             5
           ],
-          "hex": "87",
-          "rule": "0x87 = 135; 135 mod 3 = 0",
-          "poolSize": 3,
-          "index": 0,
-          "result": "preprint-white"
+          "hex": "05",
+          "rule": "30 + 5/255 × 300",
+          "result": "+35.88°"
+        },
+        {
+          "dimension": "display face",
+          "bytes": [
+            6
+          ],
+          "hex": "79",
+          "rule": "121 mod 98 = 23",
+          "result": "Cormorant SC"
+        },
+        {
+          "dimension": "body face",
+          "bytes": [
+            7
+          ],
+          "hex": "2a",
+          "rule": "42 mod 62 = 42",
+          "result": "Overpass"
+        },
+        {
+          "dimension": "display case · weight",
+          "bytes": [
+            8
+          ],
+          "hex": "5d",
+          "rule": "93 mod 4 = 1; ⌊93/4⌋ mod 2",
+          "result": "upper, 600"
+        },
+        {
+          "dimension": "display tracking",
+          "bytes": [
+            9
+          ],
+          "hex": "f5",
+          "rule": "−0.04 + 245/255 × 0.24",
+          "result": "0.191em"
+        },
+        {
+          "dimension": "type scale ratio",
+          "bytes": [
+            10
+          ],
+          "hex": "6f",
+          "rule": "1.067 + 111/255 × 0.551",
+          "result": "1.307"
         },
         {
           "dimension": "density",
           "bytes": [
-            6
-          ],
-          "hex": "90",
-          "rule": "0x90 = 144; 144 mod 2 = 0",
-          "poolSize": 2,
-          "index": 0,
-          "result": "regular"
-        },
-        {
-          "dimension": "motion",
-          "bytes": [
-            7
-          ],
-          "hex": "da",
-          "rule": "0xda = 218; 218 mod 3 = 2",
-          "poolSize": 3,
-          "index": 2,
-          "result": "still"
-        },
-        {
-          "dimension": "motif",
-          "bytes": [
-            8
-          ],
-          "hex": "96",
-          "rule": "0x96 = 150; 150 mod 3 = 0",
-          "poolSize": 3,
-          "index": 0,
-          "result": "numbered-captions"
-        },
-        {
-          "dimension": "anchor",
-          "bytes": [
-            9
-          ],
-          "hex": "42",
-          "rule": "0x42 = 66; 66 mod 3 = 0",
-          "poolSize": 3,
-          "index": 0,
-          "result": "title-abstract"
-        },
-        {
-          "dimension": "scale",
-          "bytes": [
-            10
-          ],
-          "hex": "5f",
-          "rule": "0x5f = 95; 95 mod 3 = 2",
-          "poolSize": 3,
-          "index": 2,
-          "result": "major-third"
-        },
-        {
-          "dimension": "surface",
-          "bytes": [
             11
           ],
-          "hex": "fc",
-          "rule": "0xfc = 252; 252 mod 3 = 0",
-          "poolSize": 3,
-          "index": 0,
-          "result": "pdf-page"
+          "hex": "ca",
+          "rule": "t = 202/255",
+          "result": "t 0.792: base 15px, line-height 1.41, unit 5px"
         },
         {
-          "dimension": "twist",
+          "dimension": "grid columns · gutter",
           "bytes": [
             12
           ],
-          "hex": "1d",
-          "rule": "0x1d = 29; 29 mod 16 = 13",
-          "poolSize": 16,
-          "index": 13,
-          "result": "time-as-structure"
+          "hex": "f6",
+          "rule": "3 + 246 mod 10; unit × (1 + ⌊246/10⌋ mod 4)",
+          "result": "9 columns, 5px gutter"
+        },
+        {
+          "dimension": "text block span · start",
+          "bytes": [
+            13
+          ],
+          "hex": "fc",
+          "rule": "span 12/15, start 15/15",
+          "result": "columns 2–9 of 9"
+        },
+        {
+          "dimension": "first-screen height",
+          "bytes": [
+            14
+          ],
+          "hex": "fb",
+          "rule": "45 + 251/255 × 55",
+          "result": "99%"
+        },
+        {
+          "dimension": "sections · separator",
+          "bytes": [
+            15
+          ],
+          "hex": "16",
+          "rule": "3 + 22 mod 6; ⌊22/6⌋ mod 5",
+          "result": "7 sections, space"
+        },
+        {
+          "dimension": "anchor subject · size",
+          "bytes": [
+            16
+          ],
+          "hex": "f7",
+          "rule": "247 mod 8; 25 + ⌊247/8⌋/31 × 75",
+          "result": "motif, 98%"
+        },
+        {
+          "dimension": "anchor position · rotation",
+          "bytes": [
+            17
+          ],
+          "hex": "0d",
+          "rule": "x 13/15; ((0) − 7.5)/7.5 × 8",
+          "result": "x 0.87, -8°"
+        },
+        {
+          "dimension": "motif shape · size",
+          "bytes": [
+            18
+          ],
+          "hex": "7c",
+          "rule": "124 mod 12; unit × (1 + ⌊124/12⌋ mod 8)",
+          "result": "crosses, 15px"
+        },
+        {
+          "dimension": "motif placement · angle",
+          "bytes": [
+            19
+          ],
+          "hex": "b0",
+          "rule": "176 mod 4; ⌊176/4⌋ × 180/63",
+          "result": "edges, 126°"
+        },
+        {
+          "dimension": "radius · border",
+          "bytes": [
+            20
+          ],
+          "hex": "66",
+          "rule": "RADII[102 mod 8]; ⌊102/8⌋ mod 4; ⌊102/32⌋ mod 4",
+          "result": "8px radius, 0px dotted border"
+        },
+        {
+          "dimension": "shadow · texture",
+          "bytes": [
+            21
+          ],
+          "hex": "53",
+          "rule": "83 & 3; (83 >> 2) & 3; 3 + 5 × 0.6",
+          "result": "6px hard shadow, none"
+        },
+        {
+          "dimension": "motion property · duration",
+          "bytes": [
+            22
+          ],
+          "hex": "29",
+          "rule": "⌊41/64⌋; (41 mod 64)/63 × 600",
+          "result": "opacity, 390ms"
+        },
+        {
+          "dimension": "easing",
+          "bytes": [
+            23
+          ],
+          "hex": "39",
+          "rule": "57 ≥ 32 → cubic-bezier from bits",
+          "result": "cubic-bezier(0.77, 0.2, 0.37, 1)"
+        },
+        {
+          "dimension": "voice person · headline form",
+          "bytes": [
+            24
+          ],
+          "hex": "b2",
+          "rule": "178 mod 4; ⌊178/4⌋ mod 6",
+          "result": "you, label"
+        },
+        {
+          "dimension": "sentence length · register",
+          "bytes": [
+            25
+          ],
+          "hex": "52",
+          "rule": "3 + (82 & 15); (82 >> 4)/15",
+          "result": "5 words, register 0.33"
+        },
+        {
+          "dimension": "twist target",
+          "bytes": [
+            26
+          ],
+          "hex": "c0",
+          "rule": "192 mod 9",
+          "result": "footer"
+        },
+        {
+          "dimension": "twist operation · amount",
+          "bytes": [
+            27
+          ],
+          "hex": "df",
+          "rule": "223 mod 10; ⌊223/10⌋",
+          "result": "undersize, 22"
+        },
+        {
+          "dimension": "CJK display face",
+          "bytes": [
+            29
+          ],
+          "hex": "36",
+          "rule": "54 mod 14",
+          "result": "ZCOOL XiaoWei",
+          "note": "used on Chinese pages"
+        },
+        {
+          "dimension": "mono face",
+          "bytes": [
+            30
+          ],
+          "hex": "a5",
+          "rule": "165 mod 8",
+          "result": "Overpass Mono"
         }
       ]
     },
     {
       "number": 5,
-      "slug": "05-lab-notebook",
-      "ref": "58912b84bd8a2d3337b9da9ba7c435c9a5ac2b75dcd08a1c7b474a72b0c36302+5",
-      "hash": "58912b84bd8a2d3337b9da9ba7c435c9a5ac2b75dcd08a1c7b474a72b0c36302",
-      "short": "58912b84",
-      "probe": 5,
-      "algorithm": "hash-design/v1",
-      "library": "c7b166fe6ec0",
+      "slug": "05-08b46918",
+      "ref": "08b4691844e6d5dfec8f67699f5a2ee99d6d45ab4b948f79e17097a21d3ecdab",
+      "hash": "08b4691844e6d5dfec8f67699f5a2ee99d6d45ab4b948f79e17097a21d3ecdab",
+      "short": "08b46918",
+      "algorithm": "hash-design/v2",
+      "library": "bd20321c36ab",
       "constraints": {
         "lightOnly": false,
         "darkOnly": false,
         "reducedMotion": false,
-        "brandColors": [],
-        "families": [],
-        "include": [],
-        "exclude": []
+        "brandColors": []
       },
       "content": {
         "subject": "Sluice — self-hosted webhook inbox",
@@ -1879,263 +2326,254 @@
         ],
         "language": "en"
       },
-      "branch": {
-        "id": "lab-notebook",
-        "name": {
-          "zh": "方格实验本",
-          "en": "Lab notebook"
-        },
-        "family": "craft",
-        "concept": {
-          "zh": "科研实验记录本和工程方格计算纸：方格底，手写结论旁边是等宽字的注释，有草图、测量数据表，每条记录写日期并签名，写错了就划一道线而不是擦掉。页面是一份正在进行、可以追溯的工作记录。",
-          "en": "The research lab notebook and the engineer’s computation pad: grid paper, handwritten conclusions beside monospace annotations, sketches, measurement tables, every entry dated and signed, mistakes struck through with a single line instead of erased. The page is a running, traceable record of work."
-        },
-        "references": [
-          "Michael Faraday’s laboratory notebooks (Royal Institution, 1820s–60s)",
-          "National Brand green computation notebooks with 4×4 quad ruling",
-          "Engineering computation pads on green eye-ease paper (Ampad, Roaring Spring)",
-          "Bell Labs engineering notebooks with dated, witnessed pages",
-          "Leonardo da Vinci, Codex Arundel — mirror-written notes beside sketches"
-        ],
-        "tokens": {
-          "grid": "20px square grid (5mm) across the page, major line every 100px; every block’s width and height are multiples of 20px; 80px left margin (4 squares) with a 1px red margin line; baselines sit on grid lines (line-height 20px or 40px).",
-          "radius": "0. Circles around results are hand-drawn SVG ellipses with uneven strokes, not CSS radii.",
-          "border": "Grid 1px var(--rule), major lines slightly darker; boxes drawn as 1.5px ink “hand” strokes (SVG paths with ±1px jitter) or 1px ruled tables on the grid; answer boxes double-outlined (3px double ink).",
-          "shadow": "none. Taped-in printouts get translucent tape strips at the corners, not shadows."
-        },
-        "must": [
-          "A visible grid underlies the page and blocks align to it.",
-          "Every entry or section carries a date and an entry or page number.",
-          "Handwriting is used for titles and remarks, mono for data — both appear on the first screen.",
-          "At least one table of values with units in its header."
-        ],
-        "mustNot": [
-          "No erasing: corrections are struck through, never silently replaced.",
-          "Handwriting faces never set paragraphs longer than two lines.",
-          "No stock science imagery: no beakers, DNA helices or glowing molecules."
-        ]
+      "label": "light · 12° · Bodoni Moda / Literata · 12 col",
+      "palette": {
+        "polarity": "light",
+        "hue": 12.24,
+        "paperL": 0.913,
+        "paperC": 0.004,
+        "accentC": 0.113,
+        "accent2Offset": 300.59,
+        "colors": {
+          "paper": "#e5e1e1",
+          "ink": "#403536",
+          "muted": "#6e5f60",
+          "accent": "#b9626e",
+          "accent2": "#9871af",
+          "rule": "#b4a8a9",
+          "panel": "#dbd0d1"
+        }
       },
-      "voice": {
-        "id": "field-notes",
-        "name": {
-          "zh": "田野笔记",
-          "en": "Field notes"
-        },
-        "description": "观察者的记录：带日期、时间、度量和第一手细节，克制、不评价。",
-        "devices": [
-          "日期/时间戳",
-          "度量单位",
-          "\"观察到…\"式陈述",
-          "括号补充"
+      "contrast": {
+        "lines": [
+          {
+            "pair": "ink on paper",
+            "ratio": 9.09,
+            "verdict": "AAA — any text"
+          },
+          {
+            "pair": "muted on paper",
+            "ratio": 4.67,
+            "verdict": "AA — body text OK"
+          },
+          {
+            "pair": "ink on panel",
+            "ratio": 7.84,
+            "verdict": "AAA — any text"
+          },
+          {
+            "pair": "accent on paper",
+            "ratio": 3.22,
+            "verdict": "large text / UI marks only (≥24px or bold ≥19px)"
+          },
+          {
+            "pair": "accent2 on paper",
+            "ratio": 3.05,
+            "verdict": "large text / UI marks only (≥24px or bold ≥19px)"
+          },
+          {
+            "pair": "#000000 on accent",
+            "ratio": 5.04,
+            "verdict": "AA — body text OK"
+          },
+          {
+            "pair": "#000000 on accent2",
+            "ratio": 5.32,
+            "verdict": "AA — body text OK"
+          }
         ],
-        "example": "06:40 — 窗内温度 31°C，面团第二次发酵完成（目测体积 ×2）。"
-      },
-      "layout": {
-        "id": "dated-entries",
-        "name": "Dated entries",
-        "description": "The page is a sequence of notebook entries, each opening with a date, a hand-underlined title and an entry number; sections are entries.",
-        "grid": "20px grid; content from x = 80px to max 880px; dates in the 0–80px margin; entries separated by a full-width hand-drawn line.",
-        "structure": [
-          "Page header in mono: notebook title, “Book 3 · p. 47”, owner",
-          "Entry 1 (dated): aim written by hand, then mono notes",
-          "Entry 2: measurement table ruled to the grid, units in the header",
-          "Entry 3: an SVG line sketch with labelled arrows",
-          "Signature and “Witnessed by / date” block at the page foot"
-        ]
-      },
-      "anchor": {
-        "id": "annotated-sketch",
-        "name": "Annotated sketch",
-        "description": "A large single-weight line sketch of the subject with 4–6 handwritten labels and arrows fills the first screen."
+        "onAccent": "#000000",
+        "onAccent2": "#000000"
       },
       "type": {
-        "id": "ballpoint-plex",
-        "name": "Caveat + IBM Plex Mono",
         "display": {
-          "family": "Caveat",
+          "family": "Bodoni Moda",
           "weights": [
+            400,
             500,
             700
           ],
-          "fallback": "\"Segoe Print\", \"Bradley Hand\", cursive",
+          "italic": true,
+          "fallback": "Didot, \"Bodoni 72\", serif",
           "source": "google"
         },
         "body": {
-          "family": "IBM Plex Mono",
+          "family": "Literata",
           "weights": [
             400,
             600
           ],
           "italic": true,
+          "fallback": "Georgia, serif",
+          "source": "google"
+        },
+        "mono": {
+          "family": "Overpass Mono",
+          "weights": [
+            400,
+            600
+          ],
           "fallback": "\"Courier New\", monospace",
           "source": "google"
         },
         "cjk": {
-          "display": "Long Cang",
-          "body": "Noto Sans SC"
+          "display": "Noto Sans SC",
+          "body": "Noto Serif SC"
         },
-        "notes": "Caveat 500/700 for entry titles, conclusions and margin remarks at 28–44px on a 40px line so it sits on the grid; remarks may rotate −1° to 1°. IBM Plex Mono 400 at 14px/20px for data, notes and tables (one line per grid row); units always with a space (“12.5 mL”)."
+        "case": {
+          "id": "as-written",
+          "text": "as written (sentence case)"
+        },
+        "weight": 700,
+        "tracking": 0.095
       },
       "fonts": {
         "stacks": {
-          "display": "Caveat, \"Segoe Print\", \"Bradley Hand\", cursive",
-          "body": "\"IBM Plex Mono\", \"Courier New\", monospace",
-          "mono": "ui-monospace, \"SFMono-Regular\", Menlo, Consolas, monospace"
+          "display": "\"Bodoni Moda\", Didot, \"Bodoni 72\", serif",
+          "body": "Literata, Georgia, serif",
+          "mono": "\"Overpass Mono\", \"Courier New\", monospace"
         },
-        "googleFontsUrl": "https://fonts.googleapis.com/css2?family=Caveat:wght@500;700&family=IBM+Plex+Mono:ital,wght@0,400;0,600;1,400;1,600&display=swap"
-      },
-      "palette": {
-        "id": "green-computation",
-        "name": "Green computation pad",
-        "colors": {
-          "paper": "#eaf2df",
-          "ink": "#1a2419",
-          "muted": "#435343",
-          "accent": "#c2412d",
-          "accent2": "#2b5d8a",
-          "rule": "#a9c9a4",
-          "panel": "#dce9cf"
-        },
-        "usage": "Eye-ease green paper with green grid (rule); graphite ink text; red (accent) for corrections, the margin line and answer boxes; blue ballpoint (accent2) for handwritten remarks and arrows; panel for header strips and taped-in printouts."
-      },
-      "paletteOverride": null,
-      "contrast": {
-        "lines": [
-          {
-            "pair": "ink on paper",
-            "ratio": 13.94,
-            "verdict": "AAA — any text"
-          },
-          {
-            "pair": "muted on paper",
-            "ratio": 7.14,
-            "verdict": "AAA — any text"
-          },
-          {
-            "pair": "ink on panel",
-            "ratio": 12.67,
-            "verdict": "AAA — any text"
-          },
-          {
-            "pair": "accent on paper",
-            "ratio": 4.47,
-            "verdict": "large text / UI marks only (≥24px or bold ≥19px)"
-          },
-          {
-            "pair": "accent2 on paper",
-            "ratio": 6.02,
-            "verdict": "AA — body text OK"
-          },
-          {
-            "pair": "#ffffff on accent",
-            "ratio": 5.14,
-            "verdict": "AA — body text OK"
-          },
-          {
-            "pair": "#ffffff on accent2",
-            "ratio": 6.92,
-            "verdict": "AA — body text OK"
-          }
-        ],
-        "onAccent": "#ffffff",
-        "onAccent2": "#ffffff"
-      },
-      "density": {
-        "id": "regular",
-        "name": {
-          "zh": "常规",
-          "en": "Regular"
-        },
-        "baseSize": 17,
-        "lineHeight": 1.55,
-        "unit": 8,
-        "sectionGap": 112,
-        "maxWidth": 1200,
-        "description": "常规阅读节奏；区块之间用明确的分隔（线、色块或编号），不靠空白硬撑。"
+        "googleFontsUrl": "https://fonts.googleapis.com/css2?family=Bodoni+Moda:ital,wght@0,400;0,500;0,700;1,400;1,500;1,700&family=Literata:ital,wght@0,400;0,600;1,400;1,600&family=Overpass+Mono:wght@400;600&display=swap"
       },
       "scale": {
-        "id": "major-third",
-        "name": "Major third 1.25",
-        "ratio": 1.25,
+        "ratio": 1.29,
         "steps": [
           {
             "step": -2,
-            "px": 10.9,
-            "rem": 0.68
+            "px": 9.9,
+            "rem": 0.62
           },
           {
             "step": -1,
-            "px": 13.6,
-            "rem": 0.85
+            "px": 12.8,
+            "rem": 0.799
           },
           {
             "step": 0,
-            "px": 17,
-            "rem": 1.063
+            "px": 16.5,
+            "rem": 1.031
           },
           {
             "step": 1,
             "px": 21.3,
-            "rem": 1.328
+            "rem": 1.33
           },
           {
             "step": 2,
-            "px": 26.6,
-            "rem": 1.66
+            "px": 27.5,
+            "rem": 1.716
           },
           {
             "step": 3,
-            "px": 33.2,
-            "rem": 2.075
+            "px": 35.4,
+            "rem": 2.214
           },
           {
             "step": 4,
-            "px": 41.5,
-            "rem": 2.594
+            "px": 45.7,
+            "rem": 2.856
           },
           {
             "step": 5,
-            "px": 51.9,
-            "rem": 3.242
+            "px": 58.9,
+            "rem": 3.684
           },
           {
             "step": 6,
-            "px": 64.8,
-            "rem": 4.053
+            "px": 76,
+            "rem": 4.752
           },
           {
             "step": 7,
-            "px": 81.1,
-            "rem": 5.066
+            "px": 98.1,
+            "rem": 6.13
           }
         ]
       },
-      "motion": {
-        "id": "strike-correction",
-        "name": "Strike-through correction",
-        "description": "A value that changes (updated hours, a new price) keeps the old value, a line draws through it left → right, then the new value is written beside it.",
-        "duration": "300ms",
-        "easing": "cubic-bezier(.5,0,.5,1)",
-        "reduced": "Show the struck-through old value and the new value without animation."
+      "density": {
+        "t": 0.412,
+        "baseSize": 16.5,
+        "lineHeight": 1.53,
+        "unit": 8,
+        "sectionGap": 112,
+        "maxWidth": 1230
+      },
+      "layout": {
+        "columns": 12,
+        "gutter": 32,
+        "span": 9,
+        "start": 2,
+        "firstScreen": 55,
+        "sections": 8,
+        "separator": {
+          "id": "space",
+          "text": "space only: the section gap, no lines or fills"
+        }
+      },
+      "anchor": {
+        "subject": {
+          "id": "fact-list",
+          "text": "the facts as one list, nothing else"
+        },
+        "size": 71,
+        "x": 0.87,
+        "rotation": -1.5
       },
       "motif": {
-        "id": "struck-corrections",
-        "name": "Struck-through corrections",
-        "description": "Errors left visible under a single line, with the correction and initials beside — the honesty of the record."
+        "shape": {
+          "id": "half-circles",
+          "text": "half circles"
+        },
+        "size": 48,
+        "placement": {
+          "id": "markers",
+          "text": "as list and heading markers"
+        },
+        "angle": 120
       },
       "surface": {
-        "id": "taped-printout",
-        "name": "Taped-in printout",
-        "description": "White printout rectangles taped onto the page with translucent tape strips at two corners, rotated about 1°.",
-        "css": ".taped { background: #fffefa; position: relative; transform: rotate(-.8deg); } .taped::before { content: \"\"; position: absolute; top: -10px; left: 24px; width: 80px; height: 22px; background: rgba(240,232,200,.65); transform: rotate(-4deg); }"
+        "radius": 0,
+        "border": 1,
+        "borderStyle": "dashed",
+        "shadow": 0,
+        "texture": {
+          "id": "grain",
+          "text": "fine noise grain over the paper"
+        },
+        "textureOpacity": 8.4
+      },
+      "motion": {
+        "still": false,
+        "property": {
+          "id": "clip-path",
+          "text": "a wipe (clip-path)"
+        },
+        "duration": 140,
+        "easing": "cubic-bezier(0.77, 0.6, 0.37, 1)"
+      },
+      "voice": {
+        "person": {
+          "id": "we",
+          "text": "first person plural (\"we\")"
+        },
+        "headline": {
+          "id": "label",
+          "text": "a label: a noun phrase, no verb"
+        },
+        "sentenceWords": 3,
+        "register": 0.47
       },
       "twist": {
-        "id": "numbered-sections",
-        "name": {
-          "zh": "分节编号",
-          "en": "Numbered sections"
+        "target": {
+          "id": "links",
+          "text": "the links"
         },
-        "description": "每个区块有显眼的编号（§1、No.2、03…），编号本身是设计元素。"
+        "operation": {
+          "id": "oversize",
+          "text": "set far larger than expected"
+        },
+        "amount": 16,
+        "text": "Set the links at 3.6× the size it would normally get."
       },
       "bans": [
         "generic-sans",
@@ -2153,141 +2591,270 @@
         "placeholder-content",
         "template-sections"
       ],
-      "tokensCss": "/* hash-design 58912b84 · lab-notebook · green-computation */\n:root {\n  --paper: #eaf2df;\n  --ink: #1a2419;\n  --muted: #435343;\n  --accent: #c2412d;\n  --on-accent: #ffffff;\n  --accent2: #2b5d8a;\n  --on-accent2: #ffffff;\n  --rule: #a9c9a4;\n  --panel: #dce9cf;\n\n  --font-display: Caveat, \"Segoe Print\", \"Bradley Hand\", cursive;\n  --font-body: \"IBM Plex Mono\", \"Courier New\", monospace;\n  --font-mono: ui-monospace, \"SFMono-Regular\", Menlo, Consolas, monospace;\n\n  --step-n2: 0.68rem; /* 10.9px */\n  --step-n1: 0.85rem; /* 13.6px */\n  --step-0: 1.063rem; /* 17px */\n  --step-1: 1.328rem; /* 21.3px */\n  --step-2: 1.66rem; /* 26.6px */\n  --step-3: 2.075rem; /* 33.2px */\n  --step-4: 2.594rem; /* 41.5px */\n  --step-5: 3.242rem; /* 51.9px */\n  --step-6: 4.053rem; /* 64.8px */\n  --step-7: 5.066rem; /* 81.1px */\n  --leading: 1.55;\n\n  --space-1: 8px;\n  --space-2: 16px;\n  --space-3: 24px;\n  --space-4: 32px;\n  --space-5: 40px;\n  --space-6: 48px;\n  --space-7: 56px;\n  --space-8: 64px;\n  --section-gap: 112px;\n  --max-width: 1200px;\n\n  --motion-duration: 300ms;\n  --motion-easing: cubic-bezier(.5,0,.5,1);\n}\n\nhtml { font-size: 106.3%; }\nbody { background: var(--paper); color: var(--ink); font-family: var(--font-body); line-height: var(--leading); }\n@media (prefers-reduced-motion: reduce) {\n  *, *::before, *::after { animation: none !important; transition: none !important; }\n}",
+      "tokensCss": "/* hash-design hash-design/v2 · 08b46918 */\n:root {\n  --paper: #e5e1e1;\n  --ink: #403536;\n  --muted: #6e5f60;\n  --accent: #b9626e;\n  --on-accent: #000000;\n  --accent2: #9871af;\n  --on-accent2: #000000;\n  --rule: #b4a8a9;\n  --panel: #dbd0d1;\n\n  --font-display: \"Bodoni Moda\", Didot, \"Bodoni 72\", serif;\n  --font-body: Literata, Georgia, serif;\n  --font-mono: \"Overpass Mono\", \"Courier New\", monospace;\n  --display-weight: 700;\n  --display-tracking: 0.095em;\n\n  --step-n2: 0.62rem; /* 9.9px */\n  --step-n1: 0.799rem; /* 12.8px */\n  --step-0: 1.031rem; /* 16.5px */\n  --step-1: 1.33rem; /* 21.3px */\n  --step-2: 1.716rem; /* 27.5px */\n  --step-3: 2.214rem; /* 35.4px */\n  --step-4: 2.856rem; /* 45.7px */\n  --step-5: 3.684rem; /* 58.9px */\n  --step-6: 4.752rem; /* 76px */\n  --step-7: 6.13rem; /* 98.1px */\n  --leading: 1.53;\n\n  --space-1: 8px;\n  --space-2: 16px;\n  --space-3: 24px;\n  --space-4: 32px;\n  --space-5: 40px;\n  --space-6: 48px;\n  --space-7: 56px;\n  --space-8: 64px;\n  --section-gap: 112px;\n  --max-width: 1230px;\n  --columns: 12;\n  --gutter: 32px;\n\n  --radius: 0px;\n  --border: 1px dashed var(--rule);\n  --shadow: none;\n\n  --motion-duration: 140ms;\n  --motion-easing: cubic-bezier(0.77, 0.6, 0.37, 1);\n}\n\nhtml { font-size: 103.1%; }\nbody { background: var(--paper); color: var(--ink); font-family: var(--font-body); line-height: var(--leading); }\n@media (prefers-reduced-motion: reduce) {\n  *, *::before, *::after { animation: none !important; transition: none !important; }\n}",
       "trace": [
         {
-          "dimension": "branch",
+          "dimension": "hue",
           "bytes": [
             0,
             1
           ],
-          "hex": "58 91",
-          "rule": "0x5891 = 22673; 22673 mod 40 = 33; collision → +5 = 38",
-          "poolSize": 40,
-          "index": 38,
-          "result": "lab-notebook",
-          "note": "primary branch (or its family) already used in this roll; walked forward 5 step(s)"
+          "hex": "08 b4",
+          "rule": "0x08b4 = 2228; 2228/65536 × 360",
+          "result": "12.24°"
         },
         {
-          "dimension": "voice",
+          "dimension": "polarity · paper lightness",
           "bytes": [
             2
           ],
-          "hex": "2b",
-          "rule": "0x2b = 43; 43 mod 14 = 1",
-          "poolSize": 14,
-          "index": 1,
-          "result": "field-notes"
+          "hex": "69",
+          "rule": "105 ≥ 77 → light; L = 0.90 + 28/178 × 0.085",
+          "result": "light, L 0.913"
         },
         {
-          "dimension": "layout",
+          "dimension": "paper chroma",
           "bytes": [
             3
           ],
-          "hex": "84",
-          "rule": "0x84 = 132; 132 mod 3 = 0",
-          "poolSize": 3,
-          "index": 0,
-          "result": "dated-entries"
+          "hex": "18",
+          "rule": "24/255 × 0.045",
+          "result": "0.004"
         },
         {
-          "dimension": "type",
+          "dimension": "accent chroma",
           "bytes": [
             4
           ],
-          "hex": "bd",
-          "rule": "0xbd = 189; 189 mod 3 = 0",
-          "poolSize": 3,
-          "index": 0,
-          "result": "ballpoint-plex"
+          "hex": "44",
+          "rule": "0.07 + 68/255 × 0.16",
+          "result": "0.113"
         },
         {
-          "dimension": "palette",
+          "dimension": "accent2 hue offset",
           "bytes": [
             5
           ],
-          "hex": "8a",
-          "rule": "0x8a = 138; 138 mod 3 = 0",
-          "poolSize": 3,
-          "index": 0,
-          "result": "green-computation"
+          "hex": "e6",
+          "rule": "30 + 230/255 × 300",
+          "result": "+300.59°"
+        },
+        {
+          "dimension": "display face",
+          "bytes": [
+            6
+          ],
+          "hex": "d5",
+          "rule": "213 mod 98 = 17",
+          "result": "Bodoni Moda"
+        },
+        {
+          "dimension": "body face",
+          "bytes": [
+            7
+          ],
+          "hex": "df",
+          "rule": "223 mod 62 = 37",
+          "result": "Literata"
+        },
+        {
+          "dimension": "display case · weight",
+          "bytes": [
+            8
+          ],
+          "hex": "ec",
+          "rule": "236 mod 4 = 0; ⌊236/4⌋ mod 3",
+          "result": "as-written, 700"
+        },
+        {
+          "dimension": "display tracking",
+          "bytes": [
+            9
+          ],
+          "hex": "8f",
+          "rule": "−0.04 + 143/255 × 0.24",
+          "result": "0.095em"
+        },
+        {
+          "dimension": "type scale ratio",
+          "bytes": [
+            10
+          ],
+          "hex": "67",
+          "rule": "1.067 + 103/255 × 0.551",
+          "result": "1.29"
         },
         {
           "dimension": "density",
           "bytes": [
-            6
-          ],
-          "hex": "2d",
-          "rule": "0x2d = 45; 45 mod 2 = 1",
-          "poolSize": 2,
-          "index": 1,
-          "result": "regular"
-        },
-        {
-          "dimension": "motion",
-          "bytes": [
-            7
-          ],
-          "hex": "33",
-          "rule": "0x33 = 51; 51 mod 3 = 0",
-          "poolSize": 3,
-          "index": 0,
-          "result": "strike-correction"
-        },
-        {
-          "dimension": "motif",
-          "bytes": [
-            8
-          ],
-          "hex": "37",
-          "rule": "0x37 = 55; 55 mod 3 = 1",
-          "poolSize": 3,
-          "index": 1,
-          "result": "struck-corrections"
-        },
-        {
-          "dimension": "anchor",
-          "bytes": [
-            9
-          ],
-          "hex": "b9",
-          "rule": "0xb9 = 185; 185 mod 3 = 2",
-          "poolSize": 3,
-          "index": 2,
-          "result": "annotated-sketch"
-        },
-        {
-          "dimension": "scale",
-          "bytes": [
-            10
-          ],
-          "hex": "da",
-          "rule": "0xda = 218; 218 mod 2 = 0",
-          "poolSize": 2,
-          "index": 0,
-          "result": "major-third"
-        },
-        {
-          "dimension": "surface",
-          "bytes": [
             11
           ],
-          "hex": "9b",
-          "rule": "0x9b = 155; 155 mod 3 = 2",
-          "poolSize": 3,
-          "index": 2,
-          "result": "taped-printout"
+          "hex": "69",
+          "rule": "t = 105/255",
+          "result": "t 0.412: base 16.5px, line-height 1.53, unit 8px"
         },
         {
-          "dimension": "twist",
+          "dimension": "grid columns · gutter",
           "bytes": [
             12
           ],
-          "hex": "a7",
-          "rule": "0xa7 = 167; 167 mod 16 = 7",
-          "poolSize": 16,
-          "index": 7,
-          "result": "numbered-sections"
+          "hex": "9f",
+          "rule": "3 + 159 mod 10; unit × (1 + ⌊159/10⌋ mod 4)",
+          "result": "12 columns, 32px gutter"
+        },
+        {
+          "dimension": "text block span · start",
+          "bytes": [
+            13
+          ],
+          "hex": "5a",
+          "rule": "span 10/15, start 5/15",
+          "result": "columns 2–10 of 12"
+        },
+        {
+          "dimension": "first-screen height",
+          "bytes": [
+            14
+          ],
+          "hex": "2e",
+          "rule": "45 + 46/255 × 55",
+          "result": "55%"
+        },
+        {
+          "dimension": "sections · separator",
+          "bytes": [
+            15
+          ],
+          "hex": "e9",
+          "rule": "3 + 233 mod 6; ⌊233/6⌋ mod 5",
+          "result": "8 sections, space"
+        },
+        {
+          "dimension": "anchor subject · size",
+          "bytes": [
+            16
+          ],
+          "hex": "9d",
+          "rule": "157 mod 8; 25 + ⌊157/8⌋/31 × 75",
+          "result": "fact-list, 71%"
+        },
+        {
+          "dimension": "anchor position · rotation",
+          "bytes": [
+            17
+          ],
+          "hex": "6d",
+          "rule": "x 13/15; ((6) − 7.5)/7.5 × 8",
+          "result": "x 0.87, -1.5°"
+        },
+        {
+          "dimension": "motif shape · size",
+          "bytes": [
+            18
+          ],
+          "hex": "45",
+          "rule": "69 mod 12; unit × (1 + ⌊69/12⌋ mod 8)",
+          "result": "half-circles, 48px"
+        },
+        {
+          "dimension": "motif placement · angle",
+          "bytes": [
+            19
+          ],
+          "hex": "ab",
+          "rule": "171 mod 4; ⌊171/4⌋ × 180/63",
+          "result": "markers, 120°"
+        },
+        {
+          "dimension": "radius · border",
+          "bytes": [
+            20
+          ],
+          "hex": "4b",
+          "rule": "RADII[75 mod 8]; ⌊75/8⌋ mod 4; ⌊75/32⌋ mod 4",
+          "result": "0px radius, 1px dashed border"
+        },
+        {
+          "dimension": "shadow · texture",
+          "bytes": [
+            21
+          ],
+          "hex": "94",
+          "rule": "148 & 3; (148 >> 2) & 3; 3 + 9 × 0.6",
+          "result": "no shadow, grain 8.4%"
+        },
+        {
+          "dimension": "motion property · duration",
+          "bytes": [
+            22
+          ],
+          "hex": "8f",
+          "rule": "⌊143/64⌋; (143 mod 64)/63 × 600",
+          "result": "clip-path, 140ms"
+        },
+        {
+          "dimension": "easing",
+          "bytes": [
+            23
+          ],
+          "hex": "79",
+          "rule": "121 ≥ 32 → cubic-bezier from bits",
+          "result": "cubic-bezier(0.77, 0.6, 0.37, 1)"
+        },
+        {
+          "dimension": "voice person · headline form",
+          "bytes": [
+            24
+          ],
+          "hex": "e1",
+          "rule": "225 mod 4; ⌊225/4⌋ mod 6",
+          "result": "we, label"
+        },
+        {
+          "dimension": "sentence length · register",
+          "bytes": [
+            25
+          ],
+          "hex": "70",
+          "rule": "3 + (112 & 15); (112 >> 4)/15",
+          "result": "3 words, register 0.47"
+        },
+        {
+          "dimension": "twist target",
+          "bytes": [
+            26
+          ],
+          "hex": "97",
+          "rule": "151 mod 9",
+          "result": "links"
+        },
+        {
+          "dimension": "twist operation · amount",
+          "bytes": [
+            27
+          ],
+          "hex": "a2",
+          "rule": "162 mod 10; ⌊162/10⌋",
+          "result": "oversize, 16"
+        },
+        {
+          "dimension": "CJK display face",
+          "bytes": [
+            29
+          ],
+          "hex": "3e",
+          "rule": "62 mod 14",
+          "result": "Noto Sans SC",
+          "note": "used on Chinese pages"
+        },
+        {
+          "dimension": "mono face",
+          "bytes": [
+            30
+          ],
+          "hex": "cd",
+          "rule": "205 mod 8",
+          "result": "Overpass Mono"
         }
       ]
     }

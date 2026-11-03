@@ -1,9 +1,7 @@
 #!/usr/bin/env node
 // Renders one showcase plate per example run for the READMEs: the five rolled directions of that roll side by
-// side, in the light style of docs/assets/hero.png, each labelled with its number, branch, branch id, palette and
-// ref from roll.json.
-//
-// The examples are hash-design/v1 records, so their roll.json designs still carry a v1 branch; the labels come from it.
+// side, in the light style of docs/assets/hero.png, each labelled from roll.json with its number, its display and
+// body faces, its palette (paper, ink, accent, accent2), polarity, hue, grid columns and short ref.
 //
 //   node scripts/showcase.mjs [example…]   default: every example under examples/ with a roll.json
 //
@@ -68,7 +66,7 @@ function plate(name) {
   const cards = roll.designs
     .map((d) => {
       const shot = cardShot(dir, d.slug);
-      const ref = `${esc(d.short)}${d.probe ? `<i>+${d.probe}</i>` : ''}`;
+      const ref = esc(d.short);
       const c = d.palette.colors;
       const chips = [c.paper, c.ink, c.accent, c.accent2]
         .map((hex) => `<i style="background:${esc(hex)}"></i>`)
@@ -78,8 +76,8 @@ function plate(name) {
         <span class="ref" data-ref>${ref}</span>
         <div class="page${shot.phone ? ' phone' : ''}"><img src="${shot.src}" alt=""></div>
         <figcaption>
-          <div class="name"><span class="n">${String(d.number).padStart(2, '0')}</span>${esc(d.branch.name.en)}</div>
-          <div class="slug"><span class="chips">${chips}</span>${esc(d.branch.id)}${shot.phone ? '<em>phone view</em>' : ''}</div>
+          <div class="name"><span class="n">${String(d.number).padStart(2, '0')}</span><span class="faces">${esc(d.type.display.family)} <s>/</s> ${esc(d.type.body.family)}</span></div>
+          <div class="slug"><span class="chips">${chips}</span>${esc(d.palette.polarity)} · ${Math.round(d.palette.hue)}° · ${d.layout.columns} col${shot.phone ? '<em>phone view</em>' : ''}</div>
         </figcaption>
       </figure>`;
     })
@@ -122,7 +120,9 @@ function plate(name) {
   .page { flex: 1; min-height: 0; border: 1.5px solid var(--ink); background: #fff; overflow: hidden; box-shadow: 5px 5px 0 var(--hair); }
   .page img { display: block; width: 100%; height: 100%; object-fit: cover; object-position: top center; }
   figcaption { padding-top: 10px; }
-  .name { font: 600 16.5px/1.1 var(--cond); display: flex; gap: 7px; align-items: baseline; white-space: nowrap; }
+  .name { font: 600 15px/1.15 var(--cond); display: flex; gap: 7px; align-items: baseline; white-space: nowrap; min-width: 0; }
+  .faces { overflow: hidden; text-overflow: ellipsis; min-width: 0; }
+  .faces s { text-decoration: none; color: var(--muted); font-weight: 500; }
   .name .n { font: 600 12px/1 var(--mono); color: var(--mark); }
   .slug { margin-top: 5px; height: 12px; font: 11px/1 var(--mono); color: var(--muted); display: flex; align-items: center; gap: 8px; white-space: nowrap; }
   .slug em { font: 10px/1 var(--mono); font-style: normal; margin-left: auto; border: 1px solid var(--hair); padding: 1px 4px; }

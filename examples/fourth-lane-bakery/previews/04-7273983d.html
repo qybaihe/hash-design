@@ -1,0 +1,398 @@
+<!-- hash-design #4 · 7273983d · ref 7273983deffdd5db5989013db722f52780b1b90897de1a1d38c04423b966745c -->
+<!doctype html>
+<html lang="zh-CN">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>第四巷面包店 · Fourth Lane Bakery</title>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Bodoni+Moda:ital,wght@0,400;0,500;0,700;1,400;1,500;1,700&family=Kumbh+Sans:wght@400;600;700&family=IBM+Plex+Mono:wght@400;500;600&family=Long+Cang&family=Noto+Sans+SC:wght@400;700&display=swap">
+<!--
+  Execution notes (brief 7273983d):
+  - Anchor position: the brief says "centred at 7% from the left edge" at 64% width. Taken literally the
+    centre at 7% would push a quarter of the viewport of the headline off the left edge and cut the shop
+    name. Nearest literal reading kept: the headline block starts at 7% from the left edge and is 64% wide,
+    rotated 3.5deg.
+  - Twist "Repeat the first-screen anchor 5 times in a row": the headline is set five times, one copy after
+    another. "In a row" is read as five consecutive lines; a horizontal row of five 64%-wide copies would run
+    to 320% of the viewport and four copies would never be seen. Only the first copy is the <h1>; the other
+    four are aria-hidden.
+  - Text block: columns 1-3 of 6 in every section; the data sits in columns 4-6.
+-->
+<style>
+/* hash-design hash-design/v2 · 7273983d */
+:root {
+  --paper: #e4ece7;
+  --ink: #2e3c34;
+  --muted: #5e6b64;
+  --accent: #009463;
+  --on-accent: #000000;
+  --accent2: #659400;
+  --on-accent2: #000000;
+  --rule: #a8b7af;
+  --panel: #d1dfd7;
+
+  --font-display: "Bodoni Moda", "Long Cang", Didot, "Bodoni 72", serif;
+  --font-body: "Kumbh Sans", "Noto Sans SC", Arial, sans-serif;
+  --font-mono: "IBM Plex Mono", "Courier New", monospace;
+  --display-weight: 500;
+  --display-tracking: 0.089em;
+
+  --step-n2: 0.93rem; /* 14.9px */
+  --step-n1: 0.994rem; /* 15.9px */
+  --step-0: 1.063rem; /* 17px */
+  --step-1: 1.136rem; /* 18.2px */
+  --step-2: 1.214rem; /* 19.4px */
+  --step-3: 1.298rem; /* 20.8px */
+  --step-4: 1.388rem; /* 22.2px */
+  --step-5: 1.483rem; /* 23.7px */
+  --step-6: 1.586rem; /* 25.4px */
+  --step-7: 1.695rem; /* 27.1px */
+  --leading: 1.58;
+
+  --space-1: 9px;
+  --space-2: 18px;
+  --space-3: 27px;
+  --space-4: 36px;
+  --space-5: 45px;
+  --space-6: 54px;
+  --space-7: 63px;
+  --space-8: 72px;
+  --section-gap: 135px;
+  --max-width: 1170px;
+  --columns: 6;
+  --gutter: 27px;
+
+  --radius: 16px;
+  --border: 2px solid var(--rule);
+  --shadow: 2px 2px 0 var(--ink);
+
+  --motion-duration: 250ms;
+  --motion-easing: steps(7, end);
+}
+
+html { font-size: 106.3%; }
+body { background: var(--paper); color: var(--ink); font-family: var(--font-body); line-height: var(--leading); }
+@media (prefers-reduced-motion: reduce) {
+  *, *::before, *::after { animation: none !important; transition: none !important; }
+}
+
+/* texture from the brief */
+body { background-image: radial-gradient(color-mix(in srgb, var(--ink) 10.8%, transparent) 1px, transparent 1.5px); background-size: 6px 6px; }
+
+/* ---------- page ---------- */
+:root {
+  --edge: 72px;
+  --dots: radial-gradient(color-mix(in srgb, var(--ink) 10.8%, transparent) 1px, transparent 1.5px);
+}
+*, *::before, *::after { box-sizing: border-box; }
+html { -webkit-text-size-adjust: 100%; }
+body { margin: 0; overflow-x: clip; }
+h1, h2, h3, p, ol, ul, dl, dd, figure { margin: 0; padding: 0; }
+ol, ul { list-style: none; }
+
+a { color: inherit; text-decoration-color: var(--rule); text-decoration-thickness: 2px; text-underline-offset: 4px;
+    transition: opacity var(--motion-duration) var(--motion-easing); }
+a:hover, a:focus-visible { opacity: .6; }
+a:focus-visible { outline: 2px solid var(--ink); outline-offset: 3px; }
+
+.wrap { width: min(var(--max-width), 100% - 2 * var(--edge)); margin-inline: auto; }
+.grid { display: grid; grid-template-columns: repeat(6, minmax(0, 1fr)); column-gap: var(--gutter); row-gap: var(--space-4); }
+.text-block { grid-column: 1 / span 3; }
+.data { grid-column: 4 / span 3; }
+
+/* bands: six full-width sections, paper and panel alternating */
+.band { position: relative; padding-block: var(--section-gap); overflow: clip; }
+.band-paper { background-color: var(--paper); background-image: var(--dots); background-size: 6px 6px; }
+.band-panel { background-color: var(--panel); background-image: var(--dots); background-size: 6px 6px; }
+
+/* motif: square brackets along the edges, 72px, 6deg */
+.brk { position: absolute; width: 24px; height: 72px; color: var(--accent); transform: rotate(6deg); pointer-events: none; }
+.brk-l { left: calc(var(--edge) / 2 - 12px); top: 30%; }
+.brk-r { right: calc(var(--edge) / 2 - 12px); top: 62%; }
+.hero .brk-l { top: var(--space-3); }
+.hero .brk-r { top: auto; bottom: var(--space-3); }
+
+/* type */
+.latin, .kicker { font-family: var(--font-display); font-weight: var(--display-weight); letter-spacing: var(--display-tracking); text-transform: uppercase; }
+.kicker { font-size: var(--step-n1); color: var(--muted); margin-bottom: var(--space-1); }
+.kicker b { font-weight: 700; color: var(--ink); margin-right: var(--space-1); }
+h2 { font-family: var(--font-display); font-weight: var(--display-weight); letter-spacing: var(--display-tracking);
+     text-transform: uppercase; font-size: var(--step-7); line-height: 1.2; margin-bottom: var(--space-3); }
+.say { font-size: var(--step-2); }
+.say + .say { margin-top: var(--space-2); }
+.mono { font-family: var(--font-mono); font-weight: 500; letter-spacing: 0; white-space: nowrap; }
+.muted { color: var(--muted); }
+
+/* box surface from the brief */
+.box { border: var(--border); border-radius: var(--radius); box-shadow: var(--shadow); }
+.band-paper .box { background-color: var(--panel); }
+.band-panel .box { background-color: var(--paper); }
+
+/* ---------- I · first screen ---------- */
+.hero { min-height: 98vh; min-height: 98svh; padding-block: var(--space-3); display: flex; flex-direction: column; gap: var(--space-2); }
+.hero-meta { align-items: baseline; font-size: var(--step-n1); }
+.hero-meta .latin { grid-column: 1 / span 3; }
+.hero-meta .hours { grid-column: 4 / span 3; justify-self: end; color: var(--muted); }
+.anchor { flex: 1 0 auto; display: flex; flex-direction: column; justify-content: center;
+          margin-left: 7vw; width: 64vw; transform: rotate(3.5deg); transform-origin: 0 50%; }
+.anchor-line { font-family: var(--font-display); font-weight: var(--display-weight); letter-spacing: var(--display-tracking);
+               text-transform: uppercase; color: var(--accent); white-space: nowrap; line-height: 1;
+               font-size: min(9.79vw, calc((98svh - 205px) / 5));
+               animation: hd-in var(--motion-duration) var(--motion-easing) both; }
+.anchor-line:nth-child(2) { animation-delay: 250ms; }
+.anchor-line:nth-child(3) { animation-delay: 500ms; }
+.anchor-line:nth-child(4) { animation-delay: 750ms; }
+.anchor-line:nth-child(5) { animation-delay: 1000ms; }
+@keyframes hd-in { from { opacity: 0; } to { opacity: 1; } }
+.hero-foot { margin-top: var(--space-2); }
+.hero-foot .text-block { font-size: var(--step-3); }
+.hero-foot .text-block span { display: block; }
+
+/* ---------- II · two bakes ---------- */
+.bakes li { display: grid; grid-template-columns: 7.5em minmax(0, 1fr); column-gap: var(--gutter); align-items: baseline;
+            padding-block: var(--space-3); border-top: var(--border); }
+.bakes li:last-child { border-bottom: var(--border); }
+.bake-time { font-family: var(--font-display); font-weight: var(--display-weight); font-size: var(--step-7); letter-spacing: .02em; grid-row: span 2; }
+.bake-name { font-weight: 700; }
+.bake-items { color: var(--muted); }
+.bakes-note { margin-top: var(--space-2); font-size: var(--step-n1); color: var(--muted); }
+
+/* ---------- III · prices ---------- */
+.menu-box { overflow: hidden; }
+.menu { width: 100%; border-collapse: collapse; }
+.menu tr { transition: opacity var(--motion-duration) var(--motion-easing); }
+.menu:hover tr, .menu:focus-within tr { opacity: .55; }
+.menu tr:hover, .menu tr:focus-within { opacity: 1; }
+.menu th, .menu td { text-align: left; vertical-align: baseline; padding: var(--space-2) var(--space-3); }
+.menu tr + tr th, .menu tr + tr td { border-top: var(--border); }
+.menu th { font-weight: 700; font-size: var(--step-1); }
+.menu th small { display: block; font-weight: 400; font-size: var(--step-n2); color: var(--muted); margin-top: 2px; }
+.menu td { text-align: right; white-space: nowrap; }
+.price { font-family: var(--font-display); font-weight: var(--display-weight); font-size: var(--step-5); letter-spacing: .02em; }
+.price-sub { display: block; font-size: var(--step-n2); color: var(--muted); }
+.menu .lead th { font-size: var(--step-4); }
+.menu .lead .price { font-size: var(--step-6); }
+.menu .split td span { display: block; }
+
+/* ---------- IV · starter & flour ---------- */
+.facts-list > div { display: grid; grid-template-columns: 6em minmax(0, 1fr); column-gap: var(--gutter); align-items: baseline;
+                    padding-block: var(--space-2); border-top: var(--border); }
+.facts-list > div:last-child { border-bottom: var(--border); }
+.facts-list dt { font-size: var(--step-n1); color: var(--muted); }
+.facts-list dd { font-size: var(--step-1); }
+.laozhou { font-family: var(--font-display); font-weight: var(--display-weight); font-size: var(--step-7); color: var(--accent2); letter-spacing: var(--display-tracking); }
+.plus { font-family: var(--font-display); font-weight: 400; padding-inline: 6px; color: var(--muted); }
+
+/* ---------- V · class ---------- */
+.ticket { padding: var(--space-4) var(--space-4) var(--space-3); }
+.ticket-head { display: flex; justify-content: space-between; align-items: baseline; gap: var(--space-2); flex-wrap: wrap;
+               padding-bottom: var(--space-2); border-bottom: var(--border); margin-bottom: var(--space-1); }
+.ticket-head .latin { font-size: var(--step-n1); color: var(--muted); }
+.ticket-head .price { font-size: var(--step-7); }
+.ticket dl > div { display: grid; grid-template-columns: 4.5em minmax(0, 1fr); column-gap: var(--space-2); padding-block: var(--space-1); }
+.ticket dt { color: var(--muted); font-size: var(--step-n1); }
+
+/* ---------- VI · address ---------- */
+.visit dl > div { display: grid; grid-template-columns: 4.5em minmax(0, 1fr); column-gap: var(--gutter); padding-block: var(--space-2); border-top: var(--border); }
+.visit dt { color: var(--muted); font-size: var(--step-n1); padding-top: 2px; }
+.visit dd p + p { margin-top: 4px; }
+.tel { display: inline-block; margin-block: var(--space-1); padding: var(--space-1) var(--space-2); text-decoration: none;
+       font-family: var(--font-mono); font-weight: 600; font-size: var(--step-2); }
+.colophon { grid-column: 1 / -1; margin-top: var(--space-6); padding-top: var(--space-2); border-top: var(--border);
+            display: flex; justify-content: space-between; gap: var(--space-2); flex-wrap: wrap; font-size: var(--step-n2); color: var(--muted); }
+.colophon .latin { font-size: var(--step-n2); }
+
+/* ---------- below 640px: one column; bands, brackets and anchor stay ---------- */
+@media (max-width: 639px) {
+  :root { --edge: 36px; }
+  .grid { grid-template-columns: minmax(0, 1fr); }
+  .text-block, .data, .hero-meta .latin, .hero-meta .hours { grid-column: 1 / -1; }
+  .hero-meta { row-gap: 2px; }
+  .hero-meta .hours { justify-self: start; }
+  .band { padding-block: calc(var(--section-gap) * .67); }
+  .hero { padding-block: var(--space-3); }
+  .anchor-line { line-height: 1.3; }
+  .brk { width: 20px; }
+  .brk-l { left: 4px; }
+  .brk-r { right: 4px; }
+  .bakes li { grid-template-columns: 5em minmax(0, 1fr); column-gap: var(--space-2); }
+  .menu th, .menu td { padding: var(--space-2); }
+  .facts-list > div { grid-template-columns: 4.5em minmax(0, 1fr); column-gap: var(--space-2); }
+  .visit dl > div { column-gap: var(--space-2); }
+  .ticket { padding: var(--space-3) var(--space-2) var(--space-2); }
+}
+</style>
+</head>
+<body>
+<main>
+
+  <!-- I · first screen: the headline anchor, repeated five times (twist) -->
+  <section class="band band-paper hero" id="top" aria-labelledby="shop-name">
+    <svg class="brk brk-l" viewBox="0 0 24 72" aria-hidden="true"><path d="M21 3H5v66h16" fill="none" stroke="currentColor" stroke-width="4"/></svg>
+    <svg class="brk brk-r" viewBox="0 0 24 72" aria-hidden="true"><path d="M3 3h16v66H3" fill="none" stroke="currentColor" stroke-width="4"/></svg>
+
+    <header class="wrap grid hero-meta">
+      <p class="latin">Fourth Lane Bakery</p>
+      <p class="hours">老城区第四巷 17 号 · 周二至周日 <span class="mono">7:00–19:00</span>，周一休息</p>
+    </header>
+
+    <div class="anchor">
+      <h1 class="anchor-line" id="shop-name">第四巷面包店</h1>
+      <div class="anchor-line" aria-hidden="true">第四巷面包店</div>
+      <div class="anchor-line" aria-hidden="true">第四巷面包店</div>
+      <div class="anchor-line" aria-hidden="true">第四巷面包店</div>
+      <div class="anchor-line" aria-hidden="true">第四巷面包店</div>
+    </div>
+
+    <div class="wrap grid hero-foot">
+      <div class="text-block">
+        <p><span>我是周岚。曾任建筑师。2019 年开店。</span><span>每天两炉。卖完即止。</span></p>
+      </div>
+    </div>
+  </section>
+
+  <!-- II · two bakes -->
+  <section class="band band-panel" id="bakes" aria-labelledby="h-bakes">
+    <svg class="brk brk-l" viewBox="0 0 24 72" aria-hidden="true"><path d="M21 3H5v66h16" fill="none" stroke="currentColor" stroke-width="4"/></svg>
+    <svg class="brk brk-r" viewBox="0 0 24 72" aria-hidden="true"><path d="M3 3h16v66H3" fill="none" stroke="currentColor" stroke-width="4"/></svg>
+    <div class="wrap grid">
+      <div class="text-block">
+        <p class="kicker"><b>II</b>Two bakes</p>
+        <h2 id="h-bakes">每日两炉</h2>
+        <p class="say">我每天烤两炉。时刻固定。卖完即止。当天不留货。</p>
+      </div>
+      <div class="data">
+        <ol class="bakes">
+          <li>
+            <p class="bake-time">7:00</p>
+            <p class="bake-name">第一炉</p>
+            <p class="bake-items">乡村面包，可颂</p>
+          </li>
+          <li>
+            <p class="bake-time">11:00</p>
+            <p class="bake-name">第二炉</p>
+            <p class="bake-items">肉桂卷，黑麦面包</p>
+          </li>
+        </ol>
+        <p class="bakes-note">肉桂卷只在第二炉。</p>
+      </div>
+    </div>
+  </section>
+
+  <!-- III · prices -->
+  <section class="band band-paper" id="prices" aria-labelledby="h-prices">
+    <svg class="brk brk-l" viewBox="0 0 24 72" aria-hidden="true"><path d="M21 3H5v66h16" fill="none" stroke="currentColor" stroke-width="4"/></svg>
+    <svg class="brk brk-r" viewBox="0 0 24 72" aria-hidden="true"><path d="M3 3h16v66H3" fill="none" stroke="currentColor" stroke-width="4"/></svg>
+    <div class="wrap grid">
+      <div class="text-block">
+        <p class="kicker"><b>III</b>Price list</p>
+        <h2 id="h-prices">价目</h2>
+        <p class="say">以下为价目。价格以元计。黑麦每日限量。</p>
+      </div>
+      <div class="data">
+        <div class="box menu-box">
+          <table class="menu">
+            <caption class="muted" style="position:absolute;width:1px;height:1px;overflow:hidden;clip-path:inset(50%)">第四巷面包店价目</caption>
+            <tbody>
+              <tr class="lead split">
+                <th scope="row">乡村面包<small>天然酵种，48 小时低温发酵</small></th>
+                <td><span><span class="price-sub">整个</span><span class="price">¥38</span></span><span><span class="price-sub">半个</span><span class="price">¥20</span></span></td>
+              </tr>
+              <tr>
+                <th scope="row">黑麦面包<small>70% 黑麦，750 g，每日限 12 个</small></th>
+                <td><span class="price">¥42</span></td>
+              </tr>
+              <tr>
+                <th scope="row">可颂<small>法国发酵黄油</small></th>
+                <td><span class="price">¥16</span></td>
+              </tr>
+              <tr>
+                <th scope="row">肉桂卷<small>只在第二炉</small></th>
+                <td><span class="price">¥18</span></td>
+              </tr>
+              <tr>
+                <th scope="row">手冲咖啡<small>店内 6 个座位</small></th>
+                <td><span class="price">¥22</span></td>
+              </tr>
+            </tbody>
+          </table>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <!-- IV · starter and flour -->
+  <section class="band band-panel" id="starter" aria-labelledby="h-starter">
+    <svg class="brk brk-l" viewBox="0 0 24 72" aria-hidden="true"><path d="M21 3H5v66h16" fill="none" stroke="currentColor" stroke-width="4"/></svg>
+    <svg class="brk brk-r" viewBox="0 0 24 72" aria-hidden="true"><path d="M3 3h16v66H3" fill="none" stroke="currentColor" stroke-width="4"/></svg>
+    <div class="wrap grid">
+      <div class="text-block">
+        <p class="kicker"><b>IV</b>Starter &amp; flour</p>
+        <h2 id="h-starter">酵种与面粉</h2>
+        <p class="say">酵种养了 9 年。店里叫它“老周”。</p>
+        <p class="say">面粉两种。产地明确。</p>
+      </div>
+      <div class="data">
+        <dl class="facts-list">
+          <div><dt>酵种</dt><dd><span class="laozhou">老周</span></dd></div>
+          <div><dt>养护</dt><dd>9 年</dd></div>
+          <div><dt>乡村面包</dt><dd>天然酵种，48 小时低温发酵</dd></div>
+          <div><dt>面粉</dt><dd>本地石磨全麦粉<span class="plus">+</span>法国 T65</dd></div>
+        </dl>
+      </div>
+    </div>
+  </section>
+
+  <!-- V · Saturday class -->
+  <section class="band band-paper" id="class" aria-labelledby="h-class">
+    <svg class="brk brk-l" viewBox="0 0 24 72" aria-hidden="true"><path d="M21 3H5v66h16" fill="none" stroke="currentColor" stroke-width="4"/></svg>
+    <svg class="brk brk-r" viewBox="0 0 24 72" aria-hidden="true"><path d="M3 3h16v66H3" fill="none" stroke="currentColor" stroke-width="4"/></svg>
+    <div class="wrap grid">
+      <div class="text-block">
+        <p class="kicker"><b>V</b>Saturday class</p>
+        <h2 id="h-class">周六面包课</h2>
+        <p class="say">我周六上课。小班教学。面包自己烤。烤好带走。</p>
+      </div>
+      <div class="data">
+        <div class="box ticket">
+          <div class="ticket-head">
+            <p class="latin">Bread class</p>
+            <p><span class="price">¥260</span> / 人</p>
+          </div>
+          <dl>
+            <div><dt>时间</dt><dd>周六 <span class="mono">9:00–11:30</span></dd></div>
+            <div><dt>人数</dt><dd>6 人小班</dd></div>
+            <div><dt>带走</dt><dd>自己烤的面包</dd></div>
+          </dl>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <!-- VI · address, hours, booking -->
+  <section class="band band-panel" id="visit" aria-labelledby="h-visit">
+    <svg class="brk brk-l" viewBox="0 0 24 72" aria-hidden="true"><path d="M21 3H5v66h16" fill="none" stroke="currentColor" stroke-width="4"/></svg>
+    <svg class="brk brk-r" viewBox="0 0 24 72" aria-hidden="true"><path d="M3 3h16v66H3" fill="none" stroke="currentColor" stroke-width="4"/></svg>
+    <div class="wrap grid">
+      <div class="text-block">
+        <p class="kicker"><b>VI</b>Address</p>
+        <h2 id="h-visit">第四巷 17 号</h2>
+        <p class="say">巷口数第二个门。绿色木门。周一休息。</p>
+      </div>
+      <div class="data visit">
+        <dl>
+          <div><dt>地址</dt><dd><p>老城区第四巷 17 号</p><p class="muted">巷口数第二个门，绿色木门</p></dd></div>
+          <div><dt>营业</dt><dd><p>周二至周日 <span class="mono">7:00–19:00</span></p><p class="muted">周一休息</p></dd></div>
+          <div><dt>预订</dt><dd><p>提前一天 <span class="mono">17:00</span> 前</p><a class="tel box" href="tel:02155550417">021-5555-0417</a><p class="muted">或店内登记</p></dd></div>
+          <div><dt>座位</dt><dd><p>店内 6 个座位</p></dd></div>
+        </dl>
+      </div>
+      <p class="colophon"><span class="latin">Fourth Lane Bakery</span><span>第四巷面包店 · 店主周岚 · 2019 年开店</span></p>
+    </div>
+  </section>
+
+</main>
+</body>
+</html>

@@ -1,0 +1,495 @@
+<!-- hash-design #5 · 08b46918 · ref 08b4691844e6d5dfec8f67699f5a2ee99d6d45ab4b948f79e17097a21d3ecdab -->
+<!doctype html>
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>Sluice — a self-hosted inbox for webhooks</title>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Bodoni+Moda:ital,wght@0,400;0,500;0,700;1,400;1,500;1,700&family=Literata:ital,wght@0,400;0,600;1,400;1,600&family=Overpass+Mono:wght@400;600&display=swap">
+<!--
+  Anchor note: the brief asks for the fact list at 71% of the first screen's
+  width, centred at 87% from the left edge. Taken literally the box runs from
+  51.5% to 122.5%, so its right fifth leaves the page. We keep that geometry
+  exactly and let the box bleed off the right edge (the first screen clips it,
+  so there is no sideways scroll); the list text is padded back inside the
+  visible part so nothing is cut. Below 640px the same box would leave a
+  190px strip, so there the anchor spans the width and still bleeds right;
+  at that width the one-column list is taller than 55% of the viewport, and
+  we let the first screen grow rather than shrink the text.
+
+  Twist note: "links at 3.6x the size they would normally get". A link would
+  normally be set at body size (1rem = 16.5px); every link here is set at
+  calc(1rem * 3.6) = 59.4px. The page has three kinds of link: the contents,
+  the install script and the local web UI.
+-->
+<style>
+/* hash-design hash-design/v2 · 08b46918 */
+:root {
+  --paper: #e5e1e1;
+  --ink: #403536;
+  --muted: #6e5f60;
+  --accent: #b9626e;
+  --on-accent: #000000;
+  --accent2: #9871af;
+  --on-accent2: #000000;
+  --rule: #b4a8a9;
+  --panel: #dbd0d1;
+
+  --font-display: "Bodoni Moda", Didot, "Bodoni 72", serif;
+  --font-body: Literata, Georgia, serif;
+  --font-mono: "Overpass Mono", "Courier New", monospace;
+  --display-weight: 700;
+  --display-tracking: 0.095em;
+
+  --step-n2: 0.62rem; /* 9.9px */
+  --step-n1: 0.799rem; /* 12.8px */
+  --step-0: 1.031rem; /* 16.5px */
+  --step-1: 1.33rem; /* 21.3px */
+  --step-2: 1.716rem; /* 27.5px */
+  --step-3: 2.214rem; /* 35.4px */
+  --step-4: 2.856rem; /* 45.7px */
+  --step-5: 3.684rem; /* 58.9px */
+  --step-6: 4.752rem; /* 76px */
+  --step-7: 6.13rem; /* 98.1px */
+  --leading: 1.53;
+
+  --space-1: 8px;
+  --space-2: 16px;
+  --space-3: 24px;
+  --space-4: 32px;
+  --space-5: 40px;
+  --space-6: 48px;
+  --space-7: 56px;
+  --space-8: 64px;
+  --section-gap: 112px;
+  --max-width: 1230px;
+  --columns: 12;
+  --gutter: 32px;
+
+  --radius: 0px;
+  --border: 1px dashed var(--rule);
+  --shadow: none;
+
+  --motion-duration: 140ms;
+  --motion-easing: cubic-bezier(0.77, 0.6, 0.37, 1);
+}
+
+html { font-size: 103.1%; }
+body { background: var(--paper); color: var(--ink); font-family: var(--font-body); line-height: var(--leading); }
+@media (prefers-reduced-motion: reduce) {
+  *, *::before, *::after { animation: none !important; transition: none !important; }
+}
+
+/* grain, from the brief */
+body { background-image: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='160' height='160'%3E%3Cfilter id='n'%3E%3CfeTurbulence type='fractalNoise' baseFrequency='.9'/%3E%3C/filter%3E%3Crect width='100%25' height='100%25' filter='url(%23n)' opacity='0.084'/%3E%3C/svg%3E"); }
+
+*, *::before, *::after { box-sizing: border-box; }
+body { margin: 0; font-size: 1rem; overflow-x: hidden; }
+h1, h2, h3, p, ul, ol, dl, dd, figure { margin: 0; padding: 0; }
+
+/* ---------- motif: half circle, 48px, turned 120deg ---------- */
+.hc,
+.list > li::before,
+.contents > li::before,
+.anchor > li:not(.anchor-title)::before {
+  content: "";
+  display: block;
+  width: 48px;
+  height: 48px;
+  flex: none;
+  background: var(--accent);
+  -webkit-mask: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 48 48'%3E%3Cpath d='M0 24a24 24 0 0 1 48 0z' transform='rotate(120 24 24)'/%3E%3C/svg%3E") center / 48px 48px no-repeat;
+          mask: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 48 48'%3E%3Cpath d='M0 24a24 24 0 0 1 48 0z' transform='rotate(120 24 24)'/%3E%3C/svg%3E") center / 48px 48px no-repeat;
+}
+
+/* ---------- first screen: the anchor, nothing else ---------- */
+.first {
+  position: relative;
+  min-height: 55vh;
+  display: flex;
+  align-items: center;
+  overflow: hidden;
+  padding: var(--space-1) 0 var(--space-3);
+}
+.anchor {
+  list-style: none;
+  flex: none;
+  width: 71%;
+  margin-left: 51.5%;              /* centre at 87% */
+  transform: rotate(-1.5deg);
+  transform-origin: 50% 50%;
+  background: var(--accent);
+  color: var(--on-accent);
+  border-radius: var(--radius);
+  box-shadow: var(--shadow);
+  padding: var(--space-3) calc(22.5% + var(--space-5)) var(--space-3) var(--space-5);
+  display: grid;
+  grid-template-columns: repeat(2, minmax(0, 1fr));
+  grid-template-rows: auto repeat(8, auto);
+  grid-auto-flow: column;
+  column-gap: var(--space-4);
+  animation: wipe var(--motion-duration) var(--motion-easing) both;
+}
+.anchor > li {
+  display: flex;
+  align-items: center;
+  gap: var(--space-1);
+  min-height: 44px;
+  font-size: var(--step-0);
+  line-height: 1.25;
+}
+.anchor > li:not(.anchor-title)::before {
+  background: var(--paper);
+  margin: -2px 0;
+}
+.anchor .anchor-title {
+  grid-column: 1 / -1;
+  grid-row: 1;
+  display: flex;
+  flex-wrap: wrap;
+  align-items: baseline;
+  column-gap: var(--space-3);
+  margin-bottom: var(--space-2);
+}
+.anchor h1 {
+  font-family: var(--font-display);
+  font-weight: var(--display-weight);
+  letter-spacing: var(--display-tracking);
+  font-size: var(--step-5);
+  line-height: 1;
+}
+.anchor .anchor-title p {
+  font-style: italic;
+  font-size: var(--step-1);
+}
+@keyframes wipe {
+  from { clip-path: inset(0 100% 0 0); }
+  to   { clip-path: inset(0 0 0 0); }
+}
+
+/* ---------- 12-column grid ---------- */
+.sec {
+  max-width: calc(var(--max-width) + 2 * var(--gutter));
+  margin: var(--section-gap) auto 0;
+  padding: 0 var(--gutter);
+  display: grid;
+  grid-template-columns: repeat(var(--columns), minmax(0, 1fr));
+  column-gap: var(--gutter);
+  align-items: start;
+}
+.sec:last-of-type { margin-bottom: var(--section-gap); }
+.sec > * { grid-column: 2 / 11; }
+.sec > .hc { grid-column: 1; grid-row: 1; justify-self: end; align-self: center; }
+.sec > h2 { grid-row: 1; }
+
+h2 {
+  font-family: var(--font-display);
+  font-weight: var(--display-weight);
+  letter-spacing: var(--display-tracking);
+  font-size: var(--step-4);
+  line-height: 1.08;
+}
+.num {
+  font-family: var(--font-mono);
+  font-size: var(--step-n1);
+  color: var(--muted);
+  letter-spacing: 0.04em;
+}
+.sec > .num { margin-top: var(--space-1); }
+
+.lead {
+  font-size: var(--step-2);
+  line-height: 1.35;
+  margin-top: var(--space-4);
+  max-width: 30ch;
+}
+.sec p + p,
+.sec .lead + p { margin-top: var(--space-3); }
+.sec .body { font-size: var(--step-1); max-width: 38ch; }
+
+/* ---------- the twist: links at 3.6x ---------- */
+a {
+  position: relative;
+  display: inline-block;
+  font-family: var(--font-display);
+  font-style: italic;
+  font-weight: 400;
+  font-size: calc(1rem * 3.6);
+  line-height: 1.05;
+  color: var(--ink);
+  text-decoration: underline;
+  text-decoration-color: var(--accent2);
+  text-decoration-thickness: 2px;
+  text-underline-offset: 0.14em;
+  overflow-wrap: anywhere;
+  padding: 0 0.08em;
+}
+a::before {
+  content: "";
+  position: absolute;
+  inset: 0;
+  z-index: -1;
+  background: var(--accent2);
+  clip-path: inset(0 100% 0 0);
+  transition: clip-path var(--motion-duration) var(--motion-easing);
+}
+a:hover, a:focus-visible { color: var(--on-accent2); }
+a:hover::before, a:focus-visible::before { clip-path: inset(0 0 0 0); }
+a:focus-visible { outline: var(--border); outline-color: var(--ink); outline-offset: 4px; }
+.link-row { margin-top: var(--space-4); isolation: isolate; }
+.link-row .num { display: block; margin-bottom: var(--space-1); }
+
+/* contents */
+.contents {
+  list-style: none;
+  margin-top: var(--space-5);
+  isolation: isolate;
+}
+.contents li {
+  display: flex;
+  align-items: center;
+  gap: var(--space-3);
+}
+.contents li + li { margin-top: var(--space-2); }
+.contents li:nth-child(even) { padding-left: calc(1rem * 3.6); }
+
+/* lists with the motif */
+.list { list-style: none; margin-top: var(--space-4); }
+.list > li {
+  display: flex;
+  align-items: center;
+  gap: var(--space-2);
+  font-size: var(--step-1);
+  min-height: 48px;
+}
+
+/* code */
+pre {
+  margin: var(--space-2) 0 0;
+  font-family: var(--font-mono);
+  font-size: var(--step-0);
+  background: var(--panel);
+  color: var(--ink);
+  border: var(--border);
+  border-radius: var(--radius);
+  padding: var(--space-2) var(--space-3);
+  white-space: pre-wrap;
+  overflow-wrap: anywhere;
+}
+code { font-family: var(--font-mono); }
+.step { margin-top: var(--space-4); font-size: var(--step-1); }
+.step:first-of-type { margin-top: var(--space-5); }
+
+/* platforms */
+table {
+  margin-top: var(--space-4);
+  border-collapse: collapse;
+  font-size: var(--step-1);
+  width: min(100%, 560px);
+}
+th, td {
+  border: var(--border);
+  padding: var(--space-1) var(--space-2);
+  text-align: left;
+  font-weight: 400;
+}
+thead th { font-family: var(--font-mono); font-size: var(--step-n1); color: var(--muted); }
+tbody th { font-weight: 600; }
+td { font-family: var(--font-mono); font-size: var(--step-0); }
+
+/* benchmark figure */
+.figure-num {
+  margin-top: var(--space-6);
+  display: grid;
+  grid-template-columns: auto 1fr;
+  column-gap: var(--space-4);
+  align-items: end;
+}
+.figure-num b {
+  font-family: var(--font-display);
+  font-weight: var(--display-weight);
+  letter-spacing: var(--display-tracking);
+  font-size: var(--step-7);
+  line-height: 0.9;
+}
+.figure-num span { font-size: var(--step-1); line-height: 1.35; padding-bottom: 0.4em; }
+
+/* project facts */
+.facts {
+  margin-top: var(--space-4);
+  display: grid;
+  grid-template-columns: max-content 1fr;
+  border-top: var(--border);
+}
+.facts dt, .facts dd { padding: var(--space-1) 0; border-bottom: var(--border); }
+.facts dt { font-family: var(--font-mono); font-size: var(--step-n1); color: var(--muted); padding-right: var(--space-4); align-self: stretch; display: flex; align-items: center; }
+.facts dd { font-size: var(--step-1); }
+.origin { margin-top: var(--space-5); font-size: var(--step-2); line-height: 1.35; max-width: 26ch; font-style: italic; }
+
+/* ---------- below 640px: one column ---------- */
+@media (max-width: 639px) {
+  .first { min-height: 55vh; padding: var(--space-5) 0; }
+  .anchor {
+    width: calc(100% + var(--space-5));
+    margin-left: var(--space-2);
+    grid-template-columns: minmax(0, 1fr);
+    grid-template-rows: none;
+    grid-auto-flow: row;
+    padding: var(--space-4) calc(var(--space-5) + var(--space-3)) var(--space-4) var(--space-3);
+  }
+  .anchor h1 { font-size: var(--step-4); }
+  .sec {
+    grid-template-columns: minmax(0, 1fr);
+    padding: 0 20px;
+  }
+  .sec > *, .sec > .hc, .sec > h2 { grid-column: 1; grid-row: auto; }
+  .sec > .hc { justify-self: start; align-self: start; margin-bottom: var(--space-1); }
+  h2 { font-size: var(--step-3); }
+  .lead { font-size: var(--step-1); }
+  .contents li:nth-child(even) { padding-left: 0; }
+  .contents li { gap: var(--space-2); }
+  .figure-num { grid-template-columns: 1fr; }
+  .figure-num b { font-size: var(--step-5); }
+  .facts dt { padding-right: var(--space-2); }
+}
+</style>
+</head>
+<body>
+
+<header class="first" aria-label="Sluice, the facts">
+  <ul class="anchor">
+    <li class="anchor-title"><h1>Sluice</h1><p>A self-hosted inbox for webhooks.</p></li>
+    <li>A public webhook URL.</li>
+    <li>Every delivery stored.</li>
+    <li>Forwarded to your service.</li>
+    <li>One static binary.</li>
+    <li>About 11 MB.</li>
+    <li>Linux, macOS, Windows.</li>
+    <li>amd64 and arm64.</li>
+    <li>One SQLite file.</li>
+    <li>No Redis. No Postgres.</li>
+    <li>Retries for 72 hours.</li>
+    <li>Replay any delivery.</li>
+    <li>HMAC-SHA256 verified.</li>
+    <li>Web UI, port 8081.</li>
+    <li>Kept 30 days.</li>
+    <li>No account. No telemetry.</li>
+    <li>Go. MIT. Version 0.9.2.</li>
+  </ul>
+</header>
+
+<main>
+
+<section class="sec" id="contents" aria-labelledby="h-contents">
+  <span class="hc" aria-hidden="true"></span>
+  <h2 id="h-contents">Contents</h2>
+  <ol class="contents">
+    <li><a href="#inbox">The inbox</a></li>
+    <li><a href="#binary">One binary</a></li>
+    <li><a href="#install">Two commands</a></li>
+    <li><a href="#retries">Retries, replay</a></li>
+    <li><a href="#signatures">Signature checks</a></li>
+    <li><a href="#web-ui">Web UI</a></li>
+    <li><a href="#project">The project</a></li>
+  </ol>
+</section>
+
+<section class="sec" id="inbox" aria-labelledby="h-inbox">
+  <span class="hc" aria-hidden="true"></span>
+  <h2 id="h-inbox">The inbox</h2>
+  <p class="lead">A public URL. For your webhooks. We store every delivery. Then we forward it.</p>
+  <ul class="list">
+    <li>To your local service.</li>
+    <li>Or an internal one.</li>
+  </ul>
+  <p class="body">No hosted service. No account. No telemetry. You host it.</p>
+</section>
+
+<section class="sec" id="binary" aria-labelledby="h-binary">
+  <span class="hc" aria-hidden="true"></span>
+  <h2 id="h-binary">One binary</h2>
+  <p class="lead">One static binary. About 11 MB. Written in Go.</p>
+  <table>
+    <thead><tr><th scope="col">System</th><th scope="col">amd64</th><th scope="col">arm64</th></tr></thead>
+    <tbody>
+      <tr><th scope="row">Linux</th><td>yes</td><td>yes</td></tr>
+      <tr><th scope="row">macOS</th><td>yes</td><td>yes</td></tr>
+      <tr><th scope="row">Windows</th><td>yes</td><td>yes</td></tr>
+    </tbody>
+  </table>
+  <p class="body" style="margin-top: var(--space-5)">Storage? One SQLite file.</p>
+  <ul class="list">
+    <li>No Redis.</li>
+    <li>No Postgres.</li>
+    <li>No queue to run.</li>
+  </ul>
+  <div class="figure-num">
+    <b>1,800</b>
+    <span>Deliveries per second. On a 2-vCPU VM. Our own benchmark.</span>
+  </div>
+</section>
+
+<section class="sec" id="install" aria-labelledby="h-install">
+  <span class="hc" aria-hidden="true"></span>
+  <h2 id="h-install">Two commands</h2>
+  <p class="step">Install first.</p>
+  <pre><code>curl -fsSL https://sluice.example/<wbr>install.sh | sh</code></pre>
+  <p class="step">Then start.</p>
+  <pre><code>sluice serve --forward http://localhost:3000</code></pre>
+  <div class="link-row">
+    <span class="num">The script</span>
+    <a href="https://sluice.example/install.sh">install.sh</a>
+  </div>
+</section>
+
+<section class="sec" id="retries" aria-labelledby="h-retries">
+  <span class="hc" aria-hidden="true"></span>
+  <h2 id="h-retries">Retries and replay</h2>
+  <p class="lead">A forward fails. We retry. Exponential backoff. Up to 72 hours.</p>
+  <p class="step">Need it again? Replay it.</p>
+  <pre><code>sluice replay &lt;delivery-id&gt;</code></pre>
+  <p class="body" style="margin-top: var(--space-2)">Any stored delivery.</p>
+</section>
+
+<section class="sec" id="signatures" aria-labelledby="h-signatures">
+  <span class="hc" aria-hidden="true"></span>
+  <h2 id="h-signatures">Signature checks</h2>
+  <p class="lead">We verify signatures. HMAC-SHA256.</p>
+  <p class="body">Older than 5 minutes? Rejected.</p>
+</section>
+
+<section class="sec" id="web-ui" aria-labelledby="h-web-ui">
+  <span class="hc" aria-hidden="true"></span>
+  <h2 id="h-web-ui">Web UI and retention</h2>
+  <p class="lead">Port 8081. Search deliveries.</p>
+  <ul class="list">
+    <li>By path.</li>
+    <li>By header.</li>
+    <li>By body text.</li>
+  </ul>
+  <div class="link-row">
+    <span class="num">Local web UI</span>
+    <a href="http://localhost:8081">localhost:<wbr>8081</a>
+  </div>
+  <p class="body" style="margin-top: var(--space-6)">We keep 30 days. That is the default. Change it: <code>--retain</code>.</p>
+</section>
+
+<section class="sec" id="project" aria-labelledby="h-project">
+  <span class="hc" aria-hidden="true"></span>
+  <h2 id="h-project">The project</h2>
+  <dl class="facts">
+    <dt>Version</dt><dd>0.9.2</dd>
+    <dt>Released</dt><dd>14 October 2026</dd>
+    <dt>Language</dt><dd>Go</dd>
+    <dt>Licence</dt><dd>MIT</dd>
+    <dt>Contributors</dt><dd>41</dd>
+    <dt>Maintainer</dt><dd>Ines Okafor</dd>
+  </dl>
+  <p class="origin">Ines started it. In 2023. After losing a weekend. Of payment webhooks.</p>
+</section>
+
+</main>
+</body>
+</html>

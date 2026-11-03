@@ -69,7 +69,7 @@ Constraints (roll / brief / critique --brief)
   --scenario web|deck|app|dashboard|poster|email
 
 Run "hash-design <command> --help" (or "hash-design help <command>") for one command's options.
-Without --seed every roll uses crypto.randomBytes(32) → SHA-256. --seed is for reproducible examples only.
+Without --seed every roll uses crypto.getRandomValues (32 bytes) → SHA-256. --seed is for reproducible examples only.
 Each hash is one direction (hash-design/v2): its bytes set the palette, faces, grid, anchor, motif, surface,
 motion, voice and twist directly. There is no library of styles.
 `;
@@ -199,7 +199,7 @@ Examples
   hash-design roll --subject "Causeway" --facts-file facts.md --scenario deck --out design/hash-design
   hash-design roll --subject "Fourth Lane Bakery" --count 3 --out design/hash-design --format reply
 
-Without --seed every roll uses crypto.randomBytes(32) → SHA-256.
+Without --seed every roll uses crypto.getRandomValues (32 bytes) → SHA-256.
 `,
   ],
   [

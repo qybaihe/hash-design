@@ -22,13 +22,13 @@
 ### If you changed the font pool, primitive lists, byte rules or bans
 
 - [ ] `node scripts/verify-fonts.mjs` passes
-- [ ] `npm run sync` was run (`SKILL.md` and its copies are up to date)
+- [ ] `npm run sync` was run (the generated block in `skills/hash-design/SKILL.md` is current; `npm run sync:check` passes)
 - [ ] If the library fingerprint changed, its pinned value in `mapping.test.ts` is updated; if a byte rule or formula changed, `ALGORITHM` is bumped
 - [ ] `docs/mapping.md` and `docs/mapping.zh-CN.md` match the new rules
 
 ### If you changed the English README
 
-- [ ] The translations (`README.zh-CN.md`, `README.ja.md`, `README.ko.md`, `README.es.md`) are updated, or a follow-up issue is linked
+- [ ] If the tagline, hero, install commands or what the tool does changed: the short versions (`README.zh-CN.md`, `README.ja.md`, `README.ko.md`, `README.es.md`) are updated, or a follow-up issue is linked
 
 ## Notes for reviewers
 

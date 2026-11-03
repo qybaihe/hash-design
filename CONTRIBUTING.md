@@ -24,23 +24,23 @@ npm run check   # typecheck + lint + prettier --check + vitest
 node scripts/smoke.mjs
 ```
 
-| Script                          | What it does                                                                                |
-| ------------------------------- | ------------------------------------------------------------------------------------------- |
-| `npm run build`                 | `tsc -b` for both packages                                                                  |
-| `npm test`                      | Vitest (core, CLI, MCP over in-memory transport, sync and example checks)                   |
-| `npm run check`                 | Everything CI checks except the smoke test and pack dry-run                                 |
-| `npm run format`                | Prettier `--write`                                                                          |
-| `npm run sync`                  | Regenerate `SKILL.md`'s bans block and its `.claude/` / `.cursor/` copies                   |
-| `node scripts/smoke.mjs`        | CLI + MCP server over real stdio                                                            |
-| `node scripts/verify-fonts.mjs` | Check every Google Fonts URL online (not run in CI)                                         |
-| `npm run examples`              | List the example runs and their seeds (`scripts/examples.mjs`)                              |
-| `npm run example:roll`          | Re-roll an example with its fixed seed (`-- <name>` for one); skips hash-design/v1 records  |
-| `npm run example:critique`      | Critique every example preview (against its brief unless it is a v1 record); fails below 90 |
-| `npm run example:compare`       | Rebuild an example's `compare.html`; skips hash-design/v1 records                           |
-| `npm run screenshots`           | Playwright screenshots of every example (`npx playwright install chromium` first)           |
-| `npm run hero`                  | Rebuild `docs/assets/hero.png` and `social-preview.png` from the example screenshots        |
-| `npm run hero:gif`              | Rebuild the animated `docs/assets/hero.gif` and `hero.mp4` (needs ffmpeg)                   |
-| `npm run showcase`              | Rebuild the README showcase plates, `docs/assets/showcase/<example>.png`                    |
+| Script                          | What it does                                                                                         |
+| ------------------------------- | ---------------------------------------------------------------------------------------------------- |
+| `npm run build`                 | `tsc -b` for both packages                                                                           |
+| `npm test`                      | Vitest (core, CLI, MCP over in-memory transport, sync and example checks)                            |
+| `npm run check`                 | Everything CI checks except the smoke test and pack dry-run                                          |
+| `npm run format`                | Prettier `--write`                                                                                   |
+| `npm run sync`                  | Regenerate the bans block in `skills/hash-design/SKILL.md`, the only Skill file (`sync:check` in CI) |
+| `node scripts/smoke.mjs`        | CLI + MCP server over real stdio                                                                     |
+| `node scripts/verify-fonts.mjs` | Check every Google Fonts URL online (not run in CI)                                                  |
+| `npm run examples`              | List the example runs and their seeds (`scripts/examples.mjs`)                                       |
+| `npm run example:roll`          | Re-roll an example with its fixed seed (`-- <name>` for one)                                         |
+| `npm run example:critique`      | Critique every example preview against its brief; fails below 90                                     |
+| `npm run example:compare`       | Rebuild an example's `compare.html` (`node scripts/examples.mjs index` rewrites the Pages index)     |
+| `npm run screenshots`           | Playwright screenshots of every example (`npx playwright install chromium` first)                    |
+| `npm run hero`                  | Rebuild `docs/assets/hero.png` and `social-preview.png` from the example screenshots                 |
+| `npm run hero:gif`              | Rebuild the animated `docs/assets/hero.gif` and `hero.mp4` (needs ffmpeg)                            |
+| `npm run showcase`              | Rebuild the README showcase plates, `docs/assets/showcase/<example>.png`                             |
 
 The code layout is described in [docs/architecture.md](docs/architecture.md), and the mapping algorithm in [docs/mapping.md](docs/mapping.md).
 
@@ -64,14 +64,14 @@ There is no style library to add to: in `hash-design/v2` the hash is the directi
 
 ## The examples
 
-The four runs under `examples/` (`fourth-lane-bakery`, `sluice`, `bridge-two-bikes`, `causeway-festival`, listed in [`scripts/examples.mjs`](scripts/examples.mjs)) were rolled with `hash-design/v1` and are kept as records of real runs. v2 cannot reproduce them, so they do not need re-rolling when the mapping changes, and `npm run example:roll` / `example:compare` skip them. `examples.test.ts` still checks that each is labelled as a v1 run and that every preview scores at least 90 with no critical or major findings.
+The four runs under `examples/` (`fourth-lane-bakery`, `sluice`, `bridge-two-bikes`, `causeway-festival`, listed in [`scripts/examples.mjs`](scripts/examples.mjs)) are `hash-design/v2` runs, each rolled once with its folder name as the seed. `examples.test.ts` checks that each roll reproduces from its seed, that every brief on disk is exactly what its ref renders, and that every preview scores at least 90 with brief adherence of at least 80 and no critical or major findings. Anything that changes the library fingerprint changes what the seeds roll, so it also means re-rolling the examples and rendering their previews again (one sub-agent per brief).
 
-A new example made with the current algorithm would go through the full loop:
+Adding or re-rolling an example goes through the full loop:
 
 1. Add it to `EXAMPLES` in `scripts/examples.mjs` with a `facts.md`, then `npm run build && npm run example:roll -- <name>` writes `roll.json`, `ROLL.md` and `briefs/`.
-2. Render one preview per brief following the [Skill](skills/hash-design/SKILL.md), step 3: each preview is produced from **its own brief only** (separate agent sessions), as a single self-contained HTML file in `previews/NN-<short>.html`.
+2. Render one preview per brief following the [Skill](skills/hash-design/SKILL.md), steps 4–5: each preview is produced from **its own brief only** (separate agent sessions), as a single self-contained HTML file in `previews/NN-<short>.html`.
 3. `npm run example:critique -- <name>` must pass: every preview scores at least 90 with no critical or major findings.
-4. `npm run example:compare -- <name>`, `npm run screenshots`, then `npm run showcase` for its README plate, and link it from `examples/index.html` and the Showcase section of every `README*.md`.
+4. `npm run example:compare -- <name>`, `npm run screenshots`, `node scripts/examples.mjs index` for the Pages index, then `npm run showcase` for its plate (and `npm run hero` / `hero:gif` if it is the hero example), and add it to the Showcase section of `README.md`.
 
 ## Changing the critique rules
 
@@ -83,10 +83,10 @@ Update, in the same pull request: the tool schema in `packages/core/src/mcp.ts`,
 
 ## Documentation and translations
 
-- `README.md` (English) is the source of truth. `README.zh-CN.md`, `README.ja.md`, `README.ko.md` and `README.es.md` are translations.
-- When you change the English README, update the translations if you can. If you cannot, open an issue so a translator can follow up, and mention it in the pull request.
+- `README.md` (English) is the complete README and the source of truth. `README.zh-CN.md`, `README.ja.md`, `README.ko.md` and `README.es.md` are short versions: the tagline, the hero, the install commands, a "what it does" paragraph and links to the full English README and the docs. `readmes.test.ts` keeps their outlines identical and checks the commands and links in all five.
+- Most README changes touch only `README.md`. Update the short versions when the tagline, the hero, the install commands or what the tool does change; if you cannot, open an issue so a translator can follow up, and mention it in the pull request.
 - Keep code blocks, commands, package names, tool names and flags identical across languages; only prose and comments are translated.
-- New translations are welcome. Add the file as `README.<lang>.md` and add it to the language switcher in every README.
+- New translations are welcome: copy a short version to `README.<lang>.md`, translate it and add it to the language switcher in every README.
 
 ## Releasing
 
@@ -108,7 +108,7 @@ By contributing, you agree that your contributions are licensed under the [MIT L
 - **开发**：Node ≥ 20（`.nvmrc` 为 22）。`npm install && npm run build && npm run check`，再跑 `node scripts/smoke.mjs`。
 - **提交**：沿用 Conventional Commits（`feat(core): …`、`docs: …` 等）；用户可见的改动写进 `CHANGELOG.md` 的 `[Unreleased]`；CI 必须在 Node 20/22/24 上全绿。
 - **参数空间**：v2 里哈希本身就是方向，没有风格库可加。可以改的是扁平字体池（`data/fonts.ts`）、中性原语列表（`data/space.ts`）和字节规则（`mapping.ts` 的 `BYTE_MAP`）。不要加流派名、情绪标签或捆绑在一起的选项。任何改动都会改变库指纹：在同一个提交里更新 `mapping.test.ts` 钉住的值；改字节分配或公式还要提升 `ALGORITHM`。改字体后跑 `node scripts/verify-fonts.mjs`，然后 `npm run sync`，并同步 `docs/mapping*.md`。
-- **示例**：`examples/` 下的 4 个示例是用 `hash-design/v1` 掷的，作为真实运行的记录保留；v2 无法复现它们，所以改映射时不用重掷，`npm run example:roll` / `example:compare` 会跳过它们。`examples.test.ts` 仍检查它们标明了 v1，且每个预览 ≥ 90 分、无 critical/major。
-- **翻译**：英文 `README.md` 是基准，其余语言是译本。代码块、命令、包名、工具名在各语言中保持一致。
+- **示例**：`examples/` 下的 4 个示例是 `hash-design/v2` 的运行，各用文件夹名作 seed 掷了一次。`examples.test.ts` 检查：每次掷骰能从 seed 复现、磁盘上的每份 brief 都和它的 ref 渲染出来的一字不差、每个预览 ≥ 90 分且 brief 遵守度 ≥ 80、无 critical/major。任何改变库指纹的改动都会改变这些 seed 掷出的结果，所以也意味着要重掷示例、重新渲染预览（每份 brief 一个子 Agent）。
+- **翻译**：英文 `README.md` 是完整版和基准；其余四种语言是精简版（标语、首图、安装命令、一段简介和指向英文 README 的链接），`readmes.test.ts` 保证它们结构一致。代码块、命令、包名、工具名在各语言中保持一致。
 - **发布**：只有维护者发布。发布 tag 为 `v<version>` 的 GitHub Release 会触发 `.github/workflows/release.yml`，校验通过后把 `hash-design`（`packages/core`）发布到 npm；推送到 `main` 不会发包。MCP server 包含在 `hash-design` 里（`hash-design mcp`）；`packages/mcp`（`hash-design-mcp`）是给克隆源码用的 private 包装，不发布。认证用 npm Trusted Publishing（OIDC），不需要 npm token 或 secret；npmjs.com 上 Trusted Publisher 的填写和完整步骤见 [docs/publishing.zh-CN.md](docs/publishing.zh-CN.md)。`npm run release:check` 在 CI 里运行，`hash-design` 不再可发布或 `packages/mcp` 不再是 private 时会失败。
 - **安全问题**请按 [SECURITY.md](SECURITY.md) 私下报告，不要开公开 issue。

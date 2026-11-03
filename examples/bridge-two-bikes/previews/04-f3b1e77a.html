@@ -1,0 +1,670 @@
+<!-- hash-design #4 · f3b1e77a · ref f3b1e77a9af302d06082ad6e19cffb7ede96eefb3dcca2619177519ad6f0bd99 -->
+<!doctype html>
+<html lang="zh-CN">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>二号桥单车铺 · Bridge No.2 Cycle Works</title>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Alfa+Slab+One&family=Hanken+Grotesk:ital,wght@0,400;0,500;0,600;1,400;1,500;1,600&family=Overpass+Mono:wght@400;600&family=LXGW+WenKai+TC&family=Noto+Sans+SC:wght@400;700&display=swap">
+<!--
+  Direction f3b1e77a, executed as frozen:
+  light 342.69° · Alfa Slab One / Hanken Grotesk (+ LXGW WenKai TC / Noto Sans SC) · Overpass Mono
+  8 columns / 21px gutter / max 1240px · text block columns 1–8 · first screen 99%
+  anchor: the word "二号桥", 90% of the first-screen width, centred at 40% from the left, rotated 1.5°
+  3 sections as full-width bands (panel / paper / panel) · zigzag markers 28px at 177°
+  radius 4px · 3px solid rule border · no shadow · dot screen 10.2%
+  motion: clip-path wipe 320ms cubic-bezier(0, 0.6, 0.37, 1)
+  twist: the main headline is inverted, paper-coloured on ink (applied literally on the h1).
+-->
+<style>
+/* hash-design hash-design/v2 · f3b1e77a */
+:root {
+  --paper: #fff2f9;
+  --ink: #45313d;
+  --muted: #776a72;
+  --accent: #d160aa;
+  --on-accent: #000000;
+  --accent2: #9f7be1;
+  --on-accent2: #000000;
+  --rule: #cfb7c5;
+  --panel: #f7e0ed;
+
+  --font-display: "Alfa Slab One", "LXGW WenKai TC", Rockwell, serif;
+  --font-body: "Hanken Grotesk", "Noto Sans SC", Helvetica, Arial, sans-serif;
+  --font-mono: "Overpass Mono", "Courier New", monospace;
+  --display-weight: 400;
+  --display-tracking: 0.082em;
+
+  --step-n2: 0.497rem; /* 7.9px */
+  --step-n1: 0.716rem; /* 11.5px */
+  --step-0: 1.031rem; /* 16.5px */
+  --step-1: 1.486rem; /* 23.8px */
+  --step-2: 2.141rem; /* 34.3px */
+  --step-3: 3.086rem; /* 49.4px */
+  --step-4: 4.447rem; /* 71.1px */
+  --step-5: 6.407rem; /* 102.5px */
+  --step-6: 9.233rem; /* 147.7px */
+  --step-7: 13.305rem; /* 212.9px */
+  --leading: 1.52;
+
+  --space-1: 7px;
+  --space-2: 14px;
+  --space-3: 21px;
+  --space-4: 28px;
+  --space-5: 35px;
+  --space-6: 42px;
+  --space-7: 49px;
+  --space-8: 56px;
+  --section-gap: 109px;
+  --max-width: 1240px;
+  --columns: 8;
+  --gutter: 21px;
+
+  --radius: 4px;
+  --border: 3px solid var(--rule);
+  --shadow: none;
+
+  --motion-duration: 320ms;
+  --motion-easing: cubic-bezier(0, 0.6, 0.37, 1);
+}
+
+html { font-size: 103.1%; }
+body { background: var(--paper); color: var(--ink); font-family: var(--font-body); line-height: var(--leading); }
+@media (prefers-reduced-motion: reduce) {
+  *, *::before, *::after { animation: none !important; transition: none !important; }
+}
+
+/* ---------- base ---------- */
+*, *::before, *::after { box-sizing: border-box; }
+body {
+  margin: 0;
+  font-size: var(--step-0);
+  background-color: var(--paper);
+  background-image: radial-gradient(color-mix(in srgb, var(--ink) 10.2%, transparent) 1px, transparent 1.5px);
+  background-size: 6px 6px;
+}
+h1, h2, h3, p, ol, ul, dl, dd { margin: 0; padding: 0; }
+ol, ul { list-style: none; }
+a { color: inherit; }
+:focus-visible { outline: 3px solid var(--accent2); outline-offset: 3px; }
+
+/* 8-column grid, 21px gutter, 1240px max */
+.wrap {
+  max-width: var(--max-width);
+  margin-inline: auto;
+  padding-inline: var(--space-4);
+  display: grid;
+  grid-template-columns: repeat(var(--columns), minmax(0, 1fr));
+  column-gap: var(--gutter);
+}
+/* the text block: columns 1–8 of 8 */
+.text-block { grid-column: 1 / 9; }
+.cols-8 {
+  display: grid;
+  grid-template-columns: repeat(var(--columns), minmax(0, 1fr));
+  column-gap: var(--gutter);
+}
+
+/* zigzag motif: 28px, rotated 177°, used as list and heading markers */
+.zz {
+  width: 28px;
+  height: 10px;
+  flex: none;
+  color: var(--accent);
+  transform: rotate(177deg);
+  overflow: visible;
+}
+
+/* clip-path wipe on hover / focus */
+.wipe { position: relative; isolation: isolate; text-decoration: none; }
+.wipe::before {
+  content: "";
+  position: absolute;
+  inset: -2px -6px;
+  z-index: -1;
+  border-radius: var(--radius);
+  background: var(--accent);
+  clip-path: inset(0 100% 0 0);
+  transition: clip-path var(--motion-duration) var(--motion-easing);
+}
+.wipe:hover::before, .wipe:focus-visible::before { clip-path: inset(0 0 0 0); }
+.wipe:hover, .wipe:focus-visible { color: var(--on-accent); }
+
+/* ---------- first screen ---------- */
+.hero {
+  position: relative;
+  min-height: 99vh;
+  min-height: 99svh;
+  overflow: hidden;
+  display: grid;
+  grid-template-rows: auto 1fr auto;
+}
+.hero > .wrap { width: 100%; }
+.topbar {
+  padding-block: var(--space-3);
+  align-items: baseline;
+  row-gap: var(--space-1);
+}
+.topbar .name {
+  grid-column: 1 / 5;
+  font-family: var(--font-display);
+  font-weight: var(--display-weight);
+  letter-spacing: var(--display-tracking);
+  font-size: var(--step-1);
+  line-height: 1.1;
+}
+.topbar .name small {
+  display: block;
+  font-family: var(--font-mono);
+  font-size: var(--step-n1);
+  letter-spacing: 0.04em;
+  color: var(--muted);
+  margin-top: 4px;
+}
+.topbar nav {
+  grid-column: 5 / 9;
+  justify-self: end;
+  display: flex;
+  gap: var(--space-4);
+  font-family: var(--font-body);
+  font-weight: 500;
+}
+
+.anchor-stage { position: relative; align-self: center; }
+.anchor {
+  position: relative;
+  left: 40%;                       /* centre sits 40% from the left edge */
+  width: 90%;                      /* 90% of the first screen's width */
+  transform: translateX(-50%) rotate(1.5deg);
+  transform-origin: 50% 50%;
+  text-align: center;
+  white-space: nowrap;
+  font-family: var(--font-display);
+  font-weight: var(--display-weight);
+  letter-spacing: var(--display-tracking);
+  text-indent: var(--display-tracking); /* balances the trailing tracking */
+  font-size: min(27.7vw, 60svh);
+  line-height: 0.92;
+  color: var(--accent);
+  user-select: none;
+  animation: anchor-wipe var(--motion-duration) var(--motion-easing) both;
+}
+@keyframes anchor-wipe {
+  from { clip-path: inset(0 100% 0 0); }
+  to   { clip-path: inset(0 0 0 0); }
+}
+
+.hero-text {
+  padding-bottom: var(--space-6);
+  position: relative;
+  z-index: 1;
+}
+/* twist: the main headline, inverted — paper-coloured on ink */
+.hero-text h1 {
+  display: inline-block;
+  background: var(--ink);
+  color: var(--paper);
+  font-family: var(--font-display);
+  font-weight: var(--display-weight);
+  letter-spacing: var(--display-tracking);
+  font-size: clamp(var(--step-2), 4.6vw, var(--step-4));
+  line-height: 1.16;
+  padding: var(--space-2) var(--space-4) var(--space-2) var(--space-3);
+  border-radius: var(--radius);
+  margin-top: calc(-1 * var(--space-6));
+}
+.hero-text .lede {
+  margin-top: var(--space-4);
+  font-size: var(--step-1);
+  line-height: 1.4;
+  max-width: 34em;
+}
+.hero-facts {
+  margin-top: var(--space-4);
+  padding-top: var(--space-3);
+  border-top: var(--border);
+  row-gap: var(--space-2);
+  font-family: var(--font-mono);
+  font-size: var(--step-0);
+}
+.hero-facts li { display: flex; align-items: center; gap: var(--space-2); }
+.hero-facts li:nth-child(1) { grid-column: 1 / 4; }
+.hero-facts li:nth-child(2) { grid-column: 4 / 7; }
+.hero-facts li:nth-child(3) { grid-column: 7 / 9; }
+
+/* ---------- three sections as full-width bands ---------- */
+.band { padding-block: var(--section-gap); }
+.band.on-panel {
+  background-color: var(--panel);
+  background-image: radial-gradient(color-mix(in srgb, var(--ink) 10.2%, transparent) 1px, transparent 1.5px);
+  background-size: 6px 6px;
+}
+.band h2 {
+  display: block;
+  font-family: var(--font-display);
+  font-weight: var(--display-weight);
+  letter-spacing: var(--display-tracking);
+  font-size: clamp(var(--step-1), 3.6vw, var(--step-3));
+  line-height: 1.2;
+}
+.band h2 .zz { vertical-align: 0.28em; margin-right: var(--space-3); }
+.kicker {
+  font-family: var(--font-mono);
+  font-size: var(--step-n1);
+  font-weight: 600;
+  letter-spacing: 0.08em;
+  color: var(--muted);
+  margin-bottom: var(--space-2);
+}
+.band .intro {
+  margin-top: var(--space-3);
+  font-size: var(--step-1);
+  line-height: 1.42;
+  max-width: 36em;
+}
+
+/* section 1 — price list */
+.prices { margin-top: var(--space-7); border-bottom: var(--border); }
+.row {
+  position: relative;
+  isolation: isolate;
+  align-items: baseline;
+  padding-block: var(--space-3);
+  border-top: var(--border);
+}
+.row::before {
+  content: "";
+  position: absolute;
+  inset: 0 calc(-1 * var(--space-2));
+  z-index: -1;
+  background: var(--paper);
+  border-radius: var(--radius);
+  clip-path: inset(0 100% 0 0);
+  transition: clip-path var(--motion-duration) var(--motion-easing);
+}
+.row:hover::before, .row:focus-within::before { clip-path: inset(0 0 0 0); }
+.row .item {
+  grid-column: 1 / 4;
+  display: flex;
+  align-items: center;
+  gap: var(--space-2);
+  font-weight: 600;
+  font-size: var(--step-1);
+  line-height: 1.25;
+}
+.row .note { grid-column: 4 / 7; color: var(--muted); }
+.row .price {
+  grid-column: 7 / 9;
+  justify-self: end;
+  font-family: var(--font-display);
+  font-weight: var(--display-weight);
+  letter-spacing: var(--display-tracking);
+  font-size: var(--step-2);
+  line-height: 1;
+  white-space: nowrap;
+}
+.row .price small { font-family: var(--font-body); font-size: var(--step-0); letter-spacing: 0; font-weight: 600; margin-left: 4px; }
+.row.major { padding-block: var(--space-5); }
+.row.major .item { font-size: var(--step-2); font-family: var(--font-display); font-weight: var(--display-weight); letter-spacing: var(--display-tracking); }
+.row.major .note { font-size: var(--step-1); line-height: 1.4; color: var(--ink); }
+.row.major .price { font-size: var(--step-4); color: var(--accent); }
+.row.minor .item { font-size: var(--step-0); }
+.row.minor .price { font-size: var(--step-1); }
+
+.used {
+  margin-top: var(--space-7);
+  border: var(--border);
+  border-radius: var(--radius);
+  box-shadow: var(--shadow);
+  background: var(--paper);
+  padding: var(--space-5) var(--space-4);
+  align-items: end;
+  row-gap: var(--space-3);
+}
+.used .copy { grid-column: 1 / 6; }
+.used h3 {
+  display: flex; align-items: center; gap: var(--space-2);
+  font-family: var(--font-display);
+  font-weight: var(--display-weight);
+  letter-spacing: var(--display-tracking);
+  font-size: var(--step-2);
+  line-height: 1.2;
+}
+.used p { margin-top: var(--space-2); font-size: var(--step-1); line-height: 1.42; }
+.used .warranty {
+  grid-column: 6 / 9;
+  justify-self: end;
+  text-align: right;
+  font-family: var(--font-display);
+  font-weight: var(--display-weight);
+  letter-spacing: var(--display-tracking);
+  font-size: var(--step-5);
+  line-height: 0.9;
+}
+.used .warranty small {
+  display: block;
+  font-family: var(--font-mono);
+  font-size: var(--step-0);
+  letter-spacing: 0.04em;
+  color: var(--muted);
+  margin-bottom: var(--space-1);
+}
+.no-new {
+  margin-top: var(--space-4);
+  font-weight: 500;
+  color: var(--muted);
+}
+
+/* section 2 — owner and Thursday ride */
+.owner-years {
+  font-family: var(--font-display);
+  font-weight: var(--display-weight);
+  letter-spacing: var(--display-tracking);
+}
+.ride { margin-top: var(--space-8); }
+.ride h3 {
+  display: flex; align-items: center; gap: var(--space-2);
+  font-family: var(--font-display);
+  font-weight: var(--display-weight);
+  letter-spacing: var(--display-tracking);
+  font-size: var(--step-2);
+  line-height: 1.2;
+}
+.ride dl {
+  margin-top: var(--space-5);
+  border-top: var(--border);
+  padding-top: var(--space-4);
+  row-gap: var(--space-4);
+  align-items: start;
+}
+.ride dt {
+  font-family: var(--font-mono);
+  font-size: var(--step-n1);
+  font-weight: 600;
+  letter-spacing: 0.08em;
+  color: var(--muted);
+}
+.ride .start { grid-column: 1 / 4; }
+.ride .route { grid-column: 4 / 7; }
+.ride .rest  { grid-column: 7 / 9; display: grid; row-gap: var(--space-3); }
+.ride .start dd {
+  font-family: var(--font-display);
+  font-weight: var(--display-weight);
+  letter-spacing: var(--display-tracking);
+  font-size: var(--step-5);
+  line-height: 1;
+  color: var(--accent2);
+}
+.ride .start dd span, .ride .route dd span {
+  display: block;
+  font-family: var(--font-body);
+  font-size: var(--step-0);
+  letter-spacing: 0;
+  color: var(--ink);
+  margin-top: var(--space-1);
+}
+.ride .route dd {
+  font-family: var(--font-display);
+  font-weight: var(--display-weight);
+  letter-spacing: var(--display-tracking);
+  font-size: var(--step-4);
+  line-height: 1.1;
+}
+.ride .route dd em { font-style: normal; font-size: var(--step-1); }
+.ride .rest dd { font-size: var(--step-1); font-weight: 600; line-height: 1.3; }
+
+/* section 3 — where and how to book */
+.where {
+  margin-top: var(--space-6);
+  display: grid;
+  row-gap: var(--space-3);
+}
+.where li {
+  display: grid;
+  grid-template-columns: 28px 6em minmax(0, 1fr);
+  column-gap: var(--space-3);
+  align-items: baseline;
+  padding-bottom: var(--space-3);
+  border-bottom: var(--border);
+  font-size: var(--step-1);
+  line-height: 1.42;
+}
+.where li .zz { align-self: center; }
+.where li b { font-weight: 600; font-family: var(--font-mono); font-size: var(--step-0); color: var(--muted); }
+.book { margin-top: var(--space-7); align-items: end; row-gap: var(--space-3); }
+.book p { grid-column: 1 / 5; font-size: var(--step-1); line-height: 1.42; }
+.book .tel {
+  grid-column: 5 / 9;
+  justify-self: end;
+  font-family: var(--font-mono);
+  font-weight: 600;
+  font-size: var(--step-3);
+  line-height: 1;
+  letter-spacing: 0.02em;
+  white-space: nowrap;
+}
+.map {
+  margin-top: var(--space-7);
+  border: var(--border);
+  border-radius: var(--radius);
+  background: var(--paper);
+  padding: var(--space-3);
+}
+.map svg { display: block; width: 100%; height: auto; }
+.map .deck { fill: var(--ink); }
+.map .line { stroke: var(--ink); stroke-width: 3; fill: none; }
+.map .thin { stroke: var(--rule); stroke-width: 3; fill: none; }
+.map .shutter { stroke: var(--ink); stroke-width: 2; fill: var(--panel); }
+.map .wheel { stroke: var(--accent); stroke-width: 3; fill: none; }
+.map .spoke { stroke: var(--accent); stroke-width: 1.5; }
+.map text { font-family: var(--font-mono); font-size: 17px; fill: var(--ink); }
+.map text.big { font-family: var(--font-body); font-weight: 600; font-size: 20px; }
+
+/* footer */
+.foot { padding-block: var(--space-6); border-top: var(--border); }
+.foot p { grid-column: 1 / 9; display: flex; flex-wrap: wrap; gap: var(--space-1) var(--space-4); font-family: var(--font-mono); font-size: var(--step-n1); color: var(--muted); letter-spacing: 0.04em; }
+
+/* ---------- below 640px: one column; bands and anchor stay ---------- */
+@media (max-width: 639px) {
+  .wrap, .cols-8 { grid-template-columns: minmax(0, 1fr); }
+  .wrap { padding-inline: var(--space-3); }
+  .text-block, .topbar .name, .topbar nav,
+  .hero-facts li:nth-child(n), .row .item, .row .note, .row .price,
+  .used .copy, .used .warranty, .ride .start, .ride .route, .ride .rest,
+  .book p, .book .tel, .foot p { grid-column: 1 / -1; }
+  .topbar nav { justify-self: start; gap: var(--space-3); flex-wrap: wrap; font-size: var(--step-0); }
+  .hero-text h1 { margin-top: 0; padding: var(--space-2) var(--space-3); }
+  .hero-text .lede { font-size: var(--step-0); }
+  .hero-facts { font-size: var(--step-n1); }
+  .band { padding-block: var(--space-8); }
+  .band .intro { font-size: var(--step-0); }
+  .row { grid-template-columns: minmax(0, 1fr) auto; row-gap: var(--space-1); }
+  .row .item { grid-column: 1 / 2; font-size: var(--step-0); }
+  .row .price { grid-column: 2 / 3; grid-row: 1; font-size: var(--step-1); }
+  .row .note { grid-column: 1 / -1; padding-left: 42px; }
+  .row.major .item { font-size: var(--step-1); }
+  .row.major .note { font-size: var(--step-0); }
+  .row.major .price { font-size: var(--step-2); }
+  .used { padding: var(--space-4) var(--space-3); }
+  .used h3, .ride h3 { font-size: var(--step-1); }
+  .used p { font-size: var(--step-0); }
+  .used .warranty { justify-self: start; text-align: left; font-size: var(--step-4); }
+  .ride .start dd { font-size: var(--step-4); }
+  .ride .route dd { font-size: var(--step-3); }
+  .where li { grid-template-columns: 28px minmax(0, 1fr); font-size: var(--step-0); }
+  .where li b { grid-column: 2; }
+  .where li span { grid-column: 2; }
+  .book p { font-size: var(--step-0); }
+  .book .tel { justify-self: start; font-size: var(--step-2); }
+  .map { display: none; } /* labels would drop below 7px; the same facts are in the list above */
+}
+</style>
+</head>
+<body>
+
+<svg width="0" height="0" style="position:absolute" aria-hidden="true" focusable="false">
+  <symbol id="zz" viewBox="0 0 28 10">
+    <polyline points="1,8.5 5.5,1.5 10,8.5 14.5,1.5 19,8.5 23.5,1.5 27,8.5" fill="none" stroke="currentColor" stroke-width="2.6" stroke-linejoin="miter" stroke-linecap="square"/>
+  </symbol>
+</svg>
+
+<header class="hero">
+  <div class="wrap topbar">
+    <p class="name">二号桥单车铺<small>Bridge No.2 Cycle Works</small></p>
+    <nav aria-label="页面导航">
+      <a class="wipe" href="#prices">价目</a>
+      <a class="wipe" href="#laochen">老陈与夜骑</a>
+      <a class="wipe" href="#where">地址预约</a>
+    </nav>
+  </div>
+
+  <div class="anchor-stage" aria-hidden="true">
+    <div class="anchor">二号桥</div>
+  </div>
+
+  <div class="wrap">
+    <div class="text-block hero-text">
+      <h1>我们在二号桥桥洞下修自行车。</h1>
+      <p class="lede">我们不卖新车，只修车、卖二手车和零件。</p>
+      <ul class="hero-facts cols-8">
+        <li><svg class="zz" aria-hidden="true"><use href="#zz"/></svg>周三至周日 10:00–20:00</li>
+        <li><svg class="zz" aria-hidden="true"><use href="#zz"/></svg>河西路二号桥桥洞下东侧</li>
+        <li><svg class="zz" aria-hidden="true"><use href="#zz"/></svg>0571-5555-0222</li>
+      </ul>
+    </div>
+  </div>
+</header>
+
+<main>
+  <!-- band 1 · panel -->
+  <section class="band on-panel" id="prices">
+    <div class="wrap">
+      <div class="text-block">
+        <p class="kicker">价目</p>
+        <h2><svg class="zz" aria-hidden="true"><use href="#zz"/></svg>我们按项目收钱，价钱都写在这里。</h2>
+        <p class="intro">价钱按项目算。全车保养约 2 小时，编轮组工期 5 天。</p>
+
+        <ol class="prices">
+          <li class="row cols-8 minor">
+            <span class="item"><svg class="zz" aria-hidden="true"><use href="#zz"/></svg>补胎</span>
+            <span class="note"></span>
+            <span class="price">¥15</span>
+          </li>
+          <li class="row cols-8 minor">
+            <span class="item"><svg class="zz" aria-hidden="true"><use href="#zz"/></svg>换内胎</span>
+            <span class="note">含内胎</span>
+            <span class="price">¥35</span>
+          </li>
+          <li class="row cols-8 major">
+            <span class="item"><svg class="zz" aria-hidden="true"><use href="#zz"/></svg>全车保养</span>
+            <span class="note">清洗传动，调变速和刹车，紧固全车螺丝。约 2 小时。</span>
+            <span class="price">¥180</span>
+          </li>
+          <li class="row cols-8">
+            <span class="item"><svg class="zz" aria-hidden="true"><use href="#zz"/></svg>手工编轮组</span>
+            <span class="note">工期 5 天。</span>
+            <span class="price">¥260<small>起</small></span>
+          </li>
+          <li class="row cols-8">
+            <span class="item"><svg class="zz" aria-hidden="true"><use href="#zz"/></svg>公路车 Fitting</span>
+            <span class="note">约 90 分钟，需要提前预约。</span>
+            <span class="price">¥480</span>
+          </li>
+        </ol>
+
+        <div class="used cols-8">
+          <div class="copy">
+            <h3><svg class="zz" aria-hidden="true"><use href="#zz"/></svg>我们也卖二手车。</h3>
+            <p>我们卖的每辆二手车，都换过链条和刹车皮。</p>
+          </div>
+          <p class="warranty"><small>保修</small>90 天</p>
+        </div>
+        <p class="no-new">我们不卖新车，零件可以到店里买。</p>
+      </div>
+    </div>
+  </section>
+
+  <!-- band 2 · paper -->
+  <section class="band" id="laochen">
+    <div class="wrap">
+      <div class="text-block">
+        <p class="kicker">老陈与夜骑</p>
+        <h2><svg class="zz" aria-hidden="true"><use href="#zz"/></svg>店主是老陈，他修车修了 <span class="owner-years">27</span> 年。</h2>
+        <p class="intro">他叫陈立平，大家都叫他老陈。以前他在自行车厂做装配。</p>
+
+        <div class="ride">
+          <h3><svg class="zz" aria-hidden="true"><use href="#zz"/></svg>每周四晚上，我们从店门口出发夜骑。</h3>
+          <dl class="cols-8">
+            <div class="start">
+              <dt>出发</dt>
+              <dd>19:30<span>每周四，店门口集合出发</span></dd>
+            </div>
+            <div class="route">
+              <dt>路线</dt>
+              <dd>24<em> 公里</em><span>沿江骑一圈</span></dd>
+            </div>
+            <div class="rest">
+              <div><dt>费用</dt><dd>免费</dd></div>
+              <div><dt>要带</dt><dd>自带车灯</dd></div>
+            </div>
+          </dl>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <!-- band 3 · panel -->
+  <section class="band on-panel" id="where">
+    <div class="wrap">
+      <div class="text-block">
+        <p class="kicker">地址预约</p>
+        <h2><svg class="zz" aria-hidden="true"><use href="#zz"/></svg>我们在河西路二号桥的桥洞下。</h2>
+
+        <ul class="where">
+          <li><svg class="zz" aria-hidden="true"><use href="#zz"/></svg><b>地址</b><span>桥洞下东侧，蓝色卷帘门，门口立着一个旧车轮。</span></li>
+          <li><svg class="zz" aria-hidden="true"><use href="#zz"/></svg><b>营业</b><span>周三至周日 10:00–20:00；周一、周二休息。</span></li>
+          <li><svg class="zz" aria-hidden="true"><use href="#zz"/></svg><b>气泵</b><span>门口的气泵免费用，24 小时都开着。</span></li>
+        </ul>
+
+        <div class="book cols-8">
+          <p>预约请打电话，也可以直接到店登记。</p>
+          <a class="tel wipe" href="tel:057155550222">0571-5555-0222</a>
+        </div>
+
+        <figure class="map" aria-label="示意：河西路二号桥，店在桥洞下东侧">
+          <svg viewBox="0 0 900 240" role="img" aria-hidden="true">
+            <!-- road deck -->
+            <rect class="deck" x="0" y="34" width="900" height="16" rx="2"/>
+            <text class="big" x="12" y="24">河西路 · 二号桥</text>
+            <!-- arch under the bridge -->
+            <path class="line" d="M150 50 V200 M750 50 V200 M150 200 C150 40 750 40 750 200"/>
+            <line class="thin" x1="0" y1="203" x2="900" y2="203"/>
+            <!-- east side: rolling shutter -->
+            <rect class="shutter" x="560" y="132" width="120" height="68" rx="2"/>
+            <path class="line" d="M560 144 H680 M560 156 H680 M560 168 H680 M560 180 H680 M560 192 H680" style="stroke-width:1.5"/>
+            <text x="570" y="230">蓝色卷帘门</text>
+            <!-- old wheel at the door -->
+            <circle class="wheel" cx="505" cy="171" r="29"/>
+            <circle class="wheel" cx="505" cy="171" r="4"/>
+            <path class="spoke" d="M505 142 V200 M476 171 H534 M484.5 150.5 L525.5 191.5 M525.5 150.5 L484.5 191.5"/>
+            <text x="474" y="230">旧车轮</text>
+            <text x="260" y="176">桥洞下</text>
+            <!-- east marker -->
+            <text x="790" y="96">东 →</text>
+          </svg>
+        </figure>
+      </div>
+    </div>
+  </section>
+</main>
+
+<footer class="foot">
+  <div class="wrap">
+    <p><span>二号桥单车铺 · Bridge No.2 Cycle Works</span><span>只修车、卖二手车和零件</span><span>0571-5555-0222</span></p>
+  </div>
+</footer>
+
+</body>
+</html>
