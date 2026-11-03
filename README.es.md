@@ -22,7 +22,7 @@
 
 **[Ejemplos en vivo](https://qybaihe.github.io/hash-design/) · [Especificación del mapeo](docs/mapping.md) · [Referencia MCP](docs/mcp-tools.md) · [Registro de cambios](CHANGELOG.md)**
 
-[Inicio rápido](#inicio-rápido) · [Cómo funciona](#cómo-funciona) · [Galería](#galería) · [Referencia](#referencia) · [Preguntas frecuentes](#preguntas-frecuentes)
+[Galería](#galería) · [Inicio rápido](#inicio-rápido) · [Cómo funciona](#cómo-funciona) · [Referencia](#referencia) · [Preguntas frecuentes](#preguntas-frecuentes)
 
 **Díselo a tu agente** (Claude Code, Cursor, Codex, Windsurf, VS Code Copilot…):
 
@@ -35,6 +35,34 @@ https://github.com/qybaihe/hash-design/blob/main/README.es.md#inicio-rápido.
 </div>
 
 ---
+
+## Galería
+
+Cuatro ejecuciones completas, cada una con su ficha de datos y una semilla fija que solo sirve para reproducirla. Se sortearon con **hash-design/v1**, la biblioteca de 40 ramas a la que sustituyó v2, y se conservan como registro de ejecuciones reales: sus refs no se reproducen con v2 y sus láminas llevan los nombres de las ramas de v1. Cada vista previa la hizo un subagente que solo veía su brief, y todas siguen puntuando al menos 90/100 en `critique_page`. Todas están en el [índice de ejemplos](https://qybaihe.github.io/hash-design/). Cada lámina de abajo es una tirada: sus cinco direcciones lado a lado.
+
+### Fourth Lane Bakery (第四巷面包店) — una panadería de barrio · página en chino
+
+[![Fourth Lane Bakery: cinco direcciones sorteadas lado a lado — Bureaucratic form, Bauhaus primary, Ink and seal, Risograph duotone, Hong Kong shop sign](docs/assets/showcase/fourth-lane-bakery.png)](examples/fourth-lane-bakery)
+
+Semilla `fourth-lane-bakery` · `critique_page` 96–100 · adherencia al brief 100 · [carpeta del ejemplo](examples/fourth-lane-bakery): datos, briefs, vistas previas y proceso
+
+### Sluice — una bandeja de entrada autoalojada para webhooks · página en inglés
+
+[![Sluice: cinco direcciones sorteadas lado a lado — Record sleeve, Gallery catalogue, Terminal phosphor, Academic paper, Lab notebook](docs/assets/showcase/sluice.png)](examples/sluice)
+
+Semilla `sluice` · `critique_page` 92–96 · adherencia al brief 90–100 · [carpeta del ejemplo](examples/sluice): datos, briefs, vistas previas y proceso
+
+### Bridge No.2 Cycle Works (二号桥单车铺) — un taller de bicicletas bajo un puente · página en chino
+
+[![Bridge No.2 Cycle Works: cinco direcciones sorteadas lado a lado — Swiss grid, Couture lookbook, Ticket stub, Game manual, Chinese almanac](docs/assets/showcase/bridge-two-bikes.png)](examples/bridge-two-bikes)
+
+Semilla `bridge-two-bikes-5` · `critique_page` 96–100 · adherencia al brief 100 · [carpeta del ejemplo](examples/bridge-two-bikes): datos, briefs, vistas previas y proceso
+
+### Causeway — un festival de música de un día en una isla a la que se llega con marea baja · página en inglés
+
+[![Causeway: cinco direcciones sorteadas lado a lado — Engineering plate, Topographic map, Warm handmade, Editorial magazine, Memphis pop](docs/assets/showcase/causeway-festival.png)](examples/causeway-festival)
+
+Semilla `causeway-festival-6` · `critique_page` 96–100 · adherencia al brief 100 · [carpeta del ejemplo](examples/causeway-festival): datos, briefs, vistas previas y proceso
 
 ## Qué hace hash-design
 
@@ -291,34 +319,6 @@ Ejecuta `hash-design brief 6ebe9acd06cbf4810ad2989965b22bc39bd527084bdda2964f9f0
 - en un escenario no web, una sección Escenario: formato, lienzo, estructura de archivos, número de diapositivas o pantallas, cómo se trasladan la maquetación, el ancla y el movimiento, y las reglas y prohibiciones del escenario
 
 Los briefs están escritos para agentes y son bilingües: los encabezados llevan etiquetas en chino y en inglés, y `language` (`zh` o `en`, detectado automáticamente a partir del tema y los datos) cambia las instrucciones, el texto del escenario y si se cargan webfonts CJK. Los textos de las prohibiciones globales por ahora solo están escritos en chino.
-
-## Galería
-
-Cuatro ejecuciones completas, cada una con su ficha de datos y una semilla fija que solo sirve para reproducirla. Se sortearon con **hash-design/v1**, la biblioteca de 40 ramas a la que sustituyó v2, y se conservan como registro de ejecuciones reales: sus refs no se reproducen con v2 y sus láminas llevan los nombres de las ramas de v1. Cada vista previa la hizo un subagente que solo veía su brief, y todas siguen puntuando al menos 90/100 en `critique_page`. Todas están en el [índice de ejemplos](https://qybaihe.github.io/hash-design/). Cada lámina de abajo es una tirada: sus cinco direcciones lado a lado.
-
-### Fourth Lane Bakery (第四巷面包店) — una panadería de barrio · página en chino
-
-[![Fourth Lane Bakery: cinco direcciones sorteadas lado a lado — Bureaucratic form, Bauhaus primary, Ink and seal, Risograph duotone, Hong Kong shop sign](docs/assets/showcase/fourth-lane-bakery.png)](examples/fourth-lane-bakery)
-
-Semilla `fourth-lane-bakery` · `critique_page` 96–100 · adherencia al brief 100 · [carpeta del ejemplo](examples/fourth-lane-bakery): datos, briefs, vistas previas y proceso
-
-### Sluice — una bandeja de entrada autoalojada para webhooks · página en inglés
-
-[![Sluice: cinco direcciones sorteadas lado a lado — Record sleeve, Gallery catalogue, Terminal phosphor, Academic paper, Lab notebook](docs/assets/showcase/sluice.png)](examples/sluice)
-
-Semilla `sluice` · `critique_page` 92–96 · adherencia al brief 90–100 · [carpeta del ejemplo](examples/sluice): datos, briefs, vistas previas y proceso
-
-### Bridge No.2 Cycle Works (二号桥单车铺) — un taller de bicicletas bajo un puente · página en chino
-
-[![Bridge No.2 Cycle Works: cinco direcciones sorteadas lado a lado — Swiss grid, Couture lookbook, Ticket stub, Game manual, Chinese almanac](docs/assets/showcase/bridge-two-bikes.png)](examples/bridge-two-bikes)
-
-Semilla `bridge-two-bikes-5` · `critique_page` 96–100 · adherencia al brief 100 · [carpeta del ejemplo](examples/bridge-two-bikes): datos, briefs, vistas previas y proceso
-
-### Causeway — un festival de música de un día en una isla a la que se llega con marea baja · página en inglés
-
-[![Causeway: cinco direcciones sorteadas lado a lado — Engineering plate, Topographic map, Warm handmade, Editorial magazine, Memphis pop](docs/assets/showcase/causeway-festival.png)](examples/causeway-festival)
-
-Semilla `causeway-festival-6` · `critique_page` 96–100 · adherencia al brief 100 · [carpeta del ejemplo](examples/causeway-festival): datos, briefs, vistas previas y proceso
 
 ## Referencia
 

@@ -22,7 +22,7 @@
 
 **[ライブサンプル](https://qybaihe.github.io/hash-design/) · [マッピング仕様](docs/mapping.md) · [MCP リファレンス](docs/mcp-tools.md) · [変更履歴](CHANGELOG.md)**
 
-[クイックスタート](#クイックスタート) · [仕組み](#仕組み) · [ショーケース](#ショーケース) · [リファレンス](#リファレンス) · [よくある質問](#よくある質問)
+[ショーケース](#ショーケース) · [クイックスタート](#クイックスタート) · [仕組み](#仕組み) · [リファレンス](#リファレンス) · [よくある質問](#よくある質問)
 
 **エージェントにこう伝える**（Claude Code、Cursor、Codex、Windsurf、VS Code Copilot など）：
 
@@ -35,6 +35,34 @@
 </div>
 
 ---
+
+## ショーケース
+
+4 つの完全な実行例です。それぞれ独自のファクトシートと固定 seed を使っています（seed は再現のためだけのものです）。これらは、v2 に置き換えられた 40 ブランチのライブラリである **hash-design/v1** でロールしたもので、実際の実行の記録として残しています。その ref は v2 では再現できず、プレートには v1 のブランチ名が付いています。各プレビューは自分のブリーフだけを見たサブエージェントが作り、どれも今でも `critique_page` で 90/100 以上です。すべて[サンプル一覧](https://qybaihe.github.io/hash-design/)にあります。下の各プレートは 1 回のロールで、その 5 つの方向性を並べたものです。
+
+### Fourth Lane Bakery（第四巷面包店）— 街のベーカリー · 中国語ページ
+
+[![Fourth Lane Bakery：ロールで出た 5 つの方向性を並べたもの — Bureaucratic form、Bauhaus primary、Ink and seal、Risograph duotone、Hong Kong shop sign](docs/assets/showcase/fourth-lane-bakery.png)](examples/fourth-lane-bakery)
+
+seed `fourth-lane-bakery` · `critique_page` 96–100 · ブリーフ遵守度 100 · [サンプルのフォルダ](examples/fourth-lane-bakery)：ファクト、ブリーフ、プレビュー、制作過程
+
+### Sluice — セルフホスト型の Webhook 受信箱 · 英語ページ
+
+[![Sluice：ロールで出た 5 つの方向性を並べたもの — Record sleeve、Gallery catalogue、Terminal phosphor、Academic paper、Lab notebook](docs/assets/showcase/sluice.png)](examples/sluice)
+
+seed `sluice` · `critique_page` 92–96 · ブリーフ遵守度 90–100 · [サンプルのフォルダ](examples/sluice)：ファクト、ブリーフ、プレビュー、制作過程
+
+### Bridge No.2 Cycle Works（二号桥单车铺）— 橋の下の自転車修理店 · 中国語ページ
+
+[![Bridge No.2 Cycle Works：ロールで出た 5 つの方向性を並べたもの — Swiss grid、Couture lookbook、Ticket stub、Game manual、Chinese almanac](docs/assets/showcase/bridge-two-bikes.png)](examples/bridge-two-bikes)
+
+seed `bridge-two-bikes-5` · `critique_page` 96–100 · ブリーフ遵守度 100 · [サンプルのフォルダ](examples/bridge-two-bikes)：ファクト、ブリーフ、プレビュー、制作過程
+
+### Causeway — 潮の引いた時だけ渡れる島の 1 日限りの音楽フェス · 英語ページ
+
+[![Causeway：ロールで出た 5 つの方向性を並べたもの — Engineering plate、Topographic map、Warm handmade、Editorial magazine、Memphis pop](docs/assets/showcase/causeway-festival.png)](examples/causeway-festival)
+
+seed `causeway-festival-6` · `critique_page` 96–100 · ブリーフ遵守度 100 · [サンプルのフォルダ](examples/causeway-festival)：ファクト、ブリーフ、プレビュー、制作過程
 
 ## hash-design でできること
 
@@ -291,34 +319,6 @@ flowchart LR
 - Web 以外のシナリオでは「シナリオ」の節：フォーマット、キャンバス、ファイル構成、スライド／画面の枚数、レイアウト・アンカー・モーションの落とし込み方、シナリオのルールと禁止事項
 
 ブリーフはエージェント向けに書かれており、2 言語に対応しています。見出しには中国語と英語のラベルが併記され、`language`（`zh` または `en`。主題とファクトから自動判定）によって、指示文、シナリオの説明文、CJK の Web フォントを読み込むかどうかが切り替わります。グローバル禁止事項の文面は、現時点では中国語のみです。
-
-## ショーケース
-
-4 つの完全な実行例です。それぞれ独自のファクトシートと固定 seed を使っています（seed は再現のためだけのものです）。これらは、v2 に置き換えられた 40 ブランチのライブラリである **hash-design/v1** でロールしたもので、実際の実行の記録として残しています。その ref は v2 では再現できず、プレートには v1 のブランチ名が付いています。各プレビューは自分のブリーフだけを見たサブエージェントが作り、どれも今でも `critique_page` で 90/100 以上です。すべて[サンプル一覧](https://qybaihe.github.io/hash-design/)にあります。下の各プレートは 1 回のロールで、その 5 つの方向性を並べたものです。
-
-### Fourth Lane Bakery（第四巷面包店）— 街のベーカリー · 中国語ページ
-
-[![Fourth Lane Bakery：ロールで出た 5 つの方向性を並べたもの — Bureaucratic form、Bauhaus primary、Ink and seal、Risograph duotone、Hong Kong shop sign](docs/assets/showcase/fourth-lane-bakery.png)](examples/fourth-lane-bakery)
-
-seed `fourth-lane-bakery` · `critique_page` 96–100 · ブリーフ遵守度 100 · [サンプルのフォルダ](examples/fourth-lane-bakery)：ファクト、ブリーフ、プレビュー、制作過程
-
-### Sluice — セルフホスト型の Webhook 受信箱 · 英語ページ
-
-[![Sluice：ロールで出た 5 つの方向性を並べたもの — Record sleeve、Gallery catalogue、Terminal phosphor、Academic paper、Lab notebook](docs/assets/showcase/sluice.png)](examples/sluice)
-
-seed `sluice` · `critique_page` 92–96 · ブリーフ遵守度 90–100 · [サンプルのフォルダ](examples/sluice)：ファクト、ブリーフ、プレビュー、制作過程
-
-### Bridge No.2 Cycle Works（二号桥单车铺）— 橋の下の自転車修理店 · 中国語ページ
-
-[![Bridge No.2 Cycle Works：ロールで出た 5 つの方向性を並べたもの — Swiss grid、Couture lookbook、Ticket stub、Game manual、Chinese almanac](docs/assets/showcase/bridge-two-bikes.png)](examples/bridge-two-bikes)
-
-seed `bridge-two-bikes-5` · `critique_page` 96–100 · ブリーフ遵守度 100 · [サンプルのフォルダ](examples/bridge-two-bikes)：ファクト、ブリーフ、プレビュー、制作過程
-
-### Causeway — 潮の引いた時だけ渡れる島の 1 日限りの音楽フェス · 英語ページ
-
-[![Causeway：ロールで出た 5 つの方向性を並べたもの — Engineering plate、Topographic map、Warm handmade、Editorial magazine、Memphis pop](docs/assets/showcase/causeway-festival.png)](examples/causeway-festival)
-
-seed `causeway-festival-6` · `critique_page` 96–100 · ブリーフ遵守度 100 · [サンプルのフォルダ](examples/causeway-festival)：ファクト、ブリーフ、プレビュー、制作過程
 
 ## リファレンス
 
