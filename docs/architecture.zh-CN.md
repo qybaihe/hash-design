@@ -24,24 +24,25 @@ hash-design 是一个 npm workspaces monorepo，包含两个包、一个 Skill �
 
 ### `packages/core`（`hash-design`）
 
-| 模块                       | 职责                                                                                                                              |
-| -------------------------- | --------------------------------------------------------------------------------------------------------------------------------- |
-| `src/hash.ts`              | `randomHash`（CSPRNG → SHA-256）、`seededHash`、`rollHashes`、`parseRef`（ref 就是哈希本身）、`ALGORITHM`（`hash-design/v2`）     |
-| `src/mapping.ts`           | `mapDesign`（一个哈希逐字节映射成一个设计）、`mapRoll`、约束、`BYTE_MAP`、`libraryFingerprint`、`scenarioFingerprint`             |
-| `src/palette.ts`           | `buildPalette`：由色相 / 深浅 / 彩度字节构建 OKLCH 配色，文字颜色的明度按对比度下限解出                                           |
-| `src/color.ts`             | sRGB ↔ OKLCH（按降低彩度做色域映射）、WCAG 相对亮度与对比度                                                                       |
-| `src/data/fonts.ts`        | 扁平字体池：98 个标题字体、62 个正文字体、8 个等宽字体（Google Fonts）、14 个中文标题字体和 2 个中文正文字体；没有风格标签        |
-| `src/data/space.ts`        | 字节作为下标读取的短原语列表：大小写、分隔方式、锚点主体、母题形状与位置、材质、语气、变数                                        |
-| `src/data/scenarios.ts`    | 6 个场景（web、deck、app、dashboard、poster、email）：格式、画布、基准字号规则、密度范围、变数过滤、交付约定、规则                |
-| `src/data/bans.ts`         | 14 条全局禁令、23 个禁用字体、框架默认颜色、中英文套话词表                                                                        |
-| `src/derive.ts`            | 派生 token：字号阶梯、字体栈、Google Fonts URL、WCAG 对比度报告、`tokens.css`、语言检测                                           |
-| `src/brief.ts`             | `roll`、`reproduce`、`directionLabel`、Markdown 和 JSON brief、掷骰摘要、`roll.json` 结构                                         |
-| `src/files.ts`             | `writeRoll`：冻结 `roll.json`、`ROLL.md` 和 `briefs/NN-<短哈希>.md`                                                               |
-| `src/critique.ts`          | `critiquePage`：针对每条禁令的 HTML/CSS 静态检查，外加对比度 / 无障碍基础项和 brief 遵守度                                        |
-| `src/compare.ts`           | `buildComparePage`：一个自包含的 HTML 文件，含缩放的 iframe、标签、桌面/手机切换、聚焦快捷键                                      |
-| `src/skill.ts`             | 定位 `SKILL.md`（仓库内或包内副本），并渲染生成的禁令块                                                                           |
-| `src/cli.ts`, `src/bin.ts` | `hash-design` CLI（用 `node:util` 的 `parseArgs`，不用 CLI 框架）                                                                 |
-| `src/mcp.ts`               | MCP server（`createServer`、`serveStdio`；4 个工具、2 个资源、1 个 prompt），由 `hash-design mcp` 加载；以 `hash-design/mcp` 导出 |
+| 模块                       | 职责                                                                                                                                                 |
+| -------------------------- | ---------------------------------------------------------------------------------------------------------------------------------------------------- |
+| `src/hash.ts`              | `randomHash`（CSPRNG → SHA-256）、`seededHash`、`rollHashes`、`parseRef`（ref 就是哈希本身）、`ALGORITHM`（`hash-design/v2`）                        |
+| `src/mapping.ts`           | `mapDesign`（一个哈希逐字节映射成一个设计）、`mapRoll`、约束、`BYTE_MAP`、`libraryFingerprint`、`scenarioFingerprint`、`DEFAULT_COUNT` / `MAX_COUNT` |
+| `src/palette.ts`           | `buildPalette`：由色相 / 深浅 / 彩度字节构建 OKLCH 配色，文字颜色的明度按对比度下限解出                                                              |
+| `src/color.ts`             | sRGB ↔ OKLCH（按降低彩度做色域映射）、WCAG 相对亮度与对比度                                                                                          |
+| `src/data/fonts.ts`        | 扁平字体池：98 个标题字体、62 个正文字体、8 个等宽字体（Google Fonts）、14 个中文标题字体和 2 个中文正文字体；没有风格标签                           |
+| `src/data/space.ts`        | 字节作为下标读取的短原语列表：大小写、分隔方式、锚点主体、母题形状与位置、材质、语气、变数                                                           |
+| `src/data/scenarios.ts`    | 6 个场景（web、deck、app、dashboard、poster、email）：格式、画布、基准字号规则、密度范围、变数过滤、交付约定、规则                                   |
+| `src/data/bans.ts`         | 14 条全局禁令、23 个禁用字体、框架默认颜色、中英文套话词表                                                                                           |
+| `src/derive.ts`            | 派生 token：字号阶梯、字体栈、Google Fonts URL、WCAG 对比度报告、`tokens.css`、语言检测                                                              |
+| `src/brief.ts`             | `roll`、`reproduce`、`directionLabel`、Markdown 和 JSON brief、掷骰摘要、`roll.json` 结构                                                            |
+| `src/files.ts`             | `writeRoll`：冻结 `roll.json`、`ROLL.md` 和 `briefs/NN-<短哈希>.md`                                                                                  |
+| `src/reply.ts`             | `renderReply`、`replyLine`：掷骰后和对比页后 Agent 发给用户的简短回复（见 [mcp-tools.zh-CN.md](mcp-tools.zh-CN.md#回复协议)）                        |
+| `src/critique.ts`          | `critiquePage`：针对每条禁令的 HTML/CSS 静态检查，外加对比度 / 无障碍基础项和 brief 遵守度                                                           |
+| `src/compare.ts`           | `buildComparePage`：一个自包含的 HTML 文件，含缩放的 iframe、标签、桌面/手机切换、聚焦快捷键                                                         |
+| `src/skill.ts`             | 定位 `SKILL.md`（仓库内或包内副本），并渲染生成的禁令块                                                                                              |
+| `src/cli.ts`, `src/bin.ts` | `hash-design` CLI（用 `node:util` 的 `parseArgs`，不用 CLI 框架）                                                                                    |
+| `src/mcp.ts`               | MCP server（`createServer`、`serveStdio`；4 个工具、2 个资源、1 个 prompt），由 `hash-design mcp` 加载；以 `hash-design/mcp` 导出                    |
 
 运行时依赖：`node-html-parser`（供 `critique_page` 使用），以及 MCP server 用的 `@modelcontextprotocol/sdk` 和 `zod`；CLI 只在 `hash-design mcp` 时才加载它们。
 

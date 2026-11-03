@@ -10,7 +10,7 @@
 
 ### 一句需求，5 套设计方向：由真随机 SHA-256 哈希决定，而不是模型。
 
-**别再让编码 Agent 每次都交出同一张 Inter + 紫色渐变的页面。hash-design 掷出 5 个方向，把每个方向冻结成一份设计 brief，并排渲染 5 个预览，然后等你挑一个。任何一个方向都能凭 ref 原样重建。**
+**别再让编码 Agent 每次都交出同一张 Inter + 紫色渐变的页面。hash-design 掷出 5 个方向（也可以是 1–12 之间任意个），把每个方向冻结成一份设计 brief，每个方向用一行列给你，你要看时再并排渲染成预览，最后按你挑的那个落地。任何一个方向都能凭 ref 原样重建。**
 
 [![CI](https://img.shields.io/github/actions/workflow/status/qybaihe/hash-design/ci.yml?branch=main&style=flat-square&label=CI)](https://github.com/qybaihe/hash-design/actions/workflows/ci.yml)
 [![Live demo](https://img.shields.io/badge/live_demo-4_examples-e2401c?style=flat-square)](https://qybaihe.github.io/hash-design/)
@@ -24,7 +24,7 @@
 
 [快速开始](#快速开始) · [它怎么工作](#它怎么工作) · [案例展示](#案例展示) · [参考](#参考) · [常见问题](#常见问题)
 
-**直接告诉你的 Agent**（Claude Code、Cursor）：
+**直接告诉你的 Agent**（Claude Code、Cursor、Codex、Windsurf、VS Code Copilot……）：
 
 ```text
 为这个 Agent 安装 hash-design 的 skill：运行 `npx -y hash-design skill install --dir .`，
@@ -44,10 +44,10 @@ hash-design 不去求模型"更有品味"，而是**把选择权拿走**：
 
 | 步骤     | 发生什么                                                                                                                                                                                                                                             |
 | -------- | ---------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------- |
-| **掷**   | 用系统真随机掷出 5 个哈希（`crypto.randomBytes(32)` → SHA-256）                                                                                                                                                                                      |
+| **掷**   | 用系统真随机掷出 N 个哈希（`crypto.randomBytes(32)` → SHA-256）：默认 5 个，你说几个就几个（1–12）                                                                                                                                                   |
 | **映射** | 每个哈希**就是**方向。固定、可复现的规则把它的字节直接读成设计参数：色相和按对比度解出的配色、从扁平字体池里选出的标题字体和正文字体、大小写、字距、字号比例、密度、栅格、首屏锚点、母题、圆角和纹理、动效时序、文案语气，以及一个"变数"。没有风格库 |
 | **冻结** | 每个方向输出一份**冻结的 brief**，里面有可以直接粘贴的 token（字体链接、色值、`tokens.css`、栅格、圆角 / 边框 / 阴影数值），以及全局禁令                                                                                                             |
-| **渲染** | Agent 只负责**忠实执行** brief，分别做出 5 个独立的 HTML 预览，再做一个并排对比页，然后**停下来等你选号**                                                                                                                                            |
+| **渲染** | Agent 先给你**每个方向一行**，然后**停下**。你回复 `render` 后，它只负责**忠实执行** brief：分别做出独立的 HTML 预览和一个并排对比页，再**等你选号**                                                                                                 |
 | **终稿** | 你选中一个后，Agent 按那份 brief 做出正式页面，并用 `critique_page` 自检                                                                                                                                                                             |
 
 本质上，这是用**外部随机约束**打破模型的默认审美，跟 KV cache、温度采样都没有关系。模型的品味只用在执行质量上，比如对齐、节奏、细节和可读性，而不是用来挑风格。
@@ -60,7 +60,7 @@ hash-design 不去求模型"更有品味"，而是**把选择权拿走**：
 
 ### 让 Agent 自己安装
 
-在要做页面的项目里打开 Claude Code 或 Cursor，粘贴：
+在要做设计的项目里打开你的编码 Agent（Claude Code、Cursor、Codex、Windsurf、VS Code Copilot……），粘贴：
 
 ```text
 为这个 Agent 安装 hash-design 的 skill：运行 `npx -y hash-design skill install --dir .`，
@@ -68,7 +68,7 @@ hash-design 不去求模型"更有品味"，而是**把选择权拿走**：
 `npx -y hash-design-mcp@0.1.0`），步骤见 https://github.com/qybaihe/hash-design/blob/main/README.zh-CN.md#快速开始 。
 ```
 
-Agent 会把 Skill 复制到你项目的 `.claude/skills/` 和 `.cursor/skills/`，并注册 MCP server（Claude Code 用 `claude mcp add`，Cursor 写 `.cursor/mcp.json`），不需要克隆或构建。完成后开一个新会话，让 Agent 加载两者，然后就可以[开始使用](#开始使用)。想自己敲命令，按下面的步骤来。
+Agent 会把 Skill 复制到你项目的 `.claude/skills/` 和 `.agents/skills/`，并注册 MCP server（Claude Code 用 `claude mcp add`，Cursor 写 `.cursor/mcp.json`，Codex 用 `codex mcp add`），不需要克隆或构建。完成后开一个新会话，让 Agent 加载两者，然后就可以[开始使用](#开始使用)。想自己敲命令，按下面的步骤来。
 
 ### 手动安装
 
@@ -77,11 +77,22 @@ Agent 会把 Skill 复制到你项目的 `.claude/skills/` 和 `.cursor/skills/`
 **Skill。** Skill 告诉 Agent 何时使用、按什么顺序调用 MCP、怎样独立渲染、什么时候必须停下。
 
 ```bash
-npx -y hash-design skill install --target both --dir .      # 当前项目：.claude/skills 和 .cursor/skills
-npx -y hash-design skill install --target claude --global   # 或者装到用户目录，所有项目可用
+npx -y hash-design skill install --dir .                # 当前项目：.claude/skills 和 .agents/skills
+npx -y hash-design skill install --global               # 或者装到用户目录，所有项目可用
+npx -y hash-design skill install --to /path/to/skills   # 或者装到其他 Agent 的 skills 文件夹
 ```
 
-`--target` 可选 `claude`、`cursor` 或 `both`（默认）。也可以手动把 [`skills/hash-design/SKILL.md`](skills/hash-design/SKILL.md) 复制到 `.claude/skills/hash-design/SKILL.md`（Claude Code）或 `.cursor/skills/hash-design/SKILL.md`（Cursor）。
+默认写入 `.claude/skills/`（Claude Code）和 `.agents/skills/`（Codex、Cursor、VS Code Copilot、Windsurf）。`--target` 可以改选文件夹（`claude`、`agents`、`cursor`，逗号分隔，或 `all`；`both` 即 `claude,cursor`），命令结束时会打印在当前位置可用的 CLI 和 MCP 命令。skill 就是一个带 `SKILL.md` 的文件夹，所以手动把 [`skills/hash-design/SKILL.md`](skills/hash-design/SKILL.md) 复制到 `<skills 文件夹>/hash-design/SKILL.md` 也行。各 Agent 在哪里找 skill（以它们自己的文档为准）：
+
+| Agent           | 项目级                                                  | 个人级                                                         |
+| --------------- | ------------------------------------------------------- | -------------------------------------------------------------- |
+| Claude Code     | `.claude/skills/`                                       | `~/.claude/skills/`                                            |
+| Codex           | `.agents/skills/`                                       | `~/.agents/skills/`                                            |
+| Cursor          | `.agents/skills/`, `.cursor/skills/`, `.claude/skills/` | `~/.agents/skills/`, `~/.cursor/skills/`                       |
+| VS Code Copilot | `.github/skills/`, `.claude/skills/`, `.agents/skills/` | `~/.copilot/skills/`, `~/.claude/skills/`, `~/.agents/skills/` |
+| Windsurf        | `.agents/skills/`, `.windsurf/skills/`                  | `~/.agents/skills/`                                            |
+
+会同时读取 `.claude/skills/` 和 `.agents/skills/` 的 Agent（Cursor、VS Code Copilot）在默认安装后会看到两份相同的副本；介意的话对它们用 `--target agents`。
 
 **MCP server。** 在你的 Agent 里注册 `npx -y hash-design mcp`，它会在 stdio 上运行 server。
 
@@ -115,6 +126,24 @@ claude mcp add hash-design -- npx -y hash-design-mcp@0.1.0
 
 `.cursor/mcp.json`（项目级）或 `~/.cursor/mcp.json`（全局），结构和上面的 `.mcp.json` 相同。
 
+#### Codex
+
+```bash
+codex mcp add hash-design -- npx -y hash-design mcp
+```
+
+或者写进 `~/.codex/config.toml`（或受信任项目的 `.codex/config.toml`）：
+
+```toml
+[mcp_servers.hash-design]
+command = "npx"
+args = ["-y", "hash-design", "mcp"]
+```
+
+#### 其他 Agent
+
+任何能启动 stdio server 的 MCP 客户端都能运行它：命令 `npx`，参数 `-y hash-design mcp`，写进该客户端自己的 MCP 配置（Windsurf、VS Code 等各有各的配置文件）。没有 MCP 时，Skill 会退回到 CLI：`npx -y hash-design roll …`，参数相同。
+
 #### Claude Desktop
 
 macOS 是 `~/Library/Application Support/Claude/claude_desktop_config.json`，Windows 是 `%APPDATA%\Claude\claude_desktop_config.json`，结构相同。Claude Desktop 不会在你的项目目录里启动 server，所以调用 `roll_designs` 时 `out_dir` 要传**绝对路径**。如果它找不到 `npx`，把 `which npx` 打印的路径写进 `command`。
@@ -126,7 +155,7 @@ macOS 是 `~/Library/Application Support/Claude/claude_desktop_config.json`，Wi
 ```bash
 git clone https://github.com/qybaihe/hash-design.git ~/hash-design
 cd ~/hash-design && npm install && npm run build
-node ~/hash-design/packages/core/dist/bin.js skill install --target both --dir /path/to/your/project
+node ~/hash-design/packages/core/dist/bin.js skill install --dir /path/to/your/project
 claude mcp add hash-design -- node ~/hash-design/packages/core/dist/bin.js mcp
 ```
 
@@ -136,9 +165,21 @@ claude mcp add hash-design -- node ~/hash-design/packages/core/dist/bin.js mcp
 
 装好 MCP server 和 Skill 后，直接对 Agent 说：
 
-> 用 hash-design 给「第四巷面包店」做一个一页站。事实：周二至周日 7:00–19:00 营业，周一休息；乡村面包 ¥38……
+> 用 hash-design 给「第四巷面包店」做一个一页站，3 个方向。事实：周二至周日 7:00–19:00 营业，周一休息；乡村面包 ¥38……
 
-Agent 会依次掷骰、冻结 brief、做 5 个预览、生成 `design/hash-design/compare.html`，然后停下来等你回复编号。支持 MCP prompt 的客户端也可以直接用 `hash-design` 这个 prompt（参数 `subject`、`facts`、`count`、`scenario`）启动同样的流程。要做幻灯片、App 界面、看板、海报或邮件时直接说，Agent 会传对应的 `scenario`。
+Agent 会掷出 N 个方向（默认 5 个；说一个 1–12 之间的数就按你的来，比如 `/hash-design 3`），冻结 brief，然后用固定的简短格式回复并停下。下面这个用了 seed 以便复现，真实掷骰会写「真随机」：
+
+```text
+**hash-design** · 为「第四巷面包店」掷出 3 个方向 · 网页 · seed reply-demo
+
+1. **Caveat** / Literata — 浅色纸，色相 330° · 5 栏网格 · 首屏锚点 initial · `ea849a45`
+2. **Hanken Grotesk** / Crimson Pro — 浅色纸，色相 344° · 10 栏网格 · 首屏锚点 number · `f458a091`
+3. **Overpass** / Barlow Condensed — 浅色纸，色相 234° · 5 栏网格 · 首屏锚点 grid-diagram · `a6b46334`
+
+回复编号，直接按该方向做正式页面；回复「预览」先把 3 个方向都做成预览并排对比；回复「重掷」换一批。
+```
+
+回复编号就按那个方向做；回复「预览」会为每个方向做一个独立预览和 `design/hash-design/compare.html`，再把同样的列表发一遍，停下等你选号。回复里每个字段都直接读自映射出的数字（[回复协议](docs/mcp-tools.zh-CN.md#回复协议)）；CLI 用 `--format reply` 打印它。支持 MCP prompt 的客户端也可以直接用 `hash-design` 这个 prompt（参数 `subject`、`facts`、`count`、`scenario`）启动同样的流程。要做幻灯片、App 界面、看板、海报或邮件时直接说，Agent 会传对应的 `scenario`。
 
 ### CLI
 
@@ -146,13 +187,14 @@ Agent 会依次掷骰、冻结 brief、做 5 个预览、生成 `design/hash-des
 hash-design roll --subject "第四巷面包店" --facts-file facts.md --out design/hash-design   # 真随机 5 个方向
 hash-design roll --subject "…" --light-only --brand "#c8102e" --format json            # 带约束
 hash-design roll --subject "季度复盘" --facts-file facts.md --scenario deck --out design/deck   # 做幻灯片而不是网页
+hash-design roll --subject "…" --count 3 --out design/hash-design --format reply      # 3 个方向 + 简短回复
 hash-design brief <ref> [constraints]                                                 # 复现 brief
 hash-design critique page.html --roll design/hash-design/roll.json --pick 3 --fail-under 80
 hash-design compare --roll design/hash-design/roll.json                               # 生成 compare.html
-hash-design skill install --target both                                               # 安装 Skill
+hash-design skill install                                                             # 安装 Skill
 ```
 
-用 `npx -y hash-design …` 运行，或者用 `npm install -g hash-design` 装一次后直接敲 `hash-design …`；在源码目录里是 `node packages/core/dist/bin.js …`。`hash-design --help` 列出所有命令，`hash-design <command> --help`（例如 `hash-design roll --help`）列出单个命令的全部参数，包括约束参数 `--light-only`、`--dark-only`、`--reduced-motion`、`--brand`、`--scenario`。
+用 `npx -y hash-design …` 运行，或者用 `npm install -g hash-design` 装一次后直接敲 `hash-design …`；在源码目录里是 `node packages/core/dist/bin.js …`。`hash-design --help` 列出所有命令，`hash-design <command> --help`（例如 `hash-design roll --help`）列出单个命令的全部参数，包括约束参数 `--light-only`、`--dark-only`、`--reduced-motion`、`--brand`、`--scenario`。`--count`/`-n` 设定 N（1–12，默认 5）；每个方向各是一个哈希，约束不会降低这个上限。
 
 ### 作为库使用
 
@@ -172,21 +214,23 @@ console.log(report.score, report.adherence, report.findings);
 ### 更新
 
 ```bash
-npx -y hash-design@latest skill install --target both --dir .   # 刷新项目里的 SKILL.md 副本
+npx -y hash-design@latest skill install --dir .   # 刷新项目里的 SKILL.md 副本
 ```
 
-npx 可能会继续用之前缓存的版本；加上 `@latest` 会取最新发布的版本（也可以固定版本，比如 `hash-design@0.2.0`）。MCP server 每次随 Agent 启动时通过 npx 运行，所以发布新版本后重启 Agent；如果一直跑的是旧版本，就在 MCP 命令里写 `hash-design@latest`。从源码运行的：`git pull && npm install && npm run build`。如果某次更新改了字体池、原语列表或字节规则，用旧版本掷出的 ref 需要旧版本才能复现（见[常见问题](#常见问题)）。
+npx 可能会继续用之前缓存的版本；加上 `@latest` 会取最新发布的版本（也可以固定版本，比如 `hash-design@0.2.0`）。MCP server 每次随 Agent 启动时通过 npx 运行，所以发布新版本后重启 Agent；如果一直跑的是旧版本，就在 MCP 命令里写 `hash-design@latest`。旧版本默认装到 `.claude/` 和 `.cursor/`；旧的 `.cursor/skills/` 副本可以用 `--target all` 刷新，或者直接删掉。从源码运行的：`git pull && npm install && npm run build`。如果某次更新改了字体池、原语列表或字节规则，用旧版本掷出的 ref 需要旧版本才能复现（见[常见问题](#常见问题)）。
 
 ## 它怎么工作
 
 ```mermaid
 flowchart LR
-  A[事实清单] --> B[roll_designs<br/>5 × SHA-256 真随机]
+  A[事实清单] --> B[roll_designs<br/>N × SHA-256 真随机]
   B --> C[固定字节规则<br/>每个哈希 → 一个方向]
-  C --> D[5 份冻结 brief<br/>briefs/01…05.md]
-  D --> E[5 个独立 HTML 预览<br/>每个只看自己的 brief]
+  C --> D[N 份冻结 brief<br/>briefs/01…NN.md]
+  D --> R{简短回复<br/>每个方向一行}
+  R -->|render| E[N 个独立 HTML 预览<br/>每个只看自己的 brief]
   E --> F[build_compare_page<br/>并排对比]
   F --> G{用户选号}
+  R -->|编号| H
   G --> H[按选中 brief<br/>落地正式页面]
   H --> I[critique_page<br/>禁令 + brief 遵守度]
 ```
@@ -289,12 +333,12 @@ seed `causeway-festival-6` · `critique_page` 96–100 · brief 遵守度 100 ·
 
 ### MCP 工具
 
-| 工具                 | 作用                                                                                                                                                                                             |
-| -------------------- | ------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------ |
-| `roll_designs`       | 输入 `subject`、`facts`、`count`（默认 5），可选 `seed`、`language`、`scenario` 和约束。返回 5 个哈希、映射过程和 5 份 brief。传 `out_dir` 会把 `roll.json`、`ROLL.md`、`briefs/*.md` 冻结到磁盘 |
-| `get_brief`          | 按 `ref`（64 位十六进制哈希）加同样的约束复现 brief，支持 Markdown 或 JSON                                                                                                                       |
-| `critique_page`      | 输入 HTML 字符串或文件路径，按禁令和 AI 味清单打分；带 `brief_ref` 或 `roll_path`+`pick` 时还会给出对 brief 和场景输出约定的遵守度                                                               |
-| `build_compare_page` | 根据 `roll.json` 生成并排对比页 `compare.html`                                                                                                                                                   |
+| 工具                 | 作用                                                                                                                                                                                                                           |
+| -------------------- | ------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------ |
+| `roll_designs`       | 输入 `subject`、`facts`、`count`（1–12，默认 5），可选 `seed`、`language`、`scenario` 和约束。返回哈希、映射过程、每个方向一份 brief，以及要发给用户的回复。传 `out_dir` 会把 `roll.json`、`ROLL.md`、`briefs/*.md` 冻结到磁盘 |
+| `get_brief`          | 按 `ref`（64 位十六进制哈希）加同样的约束复现 brief，支持 Markdown 或 JSON                                                                                                                                                     |
+| `critique_page`      | 输入 HTML 字符串或文件路径，按禁令和 AI 味清单打分；带 `brief_ref` 或 `roll_path`+`pick` 时还会给出对 brief 和场景输出约定的遵守度                                                                                             |
+| `build_compare_page` | 根据 `roll.json` 生成并排对比页 `compare.html`                                                                                                                                                                                 |
 
 资源：`hash-design://bans`、`hash-design://workflow`（即 SKILL.md）。Prompt：`hash-design`（参数为 `subject`、`facts`、`count`、`scenario`）。
 
@@ -343,7 +387,7 @@ seed `causeway-festival-6` · `critique_page` 96–100 · brief 遵守度 100 ·
 <details>
 <summary><strong>哪些 Agent 能用？</strong></summary>
 
-Skill 可以装进 Claude Code（`.claude/skills/`）和 Cursor（`.cursor/skills/`）。MCP server 走 stdio，任何 MCP 客户端都能启动它；[手动安装](#手动安装)里给了 Claude Code、Cursor 和 Claude Desktop 的配置。没有 Skill 时 Agent 也能调用这些工具，但没有东西告诉它要独立渲染预览、停下来等你挑。
+任何会加载 `SKILL.md` 文件夹的 Agent 都行：`skill install` 会写 `.claude/skills/`（Claude Code）和 `.agents/skills/`（Codex、Cursor、VS Code Copilot、Windsurf），`--to` 可以装到任何别的文件夹。MCP server 走 stdio，任何 MCP 客户端都能启动它；[手动安装](#手动安装)里给了 Claude Code、Cursor、Codex 和 Claude Desktop 的配置，没有 MCP 的 Agent 可以用 CLI。已在 Claude Code 上实测：它会加载装好的 skill、按你要的数量掷骰，并原样发出回复。其他 Agent 的文件夹位置来自它们各自的文档，没有逐一实测。没有 Skill 时 Agent 也能调用这些工具，但没有东西告诉它要简短回复、独立渲染预览、停下来等你挑。
 
 </details>
 

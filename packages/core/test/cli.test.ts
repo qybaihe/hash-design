@@ -1,4 +1,5 @@
-import { mkdtemp, readFile, writeFile } from 'node:fs/promises';
+import { existsSync } from 'node:fs';
+import { mkdir, mkdtemp, readFile, writeFile } from 'node:fs/promises';
 import { tmpdir } from 'node:os';
 import { join } from 'node:path';
 import { afterEach, beforeEach, describe, expect, it, vi } from 'vitest';
@@ -132,13 +133,93 @@ describe('cli', () => {
     expect(process.exitCode).toBe(1);
   });
 
-  it('skill install copies SKILL.md for claude and cursor', async () => {
+  it('skill install defaults to .claude (Claude Code) and .agents (Codex, Cursor, Copilot, Windsurf)', async () => {
     const dir = await mkdtemp(join(tmpdir(), 'hd-skill-'));
     await main(['skill', 'install', '--dir', dir]);
     const a = await readFile(join(dir, '.claude/skills/hash-design/SKILL.md'), 'utf8');
-    const b = await readFile(join(dir, '.cursor/skills/hash-design/SKILL.md'), 'utf8');
+    const b = await readFile(join(dir, '.agents/skills/hash-design/SKILL.md'), 'utf8');
     expect(a).toBe(b);
     expect(a).toMatch(/^---\nname: hash-design\n/);
+    expect(existsSync(join(dir, '.cursor/skills/hash-design/SKILL.md'))).toBe(false);
+    // Run from a checkout here, so the hints use this bin.js; through npx they read `npx -y hash-design`.
+    expect(out).toMatch(/^CLI: +node .+bin\.js <command>$/m);
+    expect(out).toMatch(/^MCP server: node .+bin\.js mcp$/m);
+  });
+
+  it('skill install --target lists, aliases and --to for any other skills folder', async () => {
+    const dir = await mkdtemp(join(tmpdir(), 'hd-skill-t-'));
+    await main(['skill', 'install', '--dir', dir, '--target', 'all']);
+    for (const f of ['.claude', '.cursor', '.agents'])
+      expect(existsSync(join(dir, f, 'skills/hash-design/SKILL.md')), f).toBe(true);
+    const other = await mkdtemp(join(tmpdir(), 'hd-skill-to-'));
+    await main(['skill', 'install', '--to', join(other, 'skills')]);
+    expect(existsSync(join(other, 'skills/hash-design/SKILL.md'))).toBe(true);
+    expect(existsSync(join(other, '.claude'))).toBe(false);
+    await expect(main(['skill', 'install', '--dir', dir, '--target', 'windsurf'])).rejects.toThrow(
+      /Unknown --target "windsurf"/,
+    );
+  });
+
+  it('roll --count sets N within 1–12, under any constraint, and rejects anything else', async () => {
+    for (const n of ['1', '7', '12']) {
+      out = '';
+      await main(['roll', '--seed', 'n', '--count', n, '--format', 'json']);
+      expect(JSON.parse(out).designs).toHaveLength(Number(n));
+    }
+    out = '';
+    await main([
+      'roll',
+      '--seed',
+      'n',
+      '--count',
+      '12',
+      '--dark-only',
+      '--scenario',
+      'poster',
+      '--format',
+      'json',
+    ]);
+    expect(JSON.parse(out).designs).toHaveLength(12);
+    for (const bad of ['0', '13', '2.5', 'five'])
+      await expect(main(['roll', '--seed', 'n', '--count', bad])).rejects.toThrow(
+        /--count must be a whole number from 1 to 12/,
+      );
+  });
+
+  it('roll --format reply prints the reply protocol, also after --out; compare prints the second one', async () => {
+    await main([
+      'roll',
+      '--subject',
+      'Bakery',
+      '--fact',
+      'Closed Mondays',
+      '--seed',
+      'r',
+      '-n',
+      '3',
+      '-f',
+      'reply',
+    ]);
+    const lines = out.trimEnd().split('\n');
+    expect(lines).toHaveLength(3 + 4);
+    expect(lines[0]).toContain('3 directions for “Bakery”');
+    expect(lines.slice(2, 5).every((l, i) => l.startsWith(`${i + 1}. **`))).toBe(true);
+    expect(lines.at(-1)).toMatch(/^Reply with a number .* \*\*render\*\* .* \*\*reroll\*\*/);
+    const dir = await mkdtemp(join(tmpdir(), 'hd-cli-reply-'));
+    out = '';
+    await main(['roll', '--subject', 'Bakery', '--seed', 'r', '-n', '3', '--out', dir, '-f', 'reply']);
+    expect(out).toContain('Wrote 5 files');
+    expect(out).toContain('1. **');
+    await expect(main(['roll', '--seed', 'r', '--out', dir, '-f', 'json'])).rejects.toThrow(
+      /With --out, --format must be summary or reply/,
+    );
+    const roll = JSON.parse(await readFile(join(dir, 'roll.json'), 'utf8'));
+    await mkdir(join(dir, 'previews'), { recursive: true });
+    for (const d of roll.designs) await writeFile(join(dir, 'previews', `${d.slug}.html`), '<html></html>');
+    out = '';
+    await main(['compare', '--roll', join(dir, 'roll.json')]);
+    expect(out).toMatch(/3 previews side by side: .*compare\.html/);
+    expect(out).toContain('Reply with a number to build that direction as the final page.');
   });
 
   it('mcp is a command: listed in the help, with its own help and the npx registration line', async () => {

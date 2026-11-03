@@ -24,24 +24,25 @@ hash-design is an npm-workspaces monorepo with two packages, one Skill and four 
 
 ### `packages/core` (`hash-design`)
 
-| Module                     | Responsibility                                                                                                                            |
-| -------------------------- | ----------------------------------------------------------------------------------------------------------------------------------------- |
-| `src/hash.ts`              | `randomHash` (CSPRNG → SHA-256), `seededHash`, `rollHashes`, `parseRef` (a ref is the bare hash), `ALGORITHM` (`hash-design/v2`)          |
-| `src/mapping.ts`           | `mapDesign` (one hash → one design, byte by byte), `mapRoll`, constraints, `BYTE_MAP`, `libraryFingerprint`, `scenarioFingerprint`        |
-| `src/palette.ts`           | `buildPalette`: OKLCH palette from the hue / polarity / chroma bytes, with text lightness solved to the contrast floors                   |
-| `src/color.ts`             | sRGB ↔ OKLCH (gamut-mapped by chroma), WCAG relative luminance and contrast                                                               |
-| `src/data/fonts.ts`        | The flat font pool: 98 display, 62 body, 8 mono (Google Fonts), 14 CJK display and 2 CJK body faces; no style tags                        |
-| `src/data/space.ts`        | The short primitive lists bytes index into: cases, separators, anchor subjects, motif shapes and placements, textures, voice, twist       |
-| `src/data/scenarios.ts`    | 6 scenarios (web, deck, app, dashboard, poster, email): formats, canvas, base-size rule, density range, twist filters, contract, rules    |
-| `src/data/bans.ts`         | 14 global bans, 23 banned fonts, framework default colours, English and Chinese buzzword lists                                            |
-| `src/derive.ts`            | Derived tokens: type scale, font stacks, Google Fonts URL, WCAG contrast report, `tokens.css`, language detection                         |
-| `src/brief.ts`             | `roll`, `reproduce`, `directionLabel`, Markdown and JSON briefs, roll summaries, `roll.json` shape                                        |
-| `src/files.ts`             | `writeRoll`: freezes `roll.json`, `ROLL.md` and `briefs/NN-<short hash>.md`                                                               |
-| `src/critique.ts`          | `critiquePage`: static HTML/CSS checks for every ban plus contrast / a11y basics and brief adherence                                      |
-| `src/compare.ts`           | `buildComparePage`: one self-contained HTML file with scaled iframes, labels, desktop/mobile toggle, focus keys                           |
-| `src/skill.ts`             | Locates `SKILL.md` (repo or packaged copy) and renders the generated bans block                                                           |
-| `src/cli.ts`, `src/bin.ts` | The `hash-design` CLI (`node:util` `parseArgs`, no CLI framework)                                                                         |
-| `src/mcp.ts`               | The MCP server (`createServer`, `serveStdio`; 4 tools, 2 resources, 1 prompt), loaded by `hash-design mcp`; exported as `hash-design/mcp` |
+| Module                     | Responsibility                                                                                                                                                    |
+| -------------------------- | ----------------------------------------------------------------------------------------------------------------------------------------------------------------- |
+| `src/hash.ts`              | `randomHash` (CSPRNG → SHA-256), `seededHash`, `rollHashes`, `parseRef` (a ref is the bare hash), `ALGORITHM` (`hash-design/v2`)                                  |
+| `src/mapping.ts`           | `mapDesign` (one hash → one design, byte by byte), `mapRoll`, constraints, `BYTE_MAP`, `libraryFingerprint`, `scenarioFingerprint`, `DEFAULT_COUNT` / `MAX_COUNT` |
+| `src/palette.ts`           | `buildPalette`: OKLCH palette from the hue / polarity / chroma bytes, with text lightness solved to the contrast floors                                           |
+| `src/color.ts`             | sRGB ↔ OKLCH (gamut-mapped by chroma), WCAG relative luminance and contrast                                                                                       |
+| `src/data/fonts.ts`        | The flat font pool: 98 display, 62 body, 8 mono (Google Fonts), 14 CJK display and 2 CJK body faces; no style tags                                                |
+| `src/data/space.ts`        | The short primitive lists bytes index into: cases, separators, anchor subjects, motif shapes and placements, textures, voice, twist                               |
+| `src/data/scenarios.ts`    | 6 scenarios (web, deck, app, dashboard, poster, email): formats, canvas, base-size rule, density range, twist filters, contract, rules                            |
+| `src/data/bans.ts`         | 14 global bans, 23 banned fonts, framework default colours, English and Chinese buzzword lists                                                                    |
+| `src/derive.ts`            | Derived tokens: type scale, font stacks, Google Fonts URL, WCAG contrast report, `tokens.css`, language detection                                                 |
+| `src/brief.ts`             | `roll`, `reproduce`, `directionLabel`, Markdown and JSON briefs, roll summaries, `roll.json` shape                                                                |
+| `src/files.ts`             | `writeRoll`: freezes `roll.json`, `ROLL.md` and `briefs/NN-<short hash>.md`                                                                                       |
+| `src/reply.ts`             | `renderReply`, `replyLine`: the short reply an agent sends after a roll and after the compare page (see [mcp-tools.md](mcp-tools.md#reply-protocol))              |
+| `src/critique.ts`          | `critiquePage`: static HTML/CSS checks for every ban plus contrast / a11y basics and brief adherence                                                              |
+| `src/compare.ts`           | `buildComparePage`: one self-contained HTML file with scaled iframes, labels, desktop/mobile toggle, focus keys                                                   |
+| `src/skill.ts`             | Locates `SKILL.md` (repo or packaged copy) and renders the generated bans block                                                                                   |
+| `src/cli.ts`, `src/bin.ts` | The `hash-design` CLI (`node:util` `parseArgs`, no CLI framework)                                                                                                 |
+| `src/mcp.ts`               | The MCP server (`createServer`, `serveStdio`; 4 tools, 2 resources, 1 prompt), loaded by `hash-design mcp`; exported as `hash-design/mcp`                         |
 
 Runtime dependencies: `node-html-parser` (for `critique_page`), and `@modelcontextprotocol/sdk` and `zod` for the MCP server, which the CLI loads only for `hash-design mcp`.
 

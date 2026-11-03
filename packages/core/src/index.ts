@@ -48,6 +48,8 @@ export {
 } from './hash.js';
 export {
   BYTE_MAP,
+  DEFAULT_COUNT,
+  MAX_COUNT,
   describeConstraints,
   libraryFingerprint,
   mapDesign,
@@ -128,6 +130,7 @@ export {
 } from './color.js';
 export { brandHue, buildPalette, type PaletteParams, type Polarity } from './palette.js';
 export { writeRoll, type WrittenRoll } from './files.js';
+export { renderReply, replyLine, type ReplyOptions, type ReplyStage } from './reply.js';
 export {
   SKILL_BLOCK_BEGIN,
   SKILL_BLOCK_END,

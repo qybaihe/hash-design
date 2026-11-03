@@ -10,7 +10,7 @@
 
 ### Un prompt, cinco direcciones de diseño, elegidas por hashes SHA-256 verdaderamente aleatorios y no por el modelo.
 
-**Que tu agente de programación deje de entregar siempre la misma página con Inter y degradado morado. hash-design sortea cinco direcciones, congela cada una como un brief de diseño, renderiza cinco vistas previas lado a lado y espera a que elijas una. Cualquier dirección se puede reconstruir a partir de su ref.**
+**Que tu agente de programación deje de entregar siempre la misma página con Inter y degradado morado. hash-design sortea cinco direcciones (o cualquier número de 1 a 12), congela cada una como un brief de diseño, te las muestra en una línea cada una, las renderiza lado a lado cuando lo pides y construye la que eliges. Cualquier dirección se puede reconstruir a partir de su ref.**
 
 [![CI](https://img.shields.io/github/actions/workflow/status/qybaihe/hash-design/ci.yml?branch=main&style=flat-square&label=CI)](https://github.com/qybaihe/hash-design/actions/workflows/ci.yml)
 [![Live demo](https://img.shields.io/badge/live_demo-4_examples-e2401c?style=flat-square)](https://qybaihe.github.io/hash-design/)
@@ -24,7 +24,7 @@
 
 [Inicio rápido](#inicio-rápido) · [Cómo funciona](#cómo-funciona) · [Galería](#galería) · [Referencia](#referencia) · [Preguntas frecuentes](#preguntas-frecuentes)
 
-**Díselo a tu agente** (Claude Code, Cursor):
+**Díselo a tu agente** (Claude Code, Cursor, Codex, Windsurf, VS Code Copilot…):
 
 ```text
 Instala la skill de hash-design para este agente: ejecuta `npx -y hash-design skill install --dir .`
@@ -44,10 +44,10 @@ hash-design no le pide al modelo que tenga mejor gusto. **Le quita la decisión*
 
 | Paso             | Qué pasa                                                                                                                                                                                                                                                                                                                                                                                                                                                   |
 | ---------------- | ---------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------- |
-| **Tirada**       | Genera cinco hashes a partir de la aleatoriedad del sistema (`crypto.randomBytes(32)` → SHA-256).                                                                                                                                                                                                                                                                                                                                                          |
+| **Tirada**       | Genera N hashes a partir de la aleatoriedad del sistema (`crypto.randomBytes(32)` → SHA-256): cinco por defecto, de 1 a 12 si lo pides.                                                                                                                                                                                                                                                                                                                    |
 | **Mapeo**        | Cada hash **es** la dirección. Unas reglas fijas y reproducibles leen sus bytes directamente como parámetros de diseño: tono y una paleta con el contraste resuelto, fuentes display y body de un pool plano de fuentes, caja, tracking, razón de la escala tipográfica, densidad, retícula, ancla de la primera pantalla, motivo, esquinas y textura, tiempos del movimiento, voz de redacción y un "giro" (twist). No hay ninguna biblioteca de estilos. |
 | **Congelación**  | Congela cada dirección como un **brief** con tokens listos para pegar (enlaces de fuentes, valores hex, `tokens.css`, medidas de la retícula, valores de radio / borde / sombra), más las prohibiciones globales.                                                                                                                                                                                                                                          |
-| **Render**       | La única tarea del agente es **ejecutar** cada brief con fidelidad: cinco vistas previas HTML independientes y una página comparativa lado a lado. Después **se detiene y espera a que elijas un número**.                                                                                                                                                                                                                                                 |
+| **Render**       | El agente te muestra **una línea por dirección y se detiene**. Si respondes `render`, su única tarea es **ejecutar** cada brief con fidelidad: vistas previas HTML independientes y una página comparativa lado a lado; después **espera a que elijas un número**.                                                                                                                                                                                         |
 | **Página final** | Cuando eliges, el agente construye la página final a partir de ese brief y la revisa con `critique_page`.                                                                                                                                                                                                                                                                                                                                                  |
 
 Se trata de una restricción aleatoria externa que rompe la estética por defecto del modelo. No tiene nada que ver con cachés KV ni con la temperatura de muestreo. El gusto del modelo se invierte en la calidad de ejecución (alineación, ritmo, detalle, legibilidad), no en elegir un estilo.
@@ -60,7 +60,7 @@ Se distribuye como una **Agent Skill** (cuándo y en qué orden ejecutar el fluj
 
 ### Pídeselo a tu agente
 
-Abre Claude Code o Cursor en el proyecto que quieres diseñar y pega:
+Abre tu agente de programación (Claude Code, Cursor, Codex, Windsurf, VS Code Copilot…) en el proyecto que quieres diseñar y pega:
 
 ```text
 Instala la skill de hash-design para este agente: ejecuta `npx -y hash-design skill install --dir .`
@@ -68,7 +68,7 @@ y registra su servidor MCP con `npx -y hash-design mcp` (con hash-design 0.1.0, 
 `npx -y hash-design-mcp@0.1.0`), siguiendo https://github.com/qybaihe/hash-design/blob/main/README.es.md#inicio-rápido.
 ```
 
-El agente copia la Skill en `.claude/skills/` y `.cursor/skills/` de tu proyecto y registra el servidor MCP (`claude mcp add` en Claude Code, `.cursor/mcp.json` en Cursor); no hay que clonar ni compilar nada. Después abre una sesión nueva para que el agente cargue ambos y pasa a [Uso](#uso). Si prefieres ejecutar los comandos tú, sigue los pasos de abajo.
+El agente copia la Skill en `.claude/skills/` y `.agents/skills/` de tu proyecto y registra el servidor MCP (`claude mcp add` en Claude Code, `.cursor/mcp.json` en Cursor, `codex mcp add` en Codex); no hay que clonar ni compilar nada. Después abre una sesión nueva para que el agente cargue ambos y pasa a [Uso](#uso). Si prefieres ejecutar los comandos tú, sigue los pasos de abajo.
 
 ### Instalación manual
 
@@ -77,11 +77,22 @@ Requiere Node.js ≥ 20, con npm (para `npx`).
 **Skill.** La Skill le dice al agente cuándo usar hash-design, en qué orden llamar a las herramientas MCP, cómo renderizar las vistas previas por separado y cuándo debe detenerse.
 
 ```bash
-npx -y hash-design skill install --target both --dir .      # este proyecto: .claude/skills y .cursor/skills
-npx -y hash-design skill install --target claude --global   # o tu directorio personal, para todos los proyectos
+npx -y hash-design skill install --dir .                # este proyecto: .claude/skills y .agents/skills
+npx -y hash-design skill install --global               # o tu directorio personal, para todos los proyectos
+npx -y hash-design skill install --to /path/to/skills   # o la carpeta de skills de cualquier otro agente
 ```
 
-`--target` es `claude`, `cursor` o `both` (por defecto). También puedes copiar a mano [`skills/hash-design/SKILL.md`](skills/hash-design/SKILL.md) en `.claude/skills/hash-design/SKILL.md` (Claude Code) o en `.cursor/skills/hash-design/SKILL.md` (Cursor). El cuerpo de la Skill está escrito en chino; su descripción incluye frases de activación en inglés.
+Por defecto escribe en `.claude/skills/` (Claude Code) y `.agents/skills/` (Codex, Cursor, VS Code Copilot, Windsurf). `--target` elige las carpetas (`claude`, `agents`, `cursor`, separadas por comas, o `all`; `both` es `claude,cursor`), y al terminar el comando imprime los comandos de la CLI y del servidor MCP que funcionan desde donde se ejecutó. Una skill es una carpeta con un `SKILL.md`, así que copiar [`skills/hash-design/SKILL.md`](skills/hash-design/SKILL.md) a `<carpeta de skills>/hash-design/SKILL.md` también funciona. Dónde busca cada agente, según su documentación:
+
+| Agente          | Skills del proyecto                                     | Skills personales                                              |
+| --------------- | ------------------------------------------------------- | -------------------------------------------------------------- |
+| Claude Code     | `.claude/skills/`                                       | `~/.claude/skills/`                                            |
+| Codex           | `.agents/skills/`                                       | `~/.agents/skills/`                                            |
+| Cursor          | `.agents/skills/`, `.cursor/skills/`, `.claude/skills/` | `~/.agents/skills/`, `~/.cursor/skills/`                       |
+| VS Code Copilot | `.github/skills/`, `.claude/skills/`, `.agents/skills/` | `~/.copilot/skills/`, `~/.claude/skills/`, `~/.agents/skills/` |
+| Windsurf        | `.agents/skills/`, `.windsurf/skills/`                  | `~/.agents/skills/`                                            |
+
+Los agentes que leen tanto `.claude/skills/` como `.agents/skills/` (Cursor, VS Code Copilot) ven dos copias idénticas tras la instalación por defecto; usa `--target agents` con ellos si te molesta. El cuerpo de la Skill está escrito en chino; su descripción incluye frases de activación en inglés.
 
 **Servidor MCP.** Registra `npx -y hash-design mcp` en tu agente; ejecuta el servidor por stdio.
 
@@ -115,6 +126,24 @@ Con la 0.1.0, los `args` son `["-y", "hash-design-mcp@0.1.0"]`.
 
 `.cursor/mcp.json` (proyecto) o `~/.cursor/mcp.json` (global), con la misma estructura que el `.mcp.json` de arriba.
 
+#### Codex
+
+```bash
+codex mcp add hash-design -- npx -y hash-design mcp
+```
+
+O añádelo a `~/.codex/config.toml` (o al `.codex/config.toml` de un proyecto de confianza):
+
+```toml
+[mcp_servers.hash-design]
+command = "npx"
+args = ["-y", "hash-design", "mcp"]
+```
+
+#### Otros agentes
+
+Cualquier cliente MCP que arranque servidores stdio puede ejecutarlo: comando `npx`, argumentos `-y hash-design mcp`; ponlo en la configuración MCP de ese cliente (Windsurf, VS Code y otros tienen la suya). Sin MCP, la Skill recurre a la CLI, `npx -y hash-design roll …`, con las mismas opciones.
+
 #### Claude Desktop
 
 `~/Library/Application Support/Claude/claude_desktop_config.json` (macOS) o `%APPDATA%\Claude\claude_desktop_config.json` (Windows), con la misma estructura. Claude Desktop no arranca el servidor en el directorio de tu proyecto, así que pasa una **ruta absoluta** como `out_dir` al llamar a `roll_designs`. Si no encuentra `npx`, pon en `command` la ruta que imprime `which npx`.
@@ -126,7 +155,7 @@ Para contribuir, o para ejecutar un commit que aún no se ha publicado (ver [CON
 ```bash
 git clone https://github.com/qybaihe/hash-design.git ~/hash-design
 cd ~/hash-design && npm install && npm run build
-node ~/hash-design/packages/core/dist/bin.js skill install --target both --dir /path/to/your/project
+node ~/hash-design/packages/core/dist/bin.js skill install --dir /path/to/your/project
 claude mcp add hash-design -- node ~/hash-design/packages/core/dist/bin.js mcp
 ```
 
@@ -136,9 +165,21 @@ En una copia del código, la CLI es `packages/core/dist/bin.js`. `packages/mcp/d
 
 Con el servidor MCP y la Skill instalados, basta con pedírselo a tu agente:
 
-> Usa hash-design para crear una web de una sola página para "Fourth Lane Bakery". Datos: abierto mar–dom 7:00–19:00, cerrado los lunes; pan de campo ¥38; …
+> Usa hash-design para crear una web de una sola página para "Fourth Lane Bakery", con 3 direcciones. Datos: abierto mar–dom 7:00–19:00, cerrado los lunes; pan de campo ¥38; …
 
-El agente hace la tirada, congela los briefs, renderiza cinco vistas previas, escribe `design/hash-design/compare.html` y luego se detiene a esperar que respondas con un número. Los clientes compatibles con prompts MCP también pueden iniciar el mismo flujo con el prompt `hash-design` (argumentos: `subject`, `facts`, `count`, `scenario`). Si pides diapositivas, pantallas de app, un panel, un póster o un email, el agente pasa el `scenario` correspondiente.
+El agente sortea N direcciones (cinco salvo que digas un número de 1 a 12, como en `/hash-design 3`), congela los briefs y responde con un formato fijo y breve; después se detiene. La respuesta sale en el idioma de la tirada (chino o inglés) y el agente la traduce si escribes en otro idioma. Esta usa una semilla para poder reproducirla; una tirada real dice `true-random`:
+
+```text
+**hash-design** · 3 directions for “Fourth Lane Bakery” · Web page · seed reply-demo
+
+1. **Caveat** / Literata — light paper, hue 330° · 5-column grid · anchor: initial · `ea849a45`
+2. **Hanken Grotesk** / Crimson Pro — light paper, hue 344° · 10-column grid · anchor: number · `f458a091`
+3. **Overpass** / Barlow Condensed — light paper, hue 234° · 5-column grid · anchor: grid-diagram · `a6b46334`
+
+Reply with a number to build that direction as the final page, **render** to see all 3 as previews side by side first, or **reroll** for a new set.
+```
+
+Con un número construye esa dirección. `render` genera una vista previa independiente por dirección y `design/hash-design/compare.html`, vuelve a mostrar la lista y espera tu número. Cada campo de la respuesta se lee de los números mapeados ([protocolo de respuesta](docs/mcp-tools.md#reply-protocol), en inglés); la CLI la imprime con `--format reply`. Los clientes compatibles con prompts MCP también pueden iniciar el mismo flujo con el prompt `hash-design` (argumentos: `subject`, `facts`, `count`, `scenario`). Si pides diapositivas, pantallas de app, un panel, un póster o un email, el agente pasa el `scenario` correspondiente.
 
 ### CLI
 
@@ -146,13 +187,14 @@ El agente hace la tirada, congela los briefs, renderiza cinco vistas previas, es
 hash-design roll --subject "Fourth Lane Bakery" --facts-file facts.md --out design/hash-design   # 5 direcciones verdaderamente aleatorias
 hash-design roll --subject "…" --light-only --brand "#c8102e" --format json                     # con restricciones
 hash-design roll --subject "Q3 review" --facts-file facts.md --scenario deck --out design/deck   # diapositivas en vez de una página
+hash-design roll --subject "…" --count 3 --out design/hash-design --format reply                 # 3 direcciones + la respuesta breve
 hash-design brief <ref> [constraints]                                                            # reproduce un brief
 hash-design critique page.html --roll design/hash-design/roll.json --pick 3 --fail-under 80
 hash-design compare --roll design/hash-design/roll.json                                          # escribe compare.html
-hash-design skill install --target both                                                          # instala la Skill
+hash-design skill install                                                                        # instala la Skill
 ```
 
-Ejecútala con `npx -y hash-design …`, o instálala una vez con `npm install -g hash-design` y escribe `hash-design …`; en una copia del código es `node packages/core/dist/bin.js …`. `hash-design --help` lista todos los comandos y `hash-design <command> --help` (por ejemplo, `hash-design roll --help`) muestra las opciones de un comando, incluidos los flags de restricción `--light-only`, `--dark-only`, `--reduced-motion`, `--brand` y `--scenario`.
+Ejecútala con `npx -y hash-design …`, o instálala una vez con `npm install -g hash-design` y escribe `hash-design …`; en una copia del código es `node packages/core/dist/bin.js …`. `hash-design --help` lista todos los comandos y `hash-design <command> --help` (por ejemplo, `hash-design roll --help`) muestra las opciones de un comando, incluidos los flags de restricción `--light-only`, `--dark-only`, `--reduced-motion`, `--brand` y `--scenario`. `--count`/`-n` fija N (de 1 a 12, 5 por defecto); cada dirección es su propio hash, así que las restricciones no bajan ese límite.
 
 ### Biblioteca
 
@@ -172,21 +214,23 @@ Instálala con `npm install hash-design` (módulo ES, Node.js ≥ 20, con tipos)
 ### Actualizar
 
 ```bash
-npx -y hash-design@latest skill install --target both --dir .   # actualiza la copia de SKILL.md
+npx -y hash-design@latest skill install --dir .   # actualiza la copia de SKILL.md
 ```
 
-npx puede seguir usando una copia que guardó en caché; `@latest` hace que descargue la versión más reciente (o fija una, como `hash-design@0.2.0`). El servidor MCP se arranca con npx cada vez que se inicia el agente, así que reinicia el agente tras una nueva versión y escribe `hash-design@latest` en su comando MCP si sigue corriendo una copia antigua. Desde un clon: `git pull && npm install && npm run build`. Si una actualización cambia el pool de fuentes, las listas de primitivas o las reglas de los bytes, los refs sorteados con la versión anterior necesitan esa versión para reproducirse (ver [Preguntas frecuentes](#preguntas-frecuentes)).
+npx puede seguir usando una copia que guardó en caché; `@latest` hace que descargue la versión más reciente (o fija una, como `hash-design@0.2.0`). El servidor MCP se arranca con npx cada vez que se inicia el agente, así que reinicia el agente tras una nueva versión y escribe `hash-design@latest` en su comando MCP si sigue corriendo una copia antigua. Las versiones anteriores instalaban por defecto en `.claude/` y `.cursor/`; actualiza una copia antigua de `.cursor/skills/` con `--target all` o bórrala. Desde un clon: `git pull && npm install && npm run build`. Si una actualización cambia el pool de fuentes, las listas de primitivas o las reglas de los bytes, los refs sorteados con la versión anterior necesitan esa versión para reproducirse (ver [Preguntas frecuentes](#preguntas-frecuentes)).
 
 ## Cómo funciona
 
 ```mermaid
 flowchart LR
-  A[Ficha de datos] --> B[roll_designs<br/>5 × SHA-256, aleatoriedad real]
+  A[Ficha de datos] --> B[roll_designs<br/>N × SHA-256, aleatoriedad real]
   B --> C[Reglas fijas de bytes<br/>cada hash → una dirección]
-  C --> D[5 briefs congelados<br/>briefs/01…05.md]
-  D --> E[5 vistas previas HTML independientes<br/>cada una solo ve su propio brief]
+  C --> D[N briefs congelados<br/>briefs/01…NN.md]
+  D --> R{Respuesta breve<br/>una línea por dirección}
+  R -->|render| E[N vistas previas HTML independientes<br/>cada una solo ve su propio brief]
   E --> F[build_compare_page<br/>lado a lado]
   F --> G{El usuario elige}
+  R -->|número| H
   G --> H[Página final<br/>a partir del brief elegido]
   H --> I[critique_page<br/>prohibiciones + adherencia al brief]
 ```
@@ -289,12 +333,12 @@ Las cuatro herramientas MCP, el espacio de parámetros y las 14 prohibiciones qu
 
 ### Herramientas MCP
 
-| Herramienta          | Qué hace                                                                                                                                                                                                                                           |
-| -------------------- | -------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------- |
-| `roll_designs`       | Recibe `subject`, `facts`, `count` (5 por defecto) y, opcionalmente, `seed`, `language`, `scenario` y restricciones. Devuelve los hashes, el mapeo y un brief por dirección. Con `out_dir` congela `roll.json`, `ROLL.md` y `briefs/*.md` en disco |
-| `get_brief`          | Reproduce un brief a partir de una `ref` (el hash de 64 dígitos hex) más las mismas restricciones, en Markdown o JSON                                                                                                                              |
-| `critique_page`      | Puntúa una cadena o un archivo HTML según las prohibiciones y la lista de comprobación de plantillas típicas de IA; con `brief_ref` o `roll_path` + `pick` también puntúa la adherencia al brief y al contrato de salida del escenario             |
-| `build_compare_page` | Genera el `compare.html` lado a lado a partir de un `roll.json`                                                                                                                                                                                    |
+| Herramienta          | Qué hace                                                                                                                                                                                                                                                                                    |
+| -------------------- | ------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------- |
+| `roll_designs`       | Recibe `subject`, `facts`, `count` (de 1 a 12, 5 por defecto) y, opcionalmente, `seed`, `language`, `scenario` y restricciones. Devuelve los hashes, el mapeo, un brief por dirección y la respuesta para el usuario. Con `out_dir` congela `roll.json`, `ROLL.md` y `briefs/*.md` en disco |
+| `get_brief`          | Reproduce un brief a partir de una `ref` (el hash de 64 dígitos hex) más las mismas restricciones, en Markdown o JSON                                                                                                                                                                       |
+| `critique_page`      | Puntúa una cadena o un archivo HTML según las prohibiciones y la lista de comprobación de plantillas típicas de IA; con `brief_ref` o `roll_path` + `pick` también puntúa la adherencia al brief y al contrato de salida del escenario                                                      |
+| `build_compare_page` | Genera el `compare.html` lado a lado a partir de un `roll.json`                                                                                                                                                                                                                             |
 
 Recursos: `hash-design://bans`, `hash-design://workflow` (la Skill). Prompt: `hash-design` (`subject`, `facts`, `count`, `scenario`).
 
@@ -343,7 +387,7 @@ Cada brief incluye estas 14 prohibiciones, y `critique_page` detecta cada una de
 <details>
 <summary><strong>¿Qué agentes pueden usarlo?</strong></summary>
 
-La Skill se instala en Claude Code (`.claude/skills/`) y en Cursor (`.cursor/skills/`). El servidor MCP habla stdio, así que cualquier cliente MCP puede arrancarlo; [Instalación manual](#instalación-manual) muestra Claude Code, Cursor y Claude Desktop. Sin la Skill, un agente puede llamar a las herramientas, pero nada le indica que renderice las vistas previas por separado y se detenga hasta que elijas.
+Cualquier agente que cargue carpetas con `SKILL.md`: `skill install` escribe en `.claude/skills/` (Claude Code) y `.agents/skills/` (Codex, Cursor, VS Code Copilot, Windsurf), y `--to` cubre cualquier otra carpeta. El servidor MCP habla stdio, así que cualquier cliente MCP puede arrancarlo; [Instalación manual](#instalación-manual) muestra Claude Code, Cursor, Codex y Claude Desktop, y la CLI cubre a los agentes sin MCP. Probado con Claude Code: carga la Skill instalada, sortea el número de direcciones que pides y envía la respuesta tal cual. Las carpetas de los demás agentes salen de su propia documentación, no de una prueba. Sin la Skill, un agente puede llamar a las herramientas, pero nada le indica que responda en pocas líneas, renderice las vistas previas por separado y se detenga hasta que elijas.
 
 </details>
 

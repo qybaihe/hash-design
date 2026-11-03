@@ -12,6 +12,8 @@ import {
   BANS,
   type Constraints,
   type RollJson,
+  DEFAULT_COUNT,
+  MAX_COUNT,
   SCENARIO_IDS,
   type ScenarioId,
   briefJson,
@@ -24,6 +26,7 @@ import {
   readSkill,
   renderBrief,
   renderCritique,
+  renderReply,
   renderRoll,
   renderRollSummary,
   reproduce,
@@ -87,11 +90,11 @@ export function bansMarkdown(): string {
 }
 
 export const SERVER_INSTRUCTIONS = `hash-design breaks the default "AI page" aesthetic with external randomness.
-Workflow: roll_designs (N true-random hashes; each hash is one direction → one frozen brief) → render ONE independent HTML preview per brief,
-following it literally → build_compare_page → STOP and let the user pick a number → build the final page from the
-picked brief only → critique_page with brief_ref to self-check. Never choose a style yourself; never "improve" a brief
-toward your own taste; never invent facts. Load the hash-design Skill (or the hash-design://workflow resource) for the
-full procedure.`;
+Workflow: roll_designs (N true-random hashes, default 5; each hash is one direction → one frozen brief) → send the user
+the short reply it returns and STOP → on a number: build the final artifact from that brief only → on "render": ONE
+independent HTML preview per brief, following it literally, then build_compare_page and send its reply → critique_page
+to self-check. Never choose a style yourself; never "improve" a brief toward your own taste; never invent facts. Load
+the hash-design Skill (or the hash-design://workflow resource) for the full procedure.`;
 
 export function createServer(): McpServer {
   const server = new McpServer(
@@ -104,7 +107,7 @@ export function createServer(): McpServer {
     {
       title: 'Roll design directions',
       description:
-        'Roll N true-random SHA-256 hashes (crypto.randomBytes); each hash IS one design direction: its bytes are mapped by fixed rules straight onto continuous parameters (OKLCH palette, display and body faces from a flat font pool, type scale, density, grid, anchor, motif, surface, motion, voice, twist). No genre library, no names. Returns the hashes, the mapping trace and one frozen Markdown brief per direction. Use `seed` only to reproduce examples. Pass `scenario` for a slide deck, app screens, a dashboard, a poster / social card or an HTML email (default: web page). Pass `out_dir` to freeze the briefs on disk (roll.json, ROLL.md, briefs/NN-<short>.md) — recommended, then render each preview from its own brief file.',
+        'Roll N true-random SHA-256 hashes (crypto.randomBytes); each hash IS one design direction: its bytes are mapped by fixed rules straight onto continuous parameters (OKLCH palette, display and body faces from a flat font pool, type scale, density, grid, anchor, motif, surface, motion, voice, twist). No genre library, no names. Returns the hashes, the mapping trace and one frozen Markdown brief per direction. It also returns the reply to send the user (one line per direction, then the question): send it and stop. Use `seed` only to reproduce examples. Pass `scenario` for a slide deck, app screens, a dashboard, a poster / social card or an HTML email (default: web page). Pass `out_dir` to freeze the briefs on disk (roll.json, ROLL.md, briefs/NN-<short>.md) — recommended, then render each preview from its own brief file.',
       inputSchema: {
         subject: z.string().describe('What the page is for, e.g. "第四巷面包店 一页站".'),
         facts: z
@@ -113,7 +116,15 @@ export function createServer(): McpServer {
           .describe(
             'The only facts the page may state (hours, prices, address…). Nothing else may be invented.',
           ),
-        count: z.number().int().min(1).max(12).optional().describe('How many directions (default 5).'),
+        count: z
+          .number()
+          .int()
+          .min(1)
+          .max(MAX_COUNT)
+          .optional()
+          .describe(
+            `How many directions, 1–${MAX_COUNT} (default ${DEFAULT_COUNT}). Each is its own hash, so constraints never lower the cap. Use the number the user asks for.`,
+          ),
         seed: z.string().optional().describe('Reproducible roll for examples/tests. Omit for real use.'),
         language: z
           .enum(['zh', 'en'])
@@ -136,7 +147,7 @@ export function createServer(): McpServer {
     async (args) => {
       try {
         const r = roll({
-          count: args.count ?? 5,
+          count: args.count ?? DEFAULT_COUNT,
           ...(args.seed !== undefined ? { seed: args.seed } : {}),
           constraints: toConstraints(args),
           content: {
@@ -158,9 +169,10 @@ export function createServer(): McpServer {
           parts.push(detail === 'full' ? renderRoll(r) : renderRollSummary(r));
         }
         parts.push(
-          'Next: render one self-contained HTML preview per brief (only that brief in view, follow it literally), save as previews/NN-<short>.html, then call build_compare_page and stop for the user to choose.',
+          `Send the user exactly this reply (translate it if they write in another language), then stop and wait. On a number, build the final artifact from that brief only. On "render", write one self-contained preview per brief (only that brief in view, followed literally) to previews/NN-<short>.html, then call build_compare_page.\n\n${renderReply(r)}`,
         );
         const machine = {
+          reply: renderReply(r),
           source: r.source,
           library: r.library,
           constraints: r.constraints,
@@ -312,7 +324,10 @@ export function createServer(): McpServer {
         const lines = [`Wrote ${relative(process.cwd(), out)} (${entries.length} previews).`];
         if (missing.length)
           lines.push(`Missing previews — render them first:\n${missing.map((m) => `- ${m}`).join('\n')}`);
-        lines.push('Now show the compare page to the user and STOP until they pick a number.');
+        if (!missing.length)
+          lines.push(
+            `Send the user exactly this reply (translated if needed) and STOP until they pick a number:\n\n${renderReply(r, { stage: 'compared', comparePath: relative(process.cwd(), out) })}`,
+          );
         return { content: [text(lines.join('\n\n'))] };
       } catch (err) {
         return fail(err);
@@ -328,7 +343,10 @@ export function createServer(): McpServer {
       argsSchema: {
         subject: z.string().describe('What the page is for.'),
         facts: z.string().optional().describe('Facts, one per line.'),
-        count: z.string().optional().describe('Number of directions (default 5).'),
+        count: z
+          .string()
+          .optional()
+          .describe(`Number of directions, 1–${MAX_COUNT} (default ${DEFAULT_COUNT}).`),
         scenario: z.string().optional().describe('web (default), deck, app, dashboard, poster or email.'),
       },
     },
@@ -344,11 +362,10 @@ export function createServer(): McpServer {
                 ? `Facts (the only content allowed):\n${args.facts}`
                 : 'No facts supplied: ask me for them before writing copy.',
               '',
-              `1. Call roll_designs with count=${args.count ?? '5'}, the subject and facts, ${args.scenario ? `scenario="${args.scenario}", ` : ''}out_dir="design/hash-design". Do not pass a seed.`,
-              '2. For each brief in design/hash-design/briefs, read only that brief and write a self-contained preview to design/hash-design/previews/<same name>.html. Follow it literally.',
-              '3. Run critique_page with roll_path + pick on each preview; fix every critical/major finding.',
-              '4. Call build_compare_page, show me compare.html, and STOP. Wait for my number.',
-              '5. Build the final page from the chosen brief only, then critique it again.',
+              `1. Call roll_designs with count=${args.count ?? String(DEFAULT_COUNT)}, the subject and facts, ${args.scenario ? `scenario="${args.scenario}", ` : ''}out_dir="design/hash-design". Do not pass a seed.`,
+              '2. Send me the reply it returns, nothing more, and STOP. Wait for a number or "render".',
+              '3. On "render": for each brief in design/hash-design/briefs, read only that brief and write a self-contained preview to design/hash-design/previews/<same name>.html, following it literally. Run critique_page with roll_path + pick on each and fix every critical/major finding. Call build_compare_page, send me its reply and STOP.',
+              '4. On a number: build the final artifact from that brief only, then critique it again.',
             ].join('\n'),
           },
         },

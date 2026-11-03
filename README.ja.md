@@ -10,7 +10,7 @@
 
 ### 1 つのプロンプトから 5 つのデザインの方向性。選ぶのはモデルではなく、真の乱数による SHA-256 ハッシュです。
 
-**コーディングエージェントが毎回同じ「Inter と紫のグラデーション」のページを出してくるのを止めます。hash-design は 5 つの方向性をロールし、それぞれをデザインブリーフとして凍結し、5 つのプレビューを並べて表示してから、あなたが 1 つ選ぶのを待ちます。どの方向性も ref から作り直せます。**
+**コーディングエージェントが毎回同じ「Inter と紫のグラデーション」のページを出してくるのを止めます。hash-design は 5 つ（または 1〜12 の任意の数）の方向性をロールし、それぞれをデザインブリーフとして凍結し、1 行ずつ示し、求められればプレビューを並べて表示し、あなたが選んだものを作ります。どの方向性も ref から作り直せます。**
 
 [![CI](https://img.shields.io/github/actions/workflow/status/qybaihe/hash-design/ci.yml?branch=main&style=flat-square&label=CI)](https://github.com/qybaihe/hash-design/actions/workflows/ci.yml)
 [![Live demo](https://img.shields.io/badge/live_demo-4_examples-e2401c?style=flat-square)](https://qybaihe.github.io/hash-design/)
@@ -24,7 +24,7 @@
 
 [クイックスタート](#クイックスタート) · [仕組み](#仕組み) · [ショーケース](#ショーケース) · [リファレンス](#リファレンス) · [よくある質問](#よくある質問)
 
-**エージェントにこう伝える**（Claude Code、Cursor）：
+**エージェントにこう伝える**（Claude Code、Cursor、Codex、Windsurf、VS Code Copilot など）：
 
 ```text
 このエージェントに hash-design の skill を入れて：`npx -y hash-design skill install --dir .` を実行し、
@@ -44,10 +44,10 @@ hash-design は、モデルに「もっとセンスを良くしろ」とは求�
 
 | ステップ         | 何が起きるか                                                                                                                                                                                                                                                                                                                                                                                                                                                                          |
 | ---------------- | ------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------- |
-| **ロール**       | システムの乱数から 5 つのハッシュを生成します（`crypto.randomBytes(32)` → SHA-256）。                                                                                                                                                                                                                                                                                                                                                                                                 |
+| **ロール**       | システムの乱数から N 個のハッシュを生成します（`crypto.randomBytes(32)` → SHA-256）。デフォルトは 5 個、指定すれば 1〜12 個です。                                                                                                                                                                                                                                                                                                                                                     |
 | **マッピング**   | 各ハッシュが**そのまま**方向性になります。固定された再現可能なルールが、そのバイトをデザインのパラメータへ直接読み込みます。対象は、色相とコントラストを解いて求めたパレット、フラットなフォントプールから選ぶディスプレイ書体と本文書体、ケース（大文字・小文字）、トラッキング、タイプスケールの比率、密度、グリッド、ファーストビューのアンカー、モチーフ、角とテクスチャ、モーションのタイミング、コピーの文体、そして 1 つの「ツイスト」です。スタイルのライブラリはありません。 |
 | **凍結**         | 各方向性を、そのまま貼り付けられるトークン（フォントのリンク、hex 値、`tokens.css`、グリッドの数値、角丸／ボーダー／影の値）とグローバル禁止事項をまとめた**ブリーフ**として凍結します。                                                                                                                                                                                                                                                                                              |
-| **レンダリング** | エージェントの仕事は、各ブリーフを忠実に**実行する**ことだけです。5 つの独立した HTML プレビューと、それらを並べた比較ページを作ります。そこで**いったん止まり、あなたが番号を選ぶのを待ちます**。                                                                                                                                                                                                                                                                                    |
+| **レンダリング** | エージェントはまず**方向性ごとに 1 行**で示して**止まります**。`render` と返すと、各ブリーフを忠実に**実行する**ことだけが仕事になり、独立した HTML プレビューと、それらを並べた比較ページを作って、**あなたが番号を選ぶのを待ちます**。                                                                                                                                                                                                                                              |
 | **仕上げ**       | 番号を選ぶと、エージェントはそのブリーフをもとに最終ページを作り、`critique_page` でチェックします。                                                                                                                                                                                                                                                                                                                                                                                  |
 
 これは、モデルのデフォルトの美学を打ち破るための、外部からのランダムな制約です。KV キャッシュやサンプリング温度とは関係ありません。モデルのセンスはスタイル選びではなく、実装の質（揃え、リズム、ディテール、可読性）に使われます。
@@ -60,7 +60,7 @@ hash-design は、モデルに「もっとセンスを良くしろ」とは求�
 
 ### エージェントに任せる
 
-デザインしたいプロジェクトで Claude Code か Cursor を開き、次を貼り付けます：
+デザインしたいプロジェクトでコーディングエージェント（Claude Code、Cursor、Codex、Windsurf、VS Code Copilot など）を開き、次を貼り付けます：
 
 ```text
 このエージェントに hash-design の skill を入れて：`npx -y hash-design skill install --dir .` を実行し、
@@ -68,7 +68,7 @@ hash-design は、モデルに「もっとセンスを良くしろ」とは求�
 `npx -y hash-design-mcp@0.1.0` を使う）。手順は https://github.com/qybaihe/hash-design/blob/main/README.ja.md#クイックスタート 。
 ```
 
-エージェントが Skill をプロジェクトの `.claude/skills/` と `.cursor/skills/` にコピーし、MCP サーバーを登録します（Claude Code は `claude mcp add`、Cursor は `.cursor/mcp.json`）。clone やビルドは要りません。終わったら新しいセッションを始めて両方を読み込ませ、[使い方](#使い方)へ進んでください。自分でコマンドを打つ場合は、下の手順を使います。
+エージェントが Skill をプロジェクトの `.claude/skills/` と `.agents/skills/` にコピーし、MCP サーバーを登録します（Claude Code は `claude mcp add`、Cursor は `.cursor/mcp.json`、Codex は `codex mcp add`）。clone やビルドは要りません。終わったら新しいセッションを始めて両方を読み込ませ、[使い方](#使い方)へ進んでください。自分でコマンドを打つ場合は、下の手順を使います。
 
 ### 手動でインストール
 
@@ -77,11 +77,22 @@ Node.js ≥ 20 と npm（`npx` 用）が必要です。
 **Skill。** Skill は、いつ hash-design を使うか、どの順で MCP ツールを呼ぶか、プレビューをどう独立して作るか、どこで必ず止まるかをエージェントに伝えます。
 
 ```bash
-npx -y hash-design skill install --target both --dir .      # このプロジェクト：.claude/skills と .cursor/skills
-npx -y hash-design skill install --target claude --global   # またはホームディレクトリ（すべてのプロジェクト）
+npx -y hash-design skill install --dir .                # このプロジェクト：.claude/skills と .agents/skills
+npx -y hash-design skill install --global               # またはホームディレクトリ（すべてのプロジェクト）
+npx -y hash-design skill install --to /path/to/skills   # またはほかのエージェントの skills フォルダ
 ```
 
-`--target` は `claude`、`cursor`、`both`（デフォルト）のいずれかです。[`skills/hash-design/SKILL.md`](skills/hash-design/SKILL.md) を手作業で `.claude/skills/hash-design/SKILL.md`（Claude Code）または `.cursor/skills/hash-design/SKILL.md`（Cursor）にコピーしてもかまいません。Skill の本文は中国語で書かれていますが、description には英語のトリガーフレーズも含まれています。
+デフォルトでは `.claude/skills/`（Claude Code）と `.agents/skills/`（Codex、Cursor、VS Code Copilot、Windsurf）に書き込みます。`--target` でフォルダを選ぶこともでき（`claude`、`agents`、`cursor` をカンマ区切りで、または `all`。`both` は `claude,cursor`）、最後に、その場所で使える CLI と MCP のコマンドを表示します。Skill は `SKILL.md` の入ったフォルダなので、[`skills/hash-design/SKILL.md`](skills/hash-design/SKILL.md) を `<skills フォルダ>/hash-design/SKILL.md` に手でコピーしても動きます。各エージェントが探す場所（それぞれのドキュメントによる）：
+
+| エージェント    | プロジェクトの Skill                                    | 個人の Skill                                                   |
+| --------------- | ------------------------------------------------------- | -------------------------------------------------------------- |
+| Claude Code     | `.claude/skills/`                                       | `~/.claude/skills/`                                            |
+| Codex           | `.agents/skills/`                                       | `~/.agents/skills/`                                            |
+| Cursor          | `.agents/skills/`, `.cursor/skills/`, `.claude/skills/` | `~/.agents/skills/`, `~/.cursor/skills/`                       |
+| VS Code Copilot | `.github/skills/`, `.claude/skills/`, `.agents/skills/` | `~/.copilot/skills/`, `~/.claude/skills/`, `~/.agents/skills/` |
+| Windsurf        | `.agents/skills/`, `.windsurf/skills/`                  | `~/.agents/skills/`                                            |
+
+`.claude/skills/` と `.agents/skills/` の両方を読むエージェント（Cursor、VS Code Copilot）では、デフォルトのインストール後に同じコピーが 2 つ見えます。気になる場合はそれらには `--target agents` を使ってください。Skill の本文は中国語で書かれていますが、description には英語のトリガーフレーズも含まれています。
 
 **MCP サーバー。** エージェントに `npx -y hash-design mcp` を登録します。stdio でサーバーが動きます。
 
@@ -115,6 +126,24 @@ claude mcp add hash-design -- npx -y hash-design-mcp@0.1.0
 
 `.cursor/mcp.json`（プロジェクト）または `~/.cursor/mcp.json`（グローバル）に、上の `.mcp.json` と同じ構造で書きます。
 
+#### Codex
+
+```bash
+codex mcp add hash-design -- npx -y hash-design mcp
+```
+
+あるいは `~/.codex/config.toml`（または信頼済みプロジェクトの `.codex/config.toml`）に追加します：
+
+```toml
+[mcp_servers.hash-design]
+command = "npx"
+args = ["-y", "hash-design", "mcp"]
+```
+
+#### その他のエージェント
+
+stdio サーバーを起動できる MCP クライアントならどれでも動かせます。コマンドは `npx`、引数は `-y hash-design mcp` で、クライアントごとの MCP 設定に書きます（Windsurf や VS Code などはそれぞれ設定ファイルを持っています）。MCP がない場合、Skill は CLI（`npx -y hash-design roll …`）に切り替え、同じオプションで使います。
+
 #### Claude Desktop
 
 macOS は `~/Library/Application Support/Claude/claude_desktop_config.json`、Windows は `%APPDATA%\Claude\claude_desktop_config.json` で、構造は同じです。Claude Desktop はプロジェクトのディレクトリでサーバーを起動しないので、`roll_designs` を呼ぶときは `out_dir` に**絶対パス**を渡してください。`npx` が見つからない場合は、`which npx` が表示するパスを `command` に書きます。
@@ -126,7 +155,7 @@ macOS は `~/Library/Application Support/Claude/claude_desktop_config.json`、Wi
 ```bash
 git clone https://github.com/qybaihe/hash-design.git ~/hash-design
 cd ~/hash-design && npm install && npm run build
-node ~/hash-design/packages/core/dist/bin.js skill install --target both --dir /path/to/your/project
+node ~/hash-design/packages/core/dist/bin.js skill install --dir /path/to/your/project
 claude mcp add hash-design -- node ~/hash-design/packages/core/dist/bin.js mcp
 ```
 
@@ -136,9 +165,21 @@ claude mcp add hash-design -- node ~/hash-design/packages/core/dist/bin.js mcp
 
 MCP サーバーと Skill をインストールしたら、エージェントにこう頼むだけです。
 
-> hash-design を使って「Fourth Lane Bakery」のワンページサイトを作って。ファクト：火〜日 7:00〜19:00 営業、月曜定休。カンパーニュ ¥38。…
+> hash-design を使って「Fourth Lane Bakery」のワンページサイトを作って。方向性は 3 つ。ファクト：火〜日 7:00〜19:00 営業、月曜定休。カンパーニュ ¥38。…
 
-エージェントはロールを行い、ブリーフを凍結し、5 つのプレビューをレンダリングして `design/hash-design/compare.html` を書き出したあと、止まってあなたが番号で返答するのを待ちます。MCP プロンプトに対応したクライアントなら、`hash-design` プロンプト（引数：`subject`、`facts`、`count`、`scenario`）で同じワークフローを始めることもできます。スライド、アプリ画面、ダッシュボード、ポスター、メールを頼むと、エージェントは対応する `scenario` を渡します。
+エージェントは N 個の方向性をロールし（デフォルトは 5。`/hash-design 3` のように 1〜12 の数を伝えればその数）、ブリーフを凍結してから、決まった短い形で返答して止まります。返答はロールの言語（中国語か英語）で書かれ、あなたが別の言語で話していればエージェントが翻訳します。次の例は再現できるよう seed を使っています（実際のロールでは `true-random` と表示されます）：
+
+```text
+**hash-design** · 3 directions for “Fourth Lane Bakery” · Web page · seed reply-demo
+
+1. **Caveat** / Literata — light paper, hue 330° · 5-column grid · anchor: initial · `ea849a45`
+2. **Hanken Grotesk** / Crimson Pro — light paper, hue 344° · 10-column grid · anchor: number · `f458a091`
+3. **Overpass** / Barlow Condensed — light paper, hue 234° · 5-column grid · anchor: grid-diagram · `a6b46334`
+
+Reply with a number to build that direction as the final page, **render** to see all 3 as previews side by side first, or **reroll** for a new set.
+```
+
+番号を返すとその方向性で作ります。`render` と返すと、方向性ごとに独立したプレビューと `design/hash-design/compare.html` を作り、同じ一覧をもう一度示して、番号を待ちます。返答の項目はすべてマッピングされた数値から読み取ったものです（[返答プロトコル](docs/mcp-tools.md#reply-protocol)、英語）。CLI では `--format reply` で出力できます。MCP プロンプトに対応したクライアントなら、`hash-design` プロンプト（引数：`subject`、`facts`、`count`、`scenario`）で同じワークフローを始めることもできます。スライド、アプリ画面、ダッシュボード、ポスター、メールを頼むと、エージェントは対応する `scenario` を渡します。
 
 ### CLI
 
@@ -146,13 +187,14 @@ MCP サーバーと Skill をインストールしたら、エージェントに
 hash-design roll --subject "Fourth Lane Bakery" --facts-file facts.md --out design/hash-design   # 真の乱数による 5 つの方向性
 hash-design roll --subject "…" --light-only --brand "#c8102e" --format json                     # 制約付き
 hash-design roll --subject "Q3 review" --facts-file facts.md --scenario deck --out design/deck   # ページではなくスライド
+hash-design roll --subject "…" --count 3 --out design/hash-design --format reply                 # 3 つの方向性 + 短い返答
 hash-design brief <ref> [constraints]                                                            # ブリーフを再現
 hash-design critique page.html --roll design/hash-design/roll.json --pick 3 --fail-under 80
 hash-design compare --roll design/hash-design/roll.json                                          # compare.html を書き出す
-hash-design skill install --target both                                                          # Skill をインストール
+hash-design skill install                                                                        # Skill をインストール
 ```
 
-`npx -y hash-design …` で実行するか、`npm install -g hash-design` で一度インストールして `hash-design …` と打ちます。チェックアウトでは `node packages/core/dist/bin.js …` です。`hash-design --help` ですべてのコマンドが、`hash-design <command> --help`（例：`hash-design roll --help`）でそのコマンドのオプションが表示されます。制約フラグ `--light-only`、`--dark-only`、`--reduced-motion`、`--brand`、`--scenario` も含まれます。
+`npx -y hash-design …` で実行するか、`npm install -g hash-design` で一度インストールして `hash-design …` と打ちます。チェックアウトでは `node packages/core/dist/bin.js …` です。`hash-design --help` ですべてのコマンドが、`hash-design <command> --help`（例：`hash-design roll --help`）でそのコマンドのオプションが表示されます。制約フラグ `--light-only`、`--dark-only`、`--reduced-motion`、`--brand`、`--scenario` も含まれます。`--count`/`-n` で N を指定します（1〜12、デフォルト 5。方向性はそれぞれ独立したハッシュなので、制約で上限は下がりません）。
 
 ### ライブラリ
 
@@ -172,21 +214,23 @@ console.log(report.score, report.adherence, report.findings);
 ### アップデート
 
 ```bash
-npx -y hash-design@latest skill install --target both --dir .   # コピーした SKILL.md を更新
+npx -y hash-design@latest skill install --dir .   # コピーした SKILL.md を更新
 ```
 
-npx は以前にキャッシュしたコピーを使い続けることがあります。`@latest` を付けると最新のリリースを取得します（`hash-design@0.2.0` のようにバージョンを固定することもできます）。MCP サーバーはエージェントの起動時に npx で立ち上がるので、リリース後はエージェントを再起動し、古いコピーが動き続けるなら MCP のコマンドに `hash-design@latest` と書いてください。clone から使う場合は `git pull && npm install && npm run build`。アップデートでフォントプール、プリミティブのリスト、バイトのルールのいずれかが変わった場合、古いバージョンでロールした ref の再現にはそのバージョンが必要です（[よくある質問](#よくある質問)を参照）。
+npx は以前にキャッシュしたコピーを使い続けることがあります。`@latest` を付けると最新のリリースを取得します（`hash-design@0.2.0` のようにバージョンを固定することもできます）。MCP サーバーはエージェントの起動時に npx で立ち上がるので、リリース後はエージェントを再起動し、古いコピーが動き続けるなら MCP のコマンドに `hash-design@latest` と書いてください。以前のバージョンはデフォルトで `.claude/` と `.cursor/` にインストールしていました。古い `.cursor/skills/` のコピーは `--target all` で更新するか、削除してください。clone から使う場合は `git pull && npm install && npm run build`。アップデートでフォントプール、プリミティブのリスト、バイトのルールのいずれかが変わった場合、古いバージョンでロールした ref の再現にはそのバージョンが必要です（[よくある質問](#よくある質問)を参照）。
 
 ## 仕組み
 
 ```mermaid
 flowchart LR
-  A[ファクトシート] --> B[roll_designs<br/>5 × SHA-256、真の乱数]
+  A[ファクトシート] --> B[roll_designs<br/>N × SHA-256、真の乱数]
   B --> C[固定されたバイトのルール<br/>各ハッシュ → 1 つの方向性]
-  C --> D[凍結された 5 つのブリーフ<br/>briefs/01…05.md]
-  D --> E[5 つの独立した HTML プレビュー<br/>それぞれ自分のブリーフだけを参照]
+  C --> D[凍結された N 個のブリーフ<br/>briefs/01…NN.md]
+  D --> R{短い返答<br/>方向性ごとに 1 行}
+  R -->|render| E[N 個の独立した HTML プレビュー<br/>それぞれ自分のブリーフだけを参照]
   E --> F[build_compare_page<br/>並べて比較]
   F --> G{ユーザーが選ぶ}
+  R -->|番号| H
   G --> H[最終ページ<br/>選ばれたブリーフから作成]
   H --> I[critique_page<br/>禁止事項 + ブリーフ準拠]
 ```
@@ -289,12 +333,12 @@ seed `causeway-festival-6` · `critique_page` 96–100 · ブリーフ遵守度 
 
 ### MCP ツール
 
-| ツール               | 機能                                                                                                                                                                                                                                                        |
-| -------------------- | ----------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------- |
-| `roll_designs`       | `subject`、`facts`、`count`（デフォルト 5）と、任意の `seed`、`language`、`scenario`、制約を受け取ります。ハッシュ、マッピング、方向性ごとに 1 つのブリーフを返します。`out_dir` を指定すると、`roll.json`、`ROLL.md`、`briefs/*.md` をディスクに凍結します |
-| `get_brief`          | `ref`（16 進 64 桁のハッシュ）と同じ制約からブリーフを再現し、Markdown または JSON で返します                                                                                                                                                               |
-| `critique_page`      | HTML 文字列またはファイルを、禁止事項と AI テンプレート的なパターンのチェックリストに照らして採点します。`brief_ref`、または `roll_path` + `pick` を指定すると、ブリーフとシナリオの出力の約束への準拠度も採点します                                        |
-| `build_compare_page` | `roll.json` から、方向性を並べて見比べる `compare.html` を生成します                                                                                                                                                                                        |
+| ツール               | 機能                                                                                                                                                                                                                                                                                   |
+| -------------------- | -------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------- |
+| `roll_designs`       | `subject`、`facts`、`count`（1〜12、デフォルト 5）と、任意の `seed`、`language`、`scenario`、制約を受け取ります。ハッシュ、マッピング、方向性ごとに 1 つのブリーフ、ユーザーに送る返答を返します。`out_dir` を指定すると、`roll.json`、`ROLL.md`、`briefs/*.md` をディスクに凍結します |
+| `get_brief`          | `ref`（16 進 64 桁のハッシュ）と同じ制約からブリーフを再現し、Markdown または JSON で返します                                                                                                                                                                                          |
+| `critique_page`      | HTML 文字列またはファイルを、禁止事項と AI テンプレート的なパターンのチェックリストに照らして採点します。`brief_ref`、または `roll_path` + `pick` を指定すると、ブリーフとシナリオの出力の約束への準拠度も採点します                                                                   |
+| `build_compare_page` | `roll.json` から、方向性を並べて見比べる `compare.html` を生成します                                                                                                                                                                                                                   |
 
 リソース：`hash-design://bans`、`hash-design://workflow`（Skill）。プロンプト：`hash-design`（`subject`、`facts`、`count`、`scenario`）。
 
@@ -343,7 +387,7 @@ seed `causeway-festival-6` · `critique_page` 96–100 · ブリーフ遵守度 
 <details>
 <summary><strong>どのエージェントで使えますか？</strong></summary>
 
-Skill は Claude Code（`.claude/skills/`）と Cursor（`.cursor/skills/`）にインストールできます。MCP サーバーは stdio で動くので、どの MCP クライアントからでも起動できます。[手動でインストール](#手動でインストール)に Claude Code、Cursor、Claude Desktop の設定があります。Skill がなくてもツールは呼べますが、プレビューを独立して作ることや、選ぶまで止まることをエージェントに伝えるものがありません。
+`SKILL.md` のフォルダを読み込むエージェントなら使えます。`skill install` は `.claude/skills/`（Claude Code）と `.agents/skills/`（Codex、Cursor、VS Code Copilot、Windsurf）に書き込み、`--to` でそれ以外のフォルダにも入れられます。MCP サーバーは stdio で動くので、どの MCP クライアントからでも起動できます。[手動でインストール](#手動でインストール)に Claude Code、Cursor、Codex、Claude Desktop の設定があり、MCP のないエージェントは CLI を使えます。Claude Code では実際に確認しました。インストールした Skill を読み込み、指定した数の方向性をロールし、返答をそのまま送ります。ほかのエージェントのフォルダはそれぞれのドキュメントに基づくもので、実際には試していません。Skill がなくてもツールは呼べますが、短く返答すること、プレビューを独立して作ること、選ぶまで止まることをエージェントに伝えるものがありません。
 
 </details>
 

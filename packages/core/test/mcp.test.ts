@@ -1,4 +1,4 @@
-import { mkdtemp, readFile } from 'node:fs/promises';
+import { mkdir, mkdtemp, readFile, writeFile } from 'node:fs/promises';
 import { tmpdir } from 'node:os';
 import { join } from 'node:path';
 import { Client } from '@modelcontextprotocol/sdk/client/index.js';
@@ -154,6 +154,45 @@ describe('hash-design MCP server', () => {
     expect(res.isError).toBe(true);
   });
 
+  it('roll_designs takes N from count (1–12, whatever the constraints) and returns the reply to send the user', async () => {
+    const dir = await mkdtemp(join(tmpdir(), 'hd-mcp-n-'));
+    const r = await client.callTool({
+      name: 'roll_designs',
+      arguments: { subject: 'Bakery', facts: ['Closed Mondays'], seed: 'n', count: 3, out_dir: dir },
+    });
+    const [md, json] = (r.content as TextContent[]).map((c) => c.text);
+    const machine = JSON.parse(json!);
+    expect(machine.designs).toHaveLength(3);
+    const reply: string = machine.reply;
+    expect(reply.split('\n')).toHaveLength(3 + 4);
+    expect(md).toContain('Send the user exactly this reply');
+    expect(md).toContain(reply);
+    const dark = JSON.parse(
+      (
+        (
+          await client.callTool({
+            name: 'roll_designs',
+            arguments: { subject: 'x', seed: 'n', count: 12, dark_only: true },
+          })
+        ).content as TextContent[]
+      )[1]!.text,
+    );
+    expect(dark.designs).toHaveLength(12);
+    for (const count of [0, 13]) {
+      const bad = await call('roll_designs', { subject: 'x', seed: 'n', count });
+      expect(bad.res.isError).toBe(true);
+    }
+    // build_compare_page: the second reply only once every preview exists.
+    const missing = await call('build_compare_page', { roll_path: join(dir, 'roll.json') });
+    expect(missing.text).not.toContain('Send the user');
+    const roll = JSON.parse(await readFile(join(dir, 'roll.json'), 'utf8'));
+    await mkdir(join(dir, 'previews'), { recursive: true });
+    for (const d of roll.designs) await writeFile(join(dir, 'previews', `${d.slug}.html`), '<html></html>');
+    const done = await call('build_compare_page', { roll_path: join(dir, 'roll.json') });
+    expect(done.text).toMatch(/3 previews side by side: .*compare\.html/);
+    expect(done.text).toContain('Reply with a number to build that direction as the final page.');
+  });
+
   it('has no branch tools or branch constraint fields (hash-design/v2)', async () => {
     const { tools } = await client.listTools();
     const roll = tools.find((t) => t.name === 'roll_designs')!;
@@ -194,6 +233,15 @@ describe('hash-design MCP server', () => {
     expect(prompts.map((p) => p.name)).toContain('hash-design');
     const p = await client.getPrompt({ name: 'hash-design', arguments: { subject: '面包店' } });
     expect(JSON.stringify(p.messages)).toContain('roll_designs');
+    expect(JSON.stringify(p.messages)).toContain('count=5');
+    const p3 = await client.getPrompt({
+      name: 'hash-design',
+      arguments: { subject: 'Deck', count: '3', scenario: 'deck' },
+    });
+    const text3 = JSON.stringify(p3.messages);
+    expect(text3).toContain('count=3');
+    expect(text3).toContain('scenario=\\"deck\\"');
+    expect(text3).toMatch(/Send me the reply it returns, nothing more, and STOP/);
   });
 
   it('rolls exactly what the library (and so the CLI) rolls for the same seed', async () => {
