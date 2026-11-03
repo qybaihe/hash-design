@@ -90,7 +90,9 @@ jobs:
             echo "hash-design@${VERSION} is already on npm; nothing to publish."
             exit 0
           fi
-          npm publish "release-assets/hash-design-${VERSION}.tgz" --provenance --access public --tag "${DIST_TAG}"
+          # The ./ matters: without it npm reads "release-assets/<file>" as a GitHub owner/repo shorthand
+          # and tries git ls-remote ssh://git@github.com/release-assets/<file>.git.
+          npm publish "./release-assets/hash-design-${VERSION}.tgz" --provenance --access public --tag "${DIST_TAG}"
           echo "Published hash-design@${VERSION} (dist-tag ${DIST_TAG}) with provenance."
 
       - name: Dry run summary

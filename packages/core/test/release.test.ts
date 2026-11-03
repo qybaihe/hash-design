@@ -56,8 +56,11 @@ describe('release readiness', () => {
     const publish = wf.slice(wf.indexOf('- name: Publish hash-design to npm'));
     expect(publish).toContain("if: github.event_name == 'release'");
     expect(publish).toContain(
-      'npm publish "release-assets/hash-design-${VERSION}.tgz" --provenance --access public',
+      'npm publish "./release-assets/hash-design-${VERSION}.tgz" --provenance --access public',
     );
+    // A relative tarball path without ./ is read by npm as a GitHub owner/repo shorthand (v0.2.0's
+    // first Release run failed on it), so every path npm publish gets must be explicit.
+    for (const m of wf.matchAll(/npm publish "([^"]+)"/g)) expect(m[1]).toMatch(/^(\.\/|\/)/);
     expect(wf).toContain('npm pack -w hash-design --pack-destination release-assets');
     expect(wf).toContain('node scripts/release-check.mjs --tag "$TAG"');
     // Only hash-design is packed or published; hash-design-mcp appears in comments at most.
