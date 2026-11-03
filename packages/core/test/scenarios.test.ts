@@ -1,7 +1,7 @@
 import { describe, expect, it } from 'vitest';
 import { briefJson, renderBrief, renderRollSummary, reproduce, roll, rollJson } from '../src/brief.js';
 import { critiquePage } from '../src/critique.js';
-import { DENSITIES, TWISTS } from '../src/data/pools.js';
+import { TWIST_OPERATIONS, TWIST_TARGETS } from '../src/data/space.js';
 import { SCENARIOS, getScenario } from '../src/data/scenarios.js';
 import { baseSize, tokensCss, typeScale } from '../src/derive.js';
 import { rollHashes } from '../src/hash.js';
@@ -36,23 +36,29 @@ describe('scenario data', () => {
       expect(t.en.length, JSON.stringify(t)).toBeGreaterThan(0);
     }
     expect(s.must.length).toBeGreaterThanOrEqual(3);
-    for (const t of s.dropTwists) expect(TWISTS.map((x) => x.id)).toContain(t);
-    for (const d of s.dropDensities) expect(Object.keys(DENSITIES)).toContain(d);
-    expect(TWISTS.length - s.dropTwists.length).toBeGreaterThanOrEqual(12);
+    for (const t of s.dropTwistTargets) expect(TWIST_TARGETS.map((x) => x.id)).toContain(t);
+    for (const o of s.dropTwistOperations) expect(TWIST_OPERATIONS.map((x) => x.id)).toContain(o);
+    expect(TWIST_TARGETS.length - s.dropTwistTargets.length).toBeGreaterThanOrEqual(6);
+    expect(TWIST_OPERATIONS.length - s.dropTwistOperations.length).toBeGreaterThanOrEqual(7);
+    const [lo, hi] = s.densityRange;
+    expect(lo).toBeGreaterThanOrEqual(0);
+    expect(hi).toBeLessThanOrEqual(1);
+    expect(hi - lo).toBeGreaterThanOrEqual(0.5);
   });
 
   it('web adds nothing: no formats, no filters, unscaled type', () => {
     const web = getScenario('web')!;
     expect(web.formats).toEqual([]);
-    expect(web.dropDensities).toEqual([]);
-    expect(web.dropTwists).toEqual([]);
+    expect(web.densityRange).toEqual([0, 1]);
+    expect(web.dropTwistTargets).toEqual([]);
+    expect(web.dropTwistOperations).toEqual([]);
     expect(web.stillMotion).toBe(false);
     expect(web.baseSize).toEqual({ scale: 1 });
   });
 });
 
-describe('default scenario (web) is unchanged', () => {
-  it('normalises "web" away so web constraints serialise exactly as before', () => {
+describe('default scenario (web)', () => {
+  it('normalises "web" away so web constraints serialise like no scenario', () => {
     expect(normalizeConstraints({ scenario: 'web' })).toEqual(normalizeConstraints({}));
     expect('scenario' in normalizeConstraints({ scenario: 'web' })).toBe(false);
     expect(normalizeConstraints({ scenario: 'deck' }).scenario).toBe('deck');
@@ -64,8 +70,8 @@ describe('default scenario (web) is unchanged', () => {
     expect(JSON.stringify(rollJson(b))).toBe(JSON.stringify(rollJson(a)));
     for (const d of a.designs) {
       expect(d.scenario).toBeUndefined();
-      expect(d.trace.map((t) => t.dimension)).not.toContain('format');
-      expect(d.unusedBytes).toHaveLength(38); // bytes 13–31
+      expect(d.trace.map((t) => t.dimension)).not.toContain('scenario format');
+      expect(d.unusedBytes.split(' ')).toHaveLength(2); // bytes 28 and 31
       expect(baseSize(d)).toBe(d.density.baseSize);
     }
   });
@@ -92,52 +98,53 @@ describe.each(NON_WEB)('scenario %s', (id) => {
     const again = roll({ seed: `scenario-${id}`, content, constraints: { scenario: id } });
     expect(again.designs.map((d) => d.ref)).toEqual(r.designs.map((d) => d.ref));
     for (const d of r.designs) {
-      const [hash, probe] = d.ref.split('+');
-      const rep = reproduce({ hash: hash!, probe: Number(probe ?? 0) }, r.constraints);
+      const rep = reproduce({ hash: d.ref }, r.constraints);
       expect(JSON.stringify(rep)).toBe(JSON.stringify(d));
     }
     expect(rollJson(r).constraints).toMatchObject({ scenario: id });
   });
 
-  it('keeps the rolled direction: same branches, voice, layout, type, palette, motif, anchor, surface as web', () => {
+  it('keeps the rolled direction: same palette, type, scale, layout, anchor, motif, surface and voice as web', () => {
     r.designs.forEach((d, i) => {
       const w = web.designs[i]!;
       expect(d.ref).toBe(w.ref);
-      for (const k of [
-        'branch',
-        'voice',
-        'layout',
-        'type',
-        'palette',
-        'motif',
-        'anchor',
-        'scale',
-        'surface',
-      ] as const)
-        expect(d[k].id, k).toBe(w[k].id);
+      expect(d.palette).toEqual(w.palette);
+      expect(d.type).toEqual(w.type);
+      expect(d.scale).toBe(w.scale);
+      expect(d.voice).toEqual(w.voice);
+      expect(d.anchor).toEqual(w.anchor);
+      expect(d.layout.columns).toBe(w.layout.columns);
+      expect(d.layout.start).toBe(w.layout.start);
+      expect(d.motif.shape).toEqual(w.motif.shape);
+      expect(d.surface).toEqual(w.surface);
     });
   });
 
-  it('picks its format with byte 13 and records it in the trace', () => {
+  it('picks its format with byte 28 and records it in the trace', () => {
     for (const d of r.designs) {
-      const step = d.trace.find((t) => t.dimension === 'format')!;
-      expect(step.bytes).toEqual([13]);
-      const b13 = parseInt(d.hash.slice(26, 28), 16);
-      expect(d.scenario!.format).toEqual(scenario.formats[b13 % scenario.formats.length]);
-      expect(d.unusedBytes).toHaveLength(36); // bytes 14–31
+      const step = d.trace.find((t) => t.dimension === 'scenario format')!;
+      expect(step.bytes).toEqual([28]);
+      const b28 = parseInt(d.hash.slice(56, 58), 16);
+      expect(d.scenario!.format).toEqual(scenario.formats[b28 % scenario.formats.length]);
+      expect(d.unusedBytes.split(' ')).toHaveLength(1); // byte 31
     }
   });
 
-  it('never picks a dropped density or twist, and sizes type for the canvas', () => {
+  it('stays inside its density range, leaves out its twists and sizes type for the canvas', () => {
     const hashes = rollHashes(60, `pool-${id}`);
+    const [lo, hi] = scenario.densityRange;
     for (const h of hashes) {
       const d = mapDesign(h, { constraints: { scenario: id } });
-      const kept = d.branch.densities.filter((x) => !scenario.dropDensities.includes(x));
-      if (kept.length) expect(kept).toContain(d.density.id);
-      expect(scenario.dropTwists).not.toContain(d.twist.id);
-      expect(d.scenario!.baseSize).toBe(scenarioBaseSize(scenario, d.density));
+      expect(d.density.t).toBeGreaterThanOrEqual(lo);
+      expect(d.density.t).toBeLessThanOrEqual(hi);
+      expect(scenario.dropTwistTargets).not.toContain(d.twist.target.id);
+      expect(scenario.dropTwistOperations).not.toContain(d.twist.operation.id);
+      expect(d.scenario!.baseSize).toBe(scenarioBaseSize(scenario, d.density.baseSize));
       expect(typeScale(d).find((s) => s.step === 0)!.px).toBe(d.scenario!.baseSize);
-      if (scenario.stillMotion) expect(d.trace.find((t) => t.dimension === 'motion')!.note).toMatch(/static/);
+      if (scenario.stillMotion) {
+        expect(d.motion.still).toBe(true);
+        expect(d.trace.find((t) => t.bytes[0] === 22)!.note).toMatch(/static/);
+      }
     }
   });
 
@@ -152,12 +159,12 @@ describe.each(NON_WEB)('scenario %s', (id) => {
 describe('scenario type sizes', () => {
   it('scales or clamps the density base size per scenario', () => {
     const s = (id: ScenarioId) => getScenario(id)!;
-    expect(scenarioBaseSize(s('deck'), DENSITIES.regular)).toBe(34);
-    expect(scenarioBaseSize(s('poster'), DENSITIES.compact)).toBe(26);
-    expect(scenarioBaseSize(s('app'), DENSITIES.airy)).toBe(17);
-    expect(scenarioBaseSize(s('app'), DENSITIES.compact)).toBe(16);
-    expect(scenarioBaseSize(s('dashboard'), DENSITIES.regular)).toBe(15);
-    expect(scenarioBaseSize(s('email'), DENSITIES.compact)).toBe(16);
+    expect(scenarioBaseSize(s('deck'), 17)).toBe(34);
+    expect(scenarioBaseSize(s('poster'), 15)).toBe(26);
+    expect(scenarioBaseSize(s('app'), 18)).toBe(17);
+    expect(scenarioBaseSize(s('app'), 15)).toBe(16);
+    expect(scenarioBaseSize(s('dashboard'), 17)).toBe(15);
+    expect(scenarioBaseSize(s('email'), 15)).toBe(16);
   });
 });
 
@@ -182,7 +189,7 @@ describe('scenario briefs', () => {
       expect(md).toContain(s.output[lang]);
       for (const m of s.must) expect(md).toContain(`- ${m[lang]}`);
       expect(md).toContain(`on a ${d.scenario!.baseSize}px base`);
-      expect(md).toMatch(/\| 14–31 \|/);
+      expect(md).toMatch(/\| 31 \| `[0-9a-f]{2}` \| \(unused\)/);
       expect(md).toContain('- [ ] Every scenario rule holds');
       expect(md).toContain('constraints | scenario=' + id);
 
@@ -190,7 +197,7 @@ describe('scenario briefs', () => {
       expect(json.scenario?.id).toBe(id);
       expect(json.scenario?.format).toEqual(f);
       expect(json.scenario?.output).toBe(s.output[lang]);
-      expect(renderRollSummary(r)).toContain(`${d.layout.name} · ${f.name.en}`);
+      expect(renderRollSummary(r)).toContain(`${d.layout.columns} col · ${f.name.en}`);
     }
   });
 
@@ -199,7 +206,7 @@ describe('scenario briefs', () => {
     const md = renderBrief(r.designs[0]!, r.content);
     expect(md).not.toContain('场景 Scenario');
     expect(md).not.toContain('| scenario |');
-    expect(md).toMatch(/\| 13–31 \|/);
+    expect(md).toMatch(/\| 28, 31 \| `[0-9a-f]{2} [0-9a-f]{2}` \| \(unused\)/);
     expect('scenario' in briefJson(r.designs[0]!, r.content)).toBe(false);
   });
 });

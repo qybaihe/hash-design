@@ -1,8 +1,9 @@
 # hash-design
 
-Library, CLI, Skill and MCP server of [hash-design](https://github.com/qybaihe/hash-design): roll true-random hashes and map them,
-through a fixed and reproducible decision tree, onto concrete design directions — so AI-built pages stop collapsing into
-the same template (Inter, purple gradients, centered hero with two buttons, three identical cards…).
+Library, CLI, Skill and MCP server of [hash-design](https://github.com/qybaihe/hash-design): roll true-random hashes; each hash is a
+design direction, its bytes mapped by fixed, reproducible rules onto palette, type, grid, density, anchor, motif,
+surface, motion, voice and twist (no style library) — so AI-built pages stop collapsing into the same template (Inter,
+purple gradients, centered hero with two buttons, three identical cards…).
 
 ```bash
 npx -y hash-design skill install --target both --dir .   # the Skill, for Claude Code and Cursor

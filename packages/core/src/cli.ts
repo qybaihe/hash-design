@@ -7,16 +7,12 @@ import { parseArgs } from 'node:util';
 import {
   type Constraints,
   type RollJson,
-  BRANCHES,
   briefJson,
   buildComparePage,
   compareEntriesFromRoll,
   compareSubtitle,
   critiquePage,
-  getBranch,
   parseRef,
-  renderBranch,
-  renderBranchList,
   renderBrief,
   renderCritique,
   renderRoll,
@@ -27,7 +23,7 @@ import {
   skillPath,
   writeRoll,
 } from './index.js';
-import type { BranchFamily, ScenarioId } from './types.js';
+import type { ScenarioId } from './types.js';
 
 const here = dirname(fileURLToPath(import.meta.url));
 const VERSION = (JSON.parse(readFileSync(join(here, '..', 'package.json'), 'utf8')) as { version: string })
@@ -38,9 +34,7 @@ const HELP = `hash-design ${VERSION} — roll random design directions that brea
 Usage
   hash-design roll      [--subject <s>] [--fact <f>]… [--facts-file <path>] [--count 5] [--seed <s>]
                         [constraints] [--out <dir>] [--format md|json|summary] [--no-trace]
-  hash-design brief     <hash[+probe]> [constraints] [--subject <s>] [--fact <f>]… [--format md|json]
-  hash-design branches  [--family print|document|signage|screen|craft|modernist] [--json]
-  hash-design branch    <id> [--json]
+  hash-design brief     <hash> [constraints] [--subject <s>] [--fact <f>]… [--format md|json]
   hash-design critique  <page.html> [--css <file>] [--brief <ref> | --roll <roll.json> --pick <n>]
                         [--facts-file <path>] [--json] [--fail-under <score>]
   hash-design compare   [--roll <roll.json>] [--out <compare.html>] [--previews <dir>] [--briefs <dir>] [--title <t>]
@@ -50,11 +44,12 @@ Usage
 
 Constraints (roll / brief / critique --brief)
   --light-only  --dark-only  --reduced-motion  --brand <#hex> (×2 max)
-  --family <family>…  --include <branch-id>…  --exclude <branch-id>…
   --scenario web|deck|app|dashboard|poster|email
 
 Run "hash-design <command> --help" (or "hash-design help <command>") for one command's options.
 Without --seed every roll uses crypto.randomBytes(32) → SHA-256. --seed is for reproducible examples only.
+Each hash is one direction (hash-design/v2): its bytes set the palette, faces, grid, anchor, motif, surface,
+motion, voice and twist directly. There is no library of styles.
 `;
 
 const constraintOptions = {
@@ -62,9 +57,6 @@ const constraintOptions = {
   'dark-only': { type: 'boolean' },
   'reduced-motion': { type: 'boolean' },
   brand: { type: 'string', multiple: true },
-  family: { type: 'string', multiple: true },
-  include: { type: 'string', multiple: true },
-  exclude: { type: 'string', multiple: true },
   scenario: { type: 'string' },
 } as const;
 
@@ -89,10 +81,6 @@ const briefOptions = {
   ...contentOptions,
   format: { type: 'string', short: 'f' },
 } as const;
-
-const branchesOptions = { family: { type: 'string' }, json: { type: 'boolean' } } as const;
-
-const branchOptions = { json: { type: 'boolean' } } as const;
 
 const critiqueOptions = {
   ...constraintOptions,
@@ -134,8 +122,6 @@ export const COMMAND_OPTIONS: ReadonlyMap<string, Readonly<Record<string, Option
 >([
   ['roll', rollOptions],
   ['brief', briefOptions],
-  ['branches', branchesOptions],
-  ['branch', branchOptions],
   ['critique', critiqueOptions],
   ['compare', compareOptions],
   ['skill', skillInstallOptions],
@@ -143,19 +129,15 @@ export const COMMAND_OPTIONS: ReadonlyMap<string, Readonly<Record<string, Option
 ]);
 
 const constraintsHelp = (title: string) => `${title}
-  --light-only           Only light palettes
-  --dark-only            Only dark palettes; branches without one leave the pool
-  --reduced-motion       The stillest motion option of each branch
-  --brand <#hex>         Brand colour kept as the accent; repeat once for accent2 (max 2)
-  --family <family>      Restrict the pool to a family (repeatable):
-                         print, document, signage, screen, craft, modernist
-  --include <id>         Restrict the pool to these branch ids (repeatable)
-  --exclude <id>         Remove these branch ids from the pool (repeatable)
+  --light-only           Light paper only (byte 2 then sets only its lightness)
+  --dark-only            Dark paper only
+  --reduced-motion       No motion (bytes 22–23 unused)
+  --brand <#hex>         Brand colour kept as the accent and used as the hue; repeat once for accent2 (max 2)
   --scenario <id>        What is being designed: web (default), deck, app, dashboard, poster, email.
-                         Non-web scenarios add a format (byte 13), a canvas and output rules to each brief`;
+                         Non-web scenarios add a format (byte 28), a canvas and output rules to each brief`;
 
 const CONSTRAINTS_HELP = constraintsHelp(
-  'Constraints (filter the pools before any byte is read; pass the same ones to reproduce a design)',
+  'Constraints (applied before any byte is read; pass the same ones to reproduce a design)',
 );
 
 const FACTS_FILE_HELP = `  --facts-file <path>    Facts, one per line ("#" lines are skipped; "- " and "1." prefixes are stripped)`;
@@ -179,7 +161,7 @@ Roll
   --seed <s>             Reproducible roll for examples and tests only; omit it for real use
 
 Output
-  -o, --out <dir>        Freeze roll.json, ROLL.md and briefs/NN-<branch>.md into <dir> and print a summary
+  -o, --out <dir>        Freeze roll.json, ROLL.md and briefs/NN-<short>.md into <dir> and print a summary
   -f, --format <fmt>     Without --out: md (default, every brief) | json | summary
   --no-trace             Leave the byte-by-byte mapping trace out of Markdown briefs
 
@@ -198,11 +180,10 @@ Without --seed every roll uses crypto.randomBytes(32) → SHA-256.
     `hash-design brief — reproduce the brief of one design from its ref
 
 Usage
-  hash-design brief <hash[+probe]> [options] [constraints]
+  hash-design brief <hash> [options] [constraints]
 
 Arguments
-  <hash[+probe]>         A ref from a roll: 64 hex characters, plus "+<probe>" when the
-                         design walked past collisions (e.g. 177b9bc6…b792+2)
+  <hash>                 A ref from a roll: the 64-hex hash (hash-design/v2 refs have no "+probe")
 
 Options
   --subject <s>          Subject to write into the brief's content section
@@ -213,32 +194,6 @@ ${FACTS_FILE_HELP}
 ${CONSTRAINTS_HELP}
 
 The same ref + constraints + library fingerprint always gives the same brief.
-`,
-  ],
-  [
-    'branches',
-    `hash-design branches — list the design branches in mapping order
-
-Usage
-  hash-design branches [options]
-
-Options
-  --family <family>      Only one family: print, document, signage, screen, craft, modernist
-  --json                 Machine-readable list (id, name, family, keywords)
-`,
-  ],
-  [
-    'branch',
-    `hash-design branch — show every option and token of one branch
-
-Usage
-  hash-design branch <id> [options]
-
-Arguments
-  <id>                   Branch id, e.g. ink-and-seal (see "hash-design branches")
-
-Options
-  --json                 The full branch object as JSON
 `,
   ],
   [
@@ -281,7 +236,7 @@ Options
   --briefs <dir>         Brief directory, relative to roll.json (default: briefs)
   --title <t>            Page title (default: the roll's subject)
 
-Previews are expected at <previews>/NN-<branch>.html; missing ones are listed.
+Previews are expected at <previews>/NN-<short>.html; missing ones are listed.
 `,
   ],
   [
@@ -312,9 +267,8 @@ Usage
   hash-design mcp
 
 Your agent starts this command and talks MCP over stdin/stdout; you do not run it by hand.
-It serves the tools roll_designs, get_brief, list_branches, get_branch, critique_page and
-build_compare_page. Relative paths (out_dir, roll_path, …) resolve against the directory the
-agent starts it in.
+It serves the tools roll_designs, get_brief, critique_page and build_compare_page.
+Relative paths (out_dir, roll_path, …) resolve against the directory the agent starts it in.
 
 Register it
   claude mcp add hash-design -- npx -y hash-design mcp
@@ -340,9 +294,6 @@ function constraintsFrom(v: Values): Constraints {
     darkOnly: Boolean(v['dark-only']),
     reducedMotion: Boolean(v['reduced-motion']),
     brandColors: (v.brand as string[] | undefined) ?? [],
-    families: ((v.family as string[] | undefined) ?? []) as BranchFamily[],
-    include: (v.include as string[] | undefined) ?? [],
-    exclude: (v.exclude as string[] | undefined) ?? [],
     ...(v.scenario ? { scenario: v.scenario as ScenarioId } : {}),
   };
 }
@@ -398,7 +349,7 @@ async function cmdBrief(args: string[]): Promise<void> {
     options: briefOptions,
   });
   const ref = positionals[0];
-  if (!ref) throw new Error('Usage: hash-design brief <hash[+probe]>');
+  if (!ref) throw new Error('Usage: hash-design brief <hash>');
   const design = reproduce(parseRef(ref), constraintsFrom(values));
   const content = { subject: values.subject ?? '', facts: factsFrom(values) };
   print(
@@ -406,32 +357,6 @@ async function cmdBrief(args: string[]): Promise<void> {
       ? JSON.stringify(briefJson(design, content), null, 2)
       : renderBrief(design, content),
   );
-}
-
-async function cmdBranches(args: string[]): Promise<void> {
-  const { values } = parseArgs({ args, options: branchesOptions });
-  const family = values.family as BranchFamily | undefined;
-  if (values.json) {
-    const list = BRANCHES.filter((b) => !family || b.family === family).map((b) => ({
-      id: b.id,
-      name: b.name,
-      family: b.family,
-      keywords: b.keywords,
-    }));
-    print(JSON.stringify(list, null, 2));
-  } else print(renderBranchList(family ? { family } : {}));
-}
-
-async function cmdBranch(args: string[]): Promise<void> {
-  const { values, positionals } = parseArgs({
-    args,
-    allowPositionals: true,
-    options: branchOptions,
-  });
-  const id = positionals[0];
-  const b = id ? getBranch(id) : undefined;
-  if (!b) throw new Error(`Unknown branch "${id ?? ''}". Run "hash-design branches" to list ids.`);
-  print(values.json ? JSON.stringify(b, null, 2) : renderBranch(b));
 }
 
 async function cmdCritique(args: string[]): Promise<void> {
@@ -552,10 +477,6 @@ async function dispatch(cmd: string | undefined, rest: string[]): Promise<void> 
       return cmdRoll(rest);
     case 'brief':
       return cmdBrief(rest);
-    case 'branches':
-      return cmdBranches(rest);
-    case 'branch':
-      return cmdBranch(rest);
     case 'critique':
       return cmdCritique(rest);
     case 'compare':

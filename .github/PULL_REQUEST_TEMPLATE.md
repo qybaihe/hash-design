@@ -6,7 +6,7 @@
 
 - [ ] Bug fix
 - [ ] New feature
-- [ ] New or changed design branch / pool / bans data
+- [ ] Font pool, primitive lists, byte rules or bans data
 - [ ] Critique rule
 - [ ] Docs or translation
 - [ ] Tooling / CI
@@ -19,11 +19,12 @@
 - [ ] Docs match the code (README tool / CLI tables, `docs/mcp-tools.md`, `SKILL.md` if tools or flags changed)
 - [ ] Every MCP change has a matching CLI change, or vice versa
 
-### If you changed branch data, pools or bans
+### If you changed the font pool, primitive lists, byte rules or bans
 
 - [ ] `node scripts/verify-fonts.mjs` passes
-- [ ] `npm run sync` was run (`docs/branches.md`, `SKILL.md` and its copies are up to date)
-- [ ] The example was re-rolled and its previews, compare page and screenshots rebuilt, or I explain below why not
+- [ ] `npm run sync` was run (`SKILL.md` and its copies are up to date)
+- [ ] If the library fingerprint changed, its pinned value in `mapping.test.ts` is updated; if a byte rule or formula changed, `ALGORITHM` is bumped
+- [ ] `docs/mapping.md` and `docs/mapping.zh-CN.md` match the new rules
 
 ### If you changed the English README
 

@@ -20,11 +20,13 @@ import { seededHash } from '../src/hash.js';
 const facts = ['营业：周二至周日 7:00–19:00，周一休息', '乡村面包 ¥38', '地址：第四巷 17 号'];
 
 describe('roll()', () => {
-  it('defaults to 5 distinct designs from system randomness', () => {
+  it('defaults to 5 designs from system randomness, one per hash', () => {
     const r = roll({ content: { subject: 'x' } });
     expect(r.designs).toHaveLength(5);
     expect(r.source).toBe('system-random');
-    expect(new Set(r.designs.map((d) => d.branch.id)).size).toBe(5);
+    expect(r.algorithm).toBe('hash-design/v2');
+    expect(new Set(r.designs.map((d) => d.hash)).size).toBe(5);
+    expect(new Set(r.designs.map((d) => d.palette.colors.accent)).size).toBe(5);
   });
 
   it('is reproducible with a seed', () => {
@@ -51,7 +53,7 @@ describe('roll()', () => {
     const r = roll({ seed: 'repro', count: 8, constraints: { lightOnly: true } });
     for (const d of r.designs) {
       expect(reproduce(d, r.constraints).palette).toEqual(d.palette);
-      expect(reproduce(d, r.constraints).branch.id).toBe(d.branch.id);
+      expect(reproduce(d, r.constraints)).toEqual(d);
     }
   });
 });
@@ -60,14 +62,18 @@ describe('brief rendering', () => {
   const d = mapDesign(seededHash('brief', 0));
   const md = renderBrief(d, { subject: '第四巷面包店', facts }, { number: 2 });
 
-  it('contains identity, decisions, tokens and every ban', () => {
+  it('contains identity, every parameter, tokens and every ban', () => {
     expect(md).toContain(d.hash);
-    expect(md).toContain(d.branch.name.zh);
+    expect(md).toContain(`Direction ${d.short}`);
     expect(md).toContain(d.type.display.family);
-    expect(md).toContain(d.palette.colors.accent);
-    expect(md).toContain(d.layout.name);
-    expect(md).toContain(d.voice.name.zh);
-    expect(md).toContain(d.twist.name.zh);
+    expect(md).toContain(d.type.body.family);
+    for (const hex of Object.values(d.palette.colors)) expect(md).toContain(hex);
+    expect(md).toContain(`${d.layout.columns} columns`);
+    expect(md).toContain(d.anchor.subject.text);
+    expect(md).toContain(d.voice.person.text);
+    expect(md).toContain(d.twist.text);
+    expect(md).toContain(d.motif.placement.text);
+    expect(md).not.toMatch(/branch|分支/i);
     expect(md).toContain(':root {');
     for (const ban of BANS) expect(md).toContain(ban.id);
     for (const f of facts) expect(md).toContain(f);
@@ -104,7 +110,7 @@ describe('brief rendering', () => {
     const zero = s.find((x) => x.step === 0)!;
     const one = s.find((x) => x.step === 1)!;
     expect(zero.px).toBe(d.density.baseSize);
-    expect(one.px / zero.px).toBeCloseTo(d.scale.ratio, 1);
+    expect(one.px / zero.px).toBeCloseTo(d.scale, 1);
   });
 
   it('json brief has a stable shape', () => {
@@ -125,7 +131,7 @@ describe('writeRoll()', () => {
     expect(out.files).toContain('ROLL.md');
     const briefs = await readdir(join(dir, 'briefs'));
     expect(briefs).toHaveLength(5);
-    expect(briefs[0]).toMatch(/^01-[a-z0-9-]+\.md$/);
+    expect(briefs[0]).toBe(`01-${r.designs[0]!.short}.md`);
     const json = JSON.parse(await readFile(join(dir, 'roll.json'), 'utf8'));
     expect(json).toEqual(JSON.parse(JSON.stringify(rollJson(r))));
     expect(await readFile(join(dir, 'ROLL.md'), 'utf8')).toContain(renderRollSummary(r).split('\n')[0]);

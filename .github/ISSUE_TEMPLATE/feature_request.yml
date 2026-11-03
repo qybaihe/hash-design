@@ -6,7 +6,7 @@ body:
   - type: markdown
     attributes:
       value: |
-        Proposing a new design genre? Use the **New branch proposal** template instead.
+        hash-design/v2 has no genre library: a hash is mapped straight onto design parameters (see docs/mapping.md). Proposals for new parameters, fonts or primitives are welcome; named styles or genres are not.
   - type: textarea
     id: problem
     attributes:

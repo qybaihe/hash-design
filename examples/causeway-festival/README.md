@@ -1,5 +1,8 @@
 # Example: Causeway
 
+> [!NOTE]
+> This run was made with **hash-design/v1**, the 40-branch genre library that hash-design/v2 replaced with continuous parameters. It is kept as a record of a real run. Its refs and briefs reproduce only with v1: check out a v1 commit such as `475ba16` and run the commands below there. Under v2 the same seed rolls different directions.
+
 A full hash-design run for an English-language event page: Causeway, a one-day music festival on an island that you can only walk to at low tide. The festival, the island, the artists and the numbers are fictional; the facts are in [facts.md](facts.md).
 
 - **Live compare page:** <https://qybaihe.github.io/hash-design/causeway-festival/compare.html> (press 1–5 to zoom, D/M to switch desktop/mobile)

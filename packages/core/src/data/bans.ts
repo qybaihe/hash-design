@@ -2,7 +2,7 @@ import type { Ban } from '../types.js';
 
 /**
  * Font families that signal "default AI page". Matching is case-insensitive on the family name.
- * Branch data must never use these (enforced by tests) and critique_page flags them.
+ * The font pool must never contain these (enforced by tests) and critique_page flags them.
  */
 export const BANNED_FONTS: readonly string[] = [
   'Inter',
@@ -147,7 +147,7 @@ export const BANS: readonly Ban[] = [
     id: 'soft-shadow-rounded',
     title: { zh: '禁用"圆角 + 柔和大阴影"一切', en: 'No rounded-2xl + soft shadow on everything' },
     detail:
-      '禁止所有块都是 12–24px 圆角加 0 10px 30px 级别的柔和投影。圆角与阴影只能按 brief tokens 使用（很多分支是 0 圆角、零阴影）。',
+      '禁止所有块都是 12–24px 圆角加 0 10px 30px 级别的柔和投影。圆角与阴影只能按 brief tokens 使用（--radius、--shadow：硬投影或不用，绝不模糊）。',
     severity: 'major',
     detectable: true,
   },
@@ -211,3 +211,43 @@ export function isBannedFont(family: string): boolean {
     .toLowerCase();
   return BANNED_FONTS.some((b) => b.toLowerCase() === f);
 }
+
+/** Hex values from framework default palettes that read as "AI template" (Tailwind 500/600/900 etc.). */
+export const FRAMEWORK_DEFAULT_HEX: readonly string[] = [
+  '#6366f1',
+  '#4f46e5',
+  '#4338ca',
+  '#8b5cf6',
+  '#7c3aed',
+  '#6d28d9',
+  '#a855f7',
+  '#9333ea',
+  '#3b82f6',
+  '#2563eb',
+  '#1d4ed8',
+  '#0ea5e9',
+  '#06b6d4',
+  '#0f172a',
+  '#1e293b',
+  '#334155',
+  '#64748b',
+  '#94a3b8',
+  '#e2e8f0',
+  '#f1f5f9',
+  '#f8fafc',
+  '#111827',
+  '#1f2937',
+  '#374151',
+  '#6b7280',
+  '#9ca3af',
+  '#e5e7eb',
+  '#f3f4f6',
+  '#f9fafb',
+  '#10b981',
+  '#22c55e',
+  '#ef4444',
+  '#f59e0b',
+  '#eab308',
+  '#ec4899',
+  '#d946ef',
+];

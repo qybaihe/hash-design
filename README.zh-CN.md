@@ -6,7 +6,7 @@
 
 <p align="center"><a href="https://qybaihe.github.io/hash-design/causeway-festival/compare.html"><picture><source media="(prefers-reduced-motion: reduce)" srcset="docs/assets/hero.png"><img src="docs/assets/hero.gif" width="960" alt="动画：在输入框里选中 /hash-design，提出 Causeway 落地页需求；5 个 SHA-256 ref 跳动后锁定；5 个真实预览（工程图版、地形图、手作温度、杂志编辑、孟菲斯）依次弹出，再排成一行对比：挑一个，凭 ref 可复现"></picture></a></p>
 
-<p align="center"><sub>真实产出，不是效果图：<a href="examples/causeway-festival">examples/causeway-festival</a>，每个预览由独立子 Agent 只按一份冻结的 brief 渲染。<br><a href="https://qybaihe.github.io/hash-design/"><b>浏览全部 4 个在线示例 →</b></a> · 覆盖 40 个分支中的 20 个 · <a href="docs/assets/hero.png">静态图</a> · <a href="docs/assets/hero.mp4">MP4</a></sub></p>
+<p align="center"><sub>真实产出，不是效果图：<a href="examples/causeway-festival">examples/causeway-festival</a>，每个预览由独立子 Agent 只按一份冻结的 brief 渲染。<br><a href="https://qybaihe.github.io/hash-design/"><b>浏览全部 4 个在线示例 →</b></a> · hash-design/v1 时期的一次运行（见<a href="#案例展示">案例展示</a>） · <a href="docs/assets/hero.png">静态图</a> · <a href="docs/assets/hero.mp4">MP4</a></sub></p>
 
 ### 一句需求，5 套设计方向：由真随机 SHA-256 哈希决定，而不是模型。
 
@@ -15,12 +15,12 @@
 [![CI](https://img.shields.io/github/actions/workflow/status/qybaihe/hash-design/ci.yml?branch=main&style=flat-square&label=CI)](https://github.com/qybaihe/hash-design/actions/workflows/ci.yml)
 [![Live demo](https://img.shields.io/badge/live_demo-4_examples-e2401c?style=flat-square)](https://qybaihe.github.io/hash-design/)
 [![Agent Skill](https://img.shields.io/badge/Agent_Skill-Claude_Code_%C2%B7_Cursor-151412?style=flat-square)](#快速开始)
-[![MCP server](https://img.shields.io/badge/MCP_server-6_tools_%C2%B7_stdio-151412?style=flat-square)](docs/mcp-tools.zh-CN.md)
+[![MCP server](https://img.shields.io/badge/MCP_server-4_tools_%C2%B7_stdio-151412?style=flat-square)](docs/mcp-tools.zh-CN.md)
 [![Node.js](https://img.shields.io/badge/Node.js-%E2%89%A520-151412?style=flat-square&logo=nodedotjs&logoColor=white)](.nvmrc)
 [![npm](https://img.shields.io/npm/v/hash-design?style=flat-square&color=151412)](https://www.npmjs.com/package/hash-design)
 [![MIT license](https://img.shields.io/badge/license-MIT-151412?style=flat-square)](LICENSE)
 
-**[在线示例](https://qybaihe.github.io/hash-design/) · [分支目录](docs/branches.md) · [MCP 参考](docs/mcp-tools.zh-CN.md) · [更新日志](CHANGELOG.md)**
+**[在线示例](https://qybaihe.github.io/hash-design/) · [映射规范](docs/mapping.zh-CN.md) · [MCP 参考](docs/mcp-tools.zh-CN.md) · [更新日志](CHANGELOG.md)**
 
 [快速开始](#快速开始) · [它怎么工作](#它怎么工作) · [案例展示](#案例展示) · [参考](#参考) · [常见问题](#常见问题)
 
@@ -42,19 +42,19 @@
 
 hash-design 不去求模型"更有品味"，而是**把选择权拿走**：
 
-| 步骤     | 发生什么                                                                                                                                                         |
-| -------- | ---------------------------------------------------------------------------------------------------------------------------------------------------------------- |
-| **掷**   | 用系统真随机掷出 5 个哈希（`crypto.randomBytes(32)` → SHA-256）                                                                                                  |
-| **映射** | 每个哈希通过一棵**固定、可复现的决策树**映射到一个具体的设计方向：设计流派、版式、字体对、色值、密度、动效、母题、首屏锚点、字号比例、材质、文案语气、一个"变数" |
-| **冻结** | 每个方向输出一份**冻结的 brief**，里面有可以直接粘贴的 token（字体链接、色值、`tokens.css`、栅格、圆角/阴影策略），以及全局禁令                                  |
-| **渲染** | Agent 只负责**忠实执行** brief，分别做出 5 个独立的 HTML 预览，再做一个并排对比页，然后**停下来等你选号**                                                        |
-| **终稿** | 你选中一个后，Agent 按那份 brief 做出正式页面，并用 `critique_page` 自检                                                                                         |
+| 步骤     | 发生什么                                                                                                                                                                                                                                             |
+| -------- | ---------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------- |
+| **掷**   | 用系统真随机掷出 5 个哈希（`crypto.randomBytes(32)` → SHA-256）                                                                                                                                                                                      |
+| **映射** | 每个哈希**就是**方向。固定、可复现的规则把它的字节直接读成设计参数：色相和按对比度解出的配色、从扁平字体池里选出的标题字体和正文字体、大小写、字距、字号比例、密度、栅格、首屏锚点、母题、圆角和纹理、动效时序、文案语气，以及一个"变数"。没有风格库 |
+| **冻结** | 每个方向输出一份**冻结的 brief**，里面有可以直接粘贴的 token（字体链接、色值、`tokens.css`、栅格、圆角 / 边框 / 阴影数值），以及全局禁令                                                                                                             |
+| **渲染** | Agent 只负责**忠实执行** brief，分别做出 5 个独立的 HTML 预览，再做一个并排对比页，然后**停下来等你选号**                                                                                                                                            |
+| **终稿** | 你选中一个后，Agent 按那份 brief 做出正式页面，并用 `critique_page` 自检                                                                                                                                                                             |
 
 本质上，这是用**外部随机约束**打破模型的默认审美，跟 KV cache、温度采样都没有关系。模型的品味只用在执行质量上，比如对齐、节奏、细节和可读性，而不是用来挑风格。
 
 默认产出是网页。传入**场景** `scenario`，同一批掷出的方向就能变成幻灯片、手机 App 界面、数据看板、海报 / 社交卡片或 HTML 邮件（见[场景](#场景)）。
 
-它由四部分组成：**Agent Skill**（何时、按什么顺序跑这套流程）、**MCP server**（stdio，6 个工具）、**CLI** 和 **TypeScript 库**，一起以 [`hash-design`](https://www.npmjs.com/package/hash-design) 发布在 npm 上（MCP server 从 0.2.0 起也在这个包里）。
+它由四部分组成：**Agent Skill**（何时、按什么顺序跑这套流程）、**MCP server**（stdio，4 个工具）、**CLI** 和 **TypeScript 库**，一起以 [`hash-design`](https://www.npmjs.com/package/hash-design) 发布在 npm 上（MCP server 从 0.2.0 起也在这个包里）。
 
 ## 快速开始
 
@@ -86,7 +86,7 @@ npx -y hash-design skill install --target claude --global   # 或者装到用户
 **MCP server。** 在你的 Agent 里注册 `npx -y hash-design mcp`，它会在 stdio 上运行 server。
 
 > [!NOTE]
-> `hash-design mcp` 从下一个版本 hash-design 0.2.0 开始提供。npm 上现在是 0.1.0，请改为注册 `npx -y hash-design-mcp@0.1.0`：之前单独发布的 server，6 个工具相同，不再更新。
+> `hash-design mcp` 从下一个版本 hash-design 0.2.0 开始提供。npm 上现在是 0.1.0，请改为注册 `npx -y hash-design-mcp@0.1.0`：之前单独发布的 hash-design/v1 server（40 个分支的库和 6 个工具），不再更新。
 
 #### Claude Code
 
@@ -147,14 +147,12 @@ hash-design roll --subject "第四巷面包店" --facts-file facts.md --out desi
 hash-design roll --subject "…" --light-only --brand "#c8102e" --format json            # 带约束
 hash-design roll --subject "季度复盘" --facts-file facts.md --scenario deck --out design/deck   # 做幻灯片而不是网页
 hash-design brief <ref> [constraints]                                                 # 复现 brief
-hash-design branches [--family craft]                                                 # 分支库
-hash-design branch ink-and-seal                                                       # 分支详情
 hash-design critique page.html --roll design/hash-design/roll.json --pick 3 --fail-under 80
 hash-design compare --roll design/hash-design/roll.json                               # 生成 compare.html
 hash-design skill install --target both                                               # 安装 Skill
 ```
 
-用 `npx -y hash-design …` 运行，或者用 `npm install -g hash-design` 装一次后直接敲 `hash-design …`；在源码目录里是 `node packages/core/dist/bin.js …`。`hash-design --help` 列出所有命令，`hash-design <command> --help`（例如 `hash-design roll --help`）列出单个命令的全部参数，包括约束参数 `--light-only`、`--dark-only`、`--reduced-motion`、`--brand`、`--family`、`--include`、`--exclude`、`--scenario`。
+用 `npx -y hash-design …` 运行，或者用 `npm install -g hash-design` 装一次后直接敲 `hash-design …`；在源码目录里是 `node packages/core/dist/bin.js …`。`hash-design --help` 列出所有命令，`hash-design <command> --help`（例如 `hash-design roll --help`）列出单个命令的全部参数，包括约束参数 `--light-only`、`--dark-only`、`--reduced-motion`、`--brand`、`--scenario`。
 
 ### 作为库使用
 
@@ -177,14 +175,14 @@ console.log(report.score, report.adherence, report.findings);
 npx -y hash-design@latest skill install --target both --dir .   # 刷新项目里的 SKILL.md 副本
 ```
 
-npx 可能会继续用之前缓存的版本；加上 `@latest` 会取最新发布的版本（也可以固定版本，比如 `hash-design@0.2.0`）。MCP server 每次随 Agent 启动时通过 npx 运行，所以发布新版本后重启 Agent；如果一直跑的是旧版本，就在 MCP 命令里写 `hash-design@latest`。从源码运行的：`git pull && npm install && npm run build`。如果某次更新改了分支数据，用旧版本掷出的 ref 需要旧版本才能复现（见[常见问题](#常见问题)）。
+npx 可能会继续用之前缓存的版本；加上 `@latest` 会取最新发布的版本（也可以固定版本，比如 `hash-design@0.2.0`）。MCP server 每次随 Agent 启动时通过 npx 运行，所以发布新版本后重启 Agent；如果一直跑的是旧版本，就在 MCP 命令里写 `hash-design@latest`。从源码运行的：`git pull && npm install && npm run build`。如果某次更新改了字体池、原语列表或字节规则，用旧版本掷出的 ref 需要旧版本才能复现（见[常见问题](#常见问题)）。
 
 ## 它怎么工作
 
 ```mermaid
 flowchart LR
   A[事实清单] --> B[roll_designs<br/>5 × SHA-256 真随机]
-  B --> C[固定决策树<br/>字节 → 维度]
+  B --> C[固定字节规则<br/>每个哈希 → 一个方向]
   C --> D[5 份冻结 brief<br/>briefs/01…05.md]
   D --> E[5 个独立 HTML 预览<br/>每个只看自己的 brief]
   E --> F[build_compare_page<br/>并排对比]
@@ -193,38 +191,39 @@ flowchart LR
   H --> I[critique_page<br/>禁令 + brief 遵守度]
 ```
 
-### 字节 → 维度（`hash-design/v1`）
+### 字节 → 参数（`hash-design/v2`）
 
-| 字节  | 维度            | 规则                                                                              |
-| ----- | --------------- | --------------------------------------------------------------------------------- |
-| 0–1   | 设计分支 branch | `uint16(b0,b1) mod N`（N = 40）。碰撞时向后走，见下文                             |
-| 2     | 文案语气 voice  | 14 种：店主黑板、田野笔记、技术手册、亲笔信、展签、配方、分类广告、时刻表、历书…… |
-| 3     | 版式 layout     | 分支内 3 选 1，带栅格数值和自上而下的分节草图                                     |
-| 4     | 字体对 type     | 分支内 3 选 1：display / body（/ mono）+ 中文字体 + 排版细则                      |
-| 5     | 配色 palette    | 分支内 3 选 1：paper / ink / muted / accent / accent2 / rule / panel 七个 hex     |
-| 6     | 密度 density    | 分支允许的子集：疏朗 / 常规 / 紧凑 / 满版                                         |
-| 7     | 动效 motion     | 分支内 3 选 1：时长、缓动、reduced-motion 策略                                    |
-| 8     | 母题 motif      | 分支内 3 选 1                                                                     |
-| 9     | 首屏锚点 anchor | 分支内 3 选 1                                                                     |
-| 10    | 字号比例 scale  | 分支允许的模数比例（1.125–1.618）                                                 |
-| 11    | 材质 surface    | 分支内 3 选 1（带 CSS 提示）                                                      |
-| 12    | 变数 twist      | 16 种，例如"数字即主角""唯一越界""首屏无按钮""版权页式页脚"                       |
-| 13    | 格式 format     | 仅限非 web 场景：从场景的 3–4 种格式里选 1 种（例如幻灯片的母版）                 |
-| 13–31 | 未使用          | 记录在 brief 里，保留给以后的维度（场景用到第 13 字节时为 14–31）                 |
+哈希就是方向。每个字节驱动一个参数（或按位拆成两个）：要么是连续值，要么是一张短小的中性原语列表里的下标，这些原语可以自由组合。没有任何参数以流派或风格命名。
 
-- **碰撞与家族分散**：同一次掷骰里，若某个哈希落到已用过的分支，就向后走（+1、+2…）到下一个空闲分支。只要还有没用到的**家族**（印刷品 / 文档票据 / 标识招牌 / 屏幕仪器 / 手作东方 / 现代主义），落到已用家族的分支也算碰撞。所以 5 个方向一定来自 5 个不同家族，不会出现 5 张纸质文档的情况。走过的步数记为 `probe`，ref 写成 `<hash>+<probe>`，单独拿出来也能复现。
-- **分支顺序**：库的顺序就是映射顺序。每个家族的成员均匀分布在整圈上，所以"向后走"分走的概率不会集中到某一个分支上（5 连抽时，每个分支的出现率在 9%–17% 之间，均匀分布是 12.5%）。
-- **约束**会先过滤候选池，再应用字节，所以约束也是设计身份的一部分：`light_only`、`dark_only`、`reduced_motion`、`brand_colors`（品牌色替换 accent，自动挑色相最近的调色板，并给出对比度）、`families`、`include_branches`、`exclude_branches`、`scenario`。
-- **可复现**：同一个 `ref`、同样的约束、同一个库指纹，一定得到同一份 brief。每份 brief 都记录了算法版本（`hash-design/v1`）和库指纹（数据的 SHA-256 前 12 位）。
+| 字节   | 参数                                                                                                         |
+| ------ | ------------------------------------------------------------------------------------------------------------ |
+| 0–5    | 配色：OKLCH 色相、浅色或深色纸及其明度、纸的彩度、强调色彩度、第二强调色的色相偏移                           |
+| 6–10   | 字体：标题字体（98）、正文字体（62）、大小写和字重、字距、字号比例 1.067–1.618                               |
+| 11     | 密度：从疏朗到紧凑之间的一个位置；基础字号、行高、间距单位、区块间距和宽度随之确定                           |
+| 12–15  | 版式：3–12 列栅格和列间距、文本块跨越哪几列、首屏高度、区块数、分隔方式                                      |
+| 16–17  | 首屏锚点：主体（8）、尺寸、水平位置、旋转                                                                    |
+| 18–19  | 母题：形状（12）、尺寸、位置（4）、角度                                                                      |
+| 20–21  | 材质：圆角、边框粗细和线型、硬阴影、纹理及其不透明度                                                         |
+| 22–23  | 动效：动什么、时长 0–600 ms、缓动（steps，或由各位组成的 cubic-bezier）                                      |
+| 24–25  | 文案语气：人称、标题形式、句长、语域                                                                         |
+| 26–27  | 变数：对象（9）× 操作（10）× 量，例如 "Rotate every number on the page by 4.5°"（页面上每个数字都旋转 4.5°） |
+| 28     | 格式，仅用于非 web 场景                                                                                      |
+| 29, 30 | 中文标题字体（用于中文页面）、等宽字体                                                                       |
+| 31     | 不使用，记录在 brief 里                                                                                      |
+
+- **对比度是解出来的，不靠碰运气。** 文字颜色沿 OKLCH 明度逐步移动，直到在纸色上达到 ink ≥ 7.5:1、muted ≥ 4.6:1、强调色 ≥ 3:1，所以每个哈希都能得到可读的配色，无论浅色还是深色（大约 30% 的哈希是深色）。
+- **N 个方向就是 N 个哈希。** 一次掷 5 个就是 5 次独立映射，彼此之间不共享任何东西，不向后走，也不去重。一个设计的 `ref` 就是它的 64 位十六进制哈希，单独拿出来也能复现。
+- **约束在读取字节之前生效**，所以约束也是设计身份的一部分：`light_only` / `dark_only`（此时字节 2 只决定明度）、`reduced_motion`（无动效）、`brand_colors`（第一个替换 accent 并决定色相，第二个替换 accent2）和 `scenario`。
+- **可复现**：同一个 `ref`、同样的约束、同一个库指纹，一定得到同一份 brief。每份 brief 都记录了算法版本（`hash-design/v2`）和库指纹（字体池、原语列表和字节规则的 SHA-256 前 12 位）。
 - `seed` **只用来复现示例和测试**，真实使用一律走系统随机。
 
-完整规范和逐字节推演示例见 [docs/mapping.zh-CN.md](docs/mapping.zh-CN.md)。
+每个字节的精确公式、配色求解器和完整示例见 [docs/mapping.zh-CN.md](docs/mapping.zh-CN.md)。
 
 ### 场景
 
 `scenario` 说明你要设计的是什么。默认的 `web` 就是上面的网页流程，完全不变。其余五个保留掷出的方向，给每份 brief 加上格式、画布和输出规则。
 
-| 场景          | 交付物                                                                    | 格式（第 13 字节）                         | 画布                                      |
+| 场景          | 交付物                                                                    | 格式（字节 28）                            | 画布                                      |
 | ------------- | ------------------------------------------------------------------------- | ------------------------------------------ | ----------------------------------------- |
 | `web`（默认） | 响应式网页、落地页或一页站                                                | —                                          | 响应式                                    |
 | `deck`        | HTML 幻灯片：每页一个固定画布，键盘翻页，可打印成 PDF                     | 满版、索引栏、文档母版                     | 1920×1080                                 |
@@ -233,32 +232,32 @@ flowchart LR
 | `poster`      | 一张画板：海报或社交图片，截图即成品                                      | 竖版 4:5、方形、竖屏 9:16、链接卡片        | 1080×1350、1080×1080、1080×1920、1200×630 |
 | `email`       | 能在真实邮件客户端里显示的 HTML 邮件：表格布局、内联样式、不用 JavaScript | 单栏、通栏色带、摘要简报                   | 600 或 640 px 单栏                        |
 
-- **方向保持不变。** 场景不过滤分支池，所以同一个哈希在任何场景下都得到同样的分支、文案语气、版式、字体对、配色、母题、首屏锚点、字号比例和材质。
-- **部分池子变小。** 读第 6、12 字节之前，先去掉在该场景里没有意义的密度和变数（幻灯片不用 `packed`，也不用"首屏不放按钮"），所以密度和变数可能与 web 版不同。邮件一律取最静止的动效。
+- **方向保持不变。** 同一个哈希在任何场景下都保留它的配色、字体、字号比例、栅格、首屏锚点、母题、材质和文案语气。
+- **部分范围收窄。** 字节 11 映射到场景的密度范围内（幻灯片不会紧凑到底，看板不会疏朗到底）；读字节 26–27 之前，先去掉在该场景里没有意义的变数对象或操作（幻灯片里没有针对导航的变数），所以密度和变数可能与 web 版不同。邮件没有动效。
 - **尺寸随媒介。** 基准字号由密度基准缩放或限定而来（幻灯片 ×2、海报 ×1.75、App 和邮件 16–17 px、看板 13–15 px），`tokens.css` 里带上画布尺寸。
-- **属于设计身份。** 和其他约束一样，复现 ref 时要传同样的 `scenario`。`web` 什么都不改：已有的 ref、brief 和示例都能原样复现。
+- **属于设计身份。** 和其他约束一样，复现 ref 时要传同样的 `scenario`。`web` 是默认值，所以 web ref 带不带它都得到同一份 brief。
 
-`critique_page` 会检查各场景的输出约定（页数与画布、手机机框、等宽数字、画板尺寸、邮件表格），对比页会按真实尺寸缩放固定画布。场景列表和规则参考了 [Open Design](https://github.com/nexu-io/open-design) 的模板。详见 [docs/mapping.zh-CN.md §6](docs/mapping.zh-CN.md#6-场景)。
+`critique_page` 会检查各场景的输出约定（页数与画布、手机机框、等宽数字、画板尺寸、邮件表格），对比页会按真实尺寸缩放固定画布。场景列表和规则参考了 [Open Design](https://github.com/nexu-io/open-design) 的模板。详见 [docs/mapping.zh-CN.md §7](docs/mapping.zh-CN.md#7-场景)。
 
 ### 一份 brief 里有什么
 
-以示例 [#3 水墨印章](examples/fourth-lane-bakery/briefs/03-ink-and-seal.md) 为例，一份 brief 包含：
+运行 `hash-design brief 6ebe9acd06cbf4810ad2989965b22bc39bd527084bdda2964f9f0d49eb25562d` 就能看到一份（它就是 [docs/mapping.zh-CN.md](docs/mapping.zh-CN.md#9-完整示例) 里的完整示例）。一份 brief 包含：
 
-- 映射过程表，逐字节列出公式和结果
+- 映射过程表，逐字节列出十六进制值、公式和结果
 - 内容：只能用的事实清单
-- 文案语气及其修辞手段、版式（栅格数值和分节顺序）、首屏锚点
-- 字体：Google Fonts `<link>`（中文页面会带上中文字体），以及按模数比例算出的字号阶梯
-- 7 个色值、用色比例、WCAG 对比度表（哪个颜色只能做大字或装饰）
-- 密度、圆角、边框、阴影策略、材质（含 CSS 片段）、母题、动效规格
-- 变数（twist）、分支的必须/不要，以及 14 条全局禁令
+- 文案语气（人称、标题形式、句长、语域）、版式（列数、列间距、文本块所占的列、首屏高度、区块数、分隔方式）和首屏锚点（主体、尺寸、位置、旋转）
+- 字体：标题、正文和等宽字体及其大小写、字重和字距，Google Fonts `<link>`（中文页面会带上中文字体），以及按比例算出的字号阶梯
+- 在 OKLCH 中算出的 7 个颜色、WCAG 对比度表（哪个颜色只能做大字或装饰）
+- 密度、圆角、边框、阴影、纹理（含 CSS 片段）、母题（形状、尺寸、位置、角度）和动效（属性、时长、缓动）
+- 变数（twist）和全部 14 条全局禁令
 - 可直接粘贴的 `tokens.css`，以及交付前自检清单
 - 非 web 场景还有一节「场景」：格式、画布、文件结构、页数 / 屏数、版式 / 锚点 / 动效如何落地，以及场景规则和禁忌
 
-brief 是写给 Agent 看的，标题中英双语。`language`（`zh` 或 `en`，默认根据 subject 和 facts 自动判断）决定概念说明和执行指令用哪种语言，以及是否加载中文字体。文案语气、变数等部分描述目前只有中文。
+brief 是写给 Agent 看的，标题中英双语。`language`（`zh` 或 `en`，默认根据 subject 和 facts 自动判断）决定执行指令和场景说明用哪种语言，以及是否加载中文字体。全局禁令的文字目前只有中文。
 
 ## 案例展示
 
-4 次完整运行，各有自己的事实清单和固定 seed（固定 seed 只是为了可复现）。任意两个示例都不共用分支，合起来覆盖 40 个分支中的 20 个，6 个家族都有。每个预览都由只看得到自己那份 brief 的子 Agent 独立完成，`critique_page` 全部不低于 90 分。所有示例都在[示例首页](https://qybaihe.github.io/hash-design/)。下面每张图是一次掷骰：5 个方向并排，标着分支名和 ref。
+4 次完整运行，各有自己的事实清单和固定 seed（固定 seed 只是为了可复现）。它们是用 **hash-design/v1**（已被 v2 取代的 40 分支库）掷出的，作为真实运行的记录保留：它们的 ref 在 v2 下无法复现，拼图上标的也是 v1 的分支名。每个预览都由只看得到自己那份 brief 的子 Agent 独立完成，`critique_page` 仍然全部不低于 90 分。所有示例都在[示例首页](https://qybaihe.github.io/hash-design/)。下面每张图是一次掷骰：5 个方向并排。
 
 ### 第四巷面包店：街区面包店 · 中文页面
 
@@ -286,45 +285,35 @@ seed `causeway-festival-6` · `critique_page` 96–100 · brief 遵守度 100 ·
 
 ## 参考
 
-6 个 MCP 工具、40 个分支，以及每份 brief 都带着的 14 条禁令。
+4 个 MCP 工具、参数空间，以及每份 brief 都带着的 14 条禁令。
 
 ### MCP 工具
 
 | 工具                 | 作用                                                                                                                                                                                             |
 | -------------------- | ------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------ |
 | `roll_designs`       | 输入 `subject`、`facts`、`count`（默认 5），可选 `seed`、`language`、`scenario` 和约束。返回 5 个哈希、映射过程和 5 份 brief。传 `out_dir` 会把 `roll.json`、`ROLL.md`、`briefs/*.md` 冻结到磁盘 |
-| `get_brief`          | 按 `ref`（`<hash>` 或 `<hash>+<probe>`）加同样的约束复现 brief，支持 Markdown 或 JSON                                                                                                            |
-| `list_branches`      | 列出 40 个设计分支，可按家族过滤                                                                                                                                                                 |
-| `get_branch`         | 查看一个分支的全部选项和 token                                                                                                                                                                   |
+| `get_brief`          | 按 `ref`（64 位十六进制哈希）加同样的约束复现 brief，支持 Markdown 或 JSON                                                                                                                       |
 | `critique_page`      | 输入 HTML 字符串或文件路径，按禁令和 AI 味清单打分；带 `brief_ref` 或 `roll_path`+`pick` 时还会给出对 brief 和场景输出约定的遵守度                                                               |
 | `build_compare_page` | 根据 `roll.json` 生成并排对比页 `compare.html`                                                                                                                                                   |
 
-资源：`hash-design://bans`、`hash-design://workflow`（即 SKILL.md）、`hash-design://branches`、`hash-design://branch/{id}`。Prompt：`hash-design`（参数为 `subject`、`facts`、`count`、`scenario`）。
+资源：`hash-design://bans`、`hash-design://workflow`（即 SKILL.md）。Prompt：`hash-design`（参数为 `subject`、`facts`、`count`、`scenario`）。
 
 每个参数、返回格式和对应的 CLI 命令见 [docs/mcp-tools.zh-CN.md](docs/mcp-tools.zh-CN.md)。
 
-### 分支库（40）
+### 参数空间
 
-每个分支都是一个真实世界的设计门类，而不是"SaaS 风格"。每个维度有 3 个具体选项，写明字体对（Google Fonts + 中文）、7 个 hex、栅格数值、圆角/边框/阴影策略、动效规格、母题和材质。完整目录见 [docs/branches.md](docs/branches.md)，也可以用 `list_branches` / `get_branch` 查询。
+没有风格目录。除了字节规则，映射还会读取：
 
-| 家族               | 分支                                                                                                        |
-| ------------------ | ----------------------------------------------------------------------------------------------------------- |
-| 印刷品 print       | 超市促销单 · 凸版木活字 · 复印小志 · Riso 双色套印 · 唱片封套 · 赛事秩序册 · 时装画册 · 大报版面 · 杂志编辑 |
-| 文档票据 document  | 工程图版 · 账本 · 票根 · 学术论文 · 药房标签 · 公文表格 · 热敏小票 · 植物标本 · 野外图鉴                    |
-| 标识招牌 signage   | 交通导视 · 港式招牌 · 餐馆菜单板 · 美术馆图录 · 地形图                                                      |
-| 屏幕仪器 screen    | 终端荧光 · 早期个人主页 · 游戏说明书 · 工业仪表 · 粗野原生                                                  |
-| 手作东方 craft     | 菜谱卡 · 手作温度 · 水墨印章 · 老黄历 · 余白 · 方格实验本                                                   |
-| 现代主义 modernist | 瑞士网格 · 包豪斯 · 构成主义海报 · 装饰艺术 · 七十年代超级图形 · 孟菲斯                                     |
+- 扁平字体池：98 个标题、62 个正文和 8 个等宽 Google Fonts 字体，14 个中文标题字体和 2 个中文正文字体，不带任何情绪或流派标签（`packages/core/src/data/fonts.ts`）
+- 几张短小的中性原语列表：4 种大小写、5 种分隔方式、8 种锚点主体、12 种母题形状、4 种位置、4 种纹理、4 种动效属性、4 种人称、6 种标题形式、9 个变数对象、10 种变数操作（`packages/core/src/data/space.ts`）
 
 数据由测试和脚本强制约束：
 
-- 不得使用禁用字体，fallback 里也不行
-- ink/paper 对比度 ≥ 7:1，muted/paper ≥ 4.5:1
-- 每个分支至少有一套浅色调色板
-- 不得使用框架默认色值
-- 同一个 display 字体最多用于 3 个分支
-- 任意两个分支的首选调色板（paper + accent）不得相同
-- 每个字体 URL 都能在 Google Fonts 解析：`node scripts/verify-fonts.mjs`，235/235 通过
+- 字体池里没有禁用字体，fallback 里也没有；没有重复的字体
+- 配色在纸色上满足 ink ≥ 7.5:1、muted ≥ 4.6:1、强调色 ≥ 3:1，用数千个随机哈希检验
+- 每个字节只改变它自己负责的参数
+- 库指纹钉在测试里，所以哈希映射结果的任何变化都是有意为之
+- 每个字体 URL 都能在 Google Fonts 解析：`node scripts/verify-fonts.mjs`，174/174 通过
 
 ### 全局禁令
 
@@ -347,7 +336,7 @@ seed `causeway-festival-6` · `critique_page` 96–100 · brief 遵守度 100 ·
 | `placeholder-content`       | Lorem ipsum、图库人像、随机 Unsplash                                                                   |
 | `template-sections`         | Hero → Features → Testimonials → Pricing → FAQ 套路                                                    |
 
-`critique_page` 另外还会检查文字对比度（< 3:1）、`viewport`、`lang`、`img alt`、有动效时是否缺少 `prefers-reduced-motion`，以及对 brief 的遵守度：字体、色值、圆角和阴影策略。它是静态检查，抓不到"首屏是否真的是 brief 的锚点""语气对不对"这类问题，这些仍然需要人看或 Agent 对照 brief 自查。
+`critique_page` 另外还会检查文字对比度（< 3:1）、`viewport`、`lang`、`img alt`、有动效时是否缺少 `prefers-reduced-motion`，以及对 brief 的遵守度：字体、色值、圆角和阴影。它是静态检查，抓不到"首屏是否真的是 brief 的锚点""语气对不对"这类问题，这些仍然需要人看或 Agent 对照 brief 自查。
 
 ## 常见问题
 
@@ -368,14 +357,14 @@ Skill 可以装进 Claude Code（`.claude/skills/`）和 Cursor（`.cursor/skill
 <details>
 <summary><strong>真的是随机的吗？怎样拿回同一份 brief？</strong></summary>
 
-每次掷骰都取系统随机数（`crypto.randomBytes(32)` → SHA-256）；`seed` 只用于复现示例和测试。每份 brief 都记着自己的 `ref`（`<hash>` 或 `<hash>+<probe>`）、约束和库指纹，用 `get_brief` 或 `hash-design brief <ref>` 就能原样重建同一份 brief。
+每次掷骰都取系统随机数（`crypto.randomBytes(32)` → SHA-256）；`seed` 只用于复现示例和测试。每份 brief 都记着自己的 `ref`（就是哈希本身）、约束和库指纹，用 `get_brief` 或 `hash-design brief <ref>` 就能原样重建同一份 brief。
 
 </details>
 
 <details>
 <summary><strong>更新之后旧 ref 还能复现吗？</strong></summary>
 
-只有分支数据没变时才行。分支库有 40 个分支，增删分支会改变映射。每份 brief 都记着库指纹，所以能发现不一致，但旧 ref 需要对应的版本才能复现。
+在 `hash-design/v2` 之内可以，只要库指纹相同：增加一个字体或原语会改变指纹，也可能改变某个哈希映射到的结果。每份 brief 都记着算法版本和库指纹，所以能发现不一致，旧 ref 需要对应的版本才能复现。`hash-design/v1` 的 ref（40 分支库时期的 ref，包括 `<hash>+<probe>` 形式的）在 v2 下无法复现。
 
 </details>
 
@@ -396,31 +385,30 @@ CLI 和 MCP server 在本地运行，不发网络请求。生成的页面会从 
 <details>
 <summary><strong>为什么 brief 有一部分是中文？</strong></summary>
 
-brief 是双语的：标题带中英文标签，`language`（`zh` 或 `en`）切换概念文字和执行说明。部分池描述（语气、变数）和 Skill 正文目前只有中文；Skill 的 description 里有英文触发词。
+brief 是双语的：标题带中英文标签，`language`（`zh` 或 `en`）切换执行说明和场景说明。全局禁令的文字和 Skill 正文目前只有中文；Skill 的 description 里有英文触发词。
 
 </details>
 
 ## 文档
 
 - [docs/architecture.zh-CN.md](docs/architecture.zh-CN.md)：包结构、数据流、设计取舍、测试
-- [docs/mapping.zh-CN.md](docs/mapping.zh-CN.md)：`hash-design/v1` 映射、碰撞、约束、可复现性
+- [docs/mapping.zh-CN.md](docs/mapping.zh-CN.md)：`hash-design/v2` 映射：每个字节的规则、配色求解器、约束、场景、可复现性
 - [docs/mcp-tools.zh-CN.md](docs/mcp-tools.zh-CN.md)：全部 MCP 工具、资源和 prompt，以及对应的 CLI 命令
-- [docs/branches.md](docs/branches.md)：40 个分支的目录（自动生成，中英双语）
 - English: [Architecture](docs/architecture.md) · [Mapping spec](docs/mapping.md) · [MCP tools](docs/mcp-tools.md)
 
 ## 参与贡献
 
-欢迎贡献，尤其是新的设计分支。请先读 [CONTRIBUTING.md](CONTRIBUTING.md)，里面讲了数据规则、`npm run sync`，以及为什么改数据就要重新掷示例。请遵守[行为准则](CODE_OF_CONDUCT.md)；安全问题请按 [SECURITY.md](SECURITY.md) 私下报告。版本变更见 [CHANGELOG.md](CHANGELOG.md)。
+欢迎贡献，尤其是 critique 规则、字体池里的字体和翻译。请先读 [CONTRIBUTING.md](CONTRIBUTING.md)，里面讲了数据规则、`npm run sync`，以及钉住的库指纹。请遵守[行为准则](CODE_OF_CONDUCT.md)；安全问题请按 [SECURITY.md](SECURITY.md) 私下报告。版本变更见 [CHANGELOG.md](CHANGELOG.md)。
 
 ```bash
 npm install
 npm run build        # tsc -b，两个包
 npm test             # vitest：核心、CLI、MCP（in-memory transport）、Skill/文档一致性
 npm run check        # typecheck + lint + prettier + test
-npm run sync         # 改数据后重新生成 SKILL.md 的禁令块、.claude/.cursor 副本、docs/branches.md
+npm run sync         # 改数据后重新生成 SKILL.md 的禁令块和 .claude/.cursor 副本
 node scripts/smoke.mjs        # 真实 stdio 上的 MCP + CLI 冒烟测试（CI 会跑）
 node scripts/verify-fonts.mjs # 联网检查所有字体 URL（不在 CI 里跑）
-npm run example:critique      # 对照 brief 批量 critique 所有示例预览（低于 90 分即失败）
+npm run example:critique      # 批量 critique 所有示例预览（低于 90 分即失败）
 npm run screenshots           # Playwright 截图所有示例（需 npx playwright install chromium）
 npm run hero                  # 用示例截图重新生成 docs/assets/hero.png 和 social-preview.png
 npm run hero:gif              # 重新生成 docs/assets/hero.gif 和 hero.mp4（需要 ffmpeg；装了 gifski 会优先用）
@@ -434,21 +422,22 @@ CI 在 Node 20、22、24 上跑 build、typecheck、lint、格式检查、测试
 ```
 packages/core/           # npm: hash-design —— 数据、映射、brief、critique、对比页、CLI
   src/data/bans.ts       #   全局禁令、禁用字体、空话词表
-  src/data/pools.ts      #   密度、比例、14 种文案语气、16 个变数
-  src/data/branches/     #   40 个分支（index.ts 定义映射顺序）
-  src/mapping.ts         #   哈希 → 设计（决策树、碰撞、约束）
+  src/data/fonts.ts      #   扁平字体池
+  src/data/space.ts      #   原语列表（母题形状、锚点、变数……）
+  src/mapping.ts         #   哈希 → 设计，逐字节（BYTE_MAP、约束、指纹）
+  src/palette.ts         #   OKLCH 配色，文字颜色按对比度求解
   src/brief.ts           #   brief 渲染（Markdown / JSON）
   src/critique.ts        #   AI 味静态检查
   src/compare.ts         #   并排对比页
   src/cli.ts             #   CLI
 packages/mcp/            # npm: hash-design-mcp —— stdio MCP server
 skills/hash-design/      # Skill 源文件（.claude/ 和 .cursor/ 下为同步副本）
-examples/                # 4 个完整示例：事实 → roll → 5 brief → 5 预览 → 对比页 → 截图
-docs/                    # 架构、映射规范、MCP 参考、分支库目录（生成）
+examples/                # 4 个完整的 hash-design/v1 示例：事实 → roll → 5 brief → 5 预览 → 对比页 → 截图
+docs/                    # 架构、映射规范、MCP 参考
 scripts/                 # sync / smoke / verify-fonts / examples / screenshot / hero / hero-gif / prepack
 ```
 
-添加分支、修改数据的流程见 [CONTRIBUTING.md](CONTRIBUTING.md)（英文，附中文摘要）。
+修改数据的流程见 [CONTRIBUTING.md](CONTRIBUTING.md)（英文，附中文摘要）。
 
 ## 许可证
 

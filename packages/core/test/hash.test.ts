@@ -1,5 +1,5 @@
 import { describe, expect, it } from 'vitest';
-import { formatRef, hashBytes, isHash, parseRef, randomHash, rollHashes, seededHash } from '../src/hash.js';
+import { hashBytes, isHash, parseRef, randomHash, rollHashes, seededHash } from '../src/hash.js';
 
 describe('hashes', () => {
   it('random hashes are 64-hex and unique', () => {
@@ -29,8 +29,9 @@ describe('hashes', () => {
 
   it('refs round-trip', () => {
     const h = seededHash('ref', 0);
-    expect(parseRef(formatRef(h, 0))).toEqual({ hash: h, probe: 0 });
-    expect(parseRef(formatRef(h, 3))).toEqual({ hash: h, probe: 3 });
+    expect(parseRef(h)).toEqual({ hash: h });
+    expect(parseRef(h.toUpperCase())).toEqual({ hash: h });
+    expect(() => parseRef(`${h}+3`)).toThrow(/v1/);
     expect(parseRef(h.toUpperCase()).hash).toBe(h);
     expect(() => parseRef('nope')).toThrow(/Invalid design ref/);
   });

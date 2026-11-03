@@ -5,6 +5,8 @@
 //   3. the five real desktop screenshots pop in one after another, labelled with branch and ref
 //   4. they shrink into a compare row: "Pick one · reproducible from its ref", then the loop restarts
 //
+// The examples are hash-design/v1 records, so their roll.json designs still carry a v1 branch; the labels come from it.
+//
 //   node scripts/hero-gif.mjs [example] [--fps 20]   default: causeway-festival
 //
 // Frames are deterministic: the page exposes render(t) and every frame is a screenshot at t = i / fps, so the

@@ -2,9 +2,9 @@
 
 [English](mcp-tools.md) · [返回 README](../README.zh-CN.md)
 
-hash-design 的 MCP server 是一个基于官方 TypeScript SDK 的 stdio [Model Context Protocol](https://modelcontextprotocol.io) server。它包含在 npm 包 `hash-design` 里，用 `hash-design mcp` 启动。源码：[`packages/core/src/mcp.ts`](../packages/core/src/mcp.ts)；`packages/mcp` 是一个 private 包装，在克隆的源码里运行同一个 server。它提供 6 个工具、4 个资源和 1 个 prompt，并向客户端发送概括工作流程的 server instructions。
+hash-design 的 MCP server 是一个基于官方 TypeScript SDK 的 stdio [Model Context Protocol](https://modelcontextprotocol.io) server。它包含在 npm 包 `hash-design` 里，用 `hash-design mcp` 启动。源码：[`packages/core/src/mcp.ts`](../packages/core/src/mcp.ts)；`packages/mcp` 是一个 private 包装，在克隆的源码里运行同一个 server。它提供 4 个工具、2 个资源和 1 个 prompt，并向客户端发送概括工作流程的 server instructions。
 
-> 在客户端里注册 `npx -y hash-design mcp`。`mcp` 命令从下一个版本 hash-design 0.2.0 开始提供，0.1.0 里没有。0.2.0 发布之前，用 `npx -y hash-design-mcp@0.1.0`（之前单独发布的 server，6 个工具相同，不再更新），或者克隆源码运行：`node /ABS/PATH/hash-design/packages/mcp/dist/bin.js`。见[手动安装](../README.zh-CN.md#手动安装)。
+> 在客户端里注册 `npx -y hash-design mcp`。`mcp` 命令从下一个版本 hash-design 0.2.0 开始提供，0.1.0 里没有。0.2.0 发布之前，用 `npx -y hash-design-mcp@0.1.0`（之前单独发布的 hash-design/v1 server，带分支库的 6 个工具，不再更新），或者克隆源码运行：`node /ABS/PATH/hash-design/packages/mcp/dist/bin.js`。见[手动安装](../README.zh-CN.md#手动安装)。
 
 ## 工作目录与文件访问
 
@@ -20,66 +20,53 @@ server 在本地以你的用户权限运行，不发起任何网络请求。相�
 
 ## 共用的约束参数
 
-`roll_designs`、`get_brief` 和 `critique_page` 接受同样的扁平约束字段，详见 [mapping.zh-CN.md §5](mapping.zh-CN.md#5-约束)，`scenario` 见 [§6](mapping.zh-CN.md#6-场景)。
+`roll_designs`、`get_brief` 和 `critique_page` 接受同样的扁平约束字段，详见 [mapping.zh-CN.md §6](mapping.zh-CN.md#6-约束)，`scenario` 见 [§7](mapping.zh-CN.md#7-场景)。
 
-| 参数               | 类型                             | 含义                                                                                                                     |
-| ------------------ | -------------------------------- | ------------------------------------------------------------------------------------------------------------------------ |
-| `light_only`       | boolean                          | 只用浅色调色板                                                                                                           |
-| `dark_only`        | boolean                          | 只用深色调色板（没有深色调色板的分支会被跳过）                                                                           |
-| `reduced_motion`   | boolean                          | 强制每个分支使用最静止的动效选项                                                                                         |
-| `brand_colors`     | string[] (≤ 2, `#rgb`/`#rrggbb`) | `[accent]` 或 `[accent, accent2]`                                                                                        |
-| `families`         | enum[]                           | `print` `document` `signage` `screen` `craft` `modernist`                                                                |
-| `include_branches` | string[]                         | 把池子限制为这些分支 id                                                                                                  |
-| `exclude_branches` | string[]                         | 从池中移除这些分支 id                                                                                                    |
-| `scenario`         | enum                             | `web`（默认）`deck` `app` `dashboard` `poster` `email`。非 web 场景会给每份 brief 加上格式（第 13 字节）、画布和输出规则 |
+| 参数             | 类型                             | 含义                                                                                                                     |
+| ---------------- | -------------------------------- | ------------------------------------------------------------------------------------------------------------------------ |
+| `light_only`     | boolean                          | 浅色纸（此时字节 2 只决定纸的明度）                                                                                      |
+| `dark_only`      | boolean                          | 深色纸（此时字节 2 只决定纸的明度）                                                                                      |
+| `reduced_motion` | boolean                          | 无动效：时长 0，缓动 `none`                                                                                              |
+| `brand_colors`   | string[] (≤ 2, `#rgb`/`#rrggbb`) | `[accent]` 或 `[accent, accent2]`；第一个同时决定色相                                                                    |
+| `scenario`       | enum                             | `web`（默认）`deck` `app` `dashboard` `poster` `email`。非 web 场景会给每份 brief 加上格式（第 28 字节）、画布和输出规则 |
 
-## 工具
+没有风格、家族或分支过滤：`hash-design/v2` 没有可供过滤的风格库。
 
-### `roll_designs`
+掷 N 个真随机哈希；每个哈希就是一个设计方向，按字节映射到连续参数上（见 [mapping.zh-CN.md](mapping.zh-CN.md)）。非只读、非幂等（每次不带 `seed` 的调用都是一次新的掷骰）。
 
-掷 N 个真随机哈希，并把每个哈希映射到一个互不相同的设计方向。非只读、非幂等（每次不带 `seed` 的调用都是一次新的掷骰）。
+| 参数       | 类型                | 默认值                                     | 说明                                                         |
+| ---------- | ------------------- | ------------------------------------------ | ------------------------------------------------------------ |
+| `subject`  | string，必填        | —                                          | 页面是做什么的                                               |
+| `facts`    | string[]            | `[]`                                       | 页面唯一可以陈述的事实                                       |
+| `count`    | integer 1–12        | 5                                          |                                                              |
+| `seed`     | string              | —                                          | 可复现的掷骰，仅用于示例/测试                                |
+| `language` | `zh` \| `en`        | 根据 subject 和 facts 自动判断             | brief 的语言                                                 |
+| `out_dir`  | string              | —                                          | 把 `roll.json`、`ROLL.md`、`briefs/NN-<short>.md` 冻结到这里 |
+| `detail`   | `full` \| `summary` | 有 `out_dir` 时为 `summary`，否则为 `full` | 是否把每份 brief 都内联在返回结果里                          |
+| 约束       | 见上文              |                                            |                                                              |
 
-| 参数       | 类型                | 默认值                                     | 说明                                                          |
-| ---------- | ------------------- | ------------------------------------------ | ------------------------------------------------------------- |
-| `subject`  | string，必填        | —                                          | 页面是做什么的                                                |
-| `facts`    | string[]            | `[]`                                       | 页面唯一可以陈述的事实                                        |
-| `count`    | integer 1–12        | 5                                          |                                                               |
-| `seed`     | string              | —                                          | 可复现的掷骰，仅用于示例/测试                                 |
-| `language` | `zh` \| `en`        | 根据 subject 和 facts 自动判断             | brief 的语言                                                  |
-| `out_dir`  | string              | —                                          | 把 `roll.json`、`ROLL.md`、`briefs/NN-<branch>.md` 冻结到这里 |
-| `detail`   | `full` \| `summary` | 有 `out_dir` 时为 `summary`，否则为 `full` | 是否把每份 brief 都内联在返回结果里                           |
-| 约束       | 见上文              |                                            |                                                               |
-
-返回两个文本块：（1）Markdown（汇总表、ref、写入的文件、`detail = full` 时的 brief，以及下一步）；（2）一个 JSON 对象 `{ source, library, constraints, designs: [{ number, ref, branch, format? }] }`，供程序使用（只有非 web 的 `scenario` 才有 `format`）。
+返回两个文本块：（1）Markdown（汇总表、ref、写入的文件、`detail = full` 时的 brief，以及下一步）；（2）一个 JSON 对象 `{ source, library, constraints, designs: [{ number, ref, label, format? }] }`，供程序使用。`ref` 是 64 位十六进制哈希，`label` 是一行摘要，例如 `light · 156° · Libre Franklin / Atkinson Hyperlegible · 4 col`；只有非 web 的 `scenario` 才有 `format`。
 
 CLI：`hash-design roll --subject … --fact … --facts-file … --count … --seed … --out … --format md|json|summary [约束参数，如 --scenario deck]`。CLI 没有 `--language` 参数，始终自动判断。
 
 ### `get_brief`
 
-为一个 ref 重建 brief。只读且幂等：同样的 ref + 约束 + 库，永远得到同一份 brief。
+为一个 ref 重建 brief。只读且幂等：同样的 ref + 约束（含场景）+ 库，永远得到同一份 brief。
 
-| 参数       | 类型                 | 说明                                |
-| ---------- | -------------------- | ----------------------------------- |
-| `ref`      | string，必填         | `<64-hex hash>` 或 `<hash>+<probe>` |
-| `subject`  | string               | 放回 brief 的内容部分               |
-| `facts`    | string[]             |                                     |
-| `language` | `zh` \| `en`         |                                     |
-| `format`   | `markdown` \| `json` | 默认 `markdown`                     |
-| 约束       | 见上文               | 必须与掷骰时的约束一致              |
+| 参数       | 类型                 | 说明                   |
+| ---------- | -------------------- | ---------------------- |
+| `ref`      | string，必填         | 64 位十六进制哈希      |
+| `subject`  | string               | 放回 brief 的内容部分  |
+| `facts`    | string[]             |                        |
+| `language` | `zh` \| `en`         |                        |
+| `format`   | `markdown` \| `json` | 默认 `markdown`        |
+| 约束       | 见上文               | 必须与掷骰时的约束一致 |
 
 CLI：`hash-design brief <ref> [constraints] [--subject …] [--fact …] [--format md|json]`。
 
-### `list_branches`
-
-按映射顺序列出分支。参数：`family`（可选 enum）。CLI：`hash-design branches [--family …] [--json]`。
-
-### `get_branch`
-
-一个分支的完整详情：概念说明、参考、token，以及每个维度的每个选项。参数：`id`（必填）、`format`（`markdown` | `json`）。CLI：`hash-design branch <id> [--json]`。
-
 ### `critique_page`
 
-对 HTML 页面做静态评审：对照 14 条全局禁令，外加对比度、`viewport`、`lang`、`img alt` 和 reduced-motion 检查。提供 brief 时还会给遵守度打分（字体、配色、圆角 / 阴影策略）。brief 带非 web 场景时，还会按规则 `scenario-<id>` 检查场景的输出约定：`deck` 至少 3 页、1920×1080 或 16:9 画布、键盘翻页；`app` 390 px 机框、至少 2 屏；`dashboard` 等宽数字；`poster` 格式的宽和高；`email` 不含 `<script>`、用 `<table>` 布局、写明栏宽。只读。
+对 HTML 页面做静态评审：对照 14 条全局禁令，外加对比度、`viewport`、`lang`、`img alt` 和 reduced-motion 检查。提供 brief 时还会给遵守度打分（brief 的字体和配色、圆角和阴影规则）。brief 带非 web 场景时，还会按规则 `scenario-<id>` 检查场景的输出约定：`deck` 至少 3 页、1920×1080 或 16:9 画布、键盘翻页；`app` 390 px 机框、至少 2 屏；`dashboard` 等宽数字；`poster` 格式的宽和高；`email` 不含 `<script>`、用 `<table>` 布局、写明栏宽。只读。
 
 | 参数        | 类型                 | 说明                                                                          |
 | ----------- | -------------------- | ----------------------------------------------------------------------------- |
@@ -99,7 +86,7 @@ CLI：`hash-design critique <page.html> [--css <file>] [--brief <ref> | --roll <
 
 ### `build_compare_page`
 
-写出 `compare.html`：把每个预览放进缩放的 iframe 里并排展示，带分支 / 配色 / 字体标签、桌面 / 手机切换和聚焦模式（按键 1–9）。非 web 场景下，副标题和每张卡片会写明场景和格式；固定画布（`deck`、`poster`）按真实尺寸缩放，“桌面”按钮变为“画布”。预览应位于 `<previews_dir>/NN-<branch>.html`，缺失的会被列出来。页面上的标签、按钮和操作说明跟随这次 roll 的语言（`roll.json` 里的 `content.language`，中文或英文）。
+写出 `compare.html`：把每个预览放进缩放的 iframe 里并排展示，每张卡片标题为 `方向 <短哈希>`（英文 roll 为 `Direction <short hash>`），并写明深浅与色相、色块、字体、栅格、密度、语气和变数，带桌面 / 手机切换和聚焦模式（按键 1–9）。非 web 场景下，副标题和每张卡片会写明场景和格式；固定画布（`deck`、`poster`）按真实尺寸缩放，“桌面”按钮变为“画布”。预览应位于 `<previews_dir>/NN-<short>.html`，缺失的会被列出来。页面上的标签、按钮和操作说明跟随这次 roll 的语言（`roll.json` 里的 `content.language`，中文或英文）。
 
 | 参数           | 类型         | 默认值                            |
 | -------------- | ------------ | --------------------------------- |
@@ -113,12 +100,10 @@ CLI：`hash-design compare [--roll <roll.json>] [--out <compare.html>] [--previe
 
 ## 资源
 
-| URI                         | 内容                                        |
-| --------------------------- | ------------------------------------------- |
-| `hash-design://bans`        | 14 条全局禁令，含 id 和严重程度（Markdown） |
-| `hash-design://workflow`    | 完整的 Skill（`SKILL.md`）                  |
-| `hash-design://branches`    | 按映射顺序列出的全部分支                    |
-| `hash-design://branch/{id}` | 单个分支的详情（可列举的资源模板）          |
+| URI                      | 内容                                        |
+| ------------------------ | ------------------------------------------- |
+| `hash-design://bans`     | 14 条全局禁令，含 id 和严重程度（Markdown） |
+| `hash-design://workflow` | 完整的 Skill（`SKILL.md`）                  |
 
 ## Prompt
 
@@ -130,9 +115,9 @@ CLI：`hash-design compare [--roll <roll.json>] [--out <compare.html>] [--previe
 design/hash-design/
   roll.json            # algorithm、library、createdAt、source、constraints、content、designs[]（完整 brief JSON）
   ROLL.md              # 汇总表 + 完整 ref
-  briefs/01-<branch>.md
+  briefs/01-<short>.md          # <short> = 哈希的前 8 位十六进制
   …
-  previews/01-<branch>.html   # 由 Agent 写出，每份 brief 一个
+  previews/01-<short>.html      # 由 Agent 写出，每份 brief 一个
   compare.html                # 由 build_compare_page 写出
 ```
 
@@ -142,4 +127,4 @@ Claude Code、Cursor 和 Claude Desktop 的配置见 README 中的[手动安装]
 
 ## 测试
 
-`packages/core/test/mcp.test.ts` 通过 SDK 的 in-memory transport 驱动 server，其中有一个测试检查用示例 seed 调用 `roll_designs` 能完全复现 CLI 的示例掷骰。`scripts/smoke.mjs` 在 CI 中通过真实的 stdio 启动 `hash-design mcp` 和 `packages/mcp` 包装。
+`packages/core/test/mcp.test.ts` 通过 SDK 的 in-memory transport 驱动 server，其中一个测试检查带 seed 调用 `roll_designs` 返回的结果与库的 `roll` 用同一 seed 得到的完全一致，另一个检查没有暴露任何分支工具或分支约束字段。`scripts/smoke.mjs` 在 CI 中通过真实的 stdio 启动 `hash-design mcp` 和 `packages/mcp` 包装。

@@ -2,7 +2,7 @@ import { existsSync, readFileSync } from 'node:fs';
 import { dirname, join } from 'node:path';
 import { fileURLToPath } from 'node:url';
 import { BANNED_FONTS, BANS } from './data/bans.js';
-import { BRANCHES } from './data/branches/index.js';
+import { BODY_FONTS, DISPLAY_FONTS } from './data/fonts.js';
 
 /**
  * Locate SKILL.md: inside the published package it lives at <pkg>/skill/SKILL.md;
@@ -26,7 +26,7 @@ export function readSkill(): string {
 export const SKILL_BLOCK_BEGIN = '<!-- BEGIN GENERATED: bans (npm run sync) -->';
 export const SKILL_BLOCK_END = '<!-- END GENERATED: bans -->';
 
-/** The part of SKILL.md that is generated from data (bans, banned fonts, branch count). */
+/** The part of SKILL.md that is generated from data (bans, banned fonts, font pool size). */
 export function skillGeneratedBlock(): string {
   const lines = [
     SKILL_BLOCK_BEGIN,
@@ -36,7 +36,7 @@ export function skillGeneratedBlock(): string {
     '',
     `禁用字体：${BANNED_FONTS.join(', ')}。`,
     '',
-    `分支库：${BRANCHES.length} 个分支（\`list_branches\` 查看，\`get_branch\` 看细节）。`,
+    `字体池：${DISPLAY_FONTS.length} 个标题字体 × ${BODY_FONTS.length} 个正文字体，由哈希字节直接选，没有风格分类。`,
     SKILL_BLOCK_END,
   ];
   return lines.join('\n');

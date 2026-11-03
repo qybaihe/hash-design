@@ -6,7 +6,7 @@
 
 <p align="center"><a href="https://qybaihe.github.io/hash-design/causeway-festival/compare.html"><picture><source media="(prefers-reduced-motion: reduce)" srcset="docs/assets/hero.png"><img src="docs/assets/hero.gif" width="960" alt="Animación: en un cuadro de texto se elige /hash-design y se pide una landing para Causeway; cinco refs SHA-256 giran y se fijan; las cinco vistas previas reales (Engineering plate, Topographic map, Warm handmade, Editorial magazine, Memphis pop) aparecen una tras otra y se alinean en una fila comparativa: elige una, reproducible desde su ref"></picture></a></p>
 
-<p align="center"><sub>Resultado real, no una maqueta: <a href="examples/causeway-festival">examples/causeway-festival</a>; cada vista previa la hizo un subagente distinto a partir de un único brief congelado.<br><a href="https://qybaihe.github.io/hash-design/"><b>Ver los 4 ejemplos en vivo →</b></a> · 20 de las 40 ramas · <a href="docs/assets/hero.png">imagen fija</a> · <a href="docs/assets/hero.mp4">MP4</a></sub></p>
+<p align="center"><sub>Resultado real, no una maqueta: <a href="examples/causeway-festival">examples/causeway-festival</a>; cada vista previa la hizo un subagente distinto a partir de un único brief congelado.<br><a href="https://qybaihe.github.io/hash-design/"><b>Ver los 4 ejemplos en vivo →</b></a> · una ejecución de hash-design/v1 (ver <a href="#galería">Galería</a>) · <a href="docs/assets/hero.png">imagen fija</a> · <a href="docs/assets/hero.mp4">MP4</a></sub></p>
 
 ### Un prompt, cinco direcciones de diseño, elegidas por hashes SHA-256 verdaderamente aleatorios y no por el modelo.
 
@@ -15,12 +15,12 @@
 [![CI](https://img.shields.io/github/actions/workflow/status/qybaihe/hash-design/ci.yml?branch=main&style=flat-square&label=CI)](https://github.com/qybaihe/hash-design/actions/workflows/ci.yml)
 [![Live demo](https://img.shields.io/badge/live_demo-4_examples-e2401c?style=flat-square)](https://qybaihe.github.io/hash-design/)
 [![Agent Skill](https://img.shields.io/badge/Agent_Skill-Claude_Code_%C2%B7_Cursor-151412?style=flat-square)](#inicio-rápido)
-[![MCP server](https://img.shields.io/badge/MCP_server-6_tools_%C2%B7_stdio-151412?style=flat-square)](docs/mcp-tools.md)
+[![MCP server](https://img.shields.io/badge/MCP_server-4_tools_%C2%B7_stdio-151412?style=flat-square)](docs/mcp-tools.md)
 [![Node.js](https://img.shields.io/badge/Node.js-%E2%89%A520-151412?style=flat-square&logo=nodedotjs&logoColor=white)](.nvmrc)
 [![npm](https://img.shields.io/npm/v/hash-design?style=flat-square&color=151412)](https://www.npmjs.com/package/hash-design)
 [![MIT license](https://img.shields.io/badge/license-MIT-151412?style=flat-square)](LICENSE)
 
-**[Ejemplos en vivo](https://qybaihe.github.io/hash-design/) · [Catálogo de ramas](docs/branches.md) · [Referencia MCP](docs/mcp-tools.md) · [Registro de cambios](CHANGELOG.md)**
+**[Ejemplos en vivo](https://qybaihe.github.io/hash-design/) · [Especificación del mapeo](docs/mapping.md) · [Referencia MCP](docs/mcp-tools.md) · [Registro de cambios](CHANGELOG.md)**
 
 [Inicio rápido](#inicio-rápido) · [Cómo funciona](#cómo-funciona) · [Galería](#galería) · [Referencia](#referencia) · [Preguntas frecuentes](#preguntas-frecuentes)
 
@@ -42,19 +42,19 @@ Pídele a un LLM "una página bonita" y casi siempre acabará en la misma estét
 
 hash-design no le pide al modelo que tenga mejor gusto. **Le quita la decisión**:
 
-| Paso             | Qué pasa                                                                                                                                                                                                                                                                                                |
-| ---------------- | ------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------- |
-| **Tirada**       | Genera cinco hashes a partir de la aleatoriedad del sistema (`crypto.randomBytes(32)` → SHA-256).                                                                                                                                                                                                       |
-| **Mapeo**        | Asigna cada hash, mediante un **árbol de decisión fijo y reproducible**, a una dirección concreta: género de diseño, maquetación, combinación de fuentes, paleta hex, densidad, movimiento, motivo, ancla de la primera pantalla, escala tipográfica, superficie, voz de redacción y un "giro" (twist). |
-| **Congelación**  | Congela cada dirección como un **brief** con tokens listos para pegar (enlaces de fuentes, valores hex, `tokens.css`, medidas de la retícula, política de radio/sombra), más las prohibiciones globales.                                                                                                |
-| **Render**       | La única tarea del agente es **ejecutar** cada brief con fidelidad: cinco vistas previas HTML independientes y una página comparativa lado a lado. Después **se detiene y espera a que elijas un número**.                                                                                              |
-| **Página final** | Cuando eliges, el agente construye la página final a partir de ese brief y la revisa con `critique_page`.                                                                                                                                                                                               |
+| Paso             | Qué pasa                                                                                                                                                                                                                                                                                                                                                                                                                                                   |
+| ---------------- | ---------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------- |
+| **Tirada**       | Genera cinco hashes a partir de la aleatoriedad del sistema (`crypto.randomBytes(32)` → SHA-256).                                                                                                                                                                                                                                                                                                                                                          |
+| **Mapeo**        | Cada hash **es** la dirección. Unas reglas fijas y reproducibles leen sus bytes directamente como parámetros de diseño: tono y una paleta con el contraste resuelto, fuentes display y body de un pool plano de fuentes, caja, tracking, razón de la escala tipográfica, densidad, retícula, ancla de la primera pantalla, motivo, esquinas y textura, tiempos del movimiento, voz de redacción y un "giro" (twist). No hay ninguna biblioteca de estilos. |
+| **Congelación**  | Congela cada dirección como un **brief** con tokens listos para pegar (enlaces de fuentes, valores hex, `tokens.css`, medidas de la retícula, valores de radio / borde / sombra), más las prohibiciones globales.                                                                                                                                                                                                                                          |
+| **Render**       | La única tarea del agente es **ejecutar** cada brief con fidelidad: cinco vistas previas HTML independientes y una página comparativa lado a lado. Después **se detiene y espera a que elijas un número**.                                                                                                                                                                                                                                                 |
+| **Página final** | Cuando eliges, el agente construye la página final a partir de ese brief y la revisa con `critique_page`.                                                                                                                                                                                                                                                                                                                                                  |
 
 Se trata de una restricción aleatoria externa que rompe la estética por defecto del modelo. No tiene nada que ver con cachés KV ni con la temperatura de muestreo. El gusto del modelo se invierte en la calidad de ejecución (alineación, ritmo, detalle, legibilidad), no en elegir un estilo.
 
 La salida por defecto es una página web. Pasa un **escenario** (`scenario`) y las mismas direcciones de la tirada se convierten en una presentación de diapositivas, pantallas de app móvil, un panel de datos, un póster o tarjeta social, o un email HTML (ver [Escenarios](#escenarios)).
 
-Se distribuye como una **Agent Skill** (cuándo y en qué orden ejecutar el flujo), un **servidor MCP** (stdio, seis herramientas), una **CLI** y una **biblioteca TypeScript**, publicadas juntas en npm como [`hash-design`](https://www.npmjs.com/package/hash-design) (el servidor MCP se incorpora al paquete en la 0.2.0).
+Se distribuye como una **Agent Skill** (cuándo y en qué orden ejecutar el flujo), un **servidor MCP** (stdio, cuatro herramientas), una **CLI** y una **biblioteca TypeScript**, publicadas juntas en npm como [`hash-design`](https://www.npmjs.com/package/hash-design) (el servidor MCP se incorpora al paquete en la 0.2.0).
 
 ## Inicio rápido
 
@@ -86,7 +86,7 @@ npx -y hash-design skill install --target claude --global   # o tu directorio pe
 **Servidor MCP.** Registra `npx -y hash-design mcp` en tu agente; ejecuta el servidor por stdio.
 
 > [!NOTE]
-> `hash-design mcp` llega con hash-design 0.2.0, la próxima versión. Con la 0.1.0, la que está hoy en npm, registra en su lugar `npx -y hash-design-mcp@0.1.0`: el servidor que se publicó antes como paquete aparte, con las mismas seis herramientas y sin más actualizaciones.
+> `hash-design mcp` llega con hash-design 0.2.0, la próxima versión. Con la 0.1.0, la que está hoy en npm, registra en su lugar `npx -y hash-design-mcp@0.1.0`: el servidor hash-design/v1 que se publicó antes como paquete aparte (la biblioteca de 40 ramas y sus seis herramientas), sin más actualizaciones.
 
 #### Claude Code
 
@@ -147,14 +147,12 @@ hash-design roll --subject "Fourth Lane Bakery" --facts-file facts.md --out desi
 hash-design roll --subject "…" --light-only --brand "#c8102e" --format json                     # con restricciones
 hash-design roll --subject "Q3 review" --facts-file facts.md --scenario deck --out design/deck   # diapositivas en vez de una página
 hash-design brief <ref> [constraints]                                                            # reproduce un brief
-hash-design branches [--family craft]                                                            # la biblioteca de ramas
-hash-design branch ink-and-seal                                                                  # una rama en detalle
 hash-design critique page.html --roll design/hash-design/roll.json --pick 3 --fail-under 80
 hash-design compare --roll design/hash-design/roll.json                                          # escribe compare.html
 hash-design skill install --target both                                                          # instala la Skill
 ```
 
-Ejecútala con `npx -y hash-design …`, o instálala una vez con `npm install -g hash-design` y escribe `hash-design …`; en una copia del código es `node packages/core/dist/bin.js …`. `hash-design --help` lista todos los comandos y `hash-design <command> --help` (por ejemplo, `hash-design roll --help`) muestra las opciones de un comando, incluidas las de restricción `--light-only`, `--dark-only`, `--reduced-motion`, `--brand`, `--family`, `--include`, `--exclude` y `--scenario`.
+Ejecútala con `npx -y hash-design …`, o instálala una vez con `npm install -g hash-design` y escribe `hash-design …`; en una copia del código es `node packages/core/dist/bin.js …`. `hash-design --help` lista todos los comandos y `hash-design <command> --help` (por ejemplo, `hash-design roll --help`) muestra las opciones de un comando, incluidos los flags de restricción `--light-only`, `--dark-only`, `--reduced-motion`, `--brand` y `--scenario`.
 
 ### Biblioteca
 
@@ -177,14 +175,14 @@ Instálala con `npm install hash-design` (módulo ES, Node.js ≥ 20, con tipos)
 npx -y hash-design@latest skill install --target both --dir .   # actualiza la copia de SKILL.md
 ```
 
-npx puede seguir usando una copia que guardó en caché; `@latest` hace que descargue la versión más reciente (o fija una, como `hash-design@0.2.0`). El servidor MCP se arranca con npx cada vez que se inicia el agente, así que reinicia el agente tras una nueva versión y escribe `hash-design@latest` en su comando MCP si sigue corriendo una copia antigua. Desde un clon: `git pull && npm install && npm run build`. Si una actualización cambia los datos de las ramas, los refs sorteados con la versión anterior necesitan esa versión para reproducirse (ver [Preguntas frecuentes](#preguntas-frecuentes)).
+npx puede seguir usando una copia que guardó en caché; `@latest` hace que descargue la versión más reciente (o fija una, como `hash-design@0.2.0`). El servidor MCP se arranca con npx cada vez que se inicia el agente, así que reinicia el agente tras una nueva versión y escribe `hash-design@latest` en su comando MCP si sigue corriendo una copia antigua. Desde un clon: `git pull && npm install && npm run build`. Si una actualización cambia el pool de fuentes, las listas de primitivas o las reglas de los bytes, los refs sorteados con la versión anterior necesitan esa versión para reproducirse (ver [Preguntas frecuentes](#preguntas-frecuentes)).
 
 ## Cómo funciona
 
 ```mermaid
 flowchart LR
   A[Ficha de datos] --> B[roll_designs<br/>5 × SHA-256, aleatoriedad real]
-  B --> C[Árbol de decisión fijo<br/>bytes → dimensiones]
+  B --> C[Reglas fijas de bytes<br/>cada hash → una dirección]
   C --> D[5 briefs congelados<br/>briefs/01…05.md]
   D --> E[5 vistas previas HTML independientes<br/>cada una solo ve su propio brief]
   E --> F[build_compare_page<br/>lado a lado]
@@ -193,38 +191,39 @@ flowchart LR
   H --> I[critique_page<br/>prohibiciones + adherencia al brief]
 ```
 
-### Bytes → dimensiones (`hash-design/v1`)
+### Bytes → parámetros (`hash-design/v2`)
 
-| Bytes | Dimensión | Regla                                                                                                             |
-| ----- | --------- | ----------------------------------------------------------------------------------------------------------------- |
-| 0–1   | branch    | `uint16(b0, b1) mod N` (N = 40). Las colisiones avanzan hacia delante, ver más abajo                              |
-| 2     | voice     | 14 voces de redacción: pizarra del tendero, notas de campo, manual técnico, carta personal, horario, almanaque…   |
-| 3     | layout    | 1 de las 3 maquetaciones de la rama, con medidas de la retícula y un esquema de las secciones de arriba abajo     |
-| 4     | type      | 1 de 3 combinaciones: display / body (/ mono) + fuentes CJK + notas de composición tipográfica                    |
-| 5     | palette   | 1 de 3 paletas: siete valores hex (paper / ink / muted / accent / accent2 / rule / panel)                         |
-| 6     | density   | El subconjunto de airy / regular / compact / packed que permite la rama                                           |
-| 7     | motion    | 1 de 3: duración, easing y una política de movimiento reducido                                                    |
-| 8     | motif     | 1 de los 3 motivos de la rama                                                                                     |
-| 9     | anchor    | 1 de las 3 anclas de primera pantalla de la rama                                                                  |
-| 10    | scale     | Las escalas modulares que permite la rama (1.125–1.618)                                                           |
-| 11    | surface   | 1 de 3 superficies (con indicaciones de CSS)                                                                      |
-| 12    | twist     | 16 giros, p. ej. "numerales como display", "un elemento rompe la retícula", "ningún botón en la primera pantalla" |
-| 13    | format    | Solo escenarios no web: 1 de los 3–4 formatos del escenario (p. ej., el patrón de diapositiva)                    |
-| 13–31 | sin uso   | Se registran en el brief, reservados para dimensiones futuras (14–31 cuando un escenario usa el byte 13)          |
+El hash es la dirección. Cada byte controla un parámetro (o dos, repartiendo sus bits), como valor continuo o como índice en una lista corta de primitivas neutras que se combinan libremente. Nada nombra un género ni un estilo.
 
-- **Colisiones y dispersión por familias.** Dentro de una misma tirada, un hash que cae en una rama ya usada avanza (+1, +2, …) hasta la siguiente rama libre. Mientras quede alguna **familia** sin usar (print / document / signage / screen / craft / modernist), caer en una familia ya usada también cuenta como colisión, así que una tirada de 5 siempre abarca 5 familias distintas. El número de pasos es el `probe`; una ref se escribe `<hash>+<probe>` y se reproduce por sí sola.
-- **Orden de las ramas.** El orden de la biblioteca es el orden del mapeo. Los miembros de cada familia se reparten de forma uniforme alrededor del anillo, de modo que avanzar no concentra la probabilidad en una sola rama: en tiradas de 5, cada rama aparece en el 9–17% de los casos (con una distribución uniforme sería el 12.5%).
-- **Las restricciones filtran los conjuntos de opciones antes de aplicar los bytes**, así que forman parte de la identidad de un diseño: `light_only`, `dark_only`, `reduced_motion`, `brand_colors` (el color de marca sustituye al acento; se elige la paleta cuyo acento tiene el tono más cercano y se informa del contraste), `families`, `include_branches`, `exclude_branches`, `scenario`.
-- **Reproducible.** La misma `ref`, las mismas restricciones y la misma huella de la biblioteca producen siempre el mismo brief. Cada brief registra el algoritmo (`hash-design/v1`) y la huella de la biblioteca (los primeros 12 dígitos hex de un SHA-256 calculado sobre los datos).
+| Bytes  | Parámetros                                                                                                                                                            |
+| ------ | --------------------------------------------------------------------------------------------------------------------------------------------------------------------- |
+| 0–5    | Paleta: tono OKLCH, papel claro u oscuro y su luminosidad, croma del papel, croma del acento, desfase de tono del segundo acento                                      |
+| 6–10   | Tipografía: fuente display (98), fuente body (62), caja y peso, tracking, razón de la escala tipográfica 1.067–1.618                                                  |
+| 11     | Densidad: una posición entre aireada y apretada; de ella se derivan el tamaño base, el interlineado, la unidad de espaciado, la separación entre secciones y el ancho |
+| 12–15  | Maquetación: retícula de 3–12 columnas y medianil, qué columnas ocupa el bloque de texto, altura de la primera pantalla, secciones, separador                         |
+| 16–17  | Ancla de la primera pantalla: elemento (8), tamaño, posición horizontal, rotación                                                                                     |
+| 18–19  | Motivo: forma (12), tamaño, colocación (4), ángulo                                                                                                                    |
+| 20–21  | Superficie: radio de las esquinas, grosor y estilo del borde, sombra dura, textura y su opacidad                                                                      |
+| 22–23  | Movimiento: qué se mueve, duración 0–600 ms, easing (steps o una cubic-bezier a partir de los bits)                                                                   |
+| 24–25  | Voz: persona gramatical, forma del titular, longitud de las frases, registro                                                                                          |
+| 26–27  | Giro: objetivo (9) × operación (10) × cantidad, p. ej. "Gira 4.5° todos los números de la página"                                                                     |
+| 28     | Formato, para escenarios no web                                                                                                                                       |
+| 29, 30 | Fuente display CJK (para páginas en chino), fuente mono                                                                                                               |
+| 31     | Sin uso, se registra en el brief                                                                                                                                      |
+
+- **El contraste se resuelve, no se deja al azar.** Los colores de texto se desplazan en luminosidad OKLCH hasta alcanzar ink ≥ 7.5:1, muted ≥ 4.6:1 y acentos ≥ 3:1 sobre el papel, así que cada hash da una paleta legible, clara u oscura (alrededor del 30% de los hashes son oscuros).
+- **N direcciones son N hashes.** Una tirada de 5 son cinco mapeos independientes; entre ellos nada se comparte, se desplaza ni se deduplica. La `ref` de un diseño es su hash de 64 dígitos hex y se reproduce por sí sola.
+- **Las restricciones se aplican antes de leer los bytes**, así que forman parte de la identidad de un diseño: `light_only` / `dark_only` (el byte 2 entonces solo fija la luminosidad), `reduced_motion` (sin movimiento), `brand_colors` (el primero sustituye al acento y fija el tono, el segundo sustituye a accent2) y `scenario`.
+- **Reproducible.** La misma `ref`, las mismas restricciones y la misma huella de la biblioteca producen siempre el mismo brief. Cada brief registra el algoritmo (`hash-design/v2`) y la huella de la biblioteca (los primeros 12 dígitos hex de un SHA-256 calculado sobre el pool de fuentes, las listas de primitivas y las reglas de los bytes).
 - **`seed` solo sirve para reproducir ejemplos y tests.** El uso real siempre parte de la aleatoriedad del sistema.
 
-La especificación completa, con un ejemplo resuelto, está en [docs/mapping.md](docs/mapping.md) (en inglés).
+La fórmula exacta de cada byte, el solucionador de la paleta y un ejemplo resuelto están en [docs/mapping.md](docs/mapping.md) (en inglés).
 
 ### Escenarios
 
 `scenario` indica qué estás diseñando. El valor por defecto, `web`, es el flujo de página de arriba, sin cambios. Los otros cinco conservan la dirección de la tirada y añaden a cada brief un formato, un lienzo y reglas de salida.
 
-| Escenario           | Entrega                                                                                                          | Formatos (byte 13)                                                 | Lienzo                                    |
+| Escenario           | Entrega                                                                                                          | Formatos (byte 28)                                                 | Lienzo                                    |
 | ------------------- | ---------------------------------------------------------------------------------------------------------------- | ------------------------------------------------------------------ | ----------------------------------------- |
 | `web` (por defecto) | Una página web adaptable, landing page o sitio de una página                                                     | —                                                                  | adaptable                                 |
 | `deck`              | Diapositivas HTML: un lienzo fijo por diapositiva, navegación con teclado, impresión a PDF                       | a sangre, riel de índice, patrón documento                         | 1920×1080                                 |
@@ -233,32 +232,32 @@ La especificación completa, con un ejemplo resuelto, está en [docs/mapping.md]
 | `poster`            | Una mesa de trabajo: un póster o imagen social, lista para captura                                               | vertical 4:5, cuadrado, historia 9:16, tarjeta de enlace           | 1080×1350, 1080×1080, 1080×1920, 1200×630 |
 | `email`             | Un email HTML que aguanta en clientes de correo reales: maquetación con tablas, estilos en línea, sin JavaScript | una columna, bandas a todo lo ancho, resumen                       | columna de 600 o 640 px                   |
 
-- **La dirección se conserva.** El escenario no filtra el conjunto de ramas, así que un hash da la misma rama, voz, maquetación, tipografía, paleta, motivo, ancla, escala y superficie en todos los escenarios.
-- **Algunos conjuntos se reducen.** Antes de leer los bytes 6 y 12 se quitan las densidades y los giros que no tienen sentido en el escenario (nada de `packed` ni de "sin botón en la primera pantalla" en diapositivas), así que la densidad y el giro pueden diferir de la versión web. Los emails usan siempre el movimiento más quieto.
+- **La dirección se conserva.** Un hash conserva su paleta, sus fuentes, la razón de la escala, la retícula, el ancla, el motivo, la superficie y la voz en todos los escenarios.
+- **Algunos rangos se estrechan.** El byte 11 se lee dentro del rango de densidad del escenario (las diapositivas nunca son del todo apretadas, los paneles nunca del todo aireados), y los objetivos u operaciones de giro que no tienen sentido se quitan antes de leer los bytes 26–27 (ningún giro de navegación en unas diapositivas), así que la densidad y el giro pueden diferir de la versión web. Los emails no tienen movimiento.
 - **Los tamaños siguen al medio.** El tamaño base del texto escala o acota el de la densidad (diapositivas ×2, pósteres ×1,75, apps y emails 16–17 px, paneles 13–15 px), y `tokens.css` incluye el tamaño del lienzo.
-- **Forma parte de la identidad.** Como cualquier restricción, pasa el mismo `scenario` para reproducir un ref. `web` no cambia nada: los refs, briefs y ejemplos existentes se reproducen exactamente.
+- **Forma parte de la identidad.** Como cualquier restricción, pasa el mismo `scenario` para reproducir un ref. `web` es el valor por defecto, así que un ref web da el mismo brief con o sin él.
 
-`critique_page` comprueba el contrato de salida de cada escenario (número de diapositivas y lienzo, marcos de móvil, cifras tabulares, tamaño de la mesa de trabajo, tablas en el email), y la página de comparación escala los lienzos fijos desde su tamaño real. La lista de escenarios y sus reglas se inspiran en las plantillas de [Open Design](https://github.com/nexu-io/open-design). Detalles: [docs/mapping.md §6](docs/mapping.md#6-scenarios) (en inglés).
+`critique_page` comprueba el contrato de salida de cada escenario (número de diapositivas y lienzo, marcos de móvil, cifras tabulares, tamaño de la mesa de trabajo, tablas en el email), y la página de comparación escala los lienzos fijos desde su tamaño real. La lista de escenarios y sus reglas se inspiran en las plantillas de [Open Design](https://github.com/nexu-io/open-design). Detalles: [docs/mapping.md §7](docs/mapping.md#7-scenarios) (en inglés).
 
 ### Qué contiene un brief
 
-Toma el brief [#3 Ink and seal](examples/fourth-lane-bakery/briefs/03-ink-and-seal.md) del ejemplo. Un brief contiene:
+Ejecuta `hash-design brief 6ebe9acd06cbf4810ad2989965b22bc39bd527084bdda2964f9f0d49eb25562d` para ver uno (es el ejemplo resuelto de [docs/mapping.md](docs/mapping.md#9-worked-example), en inglés). Un brief contiene:
 
-- la traza del mapeo, byte a byte, con la fórmula y el resultado
+- la traza del mapeo, byte a byte, con el valor hex, la fórmula y el resultado
 - el contenido: los únicos datos que la página puede afirmar
-- la voz de redacción y sus recursos, la maquetación (medidas de la retícula y orden de las secciones) y el ancla de la primera pantalla
-- tipografía: un `<link>` de Google Fonts (con fuentes CJK cuando la página está en chino) y una escala tipográfica calculada a partir de la razón modular
-- siete valores hex, proporciones de color y una tabla de contraste WCAG (qué colores son solo para texto grande o decoración)
-- densidad, política de radio / borde / sombra, superficie (con un fragmento de CSS), motivo y especificación de movimiento
-- el giro, las listas must / must-not de la rama y las 14 prohibiciones globales
+- la voz de redacción (persona, forma del titular, longitud de las frases, registro), la maquetación (columnas, medianil, columnas del bloque de texto, altura de la primera pantalla, secciones, separador) y el ancla de la primera pantalla (elemento, tamaño, posición, rotación)
+- tipografía: fuentes display, body y mono con su caja, peso y tracking, un `<link>` de Google Fonts (con fuentes CJK cuando la página está en chino) y una escala tipográfica calculada a partir de la razón
+- siete colores calculados en OKLCH y una tabla de contraste WCAG (qué colores son solo para texto grande o decoración)
+- densidad, radio de las esquinas, borde, sombra, textura (con un fragmento de CSS), motivo (forma, tamaño, colocación, ángulo) y movimiento (propiedad, duración, easing)
+- el giro y las 14 prohibiciones globales
 - un `tokens.css` listo para pegar y una lista de comprobación previa a la entrega
 - en un escenario no web, una sección Escenario: formato, lienzo, estructura de archivos, número de diapositivas o pantallas, cómo se trasladan la maquetación, el ancla y el movimiento, y las reglas y prohibiciones del escenario
 
-Los briefs están escritos para agentes y son bilingües: los encabezados llevan etiquetas en chino y en inglés, y `language` (`zh` o `en`, detectado automáticamente a partir del tema y los datos) cambia el texto del concepto, las instrucciones y si se cargan webfonts CJK. Algunas descripciones de los conjuntos de opciones (voces, giros) por ahora solo están escritas en chino.
+Los briefs están escritos para agentes y son bilingües: los encabezados llevan etiquetas en chino y en inglés, y `language` (`zh` o `en`, detectado automáticamente a partir del tema y los datos) cambia las instrucciones, el texto del escenario y si se cargan webfonts CJK. Los textos de las prohibiciones globales por ahora solo están escritos en chino.
 
 ## Galería
 
-Cuatro ejecuciones completas, cada una con su ficha de datos y una semilla fija que solo sirve para reproducirla. Ningún par de ejemplos comparte rama, así que juntos muestran 20 de las 40 ramas, de las seis familias. Cada vista previa la hizo un subagente que solo veía su brief, y todas puntúan al menos 90/100 en `critique_page`. Todas están en el [índice de ejemplos](https://qybaihe.github.io/hash-design/). Cada lámina de abajo es una tirada: sus cinco direcciones lado a lado, con la rama y el ref.
+Cuatro ejecuciones completas, cada una con su ficha de datos y una semilla fija que solo sirve para reproducirla. Se sortearon con **hash-design/v1**, la biblioteca de 40 ramas a la que sustituyó v2, y se conservan como registro de ejecuciones reales: sus refs no se reproducen con v2 y sus láminas llevan los nombres de las ramas de v1. Cada vista previa la hizo un subagente que solo veía su brief, y todas siguen puntuando al menos 90/100 en `critique_page`. Todas están en el [índice de ejemplos](https://qybaihe.github.io/hash-design/). Cada lámina de abajo es una tirada: sus cinco direcciones lado a lado.
 
 ### Fourth Lane Bakery (第四巷面包店) — una panadería de barrio · página en chino
 
@@ -286,45 +285,35 @@ Semilla `causeway-festival-6` · `critique_page` 96–100 · adherencia al brief
 
 ## Referencia
 
-Las seis herramientas MCP, las 40 ramas y las 14 prohibiciones que lleva cada brief.
+Las cuatro herramientas MCP, el espacio de parámetros y las 14 prohibiciones que lleva cada brief.
 
 ### Herramientas MCP
 
 | Herramienta          | Qué hace                                                                                                                                                                                                                                           |
 | -------------------- | -------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------- |
 | `roll_designs`       | Recibe `subject`, `facts`, `count` (5 por defecto) y, opcionalmente, `seed`, `language`, `scenario` y restricciones. Devuelve los hashes, el mapeo y un brief por dirección. Con `out_dir` congela `roll.json`, `ROLL.md` y `briefs/*.md` en disco |
-| `get_brief`          | Reproduce un brief a partir de una `ref` (`<hash>` o `<hash>+<probe>`) más las mismas restricciones, en Markdown o JSON                                                                                                                            |
-| `list_branches`      | Lista las 40 ramas de diseño, con filtro opcional por familia                                                                                                                                                                                      |
-| `get_branch`         | Muestra todas las opciones y tokens de una rama                                                                                                                                                                                                    |
+| `get_brief`          | Reproduce un brief a partir de una `ref` (el hash de 64 dígitos hex) más las mismas restricciones, en Markdown o JSON                                                                                                                              |
 | `critique_page`      | Puntúa una cadena o un archivo HTML según las prohibiciones y la lista de comprobación de plantillas típicas de IA; con `brief_ref` o `roll_path` + `pick` también puntúa la adherencia al brief y al contrato de salida del escenario             |
 | `build_compare_page` | Genera el `compare.html` lado a lado a partir de un `roll.json`                                                                                                                                                                                    |
 
-Recursos: `hash-design://bans`, `hash-design://workflow` (la Skill), `hash-design://branches`, `hash-design://branch/{id}`. Prompt: `hash-design` (`subject`, `facts`, `count`, `scenario`).
+Recursos: `hash-design://bans`, `hash-design://workflow` (la Skill). Prompt: `hash-design` (`subject`, `facts`, `count`, `scenario`).
 
 Todos los parámetros, formas de retorno y equivalentes en la CLI están documentados en [docs/mcp-tools.md](docs/mcp-tools.md) (en inglés).
 
-### Biblioteca de ramas (40)
+### Espacio de parámetros
 
-Cada rama es un género de diseño del mundo real, no un "estilo SaaS". Cada dimensión tiene tres opciones concretas: combinaciones de fuentes (Google Fonts + CJK), siete valores hex, medidas de la retícula, política de radio / borde / sombra, especificación de movimiento, motivos y superficies. El catálogo completo está en [docs/branches.md](docs/branches.md) (en inglés); `list_branches` / `get_branch` lo consultan en vivo.
+No hay ningún catálogo de estilos. Además de las reglas de los bytes, el mapeo lee:
 
-| Familia   | Ramas                                                                                                                                                                                       |
-| --------- | ------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------- |
-| print     | Supermarket circular · Letterpress wood type · Photocopy zine · Risograph duotone · Record sleeve · Varsity sports programme · Couture lookbook · Broadsheet newspaper · Editorial magazine |
-| document  | Engineering plate · Ledger · Ticket stub · Academic paper · Apothecary label · Bureaucratic form · Thermal receipt · Herbarium specimen · Field guide plate                                 |
-| signage   | Transit wayfinding · Hong Kong shop sign · Diner menu board · Gallery catalogue · Topographic map                                                                                           |
-| screen    | Terminal phosphor · Web 1.0 homepage · Game manual · Instrument panel · Raw brutalist                                                                                                       |
-| craft     | Recipe card · Warm handmade · Ink and seal · Chinese almanac · Ma whitespace · Lab notebook                                                                                                 |
-| modernist | Swiss grid · Bauhaus primary · Constructivist poster · Art Deco · 70s supergraphic · Memphis pop                                                                                            |
+- un pool plano de fuentes: 98 fuentes display, 62 body y 8 mono de Google Fonts, 14 fuentes display CJK y 2 fuentes body CJK, sin etiquetas de ambiente ni de género (`packages/core/src/data/fonts.ts`)
+- listas cortas de primitivas neutras: 4 variantes de caja, 5 separadores, 8 elementos de ancla, 12 formas de motivo, 4 colocaciones, 4 texturas, 4 propiedades de movimiento, 4 personas, 6 formas de titular, 9 objetivos de giro, 10 operaciones de giro (`packages/core/src/data/space.ts`)
 
 Los datos se validan con tests y scripts:
 
-- ninguna fuente prohibida, ni siquiera entre las fuentes de respaldo
-- contraste ink/paper ≥ 7:1, muted/paper ≥ 4.5:1
-- cada rama tiene al menos una paleta clara
-- ningún valor hex por defecto de un framework
-- una misma fuente display puede encabezar como máximo 3 ramas
-- dos ramas nunca comparten la misma paleta principal (paper + accent)
-- todas las URL de fuentes resuelven en Google Fonts: `node scripts/verify-fonts.mjs` (235/235 correctas)
+- ninguna fuente prohibida en el pool, ni siquiera entre las fuentes de respaldo; ninguna fuente duplicada
+- las paletas cumplen ink ≥ 7.5:1, muted ≥ 4.6:1 y acentos ≥ 3:1 sobre el papel, comprobado con miles de hashes aleatorios
+- cada byte solo mueve sus propios parámetros
+- la huella de la biblioteca está fijada en un test, así que cualquier cambio en lo que produce un hash es deliberado
+- todas las URL de fuentes resuelven en Google Fonts: `node scripts/verify-fonts.mjs` (174/174 correctas)
 
 ### Prohibiciones globales
 
@@ -347,7 +336,7 @@ Cada brief incluye estas 14 prohibiciones, y `critique_page` detecta cada una de
 | `placeholder-content`       | Lorem ipsum, retratos de stock, Unsplash aleatorio                                                                   |
 | `template-sections`         | La fórmula Hero → Features → Testimonials → Pricing → FAQ                                                            |
 
-`critique_page` también comprueba el contraste del texto (< 3:1), `viewport`, `lang`, `img alt`, la ausencia de `prefers-reduced-motion` cuando hay movimiento, y la adherencia al brief: fuentes, valores hex, política de radio y de sombra. Es análisis estático. No puede saber si la primera pantalla es realmente el ancla del brief ni si la voz es la adecuada; para eso sigue haciendo falta una persona, o un agente que vuelva a leer el brief.
+`critique_page` también comprueba el contraste del texto (< 3:1), `viewport`, `lang`, `img alt`, la ausencia de `prefers-reduced-motion` cuando hay movimiento, y la adherencia al brief: fuentes, valores hex, radio de las esquinas y sombra. Es análisis estático. No puede saber si la primera pantalla es realmente el ancla del brief ni si la voz es la adecuada; para eso sigue haciendo falta una persona, o un agente que vuelva a leer el brief.
 
 ## Preguntas frecuentes
 
@@ -368,14 +357,14 @@ Sí. [`hash-design`](https://www.npmjs.com/package/hash-design) 0.1.0 incluye la
 <details>
 <summary><strong>¿Es aleatorio de verdad? ¿Cómo recupero el mismo brief?</strong></summary>
 
-Cada tirada usa la aleatoriedad del sistema (`crypto.randomBytes(32)` → SHA-256); `seed` solo existe para reproducir los ejemplos y las pruebas. Cada brief guarda su `ref` (`<hash>` o `<hash>+<probe>`), sus restricciones y la huella de la biblioteca, y `get_brief` o `hash-design brief <ref>` reconstruyen exactamente el mismo brief.
+Cada tirada usa la aleatoriedad del sistema (`crypto.randomBytes(32)` → SHA-256); `seed` solo existe para reproducir los ejemplos y las pruebas. Cada brief guarda su `ref` (el propio hash), sus restricciones y la huella de la biblioteca, y `get_brief` o `hash-design brief <ref>` reconstruyen exactamente el mismo brief.
 
 </details>
 
 <details>
 <summary><strong>¿Los refs antiguos se reproducen tras una actualización?</strong></summary>
 
-Solo si los datos de las ramas no han cambiado. La biblioteca tiene 40 ramas; añadir o quitar una cambia el mapeo. Cada brief guarda la huella de la biblioteca, así que la diferencia se detecta, pero un ref antiguo necesita la versión correspondiente para reproducirse.
+Dentro de `hash-design/v2`, sí, siempre que la huella de la biblioteca sea la misma: añadir una fuente o una primitiva cambia la huella y puede cambiar lo que produce un hash. Cada brief guarda el algoritmo y la huella, así que la diferencia se detecta, y un ref antiguo necesita la versión correspondiente para reproducirse. Los refs de `hash-design/v1` (la biblioteca de 40 ramas, incluidos los refs `<hash>+<probe>`) no se reproducen en v2.
 
 </details>
 
@@ -396,31 +385,30 @@ La CLI y el servidor MCP se ejecutan en local y no hacen peticiones de red. Las 
 <details>
 <summary><strong>¿Por qué parte del brief está en chino?</strong></summary>
 
-Los briefs son bilingües: los encabezados llevan etiquetas en chino y en inglés, y `language` (`zh` o `en`) cambia el texto del concepto y las instrucciones. Algunas descripciones de los pools (voces, giros) y el cuerpo de la Skill todavía están solo en chino; la descripción de la Skill incluye frases de activación en inglés.
+Los briefs son bilingües: los encabezados llevan etiquetas en chino y en inglés, y `language` (`zh` o `en`) cambia las instrucciones y el texto del escenario. Los textos de las prohibiciones globales y el cuerpo de la Skill todavía están solo en chino; la descripción de la Skill incluye frases de activación en inglés.
 
 </details>
 
 ## Documentación
 
 - [docs/architecture.md](docs/architecture.md) (en inglés): paquetes, flujo de datos, decisiones de diseño, testing
-- [docs/mapping.md](docs/mapping.md) (en inglés): el mapeo `hash-design/v1`, colisiones, restricciones, reproducibilidad
+- [docs/mapping.md](docs/mapping.md) (en inglés): el mapeo `hash-design/v2`: la regla de cada byte, el solucionador de la paleta, restricciones, escenarios, reproducibilidad
 - [docs/mcp-tools.md](docs/mcp-tools.md) (en inglés): cada herramienta, recurso y prompt de MCP, con sus equivalentes en la CLI
-- [docs/branches.md](docs/branches.md) (en inglés): el catálogo de 40 ramas (generado)
 - Versiones en chino: [架构](docs/architecture.zh-CN.md) · [映射规范](docs/mapping.zh-CN.md) · [MCP 工具](docs/mcp-tools.zh-CN.md)
 
 ## Contribuir
 
-Las contribuciones son bienvenidas, sobre todo nuevas ramas. Lee primero [CONTRIBUTING.md](CONTRIBUTING.md) (en inglés): explica las reglas de los datos, `npm run sync` y por qué un cambio en los datos obliga a repetir la tirada del ejemplo. Respeta el [Código de conducta](CODE_OF_CONDUCT.md) (en inglés) e informa de vulnerabilidades como se describe en [SECURITY.md](SECURITY.md) (en inglés). Las notas de versión están en [CHANGELOG.md](CHANGELOG.md) (en inglés).
+Las contribuciones son bienvenidas, sobre todo reglas de critique, fuentes para el pool y traducciones. Lee primero [CONTRIBUTING.md](CONTRIBUTING.md) (en inglés): explica las reglas de los datos, `npm run sync` y la huella de la biblioteca fijada. Respeta el [Código de conducta](CODE_OF_CONDUCT.md) (en inglés) e informa de vulnerabilidades como se describe en [SECURITY.md](SECURITY.md) (en inglés). Las notas de versión están en [CHANGELOG.md](CHANGELOG.md) (en inglés).
 
 ```bash
 npm install
 npm run build        # tsc -b, ambos paquetes
 npm test             # vitest: core, CLI, MCP (transporte en memoria), coherencia entre Skill y docs
 npm run check        # typecheck + lint + prettier + test
-npm run sync         # tras cambiar los datos: regenera el bloque de prohibiciones de SKILL.md, las copias .claude/.cursor y docs/branches.md
+npm run sync         # tras cambiar los datos: regenera el bloque de prohibiciones de SKILL.md y las copias .claude/.cursor
 node scripts/smoke.mjs        # smoke test de MCP sobre stdio real + CLI (se ejecuta en CI)
 node scripts/verify-fonts.mjs # comprueba en línea todas las URL de fuentes (no en CI)
-npm run example:critique      # critique de todas las vistas previas de los ejemplos frente a su brief (falla por debajo de 90)
+npm run example:critique      # critique de todas las vistas previas de los ejemplos (falla por debajo de 90)
 npm run screenshots           # capturas de todos los ejemplos con Playwright (requiere `npx playwright install chromium`)
 npm run hero                  # regenera docs/assets/hero.png y social-preview.png a partir de las capturas de un ejemplo
 npm run hero:gif              # regenera docs/assets/hero.gif y hero.mp4 (requiere ffmpeg; usa gifski si está instalado)
@@ -434,17 +422,18 @@ Estructura del repositorio:
 ```
 packages/core/           # npm: hash-design — data, mapping, briefs, critique, compare page, CLI
   src/data/bans.ts       #   global bans, banned fonts, buzzword lists
-  src/data/pools.ts      #   densities, scales, 14 copy voices, 16 twists
-  src/data/branches/     #   40 branches (index.ts defines the mapping order)
-  src/mapping.ts         #   hash → design (decision tree, collisions, constraints)
+  src/data/fonts.ts      #   the flat font pool
+  src/data/space.ts      #   the primitive lists (motif shapes, anchors, twists, …)
+  src/mapping.ts         #   hash → design, byte by byte (BYTE_MAP, constraints, fingerprints)
+  src/palette.ts         #   OKLCH palette with contrast-solved text colours
   src/brief.ts           #   brief rendering (Markdown / JSON)
   src/critique.ts        #   static AI-template checks
   src/compare.ts         #   side-by-side compare page
   src/cli.ts             #   CLI
 packages/mcp/            # npm: hash-design-mcp — stdio MCP server
 skills/hash-design/      # Skill source (.claude/ and .cursor/ hold synced copies)
-examples/                # 4 full runs: facts → roll → 5 briefs → 5 previews → compare page → screenshots
-docs/                    # architecture, mapping spec, MCP reference, branch catalogue (generated)
+examples/                # 4 full hash-design/v1 runs: facts → roll → 5 briefs → 5 previews → compare page → screenshots
+docs/                    # architecture, mapping spec, MCP reference
 scripts/                 # sync / smoke / verify-fonts / examples / screenshot / hero / hero-gif / prepack
 ```
 

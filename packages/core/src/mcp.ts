@@ -6,12 +6,10 @@ import { existsSync, readFileSync } from 'node:fs';
 import { mkdir, readFile, writeFile } from 'node:fs/promises';
 import { dirname, join, relative, resolve } from 'node:path';
 import { fileURLToPath } from 'node:url';
-import { McpServer, ResourceTemplate } from '@modelcontextprotocol/sdk/server/mcp.js';
+import { McpServer } from '@modelcontextprotocol/sdk/server/mcp.js';
 import { StdioServerTransport } from '@modelcontextprotocol/sdk/server/stdio.js';
 import {
   BANS,
-  BRANCHES,
-  type BranchFamily,
   type Constraints,
   type RollJson,
   SCENARIO_IDS,
@@ -21,11 +19,9 @@ import {
   compareEntriesFromRoll,
   compareSubtitle,
   critiquePage,
-  getBranch,
+  directionLabel,
   parseRef,
   readSkill,
-  renderBranch,
-  renderBranchList,
   renderBrief,
   renderCritique,
   renderRoll,
@@ -41,26 +37,21 @@ export const SERVER_VERSION = (
   JSON.parse(readFileSync(join(here, '..', 'package.json'), 'utf8')) as { version: string }
 ).version;
 
-const FAMILIES = ['print', 'document', 'signage', 'screen', 'craft', 'modernist'] as const;
-
 /** Constraint fields shared by roll_designs / get_brief / critique_page. Flat on purpose: easier for models. */
 const constraintShape = {
-  light_only: z.boolean().optional().describe('Only light palettes.'),
-  dark_only: z.boolean().optional().describe('Only dark palettes (branches without one are skipped).'),
-  reduced_motion: z.boolean().optional().describe('Force the stillest motion option of each branch.'),
+  light_only: z.boolean().optional().describe('Only light paper.'),
+  dark_only: z.boolean().optional().describe('Only dark paper.'),
+  reduced_motion: z.boolean().optional().describe('No motion at all.'),
   brand_colors: z
     .array(z.string().regex(/^#?[0-9a-fA-F]{3}([0-9a-fA-F]{3})?$/))
     .max(2)
     .optional()
     .describe('Brand colours that must be kept: [accent] or [accent, accent2], hex.'),
-  families: z.array(z.enum(FAMILIES)).optional().describe('Restrict the branch pool to these families.'),
-  include_branches: z.array(z.string()).optional().describe('Restrict the branch pool to these branch ids.'),
-  exclude_branches: z.array(z.string()).optional().describe('Remove these branch ids from the pool.'),
   scenario: z
     .enum(SCENARIO_IDS as [ScenarioId, ...ScenarioId[]])
     .optional()
     .describe(
-      'What is being designed: web (default), deck (16:9 slides), app (phone screens), dashboard, poster (poster / social card), email (HTML email). Non-web scenarios add a format (byte 13), a canvas and output rules to each brief. Part of the design identity: pass it again to reproduce.',
+      'What is being designed: web (default), deck (16:9 slides), app (phone screens), dashboard, poster (poster / social card), email (HTML email). Non-web scenarios add a format (byte 28), a canvas and output rules to each brief. Part of the design identity: pass it again to reproduce.',
     ),
 };
 
@@ -69,9 +60,6 @@ type ConstraintArgs = {
   dark_only?: boolean | undefined;
   reduced_motion?: boolean | undefined;
   brand_colors?: string[] | undefined;
-  families?: BranchFamily[] | undefined;
-  include_branches?: string[] | undefined;
-  exclude_branches?: string[] | undefined;
   scenario?: ScenarioId | undefined;
 };
 
@@ -81,9 +69,6 @@ function toConstraints(a: ConstraintArgs): Constraints {
     darkOnly: Boolean(a.dark_only),
     reducedMotion: Boolean(a.reduced_motion),
     brandColors: a.brand_colors ?? [],
-    families: a.families ?? [],
-    include: a.include_branches ?? [],
-    exclude: a.exclude_branches ?? [],
     ...(a.scenario ? { scenario: a.scenario } : {}),
   };
 }
@@ -102,7 +87,7 @@ export function bansMarkdown(): string {
 }
 
 export const SERVER_INSTRUCTIONS = `hash-design breaks the default "AI page" aesthetic with external randomness.
-Workflow: roll_designs (true-random hashes → N distinct frozen briefs) → render ONE independent HTML preview per brief,
+Workflow: roll_designs (N true-random hashes; each hash is one direction → one frozen brief) → render ONE independent HTML preview per brief,
 following it literally → build_compare_page → STOP and let the user pick a number → build the final page from the
 picked brief only → critique_page with brief_ref to self-check. Never choose a style yourself; never "improve" a brief
 toward your own taste; never invent facts. Load the hash-design Skill (or the hash-design://workflow resource) for the
@@ -119,7 +104,7 @@ export function createServer(): McpServer {
     {
       title: 'Roll design directions',
       description:
-        'Roll N true-random SHA-256 hashes (crypto.randomBytes) and map each, through a fixed decision tree, onto a distinct design direction (branch, layout, type, palette, density, motion, motif, anchor, scale, surface, voice, twist). Returns the hashes, the mapping trace and one frozen Markdown brief per direction. Use `seed` only to reproduce examples. Pass `scenario` for a slide deck, app screens, a dashboard, a poster / social card or an HTML email (default: web page). Pass `out_dir` to freeze the briefs on disk (roll.json, ROLL.md, briefs/NN-<branch>.md) — recommended, then render each preview from its own brief file.',
+        'Roll N true-random SHA-256 hashes (crypto.randomBytes); each hash IS one design direction: its bytes are mapped by fixed rules straight onto continuous parameters (OKLCH palette, display and body faces from a flat font pool, type scale, density, grid, anchor, motif, surface, motion, voice, twist). No genre library, no names. Returns the hashes, the mapping trace and one frozen Markdown brief per direction. Use `seed` only to reproduce examples. Pass `scenario` for a slide deck, app screens, a dashboard, a poster / social card or an HTML email (default: web page). Pass `out_dir` to freeze the briefs on disk (roll.json, ROLL.md, briefs/NN-<short>.md) — recommended, then render each preview from its own brief file.',
       inputSchema: {
         subject: z.string().describe('What the page is for, e.g. "第四巷面包店 一页站".'),
         facts: z
@@ -173,7 +158,7 @@ export function createServer(): McpServer {
           parts.push(detail === 'full' ? renderRoll(r) : renderRollSummary(r));
         }
         parts.push(
-          'Next: render one self-contained HTML preview per brief (only that brief in view, follow it literally), save as previews/NN-<branch>.html, then call build_compare_page and stop for the user to choose.',
+          'Next: render one self-contained HTML preview per brief (only that brief in view, follow it literally), save as previews/NN-<short>.html, then call build_compare_page and stop for the user to choose.',
         );
         const machine = {
           source: r.source,
@@ -182,7 +167,7 @@ export function createServer(): McpServer {
           designs: r.designs.map((d, i) => ({
             number: i + 1,
             ref: d.ref,
-            branch: d.branch.id,
+            label: directionLabel(d),
             ...(d.scenario ? { format: d.scenario.format.id } : {}),
           })),
         };
@@ -198,9 +183,13 @@ export function createServer(): McpServer {
     {
       title: 'Reproduce a brief',
       description:
-        'Rebuild the brief for a design ref ("<64-hex hash>" or "<hash>+<probe>") with the same constraints that were used for the roll. Deterministic: the same ref + constraints + library always gives the same brief.',
+        'Rebuild the brief for a design ref (the 64-hex hash) with the same constraints that were used for the roll. Deterministic: the same ref + constraints + library always gives the same brief.',
       inputSchema: {
-        ref: z.string().describe('Design ref from roll_designs, e.g. "3fa9…c1" or "3fa9…c1+1".'),
+        ref: z
+          .string()
+          .describe(
+            'Design ref from roll_designs, i.e. its 64-hex hash (hash-design/v2 refs have no "+N" suffix).',
+          ),
         subject: z.string().optional(),
         facts: z.array(z.string()).optional(),
         language: z.enum(['zh', 'en']).optional(),
@@ -225,33 +214,6 @@ export function createServer(): McpServer {
       } catch (err) {
         return fail(err);
       }
-    },
-  );
-
-  server.registerTool(
-    'list_branches',
-    {
-      title: 'List design branches',
-      description: `List the ${BRANCHES.length} design branches (real-world design genres) in mapping order.`,
-      inputSchema: { family: z.enum(FAMILIES).optional() },
-      annotations: { readOnlyHint: true, idempotentHint: true, openWorldHint: false },
-    },
-    async (args) => ({ content: [text(renderBranchList(args.family ? { family: args.family } : {}))] }),
-  );
-
-  server.registerTool(
-    'get_branch',
-    {
-      title: 'Get a design branch',
-      description:
-        'Full detail of one branch: concept, references, tokens and every option per dimension (layouts, type pairings, palettes, motion, motifs, anchors, surfaces).',
-      inputSchema: { id: z.string(), format: z.enum(['markdown', 'json']).optional() },
-      annotations: { readOnlyHint: true, idempotentHint: true, openWorldHint: false },
-    },
-    async (args) => {
-      const b = getBranch(args.id);
-      if (!b) return fail(new Error(`Unknown branch "${args.id}". Call list_branches for valid ids.`));
-      return { content: [text(args.format === 'json' ? JSON.stringify(b, null, 2) : renderBranch(b))] };
     },
   );
 
@@ -315,7 +277,7 @@ export function createServer(): McpServer {
     {
       title: 'Build the side-by-side compare page',
       description:
-        'Write compare.html next to roll.json: every preview in a scaled iframe side by side, with branch/palette/type labels, desktop/mobile toggle and focus mode (keys 1–9). Expects previews at <previews_dir>/NN-<branch>.html.',
+        'Write compare.html next to roll.json: every preview in a scaled iframe side by side, with palette/type/grid labels, desktop/mobile toggle and focus mode (keys 1–9). Expects previews at <previews_dir>/NN-<short>.html.',
       inputSchema: {
         roll_path: z.string().describe('roll.json written by roll_designs (relative to the server cwd).'),
         out_path: z.string().optional().describe('Default: compare.html next to roll.json.'),
@@ -414,40 +376,6 @@ export function createServer(): McpServer {
       mimeType: 'text/markdown',
     },
     async (uri) => ({ contents: [{ uri: uri.href, mimeType: 'text/markdown', text: readSkill() }] }),
-  );
-
-  server.registerResource(
-    'branches',
-    'hash-design://branches',
-    {
-      title: 'Branch library',
-      description: 'All design branches in mapping order.',
-      mimeType: 'text/markdown',
-    },
-    async (uri) => ({ contents: [{ uri: uri.href, mimeType: 'text/markdown', text: renderBranchList() }] }),
-  );
-
-  server.registerResource(
-    'branch',
-    new ResourceTemplate('hash-design://branch/{id}', {
-      list: async () => ({
-        resources: BRANCHES.map((b) => ({
-          uri: `hash-design://branch/${b.id}`,
-          name: `${b.name.en} / ${b.name.zh}`,
-          mimeType: 'text/markdown',
-        })),
-      }),
-    }),
-    {
-      title: 'Branch detail',
-      description: 'One design branch with every option.',
-      mimeType: 'text/markdown',
-    },
-    async (uri, { id }) => {
-      const b = getBranch(String(id));
-      if (!b) throw new Error(`Unknown branch ${String(id)}`);
-      return { contents: [{ uri: uri.href, mimeType: 'text/markdown', text: renderBranch(b) }] };
-    },
   );
 
   return server;

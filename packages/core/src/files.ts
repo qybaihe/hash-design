@@ -11,7 +11,7 @@ export interface WrittenRoll {
  * Freeze a roll on disk:
  *   <dir>/roll.json            machine-readable (refs, constraints, content, brief JSON)
  *   <dir>/ROLL.md              summary table + refs
- *   <dir>/briefs/01-<branch>.md one frozen brief per design
+ *   <dir>/briefs/01-<short>.md  one frozen brief per design
  */
 export async function writeRoll(r: Roll, dir: string): Promise<WrittenRoll> {
   const root = resolve(dir);

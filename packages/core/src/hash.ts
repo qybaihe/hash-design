@@ -1,7 +1,11 @@
 import { createHash, randomBytes } from 'node:crypto';
 
-/** Algorithm identifier. Bump when the byte → dimension assignment changes. */
-export const ALGORITHM = 'hash-design/v1';
+/**
+ * Algorithm identifier. Bump when the byte → parameter assignment changes.
+ * v1 picked one of 40 genre branches; v2 maps the hash straight onto continuous parameters, so v1 refs
+ * do not reproduce under v2.
+ */
+export const ALGORITHM = 'hash-design/v2';
 
 const HASH_RE = /^[0-9a-f]{64}$/;
 
@@ -40,22 +44,20 @@ export function hashBytes(hash: string): Uint8Array {
 
 export interface DesignRef {
   hash: string;
-  probe: number;
 }
 
-/** Refs are `<hash>` or `<hash>+<probe>` (probe = collision steps walked inside a roll). */
-export function formatRef(hash: string, probe: number): string {
-  return probe > 0 ? `${hash}+${probe}` : hash;
-}
-
+/** A v2 ref is the 64-hex hash itself. v1 refs could carry "+<probe>"; those belong to hash-design/v1. */
 export function parseRef(ref: string): DesignRef {
-  const m = /^([0-9a-fA-F]{64})(?:\+(\d+))?$/.exec(ref.trim());
-  if (!m || !m[1]) {
+  const r = ref.trim();
+  if (/^[0-9a-fA-F]{64}\+\d+$/.test(r)) {
     throw new Error(
-      `Invalid design ref "${ref}". Expected a 64-char hex hash, optionally followed by +<probe>.`,
+      `"${r}" is a hash-design/v1 ref (the "+<probe>" suffix only existed in v1). hash-design/v2 refs are the bare 64-char hash; v1 refs reproduce only with hash-design v1.`,
     );
   }
-  return { hash: m[1].toLowerCase(), probe: m[2] ? Number(m[2]) : 0 };
+  if (!/^[0-9a-fA-F]{64}$/.test(r)) {
+    throw new Error(`Invalid design ref "${ref}". Expected a 64-char hex hash.`);
+  }
+  return { hash: r.toLowerCase() };
 }
 
 export function shortHash(hash: string): string {

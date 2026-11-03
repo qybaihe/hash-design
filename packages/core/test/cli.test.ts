@@ -3,7 +3,6 @@ import { tmpdir } from 'node:os';
 import { join } from 'node:path';
 import { afterEach, beforeEach, describe, expect, it, vi } from 'vitest';
 import { COMMAND_HELP, COMMAND_OPTIONS, main, parseFactsText } from '../src/cli.js';
-import { BRANCHES } from '../src/data/branches/index.js';
 
 let out = '';
 beforeEach(() => {
@@ -116,16 +115,14 @@ describe('cli', () => {
     const ref = JSON.parse(out).designs[0].ref as string;
     out = '';
     await main(['brief', ref]);
-    expect(out).toContain(ref.split('+')[0]);
+    expect(out).toContain(ref);
   });
 
-  it('branches and branch', async () => {
-    await main(['branches']);
-    expect(out).toContain(BRANCHES[0]!.id);
-    out = '';
-    await main(['branch', BRANCHES[1]!.id]);
-    expect(out).toContain(BRANCHES[1]!.name.en);
-    await expect(main(['branch', 'nope'])).rejects.toThrow(/Unknown branch/);
+  it('has no branch commands or branch constraint flags any more (hash-design/v2)', async () => {
+    await expect(main(['branches'])).rejects.toThrow(/Unknown command/);
+    await expect(main(['branch', 'ink-and-seal'])).rejects.toThrow(/Unknown command/);
+    await expect(main(['roll', '--family', 'print'])).rejects.toThrow(/Unknown option/);
+    await expect(main(['brief', `${'a'.repeat(64)}+1`])).rejects.toThrow(/v1/);
   });
 
   it('critique sets a failing exit code under --fail-under', async () => {
@@ -158,7 +155,7 @@ describe('cli', () => {
     await expect(main(['frobnicate'])).rejects.toThrow(/Unknown command/);
   });
 
-  const commands = ['roll', 'brief', 'branches', 'branch', 'critique', 'compare', 'skill', 'mcp'];
+  const commands = ['roll', 'brief', 'critique', 'compare', 'skill', 'mcp'];
 
   it.each(commands)('%s --help and -h print the command help without running it', async (cmd) => {
     await main([cmd, '--help']);

@@ -3,6 +3,8 @@
 // side, in the light style of docs/assets/hero.png, each labelled with its number, branch, branch id, palette and
 // ref from roll.json.
 //
+// The examples are hash-design/v1 records, so their roll.json designs still carry a v1 branch; the labels come from it.
+//
 //   node scripts/showcase.mjs [example…]   default: every example under examples/ with a roll.json
 //
 // Writes docs/assets/showcase/<example>.png (1280×660 at 1.5× = 1920×990). Cards are cut from the full-page

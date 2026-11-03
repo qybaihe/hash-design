@@ -18,7 +18,7 @@ body:
         - critique_page / critique
         - build_compare_page / compare
         - Skill (SKILL.md)
-        - Branch data
+        - Mapping / font pool / palettes
         - Docs / README / examples
         - Other
     validations:

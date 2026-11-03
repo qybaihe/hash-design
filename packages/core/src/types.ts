@@ -1,9 +1,9 @@
 /**
  * hash-design data model.
  *
- * A *branch* is a design school / real-world artifact genre (supermarket circular, engineering plate, …).
- * Each branch owns several concrete options per dimension; bytes of a hash pick one option per dimension.
- * Everything here is plain data so it can be serialised into briefs, MCP responses and tests.
+ * hash-design/v2 has no library of genres: a hash maps straight onto continuous design parameters
+ * (see mapping.ts). What stays here as data is what every design shares: fonts, scenarios and the bans.
+ * Everything is plain data so it can be serialised into briefs, MCP responses and tests.
  */
 
 /** Bilingual text. `zh` is the primary language of briefs; `en` is used for English briefs and docs. */
@@ -11,14 +11,6 @@ export interface Bilingual {
   zh: string;
   en: string;
 }
-
-export type BranchFamily =
-  | 'print' // printed ephemera: flyers, posters, zines, letterpress
-  | 'document' // forms, papers, ledgers, labels, manuals
-  | 'signage' // wayfinding, shop signs, menus, boards
-  | 'screen' // terminals, early web, game UIs, instruments
-  | 'craft' // handmade, ink, textile, scrapbook
-  | 'modernist'; // Swiss, Bauhaus, constructivism, deco, Memphis
 
 export type FontSource = 'google' | 'system';
 
@@ -32,18 +24,6 @@ export interface FontSpec {
   /** CSS fallback stack appended after the family. Never include banned families. */
   fallback: string;
   source: FontSource;
-}
-
-export interface TypePairing {
-  id: string;
-  name: string;
-  display: FontSpec;
-  body: FontSpec;
-  mono?: FontSpec;
-  /** CJK pairing for Chinese pages (Google Fonts family names, e.g. "Noto Serif SC"). */
-  cjk: { display: string; body: string };
-  /** Concrete setting rules: tracking, case, figures, features, sizes. */
-  notes: string;
 }
 
 export interface PaletteColors {
@@ -63,139 +43,13 @@ export interface PaletteColors {
   panel: string;
 }
 
-export interface Palette {
-  id: string;
-  name: string;
-  colors: PaletteColors;
-  /** How the colors are distributed (which element gets which color, proportions). */
-  usage: string;
-}
-
-/** A generic named option with a concrete description. */
-export interface Option {
-  id: string;
-  name: string;
-  description: string;
-}
-
-export interface LayoutOption extends Option {
-  /** Grid spec: columns, gutters, margins, baseline. */
-  grid: string;
-  /** Ordered section sketch, top to bottom. */
-  structure: string[];
-}
-
-export interface MotionOption extends Option {
-  /** e.g. "160ms" or "0ms" */
-  duration: string;
-  /** CSS easing, e.g. "steps(3, end)" or "cubic-bezier(.2,.7,.1,1)" */
-  easing: string;
-  /** What to do under prefers-reduced-motion. */
-  reduced: string;
-}
-
-export interface SurfaceOption extends Option {
-  /** Optional CSS hint that achieves the material (background-image, filters, borders). */
-  css?: string;
-}
-
-export interface BranchTokens {
-  /** Base grid description (overridden per layout where needed). */
-  grid: string;
-  /** Corner radius policy with concrete values. */
-  radius: string;
-  /** Border / rule policy with concrete values. */
-  border: string;
-  /** Shadow policy with concrete values ("none" is a valid, common answer). */
-  shadow: string;
-}
-
-export type DensityId = 'airy' | 'regular' | 'compact' | 'packed';
-export type ScaleId =
-  | 'major-second'
-  | 'minor-third'
-  | 'major-third'
-  | 'perfect-fourth'
-  | 'augmented-fourth'
-  | 'perfect-fifth'
-  | 'golden';
-
-export interface Branch {
-  /** kebab-case, unique, stable (part of the mapping). */
-  id: string;
-  name: Bilingual;
-  family: BranchFamily;
-  /** 2–3 sentences: what this direction is and what it feels like. */
-  concept: Bilingual;
-  /** Real-world reference artifacts / designers / periods. Not websites. */
-  references: string[];
-  keywords: string[];
-  tokens: BranchTokens;
-  layouts: LayoutOption[];
-  type: TypePairing[];
-  palettes: Palette[];
-  /** Allowed densities (subset of the global pool), in preference order. */
-  densities: DensityId[];
-  /** Allowed modular scales (subset of the global pool), in preference order. */
-  scales: ScaleId[];
-  motion: MotionOption[];
-  motifs: Option[];
-  /** The signature hero / first-screen element. */
-  anchors: Option[];
-  surfaces: SurfaceOption[];
-  /** Branch-specific musts. */
-  must: string[];
-  /** Branch-specific don'ts (in addition to global bans). */
-  mustNot: string[];
-}
-
-export interface Density {
-  id: DensityId;
-  name: Bilingual;
-  /** Root font size in px. */
-  baseSize: number;
-  /** Body line-height. */
-  lineHeight: number;
-  /** Spacing unit in px. */
-  unit: number;
-  /** Vertical padding between major sections, px. */
-  sectionGap: number;
-  /** Max content width, px. */
-  maxWidth: number;
-  description: string;
-}
-
-export interface Scale {
-  id: ScaleId;
-  name: string;
-  ratio: number;
-}
-
-export interface Voice {
-  id: string;
-  name: Bilingual;
-  /** How copy should be written. */
-  description: string;
-  /** Structural devices that the copy should use. */
-  devices: string[];
-  /** One short example line (subject-agnostic). */
-  example: string;
-}
-
-export interface Twist {
-  id: string;
-  name: Bilingual;
-  description: string;
-}
-
 /**
- * What is being designed. `web` is the default and leaves the mapping exactly as it was; every other
- * scenario keeps the rolled direction (branch, voice, type, palette, …) and adds an output format,
- * a canvas and scenario rules.
+ * What is being designed. `web` is the default; every other scenario keeps the rolled direction
+ * (palette, type, layout, voice, …) and adds an output format, a canvas and scenario rules.
  */
 export type ScenarioId = 'web' | 'deck' | 'app' | 'dashboard' | 'poster' | 'email';
 
-/** One concrete format inside a scenario. Byte 13 picks one (non-web scenarios only). */
+/** One concrete format inside a scenario. Byte 28 picks one (non-web scenarios only). */
 export interface ScenarioFormat {
   id: string;
   name: Bilingual;
@@ -207,7 +61,7 @@ export interface ScenarioFormat {
   fixed: boolean;
 }
 
-/** How the scenario sets the root text size: scale the density's web base, or clamp it. */
+/** How the scenario sets the root text size: scale the density's base size, or clamp it. */
 export type BaseSizeRule = { scale: number } | { min: number; max: number };
 
 export interface Scenario {
@@ -219,18 +73,20 @@ export interface Scenario {
   output: Bilingual;
   /** How many slides / screens / artboards. */
   count: Bilingual;
-  /** How the branch's layout, anchor and motion translate into this scenario. */
+  /** How the rolled layout, anchor and motion translate into this scenario. */
   layout: Bilingual;
   anchor: Bilingual;
   motion: Bilingual;
   baseSize: BaseSizeRule;
-  /** Byte 13 picks one. Empty for web. */
+  /** Byte 28 picks one. Empty for web. */
   formats: ScenarioFormat[];
-  /** Densities removed from the branch's pool before byte 6 applies (ignored if nothing would be left). */
-  dropDensities: DensityId[];
-  /** Twists removed from the global pool before byte 12 applies. */
-  dropTwists: string[];
-  /** Use the branch's stillest motion option (as with reduced_motion). */
+  /** The slice of the density axis (0 = airiest, 1 = most packed) this scenario uses; byte 11 is mapped into it. */
+  densityRange: [number, number];
+  /** Twist targets that make no sense here; byte 26 picks from the rest. */
+  dropTwistTargets: string[];
+  /** Twist operations that make no sense here; byte 27 picks from the rest. */
+  dropTwistOperations: string[];
+  /** No motion at all (as with reduced_motion). */
   stillMotion: boolean;
   must: Bilingual[];
   mustNot: Bilingual[];

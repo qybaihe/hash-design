@@ -2,6 +2,8 @@
 // Renders the README hero and the GitHub social preview from one example's real roll and screenshots:
 // one prompt at the top fans out into the five rolled directions, each labelled with its ref, branch and palette.
 //
+// The examples are hash-design/v1 records, so their roll.json designs still carry a v1 branch; the labels come from it.
+//
 //   node scripts/hero.mjs [example]   default: causeway-festival
 //
 // Writes docs/assets/hero.png (1280×800 at 1.5×) and docs/assets/social-preview.png (exactly 1280×640).
