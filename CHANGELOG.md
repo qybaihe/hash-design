@@ -7,6 +7,14 @@ The format follows [Keep a Changelog](https://keepachangelog.com/en/1.1.0/), and
 
 ## [Unreleased]
 
+### Added
+
+- `hash-design/browser`: a browser entry with everything except the critique, file writing, the Skill reader, the CLI and the MCP server. The library's `index` re-exports it, so Node and browsers run the same modules. `browser.test.ts` bundles it with Vite, checks that no Node built-in is left and that it maps seeded rolls, briefs and replies exactly as the library does.
+
+### Changed
+
+- SHA-256 is computed by `src/sha256.ts`, a plain TypeScript implementation, instead of `node:crypto`, and true-random hashes use Web Crypto's `crypto.getRandomValues` (32 bytes → SHA-256) instead of `crypto.randomBytes`. Both work in Node ≥ 20 and in browsers. Hashes, refs, seeded rolls and both fingerprints are unchanged; `browser.test.ts` checks the implementation against `node:crypto` for every length from 0 to 300 bytes, UTF-8 text and the FIPS 180-4 vectors.
+
 ## [0.2.0] - 2026-11-02
 
 What changes for someone on the published 0.1.0:

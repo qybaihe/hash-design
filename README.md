@@ -72,7 +72,7 @@ hash-design does not ask the model to have better taste. It **takes the choice a
 
 | Step       | What happens                                                                                                                                                                                                                                                                                                                                                       |
 | ---------- | ------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------ |
-| **Roll**   | N hashes from system randomness (`crypto.randomBytes(32)` → SHA-256): five by default, 1–12 if you say so.                                                                                                                                                                                                                                                         |
+| **Roll**   | N hashes from system randomness (`crypto.getRandomValues`, 32 bytes → SHA-256): five by default, 1–12 if you say so.                                                                                                                                                                                                                                               |
 | **Map**    | Each hash **is** the direction. Fixed, reproducible rules read its bytes straight onto design parameters: hue and a contrast-solved palette, display and body faces from a flat font pool, case, tracking, type-scale ratio, density, grid, first-screen anchor, motif, corners and texture, motion timing, copy voice and one "twist". There is no style library. |
 | **Freeze** | Each direction becomes a **brief** with paste-ready tokens (font links, hex values, `tokens.css`, grid numbers, radius / border / shadow values) plus the global bans.                                                                                                                                                                                             |
 | **Render** | The agent shows you **one line per direction and stops**. On `render` its only job is to **execute** each brief faithfully: independent HTML previews and a side-by-side compare page, then it **waits for you to pick a number**.                                                                                                                                 |
@@ -394,7 +394,7 @@ Yes. [`hash-design`](https://www.npmjs.com/package/hash-design) has the library,
 <details>
 <summary><strong>Is it really random? How do I get the same brief again?</strong></summary>
 
-Every roll draws from system randomness (`crypto.randomBytes(32)` → SHA-256); `seed` exists only to reproduce the examples and tests. Each brief records its `ref` (the hash itself), its constraints and the library fingerprint, and `get_brief` or `hash-design brief <ref>` rebuilds exactly the same brief from them.
+Every roll draws from system randomness (`crypto.getRandomValues`, 32 bytes → SHA-256); `seed` exists only to reproduce the examples and tests. Each brief records its `ref` (the hash itself), its constraints and the library fingerprint, and `get_brief` or `hash-design brief <ref>` rebuilds exactly the same brief from them.
 
 </details>
 

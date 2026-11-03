@@ -26,7 +26,9 @@ hash-design 是一个 npm workspaces monorepo，包含两个包、一个 Skill �
 
 | 模块                       | 职责                                                                                                                                                 |
 | -------------------------- | ---------------------------------------------------------------------------------------------------------------------------------------------------- |
-| `src/hash.ts`              | `randomHash`（CSPRNG → SHA-256）、`seededHash`、`rollHashes`、`parseRef`（ref 就是哈希本身）、`ALGORITHM`（`hash-design/v2`）                        |
+| `src/hash.ts`              | `randomHash`（`crypto.getRandomValues` → SHA-256）、`seededHash`、`rollHashes`、`parseRef`（ref 就是哈希本身）、`ALGORITHM`（`hash-design/v2`）      |
+| `src/sha256.ts`            | 纯 TypeScript 的 SHA-256（不依赖 `node:crypto`），哈希和指纹在浏览器里原样运行                                                                       |
+| `src/browser.ts`           | 浏览器入口，导出为 `hash-design/browser`：除 `critique`、`files`、`skill`、CLI 和 MCP server 之外的全部；`index.ts` 重新导出它                       |
 | `src/mapping.ts`           | `mapDesign`（一个哈希逐字节映射成一个设计）、`mapRoll`、约束、`BYTE_MAP`、`libraryFingerprint`、`scenarioFingerprint`、`DEFAULT_COUNT` / `MAX_COUNT` |
 | `src/palette.ts`           | `buildPalette`：由色相 / 深浅 / 彩度字节构建 OKLCH 配色，文字颜色的明度按对比度下限解出                                                              |
 | `src/color.ts`             | sRGB ↔ OKLCH（按降低彩度做色域映射）、WCAG 相对亮度与对比度                                                                                          |
@@ -82,7 +84,7 @@ hash-design 是一个 npm workspaces monorepo，包含两个包、一个 Skill �
 
 ## 测试与 CI
 
-- **Vitest**，11 个测试文件：`hash`、`mapping`、`scenarios`、`brief`、`critique`（带好/坏两类 HTML 夹具）、`compare`、`cli`、`skill`（同步检查）、`examples`、`release`（发布就绪检查），以及 `mcp`（in-memory transport）。
+- **Vitest**，`packages/core/test` 下 14 个测试文件：`hash`、`mapping`、`count`（N）、`scenarios`、`brief`、`reply`、`critique`（带好/坏两类 HTML 夹具）、`compare`、`cli`、`skill`（同步检查）、`examples`、`release`（发布就绪检查）、`mcp`（in-memory transport），以及 `browser`（纯 TypeScript SHA-256 对照 `node:crypto` 和 FIPS 向量；用 Vite 打包 `hash-design/browser`，不含 Node 内置模块，映射结果与库完全一致）。
 - **`scripts/smoke.mjs`**：运行构建好的 CLI，并通过真实的 stdio 管道与 `hash-design mcp` 和 `packages/mcp` 包装通信。
 - **CI**（`.github/workflows/ci.yml`），在 Node 20、22 和 24 上依次跑：`npm ci`、build、typecheck（含测试）、ESLint、Prettier 检查、测试、冒烟测试，以及两个包的 `npm pack --dry-run`。
 - **Pages**（`.github/workflows/pages.yml`）：`examples/` 有改动时发布到 GitHub Pages。

@@ -1,4 +1,4 @@
-import { createHash, randomBytes } from 'node:crypto';
+import { sha256, toHex } from './sha256.js';
 
 /**
  * Algorithm identifier. Bump when the byte → parameter assignment changes.
@@ -9,13 +9,17 @@ export const ALGORITHM = 'hash-design/v2';
 
 const HASH_RE = /^[0-9a-f]{64}$/;
 
+/** SHA-256 as lowercase hex (strings are UTF-8). Pure TypeScript, so it runs in Node and browsers alike. */
 export function sha256Hex(input: string | Uint8Array): string {
-  return createHash('sha256').update(input).digest('hex');
+  return toHex(sha256(input));
 }
 
-/** A true-random hash: SHA-256 over 32 bytes from the OS CSPRNG. */
+/**
+ * A true-random hash: SHA-256 over 32 bytes from Web Crypto's `crypto.getRandomValues`, the OS CSPRNG
+ * (a global in Node ≥ 20 and in every browser).
+ */
 export function randomHash(): string {
-  return sha256Hex(randomBytes(32));
+  return sha256Hex(globalThis.crypto.getRandomValues(new Uint8Array(32)));
 }
 
 /** A reproducible hash for examples/tests. Not for real rolls. */

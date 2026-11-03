@@ -26,7 +26,9 @@ hash-design is an npm-workspaces monorepo with two packages, one Skill and four 
 
 | Module                     | Responsibility                                                                                                                                                    |
 | -------------------------- | ----------------------------------------------------------------------------------------------------------------------------------------------------------------- |
-| `src/hash.ts`              | `randomHash` (CSPRNG → SHA-256), `seededHash`, `rollHashes`, `parseRef` (a ref is the bare hash), `ALGORITHM` (`hash-design/v2`)                                  |
+| `src/hash.ts`              | `randomHash` (`crypto.getRandomValues` → SHA-256), `seededHash`, `rollHashes`, `parseRef` (a ref is the bare hash), `ALGORITHM` (`hash-design/v2`)                |
+| `src/sha256.ts`            | Pure TypeScript SHA-256 (no `node:crypto`), so hashing and the fingerprints run unchanged in a browser                                                            |
+| `src/browser.ts`           | The browser entry, exported as `hash-design/browser`: everything except `critique`, `files`, `skill`, the CLI and the MCP server. `index.ts` re-exports it        |
 | `src/mapping.ts`           | `mapDesign` (one hash → one design, byte by byte), `mapRoll`, constraints, `BYTE_MAP`, `libraryFingerprint`, `scenarioFingerprint`, `DEFAULT_COUNT` / `MAX_COUNT` |
 | `src/palette.ts`           | `buildPalette`: OKLCH palette from the hue / polarity / chroma bytes, with text lightness solved to the contrast floors                                           |
 | `src/color.ts`             | sRGB ↔ OKLCH (gamut-mapped by chroma), WCAG relative luminance and contrast                                                                                       |
@@ -82,7 +84,7 @@ The four runs under `examples/` (a bakery, a developer tool, a bicycle repair sh
 
 ## Testing and CI
 
-- **Vitest**, 11 test files: `hash`, `mapping`, `scenarios`, `brief`, `critique` (with good and bad HTML fixtures), `compare`, `cli`, `skill` (sync checks), `examples`, `release` (publish readiness) and `mcp` (in-memory transport).
+- **Vitest**, 14 test files in `packages/core/test`: `hash`, `mapping`, `count` (N), `scenarios`, `brief`, `reply`, `critique` (with good and bad HTML fixtures), `compare`, `cli`, `skill` (sync checks), `examples`, `release` (publish readiness), `mcp` (in-memory transport) and `browser` (the pure SHA-256 against `node:crypto` and the FIPS vectors, and `hash-design/browser` bundled by Vite with no Node built-ins, mapping exactly as the library does).
 - **`scripts/smoke.mjs`**: runs the built CLI and talks to `hash-design mcp` and the `packages/mcp` wrapper over a real stdio pipe.
 - **CI** (`.github/workflows/ci.yml`), on Node 20, 22 and 24: `npm ci`, build, typecheck (including tests), ESLint, Prettier check, tests, smoke test, `npm pack --dry-run` for both packages.
 - **Pages** (`.github/workflows/pages.yml`): publishes `examples/` to GitHub Pages when it changes.
