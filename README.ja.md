@@ -36,5 +36,5 @@ LLM に「きれいなページ」を頼むと、ほぼ毎回同じ見た目に�
 ## 詳しく
 
 - [英語の完全な README](README.md) · [ライブの例](https://qybaihe.github.io/hash-design/)
-- ドキュメント（英語）：[アーキテクチャ](docs/architecture.md) · [マッピング仕様](docs/mapping.md) · [MCP ツール](docs/mcp-tools.md) · [公開手順](docs/publishing.md)
+- ドキュメント（英語）：[アーキテクチャ](docs/architecture.md) · [マッピング仕様](docs/mapping.md) · [MCP ツール](docs/mcp-tools.md) · [公開手順](docs/publishing.md) · [Web サイトのデプロイ](docs/deploy-cloudflare-pages.md)
 - [コントリビュート](CONTRIBUTING.md) · [変更履歴](CHANGELOG.md) · [MIT ライセンス](LICENSE)

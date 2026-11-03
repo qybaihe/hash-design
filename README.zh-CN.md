@@ -36,5 +36,5 @@ codex mcp add hash-design -- npx -y hash-design mcp    # Codex 的 MCP server
 ## 更多
 
 - [完整的英文 README](README.md) · [在线示例](https://qybaihe.github.io/hash-design/)
-- 中文文档：[架构](docs/architecture.zh-CN.md) · [映射规范](docs/mapping.zh-CN.md) · [MCP 工具](docs/mcp-tools.zh-CN.md) · [发布](docs/publishing.zh-CN.md)
+- 中文文档：[架构](docs/architecture.zh-CN.md) · [映射规范](docs/mapping.zh-CN.md) · [MCP 工具](docs/mcp-tools.zh-CN.md) · [发布](docs/publishing.zh-CN.md) · [网站部署（英文）](docs/deploy-cloudflare-pages.md)
 - [参与贡献](CONTRIBUTING.md) · [更新日志](CHANGELOG.md) · [MIT 许可](LICENSE)

@@ -36,5 +36,5 @@ LLM에게 "예쁜 페이지"를 부탁하면 거의 매번 같은 모습으로 �
 ## 더 보기
 
 - [영어 README 전체](README.md) · [라이브 예시](https://qybaihe.github.io/hash-design/)
-- 문서(영어): [아키텍처](docs/architecture.md) · [매핑 명세](docs/mapping.md) · [MCP 도구](docs/mcp-tools.md) · [배포 절차](docs/publishing.md)
+- 문서(영어): [아키텍처](docs/architecture.md) · [매핑 명세](docs/mapping.md) · [MCP 도구](docs/mcp-tools.md) · [배포 절차](docs/publishing.md) · [웹사이트 배포](docs/deploy-cloudflare-pages.md)
 - [기여하기](CONTRIBUTING.md) · [변경 기록](CHANGELOG.md) · [MIT 라이선스](LICENSE)

@@ -79,11 +79,15 @@ hash-design 是一个 npm workspaces monorepo，包含两个包、一个 Skill �
 
 `examples/` 下的 4 个示例（面包店、开发者工具、单车修理铺、音乐节）是 `hash-design/v2` 的运行：事实、用固定 seed（文件夹名）的一次掷骰、冻结的 brief、每份 brief 一个子 Agent 按 Skill 流程做的预览、截图和对比页。`examples.test.ts` 检查：每次掷骰能用 seed 和当前库指纹复现；磁盘上的每份 brief 都和它的 ref 渲染出来的一字不差；每个预览和截图都在；每个预览 critique 不低于 90 分、brief 遵守度不低于 80，且没有 critical/major；Pages 首页和 README 链接到每个示例。`scripts/examples.mjs` 负责重掷、批量 critique、重建对比页和 Pages 首页；`scripts/showcase.mjs`、`hero.mjs` 和 `hero-gif.mjs` 用掷骰结果和截图生成 README 的展示图和首图。
 
+## 网站
+
+`site/` 是项目网站，一个静态 Vite 构建（`npm run site:build` → `site/dist/`，由 Cloudflare Pages 部署，见 [deploy-cloudflare-pages.md](deploy-cloudflare-pages.md)，英文）。`site/build/content.ts` 在构建时用代码和示例运行填充 `site/index.html`：版本号、数量、库指纹、场景、[映射规范](mapping.zh-CN.md)里示例哈希的字节图，以及每个示例的 seed、ref、字体、critique 分数和遵守度。构建时从 `docs/assets/` 复制首图和展示图。演示、字节图和"从 ref 重建"都引入 `hash-design/browser`，所以网页掷骰和 CLI 用的是同一份代码；`site/src/rebuild.ts` 生成某个方向的 brief 以及能打印同一份 brief 的 `npx -y hash-design brief …` 命令。
+
 ## 测试与 CI
 
-- **Vitest**，`packages/core/test` 下 14 个测试文件：`hash`、`mapping`、`count`（N）、`scenarios`、`brief`、`reply`、`critique`（带好/坏两类 HTML 夹具）、`compare`、`cli`、`skill`（同步检查）、`examples`、`release`（发布就绪检查）、`mcp`（in-memory transport），以及 `browser`（纯 TypeScript SHA-256 对照 `node:crypto` 和 FIPS 向量；用 Vite 打包 `hash-design/browser`，不含 Node 内置模块，映射结果与库完全一致）。
+- **Vitest**，`packages/core/test` 下 15 个测试文件：`hash`、`mapping`、`count`（N）、`scenarios`、`brief`、`reply`、`critique`（带好/坏两类 HTML 夹具）、`compare`、`cli`、`skill`（同步检查）、`examples`、`readmes`（完整 README 和四个简版）、`release`（发布就绪检查）、`mcp`（in-memory transport），以及 `browser`（纯 TypeScript SHA-256 对照 `node:crypto` 和 FIPS 向量；用 Vite 打包 `hash-design/browser`，不含 Node 内置模块，映射结果与库完全一致）。`site/test` 下 2 个：`parity` 把 `site/src/rebuild.ts` 打包成浏览器代码，检查它生成的 brief 与 CLI 用相同参数输出的内容完全一致（多个 ref × 全部场景 × 多个主题 × 多组约束），并把页面显示的命令交给 `/bin/sh` 实际运行一遍；`content` 用 `BYTE_MAP`、README 的安装命令、示例运行和仓库里的媒体文件核对页面内容。
 - **`scripts/smoke.mjs`**：运行构建好的 CLI，并通过真实的 stdio 管道与 `hash-design mcp` 和 `packages/mcp` 包装通信。
-- **CI**（`.github/workflows/ci.yml`），在 Node 20、22 和 24 上依次跑：`npm ci`、build、typecheck（含测试）、ESLint、Prettier 检查、测试、冒烟测试，以及两个包的 `npm pack --dry-run`。
+- **CI**（`.github/workflows/ci.yml`），在 Node 20、22 和 24 上依次跑：`npm ci`、build、单一 Skill 检查（`npm run sync:check`）、typecheck（含测试和网站）、ESLint、Prettier 检查、测试、冒烟测试、发布检查（`npm pack --dry-run` 的内容）和网站构建（`npm run site:build`）。
 - **Pages**（`.github/workflows/pages.yml`）：`examples/` 有改动时发布到 GitHub Pages。
 
 ## 打包

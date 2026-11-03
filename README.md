@@ -431,6 +431,7 @@ Briefs are bilingual: headings carry Chinese and English labels, and `language` 
 - [docs/architecture.md](docs/architecture.md): packages, data flow, design decisions, testing
 - [docs/mapping.md](docs/mapping.md): the `hash-design/v2` mapping: every byte's rule, the palette solver, constraints, scenarios, reproducibility
 - [docs/mcp-tools.md](docs/mcp-tools.md): every MCP tool, resource and prompt, with CLI equivalents
+- [docs/deploy-cloudflare-pages.md](docs/deploy-cloudflare-pages.md): the website in `site/` and its Cloudflare Pages settings
 - 中文：[架构](docs/architecture.zh-CN.md) · [映射规范](docs/mapping.zh-CN.md) · [MCP 工具](docs/mcp-tools.zh-CN.md)
 
 ## Contributing
@@ -450,9 +451,10 @@ npm run screenshots           # Playwright screenshots of every example (needs `
 npm run hero                  # rebuild docs/assets/hero.png and social-preview.png from an example's screenshots
 npm run hero:gif              # rebuild docs/assets/hero.gif and hero.mp4 (needs ffmpeg; uses gifski if installed)
 npm run showcase              # rebuild docs/assets/showcase/<example>.png, one plate per example
+npm run site:dev              # the website (site/) with live reload; npm run site:build → site/dist/
 ```
 
-CI runs build, the one-Skill check (`npm run sync:check`), typecheck, lint, format check, tests, the stdio smoke test and the release check (`npm pack` contents) on Node 20, 22 and 24.
+CI runs build, the one-Skill check (`npm run sync:check`), typecheck, lint, format check, tests, the stdio smoke test, the release check (`npm pack` contents) and the website build on Node 20, 22 and 24. The website deploys to Cloudflare Pages: see [docs/deploy-cloudflare-pages.md](docs/deploy-cloudflare-pages.md).
 
 Repository layout:
 
@@ -471,7 +473,8 @@ packages/core/           # npm: hash-design — data, mapping, briefs, critique,
 packages/mcp/            # private wrapper: runs the same MCP server from a clone (not on npm)
 skills/hash-design/      # SKILL.md, the only copy of the Skill (skill install copies it; npm pack ships it)
 examples/                # 4 full hash-design/v2 runs: facts → roll → 5 briefs → 5 previews → compare page → screenshots
-docs/                    # architecture, mapping spec, MCP reference
+docs/                    # architecture, mapping spec, MCP reference, website deploy
+site/                    # the website: Vite, the library bundled for the in-browser demo (npm run site:build)
 scripts/                 # sync / smoke / verify-fonts / examples / screenshot / hero / hero-gif / prepack
 ```
 

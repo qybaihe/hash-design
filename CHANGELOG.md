@@ -9,10 +9,15 @@ The format follows [Keep a Changelog](https://keepachangelog.com/en/1.1.0/), and
 
 ### Added
 
+- The website, in `site/`: a static Vite build for Cloudflare Pages (`hash-design.pages.dev`; settings in [docs/deploy-cloudflare-pages.md](docs/deploy-cloudflare-pages.md)). Every number, ref and score on it is filled in at build time from the code and the example runs. Its demo runs `hash-design/browser`: roll 1–12 directions for any scenario, open each brief with the `npx -y hash-design brief …` command that prints the same text, and rebuild any ref. `site/test/parity.test.ts` checks those briefs against the CLI's output; `npm run site:dev`, `site:build` and `site:preview`; CI builds the site.
+- `npm run sync:check`: fails if the generated block of the Skill is stale or a second `SKILL.md` is tracked. CI runs it.
 - `hash-design/browser`: a browser entry with everything except the critique, file writing, the Skill reader, the CLI and the MCP server. The library's `index` re-exports it, so Node and browsers run the same modules. `browser.test.ts` bundles it with Vite, checks that no Node built-in is left and that it maps seeded rolls, briefs and replies exactly as the library does.
 
 ### Changed
 
+- **The four examples are `hash-design/v2` runs.** Same fact sheets, seed = folder name, frozen briefs, and every preview built from its brief by its own sub-agent; all 20 previews score 100 on the critique with brief adherence 100. The README Showcase plates, `hero.png`, `hero.gif`, `hero.mp4` and `social-preview.png` are rebuilt from them (the hero from `causeway-festival`).
+- **Short translated READMEs.** `README.md` is the complete README; `README.zh-CN.md`, `README.ja.md`, `README.ko.md` and `README.es.md` are short versions (description, hero, install commands, what it does, links to the full README) that share one outline, which `readmes.test.ts` checks.
+- **One Skill file.** `skills/hash-design/SKILL.md` is the only copy in the repository; the checked-in `.claude/skills/` and `.cursor/skills/` copies are gone and those folders are git-ignored. `hash-design skill install` copies the canonical file into the agent folders, and a checkout reads it directly.
 - SHA-256 is computed by `src/sha256.ts`, a plain TypeScript implementation, instead of `node:crypto`, and true-random hashes use Web Crypto's `crypto.getRandomValues` (32 bytes → SHA-256) instead of `crypto.randomBytes`. Both work in Node ≥ 20 and in browsers. Hashes, refs, seeded rolls and both fingerprints are unchanged; `browser.test.ts` checks the implementation against `node:crypto` for every length from 0 to 300 bytes, UTF-8 text and the FIPS 180-4 vectors.
 
 ## [0.2.0] - 2026-11-02

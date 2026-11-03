@@ -36,5 +36,5 @@ Pide a un LLM «una página bonita» y casi siempre acaba en el mismo aspecto: I
 ## Más
 
 - [README completo en inglés](README.md) · [Ejemplos en vivo](https://qybaihe.github.io/hash-design/)
-- Documentación (en inglés): [arquitectura](docs/architecture.md) · [especificación del mapeo](docs/mapping.md) · [herramientas MCP](docs/mcp-tools.md) · [publicación](docs/publishing.md)
+- Documentación (en inglés): [arquitectura](docs/architecture.md) · [especificación del mapeo](docs/mapping.md) · [herramientas MCP](docs/mcp-tools.md) · [publicación](docs/publishing.md) · [despliegue del sitio web](docs/deploy-cloudflare-pages.md)
 - [Contribuir](CONTRIBUTING.md) · [Changelog](CHANGELOG.md) · [Licencia MIT](LICENSE)

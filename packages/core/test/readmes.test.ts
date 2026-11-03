@@ -25,12 +25,13 @@ describe('READMEs', () => {
     for (const f of SHORT) expect(read(f).split('\n').length, f).toBeLessThan(80);
   });
 
-  it('every README has the language switcher, the hero and the install commands', () => {
+  it('every README has the language switcher, the hero, the install commands and the website deploy doc', () => {
     for (const f of FILES) {
       const md = read(f);
       for (const other of FILES) if (other !== f) expect(md, `${f} → ${other}`).toContain(`](${other})`);
       expect(md, f).toContain('docs/assets/hero.gif');
       for (const cmd of COMMANDS) expect(md, `${f}: ${cmd}`).toContain(cmd);
+      expect(md, `${f}: website deploy doc`).toContain('](docs/deploy-cloudflare-pages.md)');
     }
   });
 
