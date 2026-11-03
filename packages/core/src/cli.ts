@@ -1,12 +1,14 @@
 import { existsSync, readFileSync } from 'node:fs';
 import { copyFile, mkdir, readFile, writeFile } from 'node:fs/promises';
 import { homedir } from 'node:os';
-import { dirname, join, relative, resolve } from 'node:path';
+import { dirname, join, relative, resolve, sep } from 'node:path';
 import { fileURLToPath } from 'node:url';
 import { parseArgs } from 'node:util';
 import {
   type Constraints,
   type RollJson,
+  DEFAULT_COUNT,
+  MAX_COUNT,
   briefJson,
   buildComparePage,
   compareEntriesFromRoll,
@@ -16,6 +18,7 @@ import {
   renderBrief,
   renderCritique,
   renderRoll,
+  renderReply,
   renderRollSummary,
   reproduce,
   roll,
@@ -29,16 +32,35 @@ const here = dirname(fileURLToPath(import.meta.url));
 const VERSION = (JSON.parse(readFileSync(join(here, '..', 'package.json'), 'utf8')) as { version: string })
   .version;
 
+/** Agent skill folders per --target value (relative to the project or home directory). */
+const SKILL_TARGETS: Readonly<Record<string, readonly string[]>> = {
+  claude: ['.claude'],
+  agents: ['.agents'],
+  cursor: ['.cursor'],
+  both: ['.claude', '.cursor'],
+  all: ['.claude', '.cursor', '.agents'],
+};
+const DEFAULT_SKILL_TARGET = 'claude,agents';
+
+function parseCount(v: string | undefined): number {
+  if (v === undefined) return DEFAULT_COUNT;
+  const n = Number(v);
+  if (!/^\d+$/.test(v.trim()) || n < 1 || n > MAX_COUNT)
+    throw new Error(`--count must be a whole number from 1 to ${MAX_COUNT} (got "${v}")`);
+  return n;
+}
+
 const HELP = `hash-design ${VERSION} — roll random design directions that break the default AI look
 
 Usage
-  hash-design roll      [--subject <s>] [--fact <f>]… [--facts-file <path>] [--count 5] [--seed <s>]
-                        [constraints] [--out <dir>] [--format md|json|summary] [--no-trace]
+  hash-design roll      [--subject <s>] [--fact <f>]… [--facts-file <path>] [--count 1–12] [--seed <s>]
+                        [constraints] [--out <dir>] [--format md|json|summary|reply] [--no-trace]
   hash-design brief     <hash> [constraints] [--subject <s>] [--fact <f>]… [--format md|json]
   hash-design critique  <page.html> [--css <file>] [--brief <ref> | --roll <roll.json> --pick <n>]
                         [--facts-file <path>] [--json] [--fail-under <score>]
   hash-design compare   [--roll <roll.json>] [--out <compare.html>] [--previews <dir>] [--briefs <dir>] [--title <t>]
-  hash-design skill     install [--target claude|cursor|both] [--global] [--dir <project>]
+  hash-design skill     install [--target claude,agents|cursor|both|all] [--global] [--dir <project>]
+                        [--to <skills-dir>]
   hash-design skill     print | path
   hash-design mcp       Run the MCP server on stdio (for your agent's MCP config)
 
@@ -107,6 +129,7 @@ const skillInstallOptions = {
   target: { type: 'string' },
   global: { type: 'boolean' },
   dir: { type: 'string' },
+  to: { type: 'string' },
 } as const;
 
 type OptionSpec = {
@@ -157,12 +180,15 @@ Content
 ${FACTS_FILE_HELP}
 
 Roll
-  -n, --count <n>        Number of directions, 1–12 (default 5)
+  -n, --count <n>        Number of directions: 1–12 (default 5). Each direction is its own hash, so
+                         constraints never lower the cap; 12 keeps one roll reviewable
   --seed <s>             Reproducible roll for examples and tests only; omit it for real use
 
 Output
   -o, --out <dir>        Freeze roll.json, ROLL.md and briefs/NN-<short>.md into <dir> and print a summary
-  -f, --format <fmt>     Without --out: md (default, every brief) | json | summary
+  -f, --format <fmt>     md (default, every brief) | json | summary | reply (the short message to send
+                         the user: one line per direction, then the question). With --out: summary
+                         (default) or reply
   --no-trace             Leave the byte-by-byte mapping trace out of Markdown briefs
 
 ${CONSTRAINTS_HELP}
@@ -171,6 +197,7 @@ Examples
   hash-design roll --subject "Fourth Lane Bakery" --facts-file facts.md --out design/hash-design
   hash-design roll --subject "Fourth Lane Bakery" --light-only --brand "#c8102e" --format json
   hash-design roll --subject "Causeway" --facts-file facts.md --scenario deck --out design/hash-design
+  hash-design roll --subject "Fourth Lane Bakery" --count 3 --out design/hash-design --format reply
 
 Without --seed every roll uses crypto.randomBytes(32) → SHA-256.
 `,
@@ -249,14 +276,20 @@ Usage
   hash-design skill path
 
 Commands
-  install                Copy SKILL.md into .claude/skills/hash-design and/or .cursor/skills/hash-design
+  install                Copy SKILL.md into <dir>/<agent folder>/skills/hash-design/SKILL.md
   print                  Print SKILL.md
   path                   Print the path SKILL.md is read from
 
 Options (install)
-  --target <t>           claude | cursor | both (default: both)
+  --target <list>        Comma-separated agent folders (default: claude,agents)
+                           claude  .claude/skills  Claude Code
+                           agents  .agents/skills  Codex, Cursor, VS Code Copilot, Windsurf
+                           cursor  .cursor/skills  Cursor only
+                           both = claude,cursor   all = claude,cursor,agents
   --global               Install into your home directory (all projects)
   --dir <project>        Project directory (default: the current directory)
+  --to <skills-dir>      Any other agent's skills folder: writes <skills-dir>/hash-design/SKILL.md
+                         (only this, unless --target is also given)
 `,
   ],
   [
@@ -324,21 +357,27 @@ async function cmdRoll(args: string[]): Promise<void> {
     options: rollOptions,
   });
   const r = roll({
-    count: values.count ? Number(values.count) : 5,
+    count: parseCount(values.count),
     ...(values.seed !== undefined ? { seed: values.seed } : {}),
     constraints: constraintsFrom(values),
     content: { subject: values.subject ?? '', facts: factsFrom(values) },
   });
+  const format = values.format ?? (values.out ? 'summary' : 'md');
+  if (!['md', 'json', 'summary', 'reply'].includes(format))
+    throw new Error(`--format must be md, json, summary or reply (got "${format}")`);
   if (values.out) {
+    if (format !== 'summary' && format !== 'reply')
+      throw new Error('With --out, --format must be summary or reply');
     const written = await writeRoll(r, values.out);
-    print(renderRollSummary(r));
+    if (format === 'summary') print(renderRollSummary(r));
     print(`Wrote ${written.files.length} files to ${relative(process.cwd(), written.dir) || '.'}:`);
     for (const f of written.files) print(`  ${f}`);
+    if (format === 'reply') print(`\n${renderReply(r)}`);
     return;
   }
-  const format = values.format ?? 'md';
   if (format === 'json') print(JSON.stringify(rollJson(r), null, 2));
   else if (format === 'summary') print(renderRollSummary(r));
+  else if (format === 'reply') print(renderReply(r));
   else print(renderRoll(r, { trace: !values['no-trace'] }));
 }
 
@@ -418,6 +457,7 @@ async function cmdCompare(args: string[]): Promise<void> {
   print(`Wrote ${relative(process.cwd(), out)}`);
   if (missing.length)
     print(`Warning: missing previews (render them before opening):\n  ${missing.join('\n  ')}`);
+  else print(`\n${renderReply(r, { stage: 'compared', comparePath: relative(process.cwd(), out) })}`);
 }
 
 async function cmdSkill(args: string[]): Promise<void> {
@@ -430,17 +470,30 @@ async function cmdSkill(args: string[]): Promise<void> {
     args: rest,
     options: skillInstallOptions,
   });
-  const target = values.target ?? 'both';
   const root = values.global ? homedir() : resolve(values.dir ?? '.');
   const dirs: string[] = [];
-  if (target === 'claude' || target === 'both') dirs.push(join(root, '.claude', 'skills', 'hash-design'));
-  if (target === 'cursor' || target === 'both') dirs.push(join(root, '.cursor', 'skills', 'hash-design'));
-  if (!dirs.length) throw new Error('--target must be claude, cursor or both');
-  for (const d of dirs) {
+  if (values.target !== undefined || values.to === undefined) {
+    for (const t of (values.target ?? DEFAULT_SKILL_TARGET).split(',').map((x) => x.trim())) {
+      const folders = SKILL_TARGETS[t];
+      if (!folders)
+        throw new Error(
+          `Unknown --target "${t}". Use claude, agents, cursor, both or all (comma-separated).`,
+        );
+      for (const f of folders) dirs.push(join(root, f, 'skills', 'hash-design'));
+    }
+  }
+  if (values.to !== undefined) dirs.push(join(resolve(values.to), 'hash-design'));
+  for (const d of [...new Set(dirs)]) {
     await mkdir(d, { recursive: true });
     await copyFile(skillPath(), join(d, 'SKILL.md'));
     print(`Installed ${join(d, 'SKILL.md')}`);
   }
+  // How to run the tools from where this copy lives: through npx, or this checkout / global install.
+  const bin = join(here, 'bin.js');
+  const run = bin.includes(`${sep}_npx${sep}`) ? 'npx -y hash-design' : `node ${bin}`;
+  print(`CLI:        ${run} <command>`);
+  print(`MCP server: ${run} mcp`);
+  print('Start a new agent session so it picks up the skill.');
 }
 
 export async function main(argv: string[]): Promise<void> {
