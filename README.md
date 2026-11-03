@@ -442,7 +442,7 @@ npm install
 npm run build        # tsc -b, both packages
 npm test             # vitest: core, CLI, MCP (in-memory transport), Skill/docs consistency
 npm run check        # typecheck + lint + prettier + test
-npm run sync         # after data changes: regenerate the SKILL.md bans block and the .claude/.cursor copies
+npm run sync         # after data changes: regenerate the bans block in skills/hash-design/SKILL.md (CI: npm run sync:check)
 node scripts/smoke.mjs        # MCP over real stdio + CLI smoke test (runs in CI)
 node scripts/verify-fonts.mjs # check every font URL online (not in CI)
 npm run example:critique      # critique every example preview (fails below 90)
@@ -452,7 +452,7 @@ npm run hero:gif              # rebuild docs/assets/hero.gif and hero.mp4 (needs
 npm run showcase              # rebuild docs/assets/showcase/<example>.png, one plate per example
 ```
 
-CI runs build, typecheck, lint, format check, tests, the stdio smoke test and `npm pack --dry-run` on Node 20, 22 and 24.
+CI runs build, the one-Skill check (`npm run sync:check`), typecheck, lint, format check, tests, the stdio smoke test and the release check (`npm pack` contents) on Node 20, 22 and 24.
 
 Repository layout:
 
@@ -469,7 +469,7 @@ packages/core/           # npm: hash-design — data, mapping, briefs, critique,
   src/cli.ts             #   CLI
   src/mcp.ts             #   MCP server (hash-design mcp)
 packages/mcp/            # private wrapper: runs the same MCP server from a clone (not on npm)
-skills/hash-design/      # Skill source (.claude/ and .cursor/ hold synced copies)
+skills/hash-design/      # SKILL.md, the only copy of the Skill (skill install copies it; npm pack ships it)
 examples/                # 4 full hash-design/v2 runs: facts → roll → 5 briefs → 5 previews → compare page → screenshots
 docs/                    # architecture, mapping spec, MCP reference
 scripts/                 # sync / smoke / verify-fonts / examples / screenshot / hero / hero-gif / prepack

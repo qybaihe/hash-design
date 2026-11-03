@@ -1,18 +1,21 @@
 import { existsSync, readFileSync } from 'node:fs';
-import { dirname, join } from 'node:path';
+import { basename, dirname, join } from 'node:path';
 import { fileURLToPath } from 'node:url';
 import { BANNED_FONTS, BANS } from './data/bans.js';
 import { BODY_FONTS, DISPLAY_FONTS } from './data/fonts.js';
 
 /**
- * Locate SKILL.md: inside the published package it lives at <pkg>/skill/SKILL.md;
- * in a repo checkout it lives at <repo>/skills/hash-design/SKILL.md.
+ * Locate SKILL.md. The repository has exactly one, `skills/hash-design/SKILL.md`; running from this checkout
+ * (`packages/core/src` or `packages/core/dist`) always reads it, so a leftover prepack copy cannot shadow it.
+ * In the published package, `npm pack` copied it to `<pkg>/skill/SKILL.md`.
  */
 export function skillPath(): string {
   const here = dirname(fileURLToPath(import.meta.url));
+  const pkg = join(here, '..');
+  const inRepo = basename(pkg) === 'core' && basename(join(pkg, '..')) === 'packages';
   const candidates = [
-    join(here, '..', 'skill', 'SKILL.md'),
-    join(here, '..', '..', '..', 'skills', 'hash-design', 'SKILL.md'),
+    ...(inRepo ? [join(pkg, '..', '..', 'skills', 'hash-design', 'SKILL.md')] : []),
+    join(pkg, 'skill', 'SKILL.md'),
   ];
   const found = candidates.find((p) => existsSync(p));
   if (!found) throw new Error(`SKILL.md not found (looked in ${candidates.join(', ')})`);

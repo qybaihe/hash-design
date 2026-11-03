@@ -71,12 +71,9 @@ Fonts, primitives and `BYTE_MAP` are hashed into the library fingerprint, which 
 
 ## Generated files
 
-`npm run sync` (build + `scripts/sync.mjs`) regenerates what is derived from the data:
+`skills/hash-design/SKILL.md` is the only Skill file in the repository. `hash-design skill install` copies it into `.claude/skills/`, `.agents/skills/`, `.cursor/skills/` or any `--to` folder, and `npm pack` ships it as `packages/core/skill/SKILL.md` (`scripts/prepack-core.mjs`). Those copies are gitignored; nothing is checked in twice.
 
-- the bans block inside `skills/hash-design/SKILL.md`, between `<!-- BEGIN GENERATED: bans (npm run sync) -->` and `<!-- END GENERATED: bans -->` (it also states the size of the font pool)
-- the copies `.claude/skills/hash-design/SKILL.md` and `.cursor/skills/hash-design/SKILL.md`
-
-`skill.test.ts` fails if any of these is stale.
+`npm run sync` (build + `scripts/sync.mjs`) regenerates the bans block inside it, between `<!-- BEGIN GENERATED: bans (npm run sync) -->` and `<!-- END GENERATED: bans -->` (the block also states the size of the font pool). CI runs `node scripts/sync.mjs --check`, which fails if the block is stale or another `SKILL.md` is tracked; `skill.test.ts` checks the same, and that a checkout reads the canonical file even when a leftover prepack copy exists.
 
 ## The examples
 

@@ -8,4 +8,8 @@ coverage/
 .vscode/
 .idea/
 packages/core/skill/
+# Local skill installs (hash-design skill install --dir .); the Skill lives only in skills/hash-design/SKILL.md
+.claude/skills/
+.agents/skills/
+.cursor/skills/
 packages/*/LICENSE

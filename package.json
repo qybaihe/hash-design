@@ -23,6 +23,7 @@
     "test:watch": "vitest",
     "check": "npm run typecheck && npm run lint && npm run format:check && npm test",
     "sync": "npm run build && node scripts/sync.mjs",
+    "sync:check": "node scripts/sync.mjs --check",
     "examples": "node scripts/examples.mjs list",
     "example:roll": "node scripts/examples.mjs roll",
     "example:compare": "node scripts/examples.mjs compare",

@@ -1,8 +1,9 @@
-import { readFileSync } from 'node:fs';
+import { execFileSync } from 'node:child_process';
+import { fileURLToPath } from 'node:url';
 import { describe, expect, it } from 'vitest';
 import { BANS } from '../src/data/bans.js';
 import { BODY_FONTS, DISPLAY_FONTS } from '../src/data/fonts.js';
-import { applySkillGeneratedBlock, readSkill, skillGeneratedBlock } from '../src/skill.js';
+import { applySkillGeneratedBlock, readSkill, skillGeneratedBlock, skillPath } from '../src/skill.js';
 
 const repo = (p: string) => new URL(`../../../${p}`, import.meta.url);
 
@@ -27,9 +28,14 @@ describe('Skill ↔ data consistency', () => {
     expect(skill).not.toMatch(/list_branches|get_branch|分支库|branch library/i);
   });
 
-  it('copies for Claude Code and Cursor are identical to the source', () => {
-    for (const p of ['.claude/skills/hash-design/SKILL.md', '.cursor/skills/hash-design/SKILL.md']) {
-      expect(readFileSync(repo(p), 'utf8'), p).toBe(skill);
-    }
+  it('is the only SKILL.md in the repository, and the checkout reads it', () => {
+    const tracked = execFileSync('git', ['ls-files', '--', '*SKILL.md'], {
+      cwd: fileURLToPath(repo('')),
+      encoding: 'utf8',
+    })
+      .split('\n')
+      .filter(Boolean);
+    expect(tracked).toEqual(['skills/hash-design/SKILL.md']);
+    expect(skillPath()).toBe(fileURLToPath(repo('skills/hash-design/SKILL.md')));
   });
 });

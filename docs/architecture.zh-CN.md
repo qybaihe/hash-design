@@ -71,12 +71,9 @@ hash-design 是一个 npm workspaces monorepo，包含两个包、一个 Skill �
 
 ## 生成的文件
 
-`npm run sync`（build + `scripts/sync.mjs`）会重新生成由数据派生的内容：
+仓库里只有一个 Skill 文件：`skills/hash-design/SKILL.md`。`hash-design skill install` 把它复制到 `.claude/skills/`、`.agents/skills/`、`.cursor/skills/` 或任意 `--to` 目录；`npm pack` 把它作为 `packages/core/skill/SKILL.md` 打进包里（`scripts/prepack-core.mjs`）。这些副本都在 gitignore 里，没有任何东西被提交两份。
 
-- `skills/hash-design/SKILL.md` 里位于 `<!-- BEGIN GENERATED: bans (npm run sync) -->` 和 `<!-- END GENERATED: bans -->` 之间的禁令块（也写明字体池大小）
-- 副本 `.claude/skills/hash-design/SKILL.md` 和 `.cursor/skills/hash-design/SKILL.md`
-
-其中任何一个过期，`skill.test.ts` 都会失败。
+`npm run sync`（build + `scripts/sync.mjs`）重新生成它里面位于 `<!-- BEGIN GENERATED: bans (npm run sync) -->` 和 `<!-- END GENERATED: bans -->` 之间的禁令块（也写明字体池大小）。CI 运行 `node scripts/sync.mjs --check`：禁令块过期，或者仓库里还跟踪着别的 `SKILL.md`，就失败；`skill.test.ts` 检查同样的事，并检查即使本地残留了 prepack 副本，源码目录读到的仍是这个唯一的文件。
 
 ## 示例
 

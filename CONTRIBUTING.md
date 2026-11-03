@@ -24,23 +24,23 @@ npm run check   # typecheck + lint + prettier --check + vitest
 node scripts/smoke.mjs
 ```
 
-| Script                          | What it does                                                                                     |
-| ------------------------------- | ------------------------------------------------------------------------------------------------ |
-| `npm run build`                 | `tsc -b` for both packages                                                                       |
-| `npm test`                      | Vitest (core, CLI, MCP over in-memory transport, sync and example checks)                        |
-| `npm run check`                 | Everything CI checks except the smoke test and pack dry-run                                      |
-| `npm run format`                | Prettier `--write`                                                                               |
-| `npm run sync`                  | Regenerate `SKILL.md`'s bans block and its `.claude/` / `.cursor/` copies                        |
-| `node scripts/smoke.mjs`        | CLI + MCP server over real stdio                                                                 |
-| `node scripts/verify-fonts.mjs` | Check every Google Fonts URL online (not run in CI)                                              |
-| `npm run examples`              | List the example runs and their seeds (`scripts/examples.mjs`)                                   |
-| `npm run example:roll`          | Re-roll an example with its fixed seed (`-- <name>` for one)                                     |
-| `npm run example:critique`      | Critique every example preview against its brief; fails below 90                                 |
-| `npm run example:compare`       | Rebuild an example's `compare.html` (`node scripts/examples.mjs index` rewrites the Pages index) |
-| `npm run screenshots`           | Playwright screenshots of every example (`npx playwright install chromium` first)                |
-| `npm run hero`                  | Rebuild `docs/assets/hero.png` and `social-preview.png` from the example screenshots             |
-| `npm run hero:gif`              | Rebuild the animated `docs/assets/hero.gif` and `hero.mp4` (needs ffmpeg)                        |
-| `npm run showcase`              | Rebuild the README showcase plates, `docs/assets/showcase/<example>.png`                         |
+| Script                          | What it does                                                                                         |
+| ------------------------------- | ---------------------------------------------------------------------------------------------------- |
+| `npm run build`                 | `tsc -b` for both packages                                                                           |
+| `npm test`                      | Vitest (core, CLI, MCP over in-memory transport, sync and example checks)                            |
+| `npm run check`                 | Everything CI checks except the smoke test and pack dry-run                                          |
+| `npm run format`                | Prettier `--write`                                                                                   |
+| `npm run sync`                  | Regenerate the bans block in `skills/hash-design/SKILL.md`, the only Skill file (`sync:check` in CI) |
+| `node scripts/smoke.mjs`        | CLI + MCP server over real stdio                                                                     |
+| `node scripts/verify-fonts.mjs` | Check every Google Fonts URL online (not run in CI)                                                  |
+| `npm run examples`              | List the example runs and their seeds (`scripts/examples.mjs`)                                       |
+| `npm run example:roll`          | Re-roll an example with its fixed seed (`-- <name>` for one)                                         |
+| `npm run example:critique`      | Critique every example preview against its brief; fails below 90                                     |
+| `npm run example:compare`       | Rebuild an example's `compare.html` (`node scripts/examples.mjs index` rewrites the Pages index)     |
+| `npm run screenshots`           | Playwright screenshots of every example (`npx playwright install chromium` first)                    |
+| `npm run hero`                  | Rebuild `docs/assets/hero.png` and `social-preview.png` from the example screenshots                 |
+| `npm run hero:gif`              | Rebuild the animated `docs/assets/hero.gif` and `hero.mp4` (needs ffmpeg)                            |
+| `npm run showcase`              | Rebuild the README showcase plates, `docs/assets/showcase/<example>.png`                             |
 
 The code layout is described in [docs/architecture.md](docs/architecture.md), and the mapping algorithm in [docs/mapping.md](docs/mapping.md).
 
