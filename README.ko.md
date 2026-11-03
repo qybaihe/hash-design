@@ -28,8 +28,8 @@
 
 ```text
 이 에이전트에 hash-design skill을 설치해 줘: `npx -y hash-design skill install --dir .`를 실행하고
-`npx -y hash-design mcp`로 MCP 서버를 등록해 줘(hash-design 0.1.0이면
-`npx -y hash-design-mcp@0.1.0` 사용). 절차는 https://github.com/qybaihe/hash-design/blob/main/README.ko.md#빠른-시작 참고.
+`npx -y hash-design mcp`로 MCP 서버를 등록해 줘.
+절차는 https://github.com/qybaihe/hash-design/blob/main/README.ko.md#빠른-시작 참고.
 ```
 
 </div>
@@ -54,7 +54,7 @@ hash-design은 모델에게 더 나은 안목을 요구하지 않습니다. 대�
 
 기본 결과물은 웹 페이지입니다. **시나리오**(`scenario`)를 넘기면 같은 롤의 방향이 슬라이드, 모바일 앱 화면, 대시보드, 포스터/소셜 카드, HTML 이메일이 됩니다([시나리오](#시나리오) 참고).
 
-구성은 **Agent Skill**(언제, 어떤 순서로 이 흐름을 돌릴지), **MCP 서버**(stdio, 도구 4개), **CLI**, **TypeScript 라이브러리** 네 가지이며, 함께 npm의 [`hash-design`](https://www.npmjs.com/package/hash-design)으로 배포됩니다(MCP 서버는 0.2.0부터 이 패키지에 들어갑니다).
+구성은 **Agent Skill**(언제, 어떤 순서로 이 흐름을 돌릴지), **MCP 서버**(stdio, 도구 4개), **CLI**, **TypeScript 라이브러리** 네 가지이며, 함께 npm의 [`hash-design`](https://www.npmjs.com/package/hash-design)으로 배포됩니다.
 
 ## 빠른 시작
 
@@ -64,8 +64,8 @@ hash-design은 모델에게 더 나은 안목을 요구하지 않습니다. 대�
 
 ```text
 이 에이전트에 hash-design skill을 설치해 줘: `npx -y hash-design skill install --dir .`를 실행하고
-`npx -y hash-design mcp`로 MCP 서버를 등록해 줘(hash-design 0.1.0이면
-`npx -y hash-design-mcp@0.1.0` 사용). 절차는 https://github.com/qybaihe/hash-design/blob/main/README.ko.md#빠른-시작 참고.
+`npx -y hash-design mcp`로 MCP 서버를 등록해 줘.
+절차는 https://github.com/qybaihe/hash-design/blob/main/README.ko.md#빠른-시작 참고.
 ```
 
 에이전트가 Skill을 프로젝트의 `.claude/skills/`와 `.agents/skills/`에 복사하고 MCP 서버를 등록합니다(Claude Code는 `claude mcp add`, Cursor는 `.cursor/mcp.json`, Codex는 `codex mcp add`). clone이나 빌드는 필요 없습니다. 끝나면 새 세션을 시작해 둘 다 불러오게 한 다음 [사용법](#사용법)으로 넘어가세요. 명령을 직접 실행하려면 아래 절차를 따르세요.
@@ -96,15 +96,10 @@ npx -y hash-design skill install --to /path/to/skills   # 또는 다른 에이�
 
 **MCP 서버.** 에이전트에 `npx -y hash-design mcp`를 등록하세요. stdio로 서버가 실행됩니다.
 
-> [!NOTE]
-> `hash-design mcp`는 다음 릴리스인 hash-design 0.2.0부터 제공됩니다. 지금 npm에 있는 0.1.0에서는 대신 `npx -y hash-design-mcp@0.1.0`을 등록하세요. 예전에 별도 패키지로 배포한 hash-design/v1 서버(브랜치 40개 라이브러리와 도구 6개)이며, 더 이상 업데이트되지 않습니다.
-
 #### Claude Code
 
 ```bash
 claude mcp add hash-design -- npx -y hash-design mcp
-# hash-design 0.1.0인 경우:
-claude mcp add hash-design -- npx -y hash-design-mcp@0.1.0
 ```
 
 또는 프로젝트 단위 `.mcp.json`을 커밋합니다:
@@ -119,8 +114,6 @@ claude mcp add hash-design -- npx -y hash-design-mcp@0.1.0
   }
 }
 ```
-
-0.1.0에서는 `args`를 `["-y", "hash-design-mcp@0.1.0"]`로 씁니다.
 
 #### Cursor
 
@@ -394,7 +387,7 @@ MCP 도구 4개, 파라미터 공간, 그리고 모든 브리프에 들어가는
 <details>
 <summary><strong>npm에 배포되어 있나요?</strong></summary>
 
-네. [`hash-design`](https://www.npmjs.com/package/hash-design) 0.1.0에는 라이브러리, CLI, Skill(`npx -y hash-design skill install`)이 들어 있습니다. MCP 서버는 0.2.0에서 `hash-design mcp`로 이 패키지에 합류합니다. 그전까지는 예전 별도 서버 패키지이며 더 이상 새 버전이 나오지 않는 `npx -y hash-design-mcp@0.1.0`을 쓰세요. 릴리스는 GitHub Actions에서 npm Trusted Publishing으로 배포됩니다([docs/publishing.md](docs/publishing.md), 영어).
+네. [`hash-design`](https://www.npmjs.com/package/hash-design)에는 라이브러리, CLI, Skill(`npx -y hash-design skill install`), MCP 서버(`npx -y hash-design mcp`)가 들어 있습니다. 예전에 별도 패키지로 배포한 `hash-design-mcp`는 더 이상 새 버전이 나오지 않으니, 등록해 두었다면 `npx -y hash-design mcp`로 바꾸세요. 릴리스는 GitHub Actions에서 npm Trusted Publishing으로 배포됩니다([docs/publishing.md](docs/publishing.md), 영어).
 
 </details>
 
@@ -474,7 +467,8 @@ packages/core/           # npm: hash-design — data, mapping, briefs, critique,
   src/critique.ts        #   static AI-template checks
   src/compare.ts         #   side-by-side compare page
   src/cli.ts             #   CLI
-packages/mcp/            # npm: hash-design-mcp — stdio MCP server
+  src/mcp.ts             #   MCP server (hash-design mcp)
+packages/mcp/            # private wrapper: runs the same MCP server from a clone (not on npm)
 skills/hash-design/      # Skill source (.claude/ and .cursor/ hold synced copies)
 examples/                # 4 full hash-design/v1 runs: facts → roll → 5 briefs → 5 previews → compare page → screenshots
 docs/                    # architecture, mapping spec, MCP reference

@@ -28,8 +28,8 @@
 
 ```text
 このエージェントに hash-design の skill を入れて：`npx -y hash-design skill install --dir .` を実行し、
-`npx -y hash-design mcp` で MCP サーバーを登録して（hash-design が 0.1.0 なら
-`npx -y hash-design-mcp@0.1.0` を使う）。手順は https://github.com/qybaihe/hash-design/blob/main/README.ja.md#クイックスタート 。
+`npx -y hash-design mcp` で MCP サーバーを登録して。
+手順は https://github.com/qybaihe/hash-design/blob/main/README.ja.md#クイックスタート 。
 ```
 
 </div>
@@ -54,7 +54,7 @@ hash-design は、モデルに「もっとセンスを良くしろ」とは求�
 
 デフォルトの出力は Web ページです。**シナリオ**（`scenario`）を渡すと、同じロールの方向性がスライド、モバイルアプリの画面、ダッシュボード、ポスター／SNS カード、HTML メールになります（[シナリオ](#シナリオ)を参照）。
 
-構成は **Agent Skill**（いつ、どの順でこの流れを回すか）、**MCP サーバー**（stdio、ツール 4 個）、**CLI**、**TypeScript ライブラリ** の 4 つで、まとめて npm の [`hash-design`](https://www.npmjs.com/package/hash-design) として公開しています（MCP サーバーは 0.2.0 からこのパッケージに入ります）。
+構成は **Agent Skill**（いつ、どの順でこの流れを回すか）、**MCP サーバー**（stdio、ツール 4 個）、**CLI**、**TypeScript ライブラリ** の 4 つで、まとめて npm の [`hash-design`](https://www.npmjs.com/package/hash-design) として公開しています。
 
 ## クイックスタート
 
@@ -64,8 +64,8 @@ hash-design は、モデルに「もっとセンスを良くしろ」とは求�
 
 ```text
 このエージェントに hash-design の skill を入れて：`npx -y hash-design skill install --dir .` を実行し、
-`npx -y hash-design mcp` で MCP サーバーを登録して（hash-design が 0.1.0 なら
-`npx -y hash-design-mcp@0.1.0` を使う）。手順は https://github.com/qybaihe/hash-design/blob/main/README.ja.md#クイックスタート 。
+`npx -y hash-design mcp` で MCP サーバーを登録して。
+手順は https://github.com/qybaihe/hash-design/blob/main/README.ja.md#クイックスタート 。
 ```
 
 エージェントが Skill をプロジェクトの `.claude/skills/` と `.agents/skills/` にコピーし、MCP サーバーを登録します（Claude Code は `claude mcp add`、Cursor は `.cursor/mcp.json`、Codex は `codex mcp add`）。clone やビルドは要りません。終わったら新しいセッションを始めて両方を読み込ませ、[使い方](#使い方)へ進んでください。自分でコマンドを打つ場合は、下の手順を使います。
@@ -96,15 +96,10 @@ npx -y hash-design skill install --to /path/to/skills   # またはほかのエ�
 
 **MCP サーバー。** エージェントに `npx -y hash-design mcp` を登録します。stdio でサーバーが動きます。
 
-> [!NOTE]
-> `hash-design mcp` は次のリリース hash-design 0.2.0 から使えます。いま npm にある 0.1.0 では、代わりに `npx -y hash-design-mcp@0.1.0` を登録してください。以前に別パッケージとして公開した hash-design/v1 のサーバー（40 ブランチのライブラリとツール 6 個）で、今後は更新されません。
-
 #### Claude Code
 
 ```bash
 claude mcp add hash-design -- npx -y hash-design mcp
-# hash-design 0.1.0 の場合：
-claude mcp add hash-design -- npx -y hash-design-mcp@0.1.0
 ```
 
 あるいはプロジェクト単位の `.mcp.json` をコミットします：
@@ -119,8 +114,6 @@ claude mcp add hash-design -- npx -y hash-design-mcp@0.1.0
   }
 }
 ```
-
-0.1.0 では `args` を `["-y", "hash-design-mcp@0.1.0"]` にします。
 
 #### Cursor
 
@@ -394,7 +387,7 @@ seed `causeway-festival-6` · `critique_page` 96–100 · ブリーフ遵守度 
 <details>
 <summary><strong>npm で公開されていますか？</strong></summary>
 
-はい。[`hash-design`](https://www.npmjs.com/package/hash-design) 0.1.0 にはライブラリ、CLI、Skill（`npx -y hash-design skill install`）が入っています。MCP サーバーは 0.2.0 で `hash-design mcp` としてこのパッケージに加わります。それまでは、以前の別パッケージで今後は更新されない `npx -y hash-design-mcp@0.1.0` を使ってください。リリースは GitHub Actions から npm Trusted Publishing で公開します（[docs/publishing.md](docs/publishing.md)、英語）。
+はい。[`hash-design`](https://www.npmjs.com/package/hash-design) にはライブラリ、CLI、Skill（`npx -y hash-design skill install`）、MCP サーバー（`npx -y hash-design mcp`）が入っています。以前に別パッケージとして公開した `hash-design-mcp` は今後更新されません。登録している場合は `npx -y hash-design mcp` に切り替えてください。リリースは GitHub Actions から npm Trusted Publishing で公開します（[docs/publishing.md](docs/publishing.md)、英語）。
 
 </details>
 
@@ -474,7 +467,8 @@ packages/core/           # npm: hash-design — data, mapping, briefs, critique,
   src/critique.ts        #   static AI-template checks
   src/compare.ts         #   side-by-side compare page
   src/cli.ts             #   CLI
-packages/mcp/            # npm: hash-design-mcp — stdio MCP server
+  src/mcp.ts             #   MCP server (hash-design mcp)
+packages/mcp/            # private wrapper: runs the same MCP server from a clone (not on npm)
 skills/hash-design/      # Skill source (.claude/ and .cursor/ hold synced copies)
 examples/                # 4 full hash-design/v1 runs: facts → roll → 5 briefs → 5 previews → compare page → screenshots
 docs/                    # architecture, mapping spec, MCP reference
