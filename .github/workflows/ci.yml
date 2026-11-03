@@ -39,3 +39,5 @@ jobs:
         run: node scripts/smoke.mjs
       - name: Release readiness (manifests, lockstep versions, npm pack --dry-run contents)
         run: npm run release:check
+      - name: Website builds (site/ → site/dist, the Cloudflare Pages build command)
+        run: npm run site:build
