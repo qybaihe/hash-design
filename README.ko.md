@@ -10,7 +10,7 @@
 
 ### 프롬프트 하나, 디자인 방향 다섯 가지. 고르는 건 모델이 아니라 진짜 난수로 만든 SHA-256 해시입니다.
 
-**코딩 에이전트가 매번 똑같은 'Inter + 보라색 그라데이션' 페이지를 내놓는 일을 끝내세요. hash-design은 방향 다섯 가지를 롤로 뽑아 각각을 디자인 브리프로 고정하고, 프리뷰 다섯 개를 나란히 렌더링한 뒤 여러분이 하나를 고를 때까지 기다립니다. 어떤 방향이든 ref로 다시 만들 수 있습니다.**
+**코딩 에이전트가 매번 똑같은 'Inter + 보라색 그라데이션' 페이지를 내놓는 일을 끝내세요. hash-design은 방향 다섯 가지(또는 1–12 사이 원하는 수)를 롤로 뽑아 각각을 디자인 브리프로 고정하고, 한 줄씩 보여 주며, 원하면 프리뷰를 나란히 렌더링하고, 여러분이 고른 것을 만듭니다. 어떤 방향이든 ref로 다시 만들 수 있습니다.**
 
 [![CI](https://img.shields.io/github/actions/workflow/status/qybaihe/hash-design/ci.yml?branch=main&style=flat-square&label=CI)](https://github.com/qybaihe/hash-design/actions/workflows/ci.yml)
 [![Live demo](https://img.shields.io/badge/live_demo-4_examples-e2401c?style=flat-square)](https://qybaihe.github.io/hash-design/)
@@ -24,7 +24,7 @@
 
 [빠른 시작](#빠른-시작) · [작동 방식](#작동-방식) · [쇼케이스](#쇼케이스) · [레퍼런스](#레퍼런스) · [자주 묻는 질문](#자주-묻는-질문)
 
-**에이전트에게 이렇게 말하세요** (Claude Code, Cursor):
+**에이전트에게 이렇게 말하세요** (Claude Code, Cursor, Codex, Windsurf, VS Code Copilot 등):
 
 ```text
 이 에이전트에 hash-design skill을 설치해 줘: `npx -y hash-design skill install --dir .`를 실행하고
@@ -44,10 +44,10 @@ hash-design은 모델에게 더 나은 안목을 요구하지 않습니다. 대�
 
 | 단계            | 하는 일                                                                                                                                                                                                                                                                                                                                                                                                  |
 | --------------- | -------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------- |
-| **롤**          | 시스템 난수로 해시 다섯 개를 뽑습니다(`crypto.randomBytes(32)` → SHA-256).                                                                                                                                                                                                                                                                                                                               |
+| **롤**          | 시스템 난수로 해시 N개를 뽑습니다(`crypto.randomBytes(32)` → SHA-256). 기본값은 5개이고, 원하면 1–12개로 정할 수 있습니다.                                                                                                                                                                                                                                                                               |
 | **매핑**        | 각 해시가 **곧** 방향입니다. 고정되고 재현 가능한 규칙이 해시의 바이트를 디자인 파라미터로 곧바로 읽어 들입니다. 색상(hue)과 대비를 계산해 맞춘 팔레트, 분류 없는 단일 폰트 풀에서 고른 디스플레이 서체와 본문 서체, 대소문자, 자간, 타입 스케일 비율, 밀도, 그리드, 첫 화면 앵커, 모티프, 모서리와 텍스처, 모션 타이밍, 카피 보이스, 그리고 "트위스트" 하나가 정해집니다. 스타일 라이브러리는 없습니다. |
 | **고정**        | 각 방향을 **브리프**로 고정합니다. 브리프에는 바로 붙여 넣을 수 있는 토큰(폰트 링크, hex 값, `tokens.css`, 그리드 수치, 모서리 반경 / 테두리 / 그림자 값)과 전역 금지 규칙이 담깁니다.                                                                                                                                                                                                                   |
-| **렌더링**      | 에이전트가 할 일은 각 브리프를 충실히 **실행하는 것**뿐입니다. 독립된 HTML 프리뷰 다섯 개와 나란히 비교하는 페이지를 만든 다음, **멈추고 사용자가 번호를 고를 때까지 기다립니다**.                                                                                                                                                                                                                       |
+| **렌더링**      | 에이전트는 먼저 **방향마다 한 줄씩** 보여 주고 **멈춥니다**. `render`라고 답하면 각 브리프를 충실히 **실행하는 것**만이 할 일이 되어, 독립된 HTML 프리뷰와 나란히 비교하는 페이지를 만든 다음 **사용자가 번호를 고를 때까지 기다립니다**.                                                                                                                                                                |
 | **최종 페이지** | 번호를 고르면 에이전트는 그 브리프로 최종 페이지를 만들고 `critique_page`로 검사합니다.                                                                                                                                                                                                                                                                                                                  |
 
 이것은 모델의 기본 미학을 깨뜨리는 외부의 무작위 제약입니다. KV 캐시나 샘플링 temperature와는 아무 관련이 없습니다. 모델의 안목은 스타일을 고르는 데가 아니라 실행 품질(정렬, 리듬, 디테일, 가독성)에 쓰입니다.
@@ -60,7 +60,7 @@ hash-design은 모델에게 더 나은 안목을 요구하지 않습니다. 대�
 
 ### 에이전트에게 맡기기
 
-페이지를 만들 프로젝트에서 Claude Code나 Cursor를 열고 다음을 붙여 넣으세요:
+디자인할 프로젝트에서 코딩 에이전트(Claude Code, Cursor, Codex, Windsurf, VS Code Copilot 등)를 열고 다음을 붙여 넣으세요:
 
 ```text
 이 에이전트에 hash-design skill을 설치해 줘: `npx -y hash-design skill install --dir .`를 실행하고
@@ -68,7 +68,7 @@ hash-design은 모델에게 더 나은 안목을 요구하지 않습니다. 대�
 `npx -y hash-design-mcp@0.1.0` 사용). 절차는 https://github.com/qybaihe/hash-design/blob/main/README.ko.md#빠른-시작 참고.
 ```
 
-에이전트가 Skill을 프로젝트의 `.claude/skills/`와 `.cursor/skills/`에 복사하고 MCP 서버를 등록합니다(Claude Code는 `claude mcp add`, Cursor는 `.cursor/mcp.json`). clone이나 빌드는 필요 없습니다. 끝나면 새 세션을 시작해 둘 다 불러오게 한 다음 [사용법](#사용법)으로 넘어가세요. 명령을 직접 실행하려면 아래 절차를 따르세요.
+에이전트가 Skill을 프로젝트의 `.claude/skills/`와 `.agents/skills/`에 복사하고 MCP 서버를 등록합니다(Claude Code는 `claude mcp add`, Cursor는 `.cursor/mcp.json`, Codex는 `codex mcp add`). clone이나 빌드는 필요 없습니다. 끝나면 새 세션을 시작해 둘 다 불러오게 한 다음 [사용법](#사용법)으로 넘어가세요. 명령을 직접 실행하려면 아래 절차를 따르세요.
 
 ### 직접 설치
 
@@ -77,11 +77,22 @@ Node.js ≥ 20과 npm(`npx`용)이 필요합니다.
 **Skill.** Skill은 언제 hash-design을 쓰는지, 어떤 순서로 MCP 도구를 부르는지, 프리뷰를 어떻게 독립적으로 렌더링하는지, 언제 반드시 멈춰야 하는지를 에이전트에게 알려 줍니다.
 
 ```bash
-npx -y hash-design skill install --target both --dir .      # 이 프로젝트: .claude/skills와 .cursor/skills
-npx -y hash-design skill install --target claude --global   # 또는 홈 디렉터리(모든 프로젝트)
+npx -y hash-design skill install --dir .                # 이 프로젝트: .claude/skills와 .agents/skills
+npx -y hash-design skill install --global               # 또는 홈 디렉터리(모든 프로젝트)
+npx -y hash-design skill install --to /path/to/skills   # 또는 다른 에이전트의 skills 폴더
 ```
 
-`--target`은 `claude`, `cursor`, `both`(기본값) 중 하나입니다. [`skills/hash-design/SKILL.md`](skills/hash-design/SKILL.md)를 `.claude/skills/hash-design/SKILL.md`(Claude Code)나 `.cursor/skills/hash-design/SKILL.md`(Cursor)에 직접 복사해도 됩니다. Skill 본문은 중국어로 작성되어 있고, description에는 영어 트리거 문구가 들어 있습니다.
+기본값은 `.claude/skills/`(Claude Code)와 `.agents/skills/`(Codex, Cursor, VS Code Copilot, Windsurf)에 씁니다. `--target`으로 폴더를 고를 수도 있고(`claude`, `agents`, `cursor`를 쉼표로 구분하거나 `all`; `both`는 `claude,cursor`), 끝나면 그 위치에서 쓸 수 있는 CLI와 MCP 명령을 출력합니다. Skill은 `SKILL.md`가 든 폴더이므로 [`skills/hash-design/SKILL.md`](skills/hash-design/SKILL.md)를 `<skills 폴더>/hash-design/SKILL.md`에 직접 복사해도 됩니다. 각 에이전트가 찾는 위치(각자의 문서 기준):
+
+| 에이전트        | 프로젝트 Skill                                          | 개인 Skill                                                     |
+| --------------- | ------------------------------------------------------- | -------------------------------------------------------------- |
+| Claude Code     | `.claude/skills/`                                       | `~/.claude/skills/`                                            |
+| Codex           | `.agents/skills/`                                       | `~/.agents/skills/`                                            |
+| Cursor          | `.agents/skills/`, `.cursor/skills/`, `.claude/skills/` | `~/.agents/skills/`, `~/.cursor/skills/`                       |
+| VS Code Copilot | `.github/skills/`, `.claude/skills/`, `.agents/skills/` | `~/.copilot/skills/`, `~/.claude/skills/`, `~/.agents/skills/` |
+| Windsurf        | `.agents/skills/`, `.windsurf/skills/`                  | `~/.agents/skills/`                                            |
+
+`.claude/skills/`와 `.agents/skills/`를 모두 읽는 에이전트(Cursor, VS Code Copilot)는 기본 설치 뒤 같은 사본 두 개를 보게 됩니다. 신경 쓰이면 그쪽에는 `--target agents`를 쓰세요. Skill 본문은 중국어로 작성되어 있고, description에는 영어 트리거 문구가 들어 있습니다.
 
 **MCP 서버.** 에이전트에 `npx -y hash-design mcp`를 등록하세요. stdio로 서버가 실행됩니다.
 
@@ -115,6 +126,24 @@ claude mcp add hash-design -- npx -y hash-design-mcp@0.1.0
 
 `.cursor/mcp.json`(프로젝트) 또는 `~/.cursor/mcp.json`(전역)에 위의 `.mcp.json`과 같은 구조로 씁니다.
 
+#### Codex
+
+```bash
+codex mcp add hash-design -- npx -y hash-design mcp
+```
+
+또는 `~/.codex/config.toml`(또는 신뢰한 프로젝트의 `.codex/config.toml`)에 추가합니다:
+
+```toml
+[mcp_servers.hash-design]
+command = "npx"
+args = ["-y", "hash-design", "mcp"]
+```
+
+#### 기타 에이전트
+
+stdio 서버를 실행할 수 있는 MCP 클라이언트라면 어디서든 돌릴 수 있습니다. 명령은 `npx`, 인수는 `-y hash-design mcp`이며, 각 클라이언트의 MCP 설정에 넣으면 됩니다(Windsurf, VS Code 등은 각자 설정 파일이 있습니다). MCP가 없으면 Skill은 CLI(`npx -y hash-design roll …`)를 같은 옵션으로 사용합니다.
+
 #### Claude Desktop
 
 macOS는 `~/Library/Application Support/Claude/claude_desktop_config.json`, Windows는 `%APPDATA%\Claude\claude_desktop_config.json`이며 구조는 같습니다. Claude Desktop은 프로젝트 디렉터리에서 서버를 시작하지 않으므로 `roll_designs`를 호출할 때 `out_dir`에 **절대 경로**를 넘기세요. `npx`를 찾지 못하면 `which npx`가 출력하는 경로를 `command`에 쓰세요.
@@ -126,7 +155,7 @@ macOS는 `~/Library/Application Support/Claude/claude_desktop_config.json`, Wind
 ```bash
 git clone https://github.com/qybaihe/hash-design.git ~/hash-design
 cd ~/hash-design && npm install && npm run build
-node ~/hash-design/packages/core/dist/bin.js skill install --target both --dir /path/to/your/project
+node ~/hash-design/packages/core/dist/bin.js skill install --dir /path/to/your/project
 claude mcp add hash-design -- node ~/hash-design/packages/core/dist/bin.js mcp
 ```
 
@@ -136,9 +165,21 @@ claude mcp add hash-design -- node ~/hash-design/packages/core/dist/bin.js mcp
 
 MCP 서버와 Skill을 설치했다면 에이전트에게 이렇게 요청하기만 하면 됩니다.
 
-> hash-design으로 "Fourth Lane Bakery"의 원페이지 사이트를 만들어 줘. 팩트: 화–일 7:00–19:00 영업, 월요일 휴무; 컨트리 브레드 ¥38; …
+> hash-design으로 "Fourth Lane Bakery"의 원페이지 사이트를 만들어 줘. 방향은 3개. 팩트: 화–일 7:00–19:00 영업, 월요일 휴무; 컨트리 브레드 ¥38; …
 
-에이전트는 롤을 실행하고, 브리프를 고정하고, 프리뷰 다섯 개를 렌더링하고, `design/hash-design/compare.html`을 작성한 다음, 멈추고 사용자가 번호로 답할 때까지 기다립니다. MCP 프롬프트를 지원하는 클라이언트에서는 `hash-design` 프롬프트(인수: `subject`, `facts`, `count`, `scenario`)로 같은 워크플로를 시작할 수도 있습니다. 슬라이드, 앱 화면, 대시보드, 포스터, 이메일을 요청하면 에이전트가 맞는 `scenario`를 넘깁니다.
+에이전트는 방향 N개를 롤로 뽑고(기본값 5개, `/hash-design 3`처럼 1–12 사이 수를 말하면 그 수만큼), 브리프를 고정한 뒤 정해진 짧은 형식으로 답하고 멈춥니다. 답은 롤의 언어(중국어 또는 영어)로 나오며, 다른 언어로 대화 중이면 에이전트가 번역합니다. 아래 예시는 재현할 수 있도록 seed를 썼습니다(실제 롤에서는 `true-random`으로 표시됩니다):
+
+```text
+**hash-design** · 3 directions for “Fourth Lane Bakery” · Web page · seed reply-demo
+
+1. **Caveat** / Literata — light paper, hue 330° · 5-column grid · anchor: initial · `ea849a45`
+2. **Hanken Grotesk** / Crimson Pro — light paper, hue 344° · 10-column grid · anchor: number · `f458a091`
+3. **Overpass** / Barlow Condensed — light paper, hue 234° · 5-column grid · anchor: grid-diagram · `a6b46334`
+
+Reply with a number to build that direction as the final page, **render** to see all 3 as previews side by side first, or **reroll** for a new set.
+```
+
+번호로 답하면 그 방향으로 만듭니다. `render`라고 답하면 방향마다 독립된 프리뷰와 `design/hash-design/compare.html`을 만들고, 같은 목록을 다시 보여 준 뒤 번호를 기다립니다. 답의 모든 항목은 매핑된 수치에서 그대로 읽은 것입니다([답장 프로토콜](docs/mcp-tools.md#reply-protocol), 영어). CLI에서는 `--format reply`로 출력합니다. MCP 프롬프트를 지원하는 클라이언트에서는 `hash-design` 프롬프트(인수: `subject`, `facts`, `count`, `scenario`)로 같은 워크플로를 시작할 수도 있습니다. 슬라이드, 앱 화면, 대시보드, 포스터, 이메일을 요청하면 에이전트가 맞는 `scenario`를 넘깁니다.
 
 ### CLI
 
@@ -146,13 +187,14 @@ MCP 서버와 Skill을 설치했다면 에이전트에게 이렇게 요청하기
 hash-design roll --subject "Fourth Lane Bakery" --facts-file facts.md --out design/hash-design   # 진짜 난수 방향 5개
 hash-design roll --subject "…" --light-only --brand "#c8102e" --format json                     # 제약 조건 지정
 hash-design roll --subject "Q3 review" --facts-file facts.md --scenario deck --out design/deck   # 페이지 대신 슬라이드
+hash-design roll --subject "…" --count 3 --out design/hash-design --format reply                 # 방향 3개 + 짧은 답
 hash-design brief <ref> [constraints]                                                            # 브리프 재현
 hash-design critique page.html --roll design/hash-design/roll.json --pick 3 --fail-under 80
 hash-design compare --roll design/hash-design/roll.json                                          # compare.html 작성
-hash-design skill install --target both                                                          # Skill 설치
+hash-design skill install                                                                        # Skill 설치
 ```
 
-`npx -y hash-design …`로 실행하거나, `npm install -g hash-design`으로 한 번 설치한 뒤 `hash-design …`을 입력하세요. 체크아웃에서는 `node packages/core/dist/bin.js …`입니다. `hash-design --help`는 모든 명령을 보여 주고, `hash-design <command> --help`(예: `hash-design roll --help`)는 해당 명령의 옵션을 출력합니다. 여기에는 제약 조건 플래그 `--light-only`, `--dark-only`, `--reduced-motion`, `--brand`, `--scenario`도 포함됩니다.
+`npx -y hash-design …`로 실행하거나, `npm install -g hash-design`으로 한 번 설치한 뒤 `hash-design …`을 입력하세요. 체크아웃에서는 `node packages/core/dist/bin.js …`입니다. `hash-design --help`는 모든 명령을 보여 주고, `hash-design <command> --help`(예: `hash-design roll --help`)는 해당 명령의 옵션을 출력합니다. 여기에는 제약 조건 플래그 `--light-only`, `--dark-only`, `--reduced-motion`, `--brand`, `--scenario`도 포함됩니다. `--count`/`-n`으로 N을 정합니다(1–12, 기본값 5. 방향마다 독립된 해시라서 제약 조건이 상한을 낮추지 않습니다).
 
 ### 라이브러리
 
@@ -172,21 +214,23 @@ console.log(report.score, report.adherence, report.findings);
 ### 업데이트
 
 ```bash
-npx -y hash-design@latest skill install --target both --dir .   # 복사한 SKILL.md 갱신
+npx -y hash-design@latest skill install --dir .   # 복사한 SKILL.md 갱신
 ```
 
-npx는 예전에 캐시한 사본을 계속 쓸 수 있습니다. `@latest`를 붙이면 최신 릴리스를 가져옵니다(`hash-design@0.2.0`처럼 버전을 고정할 수도 있습니다). MCP 서버는 에이전트가 시작될 때마다 npx로 실행되므로 릴리스 뒤에는 에이전트를 재시작하고, 오래된 사본이 계속 실행되면 MCP 명령에 `hash-design@latest`라고 쓰세요. clone에서 쓰는 경우: `git pull && npm install && npm run build`. 업데이트로 폰트 풀, 프리미티브 목록, 바이트 규칙이 바뀌면 이전 버전으로 롤한 ref는 그 버전이 있어야 재현됩니다([자주 묻는 질문](#자주-묻는-질문) 참고).
+npx는 예전에 캐시한 사본을 계속 쓸 수 있습니다. `@latest`를 붙이면 최신 릴리스를 가져옵니다(`hash-design@0.2.0`처럼 버전을 고정할 수도 있습니다). MCP 서버는 에이전트가 시작될 때마다 npx로 실행되므로 릴리스 뒤에는 에이전트를 재시작하고, 오래된 사본이 계속 실행되면 MCP 명령에 `hash-design@latest`라고 쓰세요. 이전 버전은 기본으로 `.claude/`와 `.cursor/`에 설치했습니다. 오래된 `.cursor/skills/` 사본은 `--target all`로 갱신하거나 지우세요. clone에서 쓰는 경우: `git pull && npm install && npm run build`. 업데이트로 폰트 풀, 프리미티브 목록, 바이트 규칙이 바뀌면 이전 버전으로 롤한 ref는 그 버전이 있어야 재현됩니다([자주 묻는 질문](#자주-묻는-질문) 참고).
 
 ## 작동 방식
 
 ```mermaid
 flowchart LR
-  A[팩트 시트] --> B[roll_designs<br/>5 × SHA-256, 진짜 난수]
+  A[팩트 시트] --> B[roll_designs<br/>N × SHA-256, 진짜 난수]
   B --> C[고정 바이트 규칙<br/>해시 하나 → 방향 하나]
-  C --> D[고정된 브리프 5개<br/>briefs/01…05.md]
-  D --> E[독립된 HTML 프리뷰 5개<br/>각자 자기 브리프만 봄]
+  C --> D[고정된 브리프 N개<br/>briefs/01…NN.md]
+  D --> R{짧은 답<br/>방향마다 한 줄}
+  R -->|render| E[독립된 HTML 프리뷰 N개<br/>각자 자기 브리프만 봄]
   E --> F[build_compare_page<br/>나란히 비교]
   F --> G{사용자가 선택}
+  R -->|번호| H
   G --> H[최종 페이지<br/>선택한 브리프로 제작]
   H --> I[critique_page<br/>금지 규칙 + 브리프 준수도]
 ```
@@ -289,12 +333,12 @@ MCP 도구 4개, 파라미터 공간, 그리고 모든 브리프에 들어가는
 
 ### MCP 도구
 
-| 도구                 | 하는 일                                                                                                                                                                                                                                        |
-| -------------------- | ---------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------- |
-| `roll_designs`       | `subject`, `facts`, `count`(기본값 5)와 선택 항목인 `seed`, `language`, `scenario`, 제약 조건을 받습니다. 해시, 매핑, 방향마다 브리프 하나씩을 반환합니다. `out_dir`을 주면 `roll.json`, `ROLL.md`, `briefs/*.md`를 디스크에 고정해 저장합니다 |
-| `get_brief`          | `ref`(64자리 hex 해시)와 같은 제약 조건으로 브리프를 Markdown 또는 JSON으로 재현합니다                                                                                                                                                         |
-| `critique_page`      | HTML 문자열이나 파일을 금지 규칙과 AI 템플릿 체크리스트에 비추어 채점합니다. `brief_ref` 또는 `roll_path` + `pick`을 주면 브리프와 시나리오 출력 약속의 준수도도 채점합니다                                                                    |
-| `build_compare_page` | `roll.json`으로 나란히 비교하는 `compare.html`을 만듭니다                                                                                                                                                                                      |
+| 도구                 | 하는 일                                                                                                                                                                                                                                                                         |
+| -------------------- | ------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------- |
+| `roll_designs`       | `subject`, `facts`, `count`(1–12, 기본값 5)와 선택 항목인 `seed`, `language`, `scenario`, 제약 조건을 받습니다. 해시, 매핑, 방향마다 브리프 하나씩, 그리고 사용자에게 보낼 답을 반환합니다. `out_dir`을 주면 `roll.json`, `ROLL.md`, `briefs/*.md`를 디스크에 고정해 저장합니다 |
+| `get_brief`          | `ref`(64자리 hex 해시)와 같은 제약 조건으로 브리프를 Markdown 또는 JSON으로 재현합니다                                                                                                                                                                                          |
+| `critique_page`      | HTML 문자열이나 파일을 금지 규칙과 AI 템플릿 체크리스트에 비추어 채점합니다. `brief_ref` 또는 `roll_path` + `pick`을 주면 브리프와 시나리오 출력 약속의 준수도도 채점합니다                                                                                                     |
+| `build_compare_page` | `roll.json`으로 나란히 비교하는 `compare.html`을 만듭니다                                                                                                                                                                                                                       |
 
 리소스: `hash-design://bans`, `hash-design://workflow`(Skill). 프롬프트: `hash-design`(`subject`, `facts`, `count`, `scenario`).
 
@@ -343,7 +387,7 @@ MCP 도구 4개, 파라미터 공간, 그리고 모든 브리프에 들어가는
 <details>
 <summary><strong>어떤 에이전트에서 쓸 수 있나요?</strong></summary>
 
-Skill은 Claude Code(`.claude/skills/`)와 Cursor(`.cursor/skills/`)에 설치할 수 있습니다. MCP 서버는 stdio로 동작하므로 어떤 MCP 클라이언트에서든 실행할 수 있고, [직접 설치](#직접-설치)에 Claude Code, Cursor, Claude Desktop 설정이 있습니다. Skill이 없어도 도구는 호출할 수 있지만, 프리뷰를 독립적으로 만들고 여러분이 고를 때까지 멈추라고 알려 주는 것이 없습니다.
+`SKILL.md` 폴더를 읽는 에이전트라면 쓸 수 있습니다. `skill install`은 `.claude/skills/`(Claude Code)와 `.agents/skills/`(Codex, Cursor, VS Code Copilot, Windsurf)에 쓰고, `--to`로 다른 폴더에도 넣을 수 있습니다. MCP 서버는 stdio로 동작하므로 어떤 MCP 클라이언트에서든 실행할 수 있고, [직접 설치](#직접-설치)에 Claude Code, Cursor, Codex, Claude Desktop 설정이 있으며, MCP가 없는 에이전트는 CLI를 쓰면 됩니다. Claude Code에서는 직접 확인했습니다. 설치한 Skill을 불러오고, 요청한 수만큼 방향을 롤하고, 답을 그대로 보냅니다. 다른 에이전트의 폴더 위치는 각자의 문서를 따른 것이며 직접 실행해 보지는 않았습니다. Skill이 없어도 도구는 호출할 수 있지만, 짧게 답하고 프리뷰를 독립적으로 만들고 여러분이 고를 때까지 멈추라고 알려 주는 것이 없습니다.
 
 </details>
 

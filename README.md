@@ -10,7 +10,7 @@
 
 ### One prompt, five design directions, picked by true-random SHA-256 hashes instead of the model.
 
-**Stop your coding agent from shipping the same Inter-and-purple-gradient page every time. hash-design rolls five directions, freezes each one as a design brief, renders five previews side by side and waits for you to pick one. Any direction can be rebuilt from its ref.**
+**Stop your coding agent from shipping the same Inter-and-purple-gradient page every time. hash-design rolls five directions (or any number from 1 to 12), freezes each one as a design brief, lists them one line each, renders them side by side when you ask, and builds the one you pick. Any direction can be rebuilt from its ref.**
 
 [![CI](https://img.shields.io/github/actions/workflow/status/qybaihe/hash-design/ci.yml?branch=main&style=flat-square&label=CI)](https://github.com/qybaihe/hash-design/actions/workflows/ci.yml)
 [![Live demo](https://img.shields.io/badge/live_demo-4_examples-e2401c?style=flat-square)](https://qybaihe.github.io/hash-design/)
@@ -24,7 +24,7 @@
 
 [Quick start](#quick-start) · [How it works](#how-it-works) · [Showcase](#showcase) · [Reference](#reference) · [FAQ](#faq)
 
-**Tell your agent** (Claude Code, Cursor):
+**Tell your agent** (Claude Code, Cursor, Codex, Windsurf, VS Code Copilot…):
 
 ```text
 Install the hash-design skill for this agent: run `npx -y hash-design skill install --dir .`
@@ -44,10 +44,10 @@ hash-design does not ask the model to have better taste. It **takes the choice a
 
 | Step       | What happens                                                                                                                                                                                                                                                                                                                                                       |
 | ---------- | ------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------ |
-| **Roll**   | Five hashes from system randomness (`crypto.randomBytes(32)` → SHA-256).                                                                                                                                                                                                                                                                                           |
+| **Roll**   | N hashes from system randomness (`crypto.randomBytes(32)` → SHA-256): five by default, 1–12 if you say so.                                                                                                                                                                                                                                                         |
 | **Map**    | Each hash **is** the direction. Fixed, reproducible rules read its bytes straight onto design parameters: hue and a contrast-solved palette, display and body faces from a flat font pool, case, tracking, type-scale ratio, density, grid, first-screen anchor, motif, corners and texture, motion timing, copy voice and one "twist". There is no style library. |
 | **Freeze** | Each direction becomes a **brief** with paste-ready tokens (font links, hex values, `tokens.css`, grid numbers, radius / border / shadow values) plus the global bans.                                                                                                                                                                                             |
-| **Render** | The agent's only job is to **execute** each brief faithfully: five independent HTML previews and a side-by-side compare page. Then it **stops and waits for you to pick a number**.                                                                                                                                                                                |
+| **Render** | The agent shows you **one line per direction and stops**. On `render` its only job is to **execute** each brief faithfully: independent HTML previews and a side-by-side compare page, then it **waits for you to pick a number**.                                                                                                                                 |
 | **Build**  | Once you pick, the agent builds the final page from that brief and checks it with `critique_page`.                                                                                                                                                                                                                                                                 |
 
 This is an external random constraint that breaks the model's default aesthetic. It has nothing to do with KV caches or sampling temperature. The model's taste is spent on execution quality (alignment, rhythm, detail, legibility), not on choosing a style.
@@ -60,7 +60,7 @@ It ships as an **Agent Skill** (when and in what order to run the workflow), an 
 
 ### Tell your agent
 
-Open Claude Code or Cursor in the project you want to design and paste:
+Open your coding agent (Claude Code, Cursor, Codex, Windsurf, VS Code Copilot…) in the project you want to design and paste:
 
 ```text
 Install the hash-design skill for this agent: run `npx -y hash-design skill install --dir .`
@@ -68,7 +68,7 @@ and register its MCP server with `npx -y hash-design mcp` (with hash-design 0.1.
 `npx -y hash-design-mcp@0.1.0`), following https://github.com/qybaihe/hash-design#quick-start.
 ```
 
-The agent copies the Skill into your project's `.claude/skills/` and `.cursor/skills/` and registers the MCP server (`claude mcp add` in Claude Code, `.cursor/mcp.json` in Cursor); nothing is cloned or built. Start a new session afterwards so the agent loads both, then [use it](#use-it). To run the commands yourself, follow the steps below.
+The agent copies the Skill into your project's `.claude/skills/` and `.agents/skills/` and registers the MCP server (`claude mcp add` in Claude Code, `.cursor/mcp.json` in Cursor, `codex mcp add` in Codex); nothing is cloned or built. Start a new session afterwards so the agent loads both, then [use it](#use-it). To run the commands yourself, follow the steps below.
 
 ### Install by hand
 
@@ -77,11 +77,22 @@ Requires Node.js ≥ 20, with npm (for `npx`).
 **Skill.** The Skill tells the agent when to use hash-design, in what order to call the MCP tools, how to render previews independently and when it must stop.
 
 ```bash
-npx -y hash-design skill install --target both --dir .      # this project: .claude/skills and .cursor/skills
-npx -y hash-design skill install --target claude --global   # or your home directory, for every project
+npx -y hash-design skill install --dir .                # this project: .claude/skills and .agents/skills
+npx -y hash-design skill install --global               # or your home directory, for every project
+npx -y hash-design skill install --to /path/to/skills   # or any other agent's skills folder
 ```
 
-`--target` is `claude`, `cursor` or `both` (the default). You can also copy [`skills/hash-design/SKILL.md`](skills/hash-design/SKILL.md) by hand to `.claude/skills/hash-design/SKILL.md` (Claude Code) or `.cursor/skills/hash-design/SKILL.md` (Cursor). The Skill body is written in Chinese; its description includes English trigger phrases.
+The default writes `.claude/skills/` (Claude Code) and `.agents/skills/` (Codex, Cursor, VS Code Copilot, Windsurf). `--target` picks folders instead (`claude`, `agents`, `cursor`, comma-separated, or `all`; `both` is `claude,cursor`), and the command prints the CLI and MCP commands that work where it ran. A skill is a folder with a `SKILL.md`, so copying [`skills/hash-design/SKILL.md`](skills/hash-design/SKILL.md) to `<skills folder>/hash-design/SKILL.md` works too. Where each agent looks, per its own docs:
+
+| Agent           | Project skills                                          | Personal skills                                                |
+| --------------- | ------------------------------------------------------- | -------------------------------------------------------------- |
+| Claude Code     | `.claude/skills/`                                       | `~/.claude/skills/`                                            |
+| Codex           | `.agents/skills/`                                       | `~/.agents/skills/`                                            |
+| Cursor          | `.agents/skills/`, `.cursor/skills/`, `.claude/skills/` | `~/.agents/skills/`, `~/.cursor/skills/`                       |
+| VS Code Copilot | `.github/skills/`, `.claude/skills/`, `.agents/skills/` | `~/.copilot/skills/`, `~/.claude/skills/`, `~/.agents/skills/` |
+| Windsurf        | `.agents/skills/`, `.windsurf/skills/`                  | `~/.agents/skills/`                                            |
+
+Agents that read both `.claude/skills/` and `.agents/skills/` (Cursor, VS Code Copilot) see two identical copies after the default install; use `--target agents` there if that bothers you. The Skill body is written in Chinese; its description includes English trigger phrases.
 
 **MCP server.** Register `npx -y hash-design mcp` with your agent; it runs the server on stdio.
 
@@ -115,6 +126,24 @@ With 0.1.0, the `args` are `["-y", "hash-design-mcp@0.1.0"]`.
 
 `.cursor/mcp.json` (project) or `~/.cursor/mcp.json` (global), with the same structure as the `.mcp.json` above.
 
+#### Codex
+
+```bash
+codex mcp add hash-design -- npx -y hash-design mcp
+```
+
+Or add it to `~/.codex/config.toml` (or a trusted project's `.codex/config.toml`):
+
+```toml
+[mcp_servers.hash-design]
+command = "npx"
+args = ["-y", "hash-design", "mcp"]
+```
+
+#### Other agents
+
+Any MCP client that starts stdio servers can run it: command `npx`, arguments `-y hash-design mcp`; put that in the client's own MCP config (Windsurf, VS Code and others each have one). Without MCP, the Skill falls back to the CLI, `npx -y hash-design roll …`, with the same options.
+
 #### Claude Desktop
 
 `~/Library/Application Support/Claude/claude_desktop_config.json` (macOS) or `%APPDATA%\Claude\claude_desktop_config.json` (Windows), same structure. Claude Desktop does not start the server in your project directory, so pass an **absolute path** as `out_dir` when calling `roll_designs`. If it cannot find `npx`, put the path that `which npx` prints in `command`.
@@ -126,7 +155,7 @@ For contributing, or to run a commit that is not released yet (see [CONTRIBUTING
 ```bash
 git clone https://github.com/qybaihe/hash-design.git ~/hash-design
 cd ~/hash-design && npm install && npm run build
-node ~/hash-design/packages/core/dist/bin.js skill install --target both --dir /path/to/your/project
+node ~/hash-design/packages/core/dist/bin.js skill install --dir /path/to/your/project
 claude mcp add hash-design -- node ~/hash-design/packages/core/dist/bin.js mcp
 ```
 
@@ -136,9 +165,21 @@ In a checkout the CLI is `packages/core/dist/bin.js`. `packages/mcp/dist/bin.js`
 
 With the MCP server and the Skill installed, just ask your agent:
 
-> Use hash-design to build a one-page site for "Fourth Lane Bakery". Facts: open Tue–Sun 7:00–19:00, closed Mondays; country loaf ¥38; …
+> Use hash-design to build a one-page site for "Fourth Lane Bakery", 3 directions. Facts: open Tue–Sun 7:00–19:00, closed Mondays; country loaf ¥38; …
 
-The agent rolls, freezes the briefs, renders five previews, writes `design/hash-design/compare.html`, then stops and waits for you to reply with a number. Clients that support MCP prompts can also start the same workflow with the `hash-design` prompt (arguments: `subject`, `facts`, `count`, `scenario`). Asking for slides, app screens, a dashboard, a poster or an email makes the agent pass the matching `scenario`.
+The agent rolls N directions (5 unless you name a number from 1 to 12, as in `/hash-design 3`), freezes the briefs and answers in a fixed, short shape, then stops. This one is seeded so it can be reproduced; a real roll says `true-random`:
+
+```text
+**hash-design** · 3 directions for “Fourth Lane Bakery” · Web page · seed reply-demo
+
+1. **Caveat** / Literata — light paper, hue 330° · 5-column grid · anchor: initial · `ea849a45`
+2. **Hanken Grotesk** / Crimson Pro — light paper, hue 344° · 10-column grid · anchor: number · `f458a091`
+3. **Overpass** / Barlow Condensed — light paper, hue 234° · 5-column grid · anchor: grid-diagram · `a6b46334`
+
+Reply with a number to build that direction as the final page, **render** to see all 3 as previews side by side first, or **reroll** for a new set.
+```
+
+A number builds that direction. `render` gets one independent preview per direction and `design/hash-design/compare.html`, then the same list again and a stop for your number. Every field of the reply is read off the mapped numbers ([reply protocol](docs/mcp-tools.md#reply-protocol)); the CLI prints it with `--format reply`. Clients that support MCP prompts can also start the same workflow with the `hash-design` prompt (arguments: `subject`, `facts`, `count`, `scenario`). Asking for slides, app screens, a dashboard, a poster or an email makes the agent pass the matching `scenario`.
 
 ### CLI
 
@@ -146,13 +187,14 @@ The agent rolls, freezes the briefs, renders five previews, writes `design/hash-
 hash-design roll --subject "Fourth Lane Bakery" --facts-file facts.md --out design/hash-design   # 5 true-random directions
 hash-design roll --subject "…" --light-only --brand "#c8102e" --format json                     # with constraints
 hash-design roll --subject "Q3 review" --facts-file facts.md --scenario deck --out design/deck   # a slide deck instead of a page
+hash-design roll --subject "…" --count 3 --out design/hash-design --format reply                 # 3 directions + the short reply
 hash-design brief <ref> [constraints]                                                            # reproduce a brief
 hash-design critique page.html --roll design/hash-design/roll.json --pick 3 --fail-under 80
 hash-design compare --roll design/hash-design/roll.json                                          # write compare.html
-hash-design skill install --target both                                                          # install the Skill
+hash-design skill install                                                                        # install the Skill
 ```
 
-Run it with `npx -y hash-design …`, or install it once with `npm install -g hash-design` and type `hash-design …`; in a checkout it is `node packages/core/dist/bin.js …`. `hash-design --help` lists every command, and `hash-design <command> --help` (for example `hash-design roll --help`) prints one command's options, including the constraint flags `--light-only`, `--dark-only`, `--reduced-motion`, `--brand` and `--scenario`.
+Run it with `npx -y hash-design …`, or install it once with `npm install -g hash-design` and type `hash-design …`; in a checkout it is `node packages/core/dist/bin.js …`. `hash-design --help` lists every command, and `hash-design <command> --help` (for example `hash-design roll --help`) prints one command's options, including the constraint flags `--light-only`, `--dark-only`, `--reduced-motion`, `--brand` and `--scenario`. `--count`/`-n` sets N (1–12, default 5); each direction is its own hash, so constraints never lower that.
 
 ### Library
 
@@ -172,21 +214,23 @@ Install it with `npm install hash-design` (ES module, Node.js ≥ 20; types incl
 ### Update
 
 ```bash
-npx -y hash-design@latest skill install --target both --dir .   # refresh the copied SKILL.md
+npx -y hash-design@latest skill install --dir .   # refresh the copied SKILL.md
 ```
 
-npx can keep using a copy it cached earlier; `@latest` makes it fetch the newest release (or pin one, such as `hash-design@0.2.0`). The MCP server is started through npx whenever the agent starts, so restart the agent after a release, and write `hash-design@latest` in its MCP command if an old copy keeps running. From a clone: `git pull && npm install && npm run build`. If an update changes the font pool, the primitive lists or the byte rules, refs rolled with the old version need that version to reproduce (see the [FAQ](#faq)).
+npx can keep using a copy it cached earlier; `@latest` makes it fetch the newest release (or pin one, such as `hash-design@0.2.0`). The MCP server is started through npx whenever the agent starts, so restart the agent after a release, and write `hash-design@latest` in its MCP command if an old copy keeps running. Older versions installed into `.claude/` and `.cursor/` by default; refresh an old `.cursor/skills/` copy with `--target all`, or delete it. From a clone: `git pull && npm install && npm run build`. If an update changes the font pool, the primitive lists or the byte rules, refs rolled with the old version need that version to reproduce (see the [FAQ](#faq)).
 
 ## How it works
 
 ```mermaid
 flowchart LR
-  A[Fact sheet] --> B[roll_designs<br/>5 × SHA-256, true random]
+  A[Fact sheet] --> B[roll_designs<br/>N × SHA-256, true random]
   B --> C[Fixed byte rules<br/>each hash → one direction]
-  C --> D[5 frozen briefs<br/>briefs/01…05.md]
-  D --> E[5 independent HTML previews<br/>each sees only its own brief]
+  C --> D[N frozen briefs<br/>briefs/01…NN.md]
+  D --> R{Short reply<br/>one line each}
+  R -->|render| E[N independent HTML previews<br/>each sees only its own brief]
   E --> F[build_compare_page<br/>side by side]
   F --> G{User picks}
+  R -->|number| H
   G --> H[Final page<br/>from the chosen brief]
   H --> I[critique_page<br/>bans + brief adherence]
 ```
@@ -289,12 +333,12 @@ The four MCP tools, the parameter space and the 14 bans every brief carries.
 
 ### MCP tools
 
-| Tool                 | What it does                                                                                                                                                                                                                                    |
-| -------------------- | ----------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------- |
-| `roll_designs`       | Takes `subject`, `facts`, `count` (default 5), optional `seed`, `language`, `scenario` and constraints. Returns the hashes, the mapping and one brief per direction. With `out_dir` it freezes `roll.json`, `ROLL.md` and `briefs/*.md` to disk |
-| `get_brief`          | Reproduces a brief from a `ref` (the 64-hex hash) plus the same constraints, as Markdown or JSON                                                                                                                                                |
-| `critique_page`      | Scores an HTML string or file against the bans and the AI-template checklist; with `brief_ref` or `roll_path` + `pick` it also scores adherence to the brief and the scenario's output contract                                                 |
-| `build_compare_page` | Builds the side-by-side `compare.html` from a `roll.json`                                                                                                                                                                                       |
+| Tool                 | What it does                                                                                                                                                                                                                                                                      |
+| -------------------- | --------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------- |
+| `roll_designs`       | Takes `subject`, `facts`, `count` (1–12, default 5), optional `seed`, `language`, `scenario` and constraints. Returns the hashes, the mapping, one brief per direction and the reply to send the user. With `out_dir` it freezes `roll.json`, `ROLL.md` and `briefs/*.md` to disk |
+| `get_brief`          | Reproduces a brief from a `ref` (the 64-hex hash) plus the same constraints, as Markdown or JSON                                                                                                                                                                                  |
+| `critique_page`      | Scores an HTML string or file against the bans and the AI-template checklist; with `brief_ref` or `roll_path` + `pick` it also scores adherence to the brief and the scenario's output contract                                                                                   |
+| `build_compare_page` | Builds the side-by-side `compare.html` from a `roll.json`                                                                                                                                                                                                                         |
 
 Resources: `hash-design://bans`, `hash-design://workflow` (the Skill). Prompt: `hash-design` (`subject`, `facts`, `count`, `scenario`).
 
@@ -343,7 +387,7 @@ Every brief carries these 14 bans, and `critique_page` detects each one automati
 <details>
 <summary><strong>Which agents can use it?</strong></summary>
 
-The Skill installs into Claude Code (`.claude/skills/`) and Cursor (`.cursor/skills/`). The MCP server speaks stdio, so any MCP client can start it; [Install by hand](#install-by-hand) shows Claude Code, Cursor and Claude Desktop. Without the Skill an agent can still call the tools, but nothing tells it to render the previews independently and stop for your pick.
+Any agent that loads `SKILL.md` folders: `skill install` writes `.claude/skills/` (Claude Code) and `.agents/skills/` (Codex, Cursor, VS Code Copilot, Windsurf), and `--to` covers any other folder. The MCP server speaks stdio, so any MCP client can start it; [Install by hand](#install-by-hand) shows Claude Code, Cursor, Codex and Claude Desktop, and the CLI covers agents without MCP. Checked with Claude Code: it loads the installed skill, rolls the number of directions you ask for and sends the reply as is. The folders for the other agents come from their own documentation, not from a test run. Without the Skill an agent can still call the tools, but nothing tells it to reply briefly, render the previews independently and stop for your pick.
 
 </details>
 
