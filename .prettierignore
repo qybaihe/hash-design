@@ -9,3 +9,4 @@ package-lock.json
 .agents/skills
 skills
 packages/core/test/fixtures
+site/dist

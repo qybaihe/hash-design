@@ -13,3 +13,4 @@ packages/core/skill/
 .agents/skills/
 .cursor/skills/
 packages/*/LICENSE
+site/dist/

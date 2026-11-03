@@ -15,7 +15,7 @@
   "scripts": {
     "build": "tsc -b packages/core packages/mcp",
     "clean": "rm -rf packages/*/dist packages/*/*.tsbuildinfo",
-    "typecheck": "tsc -b packages/core packages/mcp && tsc -p tsconfig.test.json --noEmit",
+    "typecheck": "tsc -b packages/core packages/mcp && tsc -p tsconfig.test.json --noEmit && tsc -p site/tsconfig.json",
     "lint": "eslint .",
     "format": "prettier --write .",
     "format:check": "prettier --check .",
@@ -32,6 +32,9 @@
     "hero": "node scripts/hero.mjs",
     "hero:gif": "node scripts/hero-gif.mjs",
     "showcase": "node scripts/showcase.mjs",
+    "site:dev": "vite --config site/vite.config.ts",
+    "site:build": "vite build --config site/vite.config.ts",
+    "site:preview": "vite preview --config site/vite.config.ts",
     "release:check": "node scripts/release-check.mjs --pack",
     "release:version": "node scripts/release-version.mjs"
   },
