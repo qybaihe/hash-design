@@ -1,0 +1,608 @@
+<!-- hash-design #3 · 1cd7911b · ref 1cd7911b8574fe1900d372c843e42efbd961ed3c5dbc6436b17d4b2c7bbc2304 -->
+<!doctype html>
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>Sluice, a self-hosted inbox for webhooks</title>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Permanent+Marker&family=IBM+Plex+Sans+Condensed:wght@400;500;600&family=Cousine:wght@400;700&display=swap">
+<!--
+  Anchor note: the brief puts a 90%-wide number "centred at 7% from the left edge".
+  Taken literally, 38% of the figure would sit off-canvas and the visible digits would read as a
+  different number than the fact. Nearest literal reading used here: the number keeps its 90% width
+  and -1.5deg rotation and is hung from the left edge of the first screen (it starts at the edge,
+  as far left as it can go while still showing the whole figure "1,800").
+
+  Twist note: "footer · invert · 4". The brief states the reading: paper-coloured on ink. Applied
+  literally to the footer: ink field, paper text, the dot screen and the half-circle motif inverted
+  with it. The amount (4) has no further meaning for a colour inversion.
+-->
+<style>
+/* hash-design hash-design/v2 · 1cd7911b */
+:root {
+  --paper: #ece7e6;
+  --ink: #403531;
+  --muted: #72645f;
+  --accent: #ce5f34;
+  --on-accent: #000000;
+  --accent2: #0093a1;
+  --on-accent2: #000000;
+  --rule: #bbafab;
+  --panel: #e2d7d3;
+
+  --font-display: "Permanent Marker", "Marker Felt", cursive;
+  --font-body: "IBM Plex Sans Condensed", "Arial Narrow", sans-serif;
+  --font-mono: Cousine, "Courier New", Courier, monospace;
+  --display-weight: 400;
+  --display-tracking: 0.159em;
+
+  --step-n2: 0.544rem; /* 8.7px */
+  --step-n1: 0.714rem; /* 11.4px */
+  --step-0: 0.938rem; /* 15px */
+  --step-1: 1.231rem; /* 19.7px */
+  --step-2: 1.616rem; /* 25.9px */
+  --step-3: 2.122rem; /* 34px */
+  --step-4: 2.786rem; /* 44.6px */
+  --step-5: 3.658rem; /* 58.5px */
+  --step-6: 4.804rem; /* 76.9px */
+  --step-7: 6.307rem; /* 100.9px */
+  --leading: 1.41;
+
+  --space-1: 5px;
+  --space-2: 10px;
+  --space-3: 15px;
+  --space-4: 20px;
+  --space-5: 25px;
+  --space-6: 30px;
+  --space-7: 35px;
+  --space-8: 40px;
+  --section-gap: 61px;
+  --max-width: 1360px;
+  --columns: 10;
+  --gutter: 15px;
+
+  --radius: 4px;
+  --border: 3px dashed var(--rule);
+  --shadow: none;
+
+  --motion-duration: 340ms;
+  --motion-easing: cubic-bezier(0.64, 0.2, 0.63, 1);
+}
+
+html { font-size: 93.8%; }
+body { background: var(--paper); color: var(--ink); font-family: var(--font-body); line-height: var(--leading); }
+@media (prefers-reduced-motion: reduce) {
+  *, *::before, *::after { animation: none !important; transition: none !important; }
+}
+
+/* ---------- base ---------- */
+*, *::before, *::after { box-sizing: border-box; }
+html, body { margin: 0; }
+body {
+  position: relative;
+  font-size: var(--step-0);
+  background-image: radial-gradient(color-mix(in srgb, var(--ink) 9.6%, transparent) 1px, transparent 1.5px);
+  background-size: 6px 6px;
+  overflow-x: clip;
+}
+h1, h2, h3, p, dl, dd, ul, figure { margin: 0; }
+code, kbd, pre { font-family: var(--font-mono); }
+button { font: inherit; }
+a { color: inherit; }
+
+.display {
+  font-family: var(--font-display);
+  font-weight: var(--display-weight);
+  letter-spacing: var(--display-tracking);
+  line-height: 1.15;
+}
+
+/* ---------- motif: half circles along both page edges, 20px, at 43deg ---------- */
+.edge {
+  position: absolute;
+  top: 0;
+  bottom: 0;
+  width: 20px;
+  height: 100%;
+  pointer-events: none;
+  z-index: 3;
+}
+.edge--l { left: 0; }
+.edge--r { right: 0; }
+
+/* ---------- 10-column grid ---------- */
+.wrap {
+  max-width: var(--max-width);
+  margin: 0 auto;
+  padding-inline: var(--space-8);
+  display: grid;
+  grid-template-columns: repeat(var(--columns), minmax(0, 1fr));
+  column-gap: var(--gutter);
+}
+.side { grid-column: 1 / 6; }
+.text { grid-column: 6 / 11; }
+
+/* ---------- bands: 8 sections alternating paper / panel ---------- */
+.band { padding-block: calc(var(--section-gap) / 2) calc(var(--section-gap) / 2 + 1px); }
+.band:nth-of-type(even) {
+  background-color: var(--panel);
+  background-image: radial-gradient(color-mix(in srgb, var(--ink) 9.6%, transparent) 1px, transparent 1.5px);
+  background-size: 6px 6px;
+}
+
+/* ---------- first screen ---------- */
+.first {
+  min-height: 55vh;
+  display: flex;
+  flex-direction: column;
+  justify-content: space-between;
+  padding-block: var(--space-4) var(--space-6);
+  overflow: clip;
+}
+.first > .wrap { width: 100%; }
+.masthead { align-items: baseline; row-gap: var(--space-1); }
+.masthead h1 { grid-column: 1 / 6; font-size: var(--step-2); }
+.masthead h1 span {
+  display: block;
+  font-family: var(--font-body);
+  font-size: var(--step-0);
+  font-weight: 500;
+  letter-spacing: 0;
+  color: var(--muted);
+}
+.masthead .meta {
+  grid-column: 6 / 11;
+  justify-self: end;
+  font-family: var(--font-mono);
+  font-size: var(--step-n1);
+  color: var(--muted);
+  text-align: right;
+}
+
+.anchor {
+  font-family: var(--font-display);
+  font-weight: var(--display-weight);
+  letter-spacing: var(--display-tracking);
+  color: var(--accent);
+  width: 90vw;
+  margin: var(--space-2) 0 0 26px;
+  font-size: 27.5vw;
+  line-height: 0.8;
+  white-space: nowrap;
+  transform: rotate(-1.5deg);
+  transform-origin: 7% 60%;
+  animation: anchor-in var(--motion-duration) var(--motion-easing) both;
+}
+@keyframes anchor-in {
+  from { transform: translateX(-6vw) rotate(-1.5deg); }
+  to { transform: translateX(0) rotate(-1.5deg); }
+}
+
+.caption h2 { font-size: var(--step-2); }
+.caption p { max-width: 34em; margin-top: var(--space-1); }
+
+/* ---------- section furniture ---------- */
+.label {
+  font-family: var(--font-mono);
+  font-size: var(--step-n1);
+  text-transform: uppercase;
+  letter-spacing: 0.08em;
+  color: var(--muted);
+}
+.text h2 { font-size: var(--step-3); margin-bottom: var(--space-3); }
+.text p { max-width: 38em; }
+.text p + p { margin-top: var(--space-2); }
+
+/* commands */
+.cmds { margin-top: var(--space-5); display: grid; gap: var(--space-2); }
+.cmd {
+  display: grid;
+  grid-template-columns: auto minmax(0, 1fr) auto;
+  align-items: center;
+  gap: var(--space-3);
+  padding: var(--space-2) var(--space-2) var(--space-2) var(--space-3);
+  border: var(--border);
+  border-radius: var(--radius);
+  background: var(--paper);
+}
+.cmd .label { min-width: 4.5em; }
+.cmd code { font-size: var(--step-0); overflow-wrap: anywhere; }
+.copy {
+  border: 0;
+  border-radius: var(--radius);
+  background: var(--accent2);
+  color: var(--on-accent2);
+  font-weight: 600;
+  font-size: var(--step-n1);
+  letter-spacing: 0.06em;
+  text-transform: uppercase;
+  padding: var(--space-1) var(--space-2);
+  cursor: pointer;
+  transition: transform var(--motion-duration) var(--motion-easing);
+}
+.copy:hover, .copy:focus-visible { transform: translateY(-3px); }
+.copy:focus-visible { outline: 2px solid var(--ink); outline-offset: 2px; }
+.copy.is-done { transform: translateX(5px); }
+
+/* platform matrix */
+.matrix {
+  margin-top: var(--space-5);
+  border-collapse: separate;
+  border-spacing: 0;
+  border: var(--border);
+  border-radius: var(--radius);
+  font-size: var(--step-0);
+}
+.matrix th, .matrix td { padding: var(--space-1) var(--space-4); text-align: left; }
+.matrix thead th { font-family: var(--font-mono); font-weight: 400; font-size: var(--step-n1); color: var(--muted); }
+.matrix tbody th { font-weight: 600; }
+.matrix td svg { display: block; }
+.matrix caption { caption-side: bottom; text-align: left; padding-top: var(--space-1); font-size: var(--step-n1); color: var(--muted); }
+
+/* definition rows */
+.rows { margin-top: var(--space-5); border-top: var(--border); }
+.rows div {
+  display: grid;
+  grid-template-columns: minmax(0, 2fr) minmax(0, 3fr);
+  gap: var(--space-3);
+  padding-block: var(--space-2);
+  border-bottom: var(--border);
+  transition: transform var(--motion-duration) var(--motion-easing);
+}
+.rows div:hover { transform: translateX(5px); }
+.rows dt { color: var(--muted); }
+.rows dd { font-weight: 500; }
+.rows dd code { font-weight: 400; }
+
+/* side graphics */
+.side { position: relative; }
+.side .label { display: block; margin-bottom: var(--space-2); }
+.side svg { display: block; width: 100%; max-width: 520px; height: auto; }
+.side .big {
+  font-family: var(--font-display);
+  letter-spacing: var(--display-tracking);
+  color: var(--ink);
+  font-size: var(--step-6);
+  line-height: 1;
+}
+.struck { display: grid; gap: var(--space-1); }
+.struck span {
+  position: relative;
+  display: inline-block;
+  justify-self: start;
+  font-family: var(--font-display);
+  letter-spacing: var(--display-tracking);
+  font-size: var(--step-4);
+  line-height: 1.1;
+  color: var(--muted);
+}
+.struck span svg { position: absolute; left: -4%; top: 38%; width: 108%; height: 0.5em; overflow: visible; }
+.struck span:nth-child(2) { margin-left: 1.2em; font-size: var(--step-3); }
+.struck span:nth-child(3) { margin-left: 0.4em; font-size: var(--step-5); }
+
+.origin-name { font-family: var(--font-display); letter-spacing: var(--display-tracking); font-size: var(--step-4); line-height: 1.05; transform: rotate(-1.5deg); transform-origin: left center; }
+
+/* ---------- footer: the twist, inverted ---------- */
+.foot {
+  background-color: var(--ink);
+  color: var(--paper);
+  background-image: radial-gradient(color-mix(in srgb, var(--paper) 9.6%, transparent) 1px, transparent 1.5px);
+  background-size: 6px 6px;
+  padding-block: var(--space-8) var(--space-8);
+  position: relative;
+  z-index: 4;
+}
+.foot .wordmark { grid-column: 1 / 6; font-family: var(--font-display); letter-spacing: var(--display-tracking); font-size: var(--step-5); line-height: 1; }
+.foot .text p { color: var(--paper); }
+.foot .text p + p { margin-top: var(--space-1); }
+.foot code { font-size: var(--step-0); }
+.foot .fine { font-family: var(--font-mono); font-size: var(--step-n1); letter-spacing: 0.04em; }
+.foot-edge { position: absolute; top: 0; bottom: 0; width: 20px; height: 100%; }
+.foot-edge--l { left: 0; }
+.foot-edge--r { right: 0; }
+
+.nw { white-space: nowrap; }
+.foot .text p.fine { max-width: none; }
+.sr { position: absolute; width: 1px; height: 1px; overflow: hidden; clip: rect(0 0 0 0); white-space: nowrap; }
+
+/* ---------- below 640px: one column; bands and anchor stay ---------- */
+@media (max-width: 639px) {
+  .wrap { grid-template-columns: minmax(0, 1fr); padding-inline: 28px; }
+  .side, .text, .masthead h1, .masthead .meta, .foot .wordmark { grid-column: 1 / -1; }
+  .masthead .meta { justify-self: start; text-align: left; }
+  .side { margin-bottom: var(--space-4); }
+  .side .big { font-size: var(--step-4); white-space: nowrap; }
+  .text h2 { font-size: var(--step-2); }
+  .struck span { font-size: var(--step-3); }
+  .struck span:nth-child(2) { font-size: var(--step-2); }
+  .struck span:nth-child(3) { font-size: var(--step-4); }
+  .cmd { grid-template-columns: minmax(0, 1fr) auto; }
+  .cmd .label { grid-column: 1 / -1; }
+  .matrix th, .matrix td { padding: var(--space-1) var(--space-3); }
+  .first { min-height: 55vh; }
+  .anchor { margin-top: var(--space-6); }
+  .foot .wordmark { font-size: var(--step-4); margin-bottom: var(--space-3); }
+}
+
+@media (prefers-reduced-motion: reduce) {
+  .anchor { animation: none; transform: rotate(-1.5deg); }
+  .copy:hover, .copy:focus-visible, .copy.is-done, .rows div:hover { transform: none; }
+}
+</style>
+</head>
+<body>
+
+<!-- motif: half circles, 20px, 43deg, along both page edges -->
+<svg class="edge edge--l" aria-hidden="true" focusable="false">
+  <defs>
+    <pattern id="hc-l" width="20" height="30" patternUnits="userSpaceOnUse">
+      <path d="M0 15 A10 10 0 0 1 20 15 Z" transform="rotate(43 10 15)" style="fill: var(--accent)"/>
+    </pattern>
+  </defs>
+  <rect width="100%" height="100%" fill="url(#hc-l)"/>
+</svg>
+<svg class="edge edge--r" aria-hidden="true" focusable="false">
+  <defs>
+    <pattern id="hc-r" width="20" height="30" patternUnits="userSpaceOnUse" y="15">
+      <path d="M0 15 A10 10 0 0 0 20 15 Z" transform="rotate(43 10 15)" style="fill: var(--rule)"/>
+    </pattern>
+  </defs>
+  <rect width="100%" height="100%" fill="url(#hc-r)"/>
+</svg>
+
+<main>
+
+  <!-- 1 · first screen: the anchor -->
+  <section class="band first" aria-labelledby="t-name">
+    <div class="wrap masthead">
+      <h1 class="display" id="t-name">Sluice <span>A self-hosted inbox for webhooks</span></h1>
+      <p class="meta">Version 0.9.2 · released 14 October 2026 · MIT licence</p>
+    </div>
+
+    <p class="anchor" aria-describedby="t-anchor">1,800</p>
+
+    <div class="wrap caption">
+      <div class="text">
+        <h2 class="display" id="t-anchor">Deliveries per second</h2>
+        <p>That figure comes from our own benchmark, run on a <span class="nw">2-vCPU VM</span>, and we quote it only as that.</p>
+      </div>
+    </div>
+  </section>
+
+  <!-- 2 · what it does + install -->
+  <section class="band" aria-labelledby="t-url">
+    <div class="wrap">
+      <div class="side">
+        <span class="label">What it does</span>
+        <svg viewBox="0 0 520 150" role="img" aria-label="A webhook arrives at the public URL, is stored, then forwarded to your service">
+          <g style="fill: none; stroke: var(--ink); stroke-width: 3; stroke-linecap: round">
+            <path d="M10 75 H150" />
+            <path d="M330 75 H500" />
+            <path d="M488 63 L502 75 L488 87" />
+            <path d="M138 63 L152 75 L138 87" />
+          </g>
+          <path d="M170 75 A70 70 0 0 1 310 75 Z" style="fill: var(--panel); stroke: var(--ink); stroke-width: 3; stroke-dasharray: 9 6" />
+          <path d="M205 75 A35 35 0 0 1 275 75 Z" style="fill: var(--accent)" />
+          <g style="font-family: var(--font-body); font-size: 17px; fill: var(--ink)">
+            <text x="10" y="110">public URL</text>
+            <text x="198" y="110">stored delivery</text>
+            <text x="368" y="110">your service</text>
+          </g>
+        </svg>
+      </div>
+      <div class="text">
+        <h2 class="display" id="t-url">A public URL in front of your service</h2>
+        <p>We give you a public URL for webhooks, store every delivery, and forward it to your local or internal service.</p>
+        <p>The first line below installs Sluice; the second starts it and forwards each delivery to localhost:3000.</p>
+        <div class="cmds">
+          <div class="cmd">
+            <span class="label">Install</span>
+            <code id="c-install">curl -fsSL <wbr>https://sluice.example/<wbr>install.sh | sh</code>
+            <button class="copy" type="button" data-copy="c-install">Copy</button>
+          </div>
+          <div class="cmd">
+            <span class="label">Start</span>
+            <code id="c-start">sluice serve --forward http://localhost:3000</code>
+            <button class="copy" type="button" data-copy="c-start">Copy</button>
+          </div>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <!-- 3 · binary + storage -->
+  <section class="band" aria-labelledby="t-bin">
+    <div class="wrap">
+      <div class="side">
+        <span class="label">Size of the binary</span>
+        <p class="big">11 MB</p>
+      </div>
+      <div class="text">
+        <h2 class="display" id="t-bin">One static binary, one SQLite file</h2>
+        <p>Sluice is one static binary of about 11 MB, built for Linux, macOS and Windows on amd64 and arm64.</p>
+        <p>We keep every delivery in a single SQLite file, so there is no Redis, no Postgres and no queue to run.</p>
+        <table class="matrix">
+          <caption>A filled half circle marks a build we ship.</caption>
+          <thead>
+            <tr><th scope="col"><span class="sr">System</span></th><th scope="col">amd64</th><th scope="col">arm64</th></tr>
+          </thead>
+          <tbody>
+            <tr><th scope="row">Linux</th>
+              <td><svg width="20" height="20" viewBox="0 0 20 20" role="img" aria-label="available"><path d="M0 10 A10 10 0 0 1 20 10 Z" transform="rotate(43 10 10)" style="fill: var(--accent)"/></svg></td>
+              <td><svg width="20" height="20" viewBox="0 0 20 20" role="img" aria-label="available"><path d="M0 10 A10 10 0 0 1 20 10 Z" transform="rotate(43 10 10)" style="fill: var(--accent)"/></svg></td></tr>
+            <tr><th scope="row">macOS</th>
+              <td><svg width="20" height="20" viewBox="0 0 20 20" role="img" aria-label="available"><path d="M0 10 A10 10 0 0 1 20 10 Z" transform="rotate(43 10 10)" style="fill: var(--accent)"/></svg></td>
+              <td><svg width="20" height="20" viewBox="0 0 20 20" role="img" aria-label="available"><path d="M0 10 A10 10 0 0 1 20 10 Z" transform="rotate(43 10 10)" style="fill: var(--accent)"/></svg></td></tr>
+            <tr><th scope="row">Windows</th>
+              <td><svg width="20" height="20" viewBox="0 0 20 20" role="img" aria-label="available"><path d="M0 10 A10 10 0 0 1 20 10 Z" transform="rotate(43 10 10)" style="fill: var(--accent)"/></svg></td>
+              <td><svg width="20" height="20" viewBox="0 0 20 20" role="img" aria-label="available"><path d="M0 10 A10 10 0 0 1 20 10 Z" transform="rotate(43 10 10)" style="fill: var(--accent)"/></svg></td></tr>
+          </tbody>
+        </table>
+      </div>
+    </div>
+  </section>
+
+  <!-- 4 · retries + replay -->
+  <section class="band" aria-labelledby="t-retry">
+    <div class="wrap">
+      <div class="side">
+        <span class="label">Exponential backoff, schematic</span>
+        <svg viewBox="0 0 520 110" role="img" aria-label="Retry attempts drawn as half circles with growing gaps, up to the 72-hour limit">
+          <path d="M10 70 H500" style="stroke: var(--ink); stroke-width: 3; fill: none" />
+          <path d="M500 52 V88" style="stroke: var(--ink); stroke-width: 3; stroke-dasharray: 5 4; fill: none" />
+          <g style="fill: var(--accent)">
+            <path d="M10 70 A10 10 0 0 1 30 70 Z" />
+            <path d="M36 70 A10 10 0 0 1 56 70 Z" />
+            <path d="M70 70 A10 10 0 0 1 90 70 Z" />
+            <path d="M120 70 A10 10 0 0 1 140 70 Z" />
+            <path d="M200 70 A10 10 0 0 1 220 70 Z" />
+            <path d="M330 70 A10 10 0 0 1 350 70 Z" />
+          </g>
+          <g style="font-family: var(--font-body); font-size: 17px; fill: var(--ink)">
+            <text x="10" y="100">first forward fails</text>
+            <text x="500" y="40" text-anchor="end">72 hours</text>
+          </g>
+        </svg>
+      </div>
+      <div class="text">
+        <h2 class="display" id="t-retry">Retries and replay</h2>
+        <p>When a forward fails, we retry it with exponential backoff for up to 72 hours.</p>
+        <p>Any stored delivery can go to your service again with one command and its delivery ID.</p>
+        <div class="cmds">
+          <div class="cmd">
+            <span class="label">Replay</span>
+            <code id="c-replay">sluice replay &lt;delivery-id&gt;</code>
+            <button class="copy" type="button" data-copy="c-replay">Copy</button>
+          </div>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <!-- 5 · signatures -->
+  <section class="band" aria-labelledby="t-sig">
+    <div class="wrap">
+      <div class="side">
+        <span class="label">Age limit</span>
+        <p class="big">5 minutes</p>
+      </div>
+      <div class="text">
+        <h2 class="display" id="t-sig">Signature checks and an age limit</h2>
+        <p>We verify HMAC-SHA256 signatures on deliveries and reject any delivery that is older than 5 minutes.</p>
+        <dl class="rows">
+          <div><dt>Signature scheme</dt><dd>HMAC-SHA256</dd></div>
+          <div><dt>Oldest delivery accepted</dt><dd>5 minutes</dd></div>
+        </dl>
+      </div>
+    </div>
+  </section>
+
+  <!-- 6 · web UI + retention -->
+  <section class="band" aria-labelledby="t-ui">
+    <div class="wrap">
+      <div class="side">
+        <span class="label">Port</span>
+        <p class="big">8081</p>
+      </div>
+      <div class="text">
+        <h2 class="display" id="t-ui">The web UI and its search</h2>
+        <p>Our web UI runs on port 8081, where you can search deliveries by path, header or body text.</p>
+        <p>We keep deliveries for 30 days by default, and you can set a different period with --retain.</p>
+        <dl class="rows">
+          <div><dt>Search by</dt><dd>Path, header or body text</dd></div>
+          <div><dt>Kept by default</dt><dd>30 days</dd></div>
+          <div><dt>Change the period</dt><dd><code>--retain</code></dd></div>
+        </dl>
+      </div>
+    </div>
+  </section>
+
+  <!-- 7 · nothing hosted -->
+  <section class="band" aria-labelledby="t-none">
+    <div class="wrap">
+      <div class="side">
+        <div class="struck" aria-hidden="true">
+          <span>Hosted service<svg viewBox="0 0 100 10" preserveAspectRatio="none"><path d="M0 7 C30 2 60 9 100 3" style="fill: none; stroke: var(--ink); stroke-width: 3; vector-effect: non-scaling-stroke"/></svg></span>
+          <span>Account<svg viewBox="0 0 100 10" preserveAspectRatio="none"><path d="M0 4 C35 8 70 1 100 6" style="fill: none; stroke: var(--ink); stroke-width: 3; vector-effect: non-scaling-stroke"/></svg></span>
+          <span>Telemetry<svg viewBox="0 0 100 10" preserveAspectRatio="none"><path d="M0 6 C25 3 65 8 100 2" style="fill: none; stroke: var(--ink); stroke-width: 3; vector-effect: non-scaling-stroke"/></svg></span>
+        </div>
+      </div>
+      <div class="text">
+        <h2 class="display" id="t-none">No hosted service, no account, no telemetry</h2>
+        <p>Sluice runs only where you install it, because we offer no hosted service and ask for no account.</p>
+        <p>We collect no telemetry, and there is nothing to sign up for before you start the binary.</p>
+      </div>
+    </div>
+  </section>
+
+  <!-- 8 · origin -->
+  <section class="band" aria-labelledby="t-origin">
+    <div class="wrap">
+      <div class="side">
+        <span class="label">Maintainer</span>
+        <p class="origin-name">Ines Okafor</p>
+      </div>
+      <div class="text">
+        <h2 class="display" id="t-origin">Origin, licence and contributors</h2>
+        <p>Ines Okafor started Sluice in 2023, after losing a weekend of payment webhooks, and she maintains it.</p>
+        <p>We write it in Go and publish it under the MIT licence; 41 contributors have worked on it.</p>
+        <dl class="rows">
+          <div><dt>Current version</dt><dd>0.9.2, released 14 October 2026</dd></div>
+          <div><dt>Language and licence</dt><dd>Go, MIT</dd></div>
+          <div><dt>Contributors</dt><dd>41</dd></div>
+        </dl>
+      </div>
+    </div>
+  </section>
+
+</main>
+
+<!-- twist: the footer, inverted, paper-coloured on ink -->
+<footer class="foot" aria-label="Sluice">
+  <svg class="foot-edge foot-edge--l" aria-hidden="true" focusable="false">
+    <defs>
+      <pattern id="hc-fl" width="20" height="30" patternUnits="userSpaceOnUse">
+        <path d="M0 15 A10 10 0 0 1 20 15 Z" transform="rotate(43 10 15)" style="fill: var(--paper)"/>
+      </pattern>
+    </defs>
+    <rect width="100%" height="100%" fill="url(#hc-fl)"/>
+  </svg>
+  <svg class="foot-edge foot-edge--r" aria-hidden="true" focusable="false">
+    <defs>
+      <pattern id="hc-fr" width="20" height="30" patternUnits="userSpaceOnUse" y="15">
+        <path d="M0 15 A10 10 0 0 0 20 15 Z" transform="rotate(43 10 15)" style="fill: var(--paper)"/>
+      </pattern>
+    </defs>
+    <rect width="100%" height="100%" fill="url(#hc-fr)"/>
+  </svg>
+  <div class="wrap">
+    <p class="wordmark">Sluice</p>
+    <div class="text">
+      <p>A self-hosted inbox for webhooks, in one binary, with one SQLite file and nothing hosted by us.</p>
+      <p><code>curl -fsSL https://sluice.example/install.sh | sh</code></p>
+      <p class="fine">Version 0.9.2 · Go · MIT licence · maintained by Ines Okafor</p>
+    </div>
+  </div>
+</footer>
+
+<script>
+  document.querySelectorAll('[data-copy]').forEach(function (btn) {
+    btn.addEventListener('click', function () {
+      var text = document.getElementById(btn.getAttribute('data-copy')).textContent;
+      var done = function (label) {
+        btn.textContent = label;
+        btn.classList.add('is-done');
+        setTimeout(function () { btn.textContent = 'Copy'; btn.classList.remove('is-done'); }, 1600);
+      };
+      if (navigator.clipboard && navigator.clipboard.writeText) {
+        navigator.clipboard.writeText(text).then(function () { done('Copied'); }, function () { done('Select it'); });
+      } else {
+        done('Select it');
+      }
+    });
+  });
+</script>
+</body>
+</html>

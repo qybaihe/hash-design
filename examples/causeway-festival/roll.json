@@ -1,0 +1,2872 @@
+{
+  "algorithm": "hash-design/v2",
+  "library": "bd20321c36ab",
+  "createdAt": "2026-11-03T11:21:11.966Z",
+  "source": "seed:causeway-festival",
+  "constraints": {
+    "lightOnly": false,
+    "darkOnly": false,
+    "reducedMotion": false,
+    "brandColors": []
+  },
+  "content": {
+    "subject": "Causeway — a music festival on Skerrow Island",
+    "facts": [
+      "Name: Causeway — a one-day music festival on Skerrow Island",
+      "Date: Saturday 19 June 2027",
+      "The island is reached on foot over a 1.2 km tidal causeway",
+      "Causeway open for arrivals 09:40–13:10 and for departures 22:15–01:30 (that day's tide times)",
+      "Nobody crosses outside those windows; the harbour boat is for emergencies only",
+      "Capacity: 900 people",
+      "Tickets: £54 adult, £27 for ages 12–17, free under 12; on sale 1 March 2027",
+      "Two stages: the Boathouse (indoors, 220 people) and the Field (outdoors)",
+      "Field line-up: The Lantern Choir, Mara Quist, Seven Herons, Low Orbit Brass",
+      "Boathouse line-up: Ada Fenwick (solo cello), Tomasz & the Weir, Kelp, Ruth Ono Trio",
+      "The last set ends at 21:45 so everyone reaches the causeway in time",
+      "No single-use plastic on the island: bring a cup, or buy an enamel one for £6",
+      "Food from two island kitchens; cash and card",
+      "Organised by the Skerrow Island Trust, a volunteer charity; profits go to repairing the sea wall",
+      "Fourth year of the festival, first held in 2024",
+      "Wear boots: parts of the causeway are wet sand and seaweed"
+    ],
+    "language": "en"
+  },
+  "designs": [
+    {
+      "number": 1,
+      "slug": "01-97d68879",
+      "ref": "97d6887926672958dcbd4fd0a35e19d85f74f989714c1362771939e39a309069",
+      "hash": "97d6887926672958dcbd4fd0a35e19d85f74f989714c1362771939e39a309069",
+      "short": "97d68879",
+      "algorithm": "hash-design/v2",
+      "library": "bd20321c36ab",
+      "constraints": {
+        "lightOnly": false,
+        "darkOnly": false,
+        "reducedMotion": false,
+        "brandColors": []
+      },
+      "content": {
+        "subject": "Causeway — a music festival on Skerrow Island",
+        "facts": [
+          "Name: Causeway — a one-day music festival on Skerrow Island",
+          "Date: Saturday 19 June 2027",
+          "The island is reached on foot over a 1.2 km tidal causeway",
+          "Causeway open for arrivals 09:40–13:10 and for departures 22:15–01:30 (that day's tide times)",
+          "Nobody crosses outside those windows; the harbour boat is for emergencies only",
+          "Capacity: 900 people",
+          "Tickets: £54 adult, £27 for ages 12–17, free under 12; on sale 1 March 2027",
+          "Two stages: the Boathouse (indoors, 220 people) and the Field (outdoors)",
+          "Field line-up: The Lantern Choir, Mara Quist, Seven Herons, Low Orbit Brass",
+          "Boathouse line-up: Ada Fenwick (solo cello), Tomasz & the Weir, Kelp, Ruth Ono Trio",
+          "The last set ends at 21:45 so everyone reaches the causeway in time",
+          "No single-use plastic on the island: bring a cup, or buy an enamel one for £6",
+          "Food from two island kitchens; cash and card",
+          "Organised by the Skerrow Island Trust, a volunteer charity; profits go to repairing the sea wall",
+          "Fourth year of the festival, first held in 2024",
+          "Wear boots: parts of the causeway are wet sand and seaweed"
+        ],
+        "language": "en"
+      },
+      "label": "light · 214° · Jost / IBM Plex Serif · 6 col",
+      "palette": {
+        "polarity": "light",
+        "hue": 213.52,
+        "paperL": 0.928,
+        "paperC": 0.021,
+        "accentC": 0.094,
+        "accent2Offset": 151.18,
+        "colors": {
+          "paper": "#d8ebf0",
+          "ink": "#233d42",
+          "muted": "#5a696d",
+          "accent": "#248b9f",
+          "accent2": "#b37281",
+          "rule": "#9bb6bc",
+          "panel": "#c4dee4"
+        }
+      },
+      "contrast": {
+        "lines": [
+          {
+            "pair": "ink on paper",
+            "ratio": 9.39,
+            "verdict": "AAA — any text"
+          },
+          {
+            "pair": "muted on paper",
+            "ratio": 4.64,
+            "verdict": "AA — body text OK"
+          },
+          {
+            "pair": "ink on panel",
+            "ratio": 8.21,
+            "verdict": "AAA — any text"
+          },
+          {
+            "pair": "accent on paper",
+            "ratio": 3.24,
+            "verdict": "large text / UI marks only (≥24px or bold ≥19px)"
+          },
+          {
+            "pair": "accent2 on paper",
+            "ratio": 3.02,
+            "verdict": "large text / UI marks only (≥24px or bold ≥19px)"
+          },
+          {
+            "pair": "#000000 on accent",
+            "ratio": 5.27,
+            "verdict": "AA — body text OK"
+          },
+          {
+            "pair": "#000000 on accent2",
+            "ratio": 5.64,
+            "verdict": "AA — body text OK"
+          }
+        ],
+        "onAccent": "#000000",
+        "onAccent2": "#000000"
+      },
+      "type": {
+        "display": {
+          "family": "Jost",
+          "weights": [
+            300,
+            400,
+            500,
+            700,
+            800
+          ],
+          "fallback": "Futura, \"Century Gothic\", sans-serif",
+          "source": "google"
+        },
+        "body": {
+          "family": "IBM Plex Serif",
+          "weights": [
+            400
+          ],
+          "italic": true,
+          "fallback": "Georgia, serif",
+          "source": "google"
+        },
+        "mono": {
+          "family": "Azeret Mono",
+          "weights": [
+            400,
+            500,
+            700
+          ],
+          "fallback": "\"Courier New\", monospace",
+          "source": "google"
+        },
+        "cjk": {
+          "display": "Noto Sans SC",
+          "body": "Noto Serif SC"
+        },
+        "case": {
+          "id": "as-written",
+          "text": "as written (sentence case)"
+        },
+        "weight": 300,
+        "tracking": 0.138
+      },
+      "fonts": {
+        "stacks": {
+          "display": "Jost, Futura, \"Century Gothic\", sans-serif",
+          "body": "\"IBM Plex Serif\", Georgia, serif",
+          "mono": "\"Azeret Mono\", \"Courier New\", monospace"
+        },
+        "googleFontsUrl": "https://fonts.googleapis.com/css2?family=Jost:wght@300;400;500;700;800&family=IBM+Plex+Serif:ital,wght@0,400;1,400&family=Azeret+Mono:wght@400;500;700&display=swap"
+      },
+      "scale": {
+        "ratio": 1.238,
+        "steps": [
+          {
+            "step": -2,
+            "px": 9.5,
+            "rem": 0.591
+          },
+          {
+            "step": -1,
+            "px": 11.7,
+            "rem": 0.732
+          },
+          {
+            "step": 0,
+            "px": 14.5,
+            "rem": 0.906
+          },
+          {
+            "step": 1,
+            "px": 18,
+            "rem": 1.122
+          },
+          {
+            "step": 2,
+            "px": 22.2,
+            "rem": 1.389
+          },
+          {
+            "step": 3,
+            "px": 27.5,
+            "rem": 1.72
+          },
+          {
+            "step": 4,
+            "px": 34.1,
+            "rem": 2.129
+          },
+          {
+            "step": 5,
+            "px": 42.2,
+            "rem": 2.635
+          },
+          {
+            "step": 6,
+            "px": 52.2,
+            "rem": 3.263
+          },
+          {
+            "step": 7,
+            "px": 64.6,
+            "rem": 4.039
+          }
+        ]
+      },
+      "density": {
+        "t": 0.816,
+        "baseSize": 14.5,
+        "lineHeight": 1.41,
+        "unit": 5,
+        "sectionGap": 57,
+        "maxWidth": 1370
+      },
+      "layout": {
+        "columns": 6,
+        "gutter": 5,
+        "span": 6,
+        "start": 1,
+        "firstScreen": 50,
+        "sections": 3,
+        "separator": {
+          "id": "bands",
+          "text": "full-width bands alternating paper and panel"
+        }
+      },
+      "anchor": {
+        "subject": {
+          "id": "motif",
+          "text": "the motif drawn at full scale"
+        },
+        "size": 52,
+        "x": 0.27,
+        "rotation": -0.5
+      },
+      "motif": {
+        "shape": {
+          "id": "half-circles",
+          "text": "half circles"
+        },
+        "size": 25,
+        "placement": {
+          "id": "dividers",
+          "text": "between sections"
+        },
+        "angle": 97
+      },
+      "surface": {
+        "radius": 0,
+        "border": 2,
+        "borderStyle": "dotted",
+        "shadow": 0,
+        "texture": {
+          "id": "dot-screen",
+          "text": "a fine dot screen (radial-gradient pattern)"
+        },
+        "textureOpacity": 5.4
+      },
+      "motion": {
+        "still": false,
+        "property": {
+          "id": "opacity",
+          "text": "opacity"
+        },
+        "duration": 180,
+        "easing": "cubic-bezier(0, 0.6, 0.63, 1)"
+      },
+      "voice": {
+        "person": {
+          "id": "none",
+          "text": "impersonal: no pronouns, facts stated plainly"
+        },
+        "headline": {
+          "id": "two-words",
+          "text": "two words at most"
+        },
+        "sentenceWords": 12,
+        "register": 0.07
+      },
+      "twist": {
+        "target": {
+          "id": "footer",
+          "text": "the footer"
+        },
+        "operation": {
+          "id": "off-grid",
+          "text": "pushed off the grid"
+        },
+        "amount": 22,
+        "text": "Push the footer 2 columns off the grid."
+      },
+      "bans": [
+        "generic-sans",
+        "purple-blue-gradient",
+        "centered-hero-two-buttons",
+        "identical-cards",
+        "glassmorphism",
+        "emoji-icons",
+        "buzzword-copy",
+        "soft-shadow-rounded",
+        "invented-facts",
+        "tailwind-default-palette",
+        "scroll-fade-everything",
+        "pill-badge-sparkle",
+        "placeholder-content",
+        "template-sections"
+      ],
+      "tokensCss": "/* hash-design hash-design/v2 · 97d68879 */\n:root {\n  --paper: #d8ebf0;\n  --ink: #233d42;\n  --muted: #5a696d;\n  --accent: #248b9f;\n  --on-accent: #000000;\n  --accent2: #b37281;\n  --on-accent2: #000000;\n  --rule: #9bb6bc;\n  --panel: #c4dee4;\n\n  --font-display: Jost, Futura, \"Century Gothic\", sans-serif;\n  --font-body: \"IBM Plex Serif\", Georgia, serif;\n  --font-mono: \"Azeret Mono\", \"Courier New\", monospace;\n  --display-weight: 300;\n  --display-tracking: 0.138em;\n\n  --step-n2: 0.591rem; /* 9.5px */\n  --step-n1: 0.732rem; /* 11.7px */\n  --step-0: 0.906rem; /* 14.5px */\n  --step-1: 1.122rem; /* 18px */\n  --step-2: 1.389rem; /* 22.2px */\n  --step-3: 1.72rem; /* 27.5px */\n  --step-4: 2.129rem; /* 34.1px */\n  --step-5: 2.635rem; /* 42.2px */\n  --step-6: 3.263rem; /* 52.2px */\n  --step-7: 4.039rem; /* 64.6px */\n  --leading: 1.41;\n\n  --space-1: 5px;\n  --space-2: 10px;\n  --space-3: 15px;\n  --space-4: 20px;\n  --space-5: 25px;\n  --space-6: 30px;\n  --space-7: 35px;\n  --space-8: 40px;\n  --section-gap: 57px;\n  --max-width: 1370px;\n  --columns: 6;\n  --gutter: 5px;\n\n  --radius: 0px;\n  --border: 2px dotted var(--rule);\n  --shadow: none;\n\n  --motion-duration: 180ms;\n  --motion-easing: cubic-bezier(0, 0.6, 0.63, 1);\n}\n\nhtml { font-size: 90.6%; }\nbody { background: var(--paper); color: var(--ink); font-family: var(--font-body); line-height: var(--leading); }\n@media (prefers-reduced-motion: reduce) {\n  *, *::before, *::after { animation: none !important; transition: none !important; }\n}",
+      "trace": [
+        {
+          "dimension": "hue",
+          "bytes": [
+            0,
+            1
+          ],
+          "hex": "97 d6",
+          "rule": "0x97d6 = 38870; 38870/65536 × 360",
+          "result": "213.52°"
+        },
+        {
+          "dimension": "polarity · paper lightness",
+          "bytes": [
+            2
+          ],
+          "hex": "88",
+          "rule": "136 ≥ 77 → light; L = 0.90 + 59/178 × 0.085",
+          "result": "light, L 0.928"
+        },
+        {
+          "dimension": "paper chroma",
+          "bytes": [
+            3
+          ],
+          "hex": "79",
+          "rule": "121/255 × 0.045",
+          "result": "0.021"
+        },
+        {
+          "dimension": "accent chroma",
+          "bytes": [
+            4
+          ],
+          "hex": "26",
+          "rule": "0.07 + 38/255 × 0.16",
+          "result": "0.094"
+        },
+        {
+          "dimension": "accent2 hue offset",
+          "bytes": [
+            5
+          ],
+          "hex": "67",
+          "rule": "30 + 103/255 × 300",
+          "result": "+151.18°"
+        },
+        {
+          "dimension": "display face",
+          "bytes": [
+            6
+          ],
+          "hex": "29",
+          "rule": "41 mod 98 = 41",
+          "result": "Jost"
+        },
+        {
+          "dimension": "body face",
+          "bytes": [
+            7
+          ],
+          "hex": "58",
+          "rule": "88 mod 62 = 26",
+          "result": "IBM Plex Serif"
+        },
+        {
+          "dimension": "display case · weight",
+          "bytes": [
+            8
+          ],
+          "hex": "dc",
+          "rule": "220 mod 4 = 0; ⌊220/4⌋ mod 5",
+          "result": "as-written, 300"
+        },
+        {
+          "dimension": "display tracking",
+          "bytes": [
+            9
+          ],
+          "hex": "bd",
+          "rule": "−0.04 + 189/255 × 0.24",
+          "result": "0.138em"
+        },
+        {
+          "dimension": "type scale ratio",
+          "bytes": [
+            10
+          ],
+          "hex": "4f",
+          "rule": "1.067 + 79/255 × 0.551",
+          "result": "1.238"
+        },
+        {
+          "dimension": "density",
+          "bytes": [
+            11
+          ],
+          "hex": "d0",
+          "rule": "t = 208/255",
+          "result": "t 0.816: base 14.5px, line-height 1.41, unit 5px"
+        },
+        {
+          "dimension": "grid columns · gutter",
+          "bytes": [
+            12
+          ],
+          "hex": "a3",
+          "rule": "3 + 163 mod 10; unit × (1 + ⌊163/10⌋ mod 4)",
+          "result": "6 columns, 5px gutter"
+        },
+        {
+          "dimension": "text block span · start",
+          "bytes": [
+            13
+          ],
+          "hex": "5e",
+          "rule": "span 14/15, start 5/15",
+          "result": "columns 1–6 of 6"
+        },
+        {
+          "dimension": "first-screen height",
+          "bytes": [
+            14
+          ],
+          "hex": "19",
+          "rule": "45 + 25/255 × 55",
+          "result": "50%"
+        },
+        {
+          "dimension": "sections · separator",
+          "bytes": [
+            15
+          ],
+          "hex": "d8",
+          "rule": "3 + 216 mod 6; ⌊216/6⌋ mod 5",
+          "result": "3 sections, bands"
+        },
+        {
+          "dimension": "anchor subject · size",
+          "bytes": [
+            16
+          ],
+          "hex": "5f",
+          "rule": "95 mod 8; 25 + ⌊95/8⌋/31 × 75",
+          "result": "motif, 52%"
+        },
+        {
+          "dimension": "anchor position · rotation",
+          "bytes": [
+            17
+          ],
+          "hex": "74",
+          "rule": "x 4/15; ((7) − 7.5)/7.5 × 8",
+          "result": "x 0.27, -0.5°"
+        },
+        {
+          "dimension": "motif shape · size",
+          "bytes": [
+            18
+          ],
+          "hex": "f9",
+          "rule": "249 mod 12; unit × (1 + ⌊249/12⌋ mod 8)",
+          "result": "half-circles, 25px"
+        },
+        {
+          "dimension": "motif placement · angle",
+          "bytes": [
+            19
+          ],
+          "hex": "89",
+          "rule": "137 mod 4; ⌊137/4⌋ × 180/63",
+          "result": "dividers, 97°"
+        },
+        {
+          "dimension": "radius · border",
+          "bytes": [
+            20
+          ],
+          "hex": "71",
+          "rule": "RADII[113 mod 8]; ⌊113/8⌋ mod 4; ⌊113/32⌋ mod 4",
+          "result": "0px radius, 2px dotted border"
+        },
+        {
+          "dimension": "shadow · texture",
+          "bytes": [
+            21
+          ],
+          "hex": "4c",
+          "rule": "76 & 3; (76 >> 2) & 3; 3 + 4 × 0.6",
+          "result": "no shadow, dot-screen 5.4%"
+        },
+        {
+          "dimension": "motion property · duration",
+          "bytes": [
+            22
+          ],
+          "hex": "13",
+          "rule": "⌊19/64⌋; (19 mod 64)/63 × 600",
+          "result": "opacity, 180ms"
+        },
+        {
+          "dimension": "easing",
+          "bytes": [
+            23
+          ],
+          "hex": "62",
+          "rule": "98 ≥ 32 → cubic-bezier from bits",
+          "result": "cubic-bezier(0, 0.6, 0.63, 1)"
+        },
+        {
+          "dimension": "voice person · headline form",
+          "bytes": [
+            24
+          ],
+          "hex": "77",
+          "rule": "119 mod 4; ⌊119/4⌋ mod 6",
+          "result": "none, two-words"
+        },
+        {
+          "dimension": "sentence length · register",
+          "bytes": [
+            25
+          ],
+          "hex": "19",
+          "rule": "3 + (25 & 15); (25 >> 4)/15",
+          "result": "12 words, register 0.07"
+        },
+        {
+          "dimension": "twist target",
+          "bytes": [
+            26
+          ],
+          "hex": "39",
+          "rule": "57 mod 9",
+          "result": "footer"
+        },
+        {
+          "dimension": "twist operation · amount",
+          "bytes": [
+            27
+          ],
+          "hex": "e3",
+          "rule": "227 mod 10; ⌊227/10⌋",
+          "result": "off-grid, 22"
+        },
+        {
+          "dimension": "CJK display face",
+          "bytes": [
+            29
+          ],
+          "hex": "30",
+          "rule": "48 mod 14",
+          "result": "Noto Sans SC",
+          "note": "used on Chinese pages"
+        },
+        {
+          "dimension": "mono face",
+          "bytes": [
+            30
+          ],
+          "hex": "90",
+          "rule": "144 mod 8",
+          "result": "Azeret Mono"
+        }
+      ]
+    },
+    {
+      "number": 2,
+      "slug": "02-f8342870",
+      "ref": "f834287036f795a0d543a7b7c52a6444e1a6ae63bdc8c8667f2b677dc2b0acbd",
+      "hash": "f834287036f795a0d543a7b7c52a6444e1a6ae63bdc8c8667f2b677dc2b0acbd",
+      "short": "f8342870",
+      "algorithm": "hash-design/v2",
+      "library": "bd20321c36ab",
+      "constraints": {
+        "lightOnly": false,
+        "darkOnly": false,
+        "reducedMotion": false,
+        "brandColors": []
+      },
+      "content": {
+        "subject": "Causeway — a music festival on Skerrow Island",
+        "facts": [
+          "Name: Causeway — a one-day music festival on Skerrow Island",
+          "Date: Saturday 19 June 2027",
+          "The island is reached on foot over a 1.2 km tidal causeway",
+          "Causeway open for arrivals 09:40–13:10 and for departures 22:15–01:30 (that day's tide times)",
+          "Nobody crosses outside those windows; the harbour boat is for emergencies only",
+          "Capacity: 900 people",
+          "Tickets: £54 adult, £27 for ages 12–17, free under 12; on sale 1 March 2027",
+          "Two stages: the Boathouse (indoors, 220 people) and the Field (outdoors)",
+          "Field line-up: The Lantern Choir, Mara Quist, Seven Herons, Low Orbit Brass",
+          "Boathouse line-up: Ada Fenwick (solo cello), Tomasz & the Weir, Kelp, Ruth Ono Trio",
+          "The last set ends at 21:45 so everyone reaches the causeway in time",
+          "No single-use plastic on the island: bring a cup, or buy an enamel one for £6",
+          "Food from two island kitchens; cash and card",
+          "Organised by the Skerrow Island Trust, a volunteer charity; profits go to repairing the sea wall",
+          "Fourth year of the festival, first held in 2024",
+          "Wear boots: parts of the causeway are wet sand and seaweed"
+        ],
+        "language": "en"
+      },
+      "label": "dark · 349° · Marcellus SC / Libre Franklin · 10 col",
+      "palette": {
+        "polarity": "dark",
+        "hue": 349.04,
+        "paperL": 0.203,
+        "paperC": 0.02,
+        "accentC": 0.104,
+        "accent2Offset": 320.59,
+        "colors": {
+          "paper": "#1e1318",
+          "ink": "#dcc3ce",
+          "muted": "#8c7d83",
+          "accent": "#a75f84",
+          "accent2": "#8b6aa4",
+          "rule": "#4d3a43",
+          "panel": "#2d1d24"
+        }
+      },
+      "contrast": {
+        "lines": [
+          {
+            "pair": "ink on paper",
+            "ratio": 10.97,
+            "verdict": "AAA — any text"
+          },
+          {
+            "pair": "muted on paper",
+            "ratio": 4.63,
+            "verdict": "AA — body text OK"
+          },
+          {
+            "pair": "ink on panel",
+            "ratio": 9.7,
+            "verdict": "AAA — any text"
+          },
+          {
+            "pair": "accent on paper",
+            "ratio": 3.97,
+            "verdict": "large text / UI marks only (≥24px or bold ≥19px)"
+          },
+          {
+            "pair": "accent2 on paper",
+            "ratio": 4.04,
+            "verdict": "large text / UI marks only (≥24px or bold ≥19px)"
+          },
+          {
+            "pair": "#000000 on accent",
+            "ratio": 4.61,
+            "verdict": "AA — body text OK"
+          },
+          {
+            "pair": "#000000 on accent2",
+            "ratio": 4.7,
+            "verdict": "AA — body text OK"
+          }
+        ],
+        "onAccent": "#000000",
+        "onAccent2": "#000000"
+      },
+      "type": {
+        "display": {
+          "family": "Marcellus SC",
+          "weights": [
+            400
+          ],
+          "fallback": "\"Trajan Pro\", Georgia, serif",
+          "source": "google"
+        },
+        "body": {
+          "family": "Libre Franklin",
+          "weights": [
+            400,
+            500,
+            600,
+            700,
+            800,
+            900
+          ],
+          "italic": true,
+          "fallback": "\"Franklin Gothic Book\", Arial, sans-serif",
+          "source": "google"
+        },
+        "mono": {
+          "family": "IBM Plex Mono",
+          "weights": [
+            400,
+            500,
+            600
+          ],
+          "fallback": "\"Courier New\", monospace",
+          "source": "google"
+        },
+        "cjk": {
+          "display": "Noto Serif SC",
+          "body": "Noto Sans SC"
+        },
+        "case": {
+          "id": "upper",
+          "text": "UPPERCASE"
+        },
+        "weight": 400,
+        "tracking": 0.023
+      },
+      "fonts": {
+        "stacks": {
+          "display": "\"Marcellus SC\", \"Trajan Pro\", Georgia, serif",
+          "body": "\"Libre Franklin\", \"Franklin Gothic Book\", Arial, sans-serif",
+          "mono": "\"IBM Plex Mono\", \"Courier New\", monospace"
+        },
+        "googleFontsUrl": "https://fonts.googleapis.com/css2?family=Marcellus+SC&family=Libre+Franklin:ital,wght@0,400;0,500;0,600;0,700;0,800;0,900;1,400;1,500;1,600;1,700;1,800;1,900&family=IBM+Plex+Mono:wght@400;500;600&display=swap"
+      },
+      "scale": {
+        "ratio": 1.428,
+        "steps": [
+          {
+            "step": -2,
+            "px": 7.4,
+            "rem": 0.46
+          },
+          {
+            "step": -1,
+            "px": 10.5,
+            "rem": 0.657
+          },
+          {
+            "step": 0,
+            "px": 15,
+            "rem": 0.938
+          },
+          {
+            "step": 1,
+            "px": 21.4,
+            "rem": 1.339
+          },
+          {
+            "step": 2,
+            "px": 30.6,
+            "rem": 1.912
+          },
+          {
+            "step": 3,
+            "px": 43.7,
+            "rem": 2.73
+          },
+          {
+            "step": 4,
+            "px": 62.4,
+            "rem": 3.898
+          },
+          {
+            "step": 5,
+            "px": 89.1,
+            "rem": 5.567
+          },
+          {
+            "step": 6,
+            "px": 127.2,
+            "rem": 7.95
+          },
+          {
+            "step": 7,
+            "px": 181.6,
+            "rem": 11.352
+          }
+        ]
+      },
+      "density": {
+        "t": 0.718,
+        "baseSize": 15,
+        "lineHeight": 1.43,
+        "unit": 6,
+        "sectionGap": 70,
+        "maxWidth": 1340
+      },
+      "layout": {
+        "columns": 10,
+        "gutter": 24,
+        "span": 8,
+        "start": 1,
+        "firstScreen": 67,
+        "sections": 5,
+        "separator": {
+          "id": "bands",
+          "text": "full-width bands alternating paper and panel"
+        }
+      },
+      "anchor": {
+        "subject": {
+          "id": "number",
+          "text": "one number taken from the facts"
+        },
+        "size": 93,
+        "x": 0.4,
+        "rotation": 2.5
+      },
+      "motif": {
+        "shape": {
+          "id": "arrows",
+          "text": "arrows"
+        },
+        "size": 42,
+        "placement": {
+          "id": "markers",
+          "text": "as list and heading markers"
+        },
+        "angle": 69
+      },
+      "surface": {
+        "radius": 4,
+        "border": 3,
+        "borderStyle": "solid",
+        "shadow": 0,
+        "texture": {
+          "id": "line-screen",
+          "text": "a fine line screen (repeating-linear-gradient)"
+        },
+        "textureOpacity": 10.2
+      },
+      "motion": {
+        "still": false,
+        "property": {
+          "id": "colour",
+          "text": "colour (color / background-color)"
+        },
+        "duration": 80,
+        "easing": "cubic-bezier(0.13, 0.6, 0.63, 1)"
+      },
+      "voice": {
+        "person": {
+          "id": "none",
+          "text": "impersonal: no pronouns, facts stated plainly"
+        },
+        "headline": {
+          "id": "question",
+          "text": "a question the facts answer"
+        },
+        "sentenceWords": 14,
+        "register": 0.13
+      },
+      "twist": {
+        "target": {
+          "id": "section-heads",
+          "text": "the section headings"
+        },
+        "operation": {
+          "id": "repeat",
+          "text": "repeated"
+        },
+        "amount": 12,
+        "text": "Repeat the section headings 2 times in a row."
+      },
+      "bans": [
+        "generic-sans",
+        "purple-blue-gradient",
+        "centered-hero-two-buttons",
+        "identical-cards",
+        "glassmorphism",
+        "emoji-icons",
+        "buzzword-copy",
+        "soft-shadow-rounded",
+        "invented-facts",
+        "tailwind-default-palette",
+        "scroll-fade-everything",
+        "pill-badge-sparkle",
+        "placeholder-content",
+        "template-sections"
+      ],
+      "tokensCss": "/* hash-design hash-design/v2 · f8342870 */\n:root {\n  --paper: #1e1318;\n  --ink: #dcc3ce;\n  --muted: #8c7d83;\n  --accent: #a75f84;\n  --on-accent: #000000;\n  --accent2: #8b6aa4;\n  --on-accent2: #000000;\n  --rule: #4d3a43;\n  --panel: #2d1d24;\n\n  --font-display: \"Marcellus SC\", \"Trajan Pro\", Georgia, serif;\n  --font-body: \"Libre Franklin\", \"Franklin Gothic Book\", Arial, sans-serif;\n  --font-mono: \"IBM Plex Mono\", \"Courier New\", monospace;\n  --display-weight: 400;\n  --display-tracking: 0.023em;\n\n  --step-n2: 0.46rem; /* 7.4px */\n  --step-n1: 0.657rem; /* 10.5px */\n  --step-0: 0.938rem; /* 15px */\n  --step-1: 1.339rem; /* 21.4px */\n  --step-2: 1.912rem; /* 30.6px */\n  --step-3: 2.73rem; /* 43.7px */\n  --step-4: 3.898rem; /* 62.4px */\n  --step-5: 5.567rem; /* 89.1px */\n  --step-6: 7.95rem; /* 127.2px */\n  --step-7: 11.352rem; /* 181.6px */\n  --leading: 1.43;\n\n  --space-1: 6px;\n  --space-2: 12px;\n  --space-3: 18px;\n  --space-4: 24px;\n  --space-5: 30px;\n  --space-6: 36px;\n  --space-7: 42px;\n  --space-8: 48px;\n  --section-gap: 70px;\n  --max-width: 1340px;\n  --columns: 10;\n  --gutter: 24px;\n\n  --radius: 4px;\n  --border: 3px solid var(--rule);\n  --shadow: none;\n\n  --motion-duration: 80ms;\n  --motion-easing: cubic-bezier(0.13, 0.6, 0.63, 1);\n}\n\nhtml { font-size: 93.8%; }\nbody { background: var(--paper); color: var(--ink); font-family: var(--font-body); line-height: var(--leading); }\n@media (prefers-reduced-motion: reduce) {\n  *, *::before, *::after { animation: none !important; transition: none !important; }\n}",
+      "trace": [
+        {
+          "dimension": "hue",
+          "bytes": [
+            0,
+            1
+          ],
+          "hex": "f8 34",
+          "rule": "0xf834 = 63540; 63540/65536 × 360",
+          "result": "349.04°"
+        },
+        {
+          "dimension": "polarity · paper lightness",
+          "bytes": [
+            2
+          ],
+          "hex": "28",
+          "rule": "40 < 77 → dark; L = 0.14 + 40/76 × 0.12",
+          "result": "dark, L 0.203"
+        },
+        {
+          "dimension": "paper chroma",
+          "bytes": [
+            3
+          ],
+          "hex": "70",
+          "rule": "112/255 × 0.045",
+          "result": "0.02"
+        },
+        {
+          "dimension": "accent chroma",
+          "bytes": [
+            4
+          ],
+          "hex": "36",
+          "rule": "0.07 + 54/255 × 0.16",
+          "result": "0.104"
+        },
+        {
+          "dimension": "accent2 hue offset",
+          "bytes": [
+            5
+          ],
+          "hex": "f7",
+          "rule": "30 + 247/255 × 300",
+          "result": "+320.59°"
+        },
+        {
+          "dimension": "display face",
+          "bytes": [
+            6
+          ],
+          "hex": "95",
+          "rule": "149 mod 98 = 51",
+          "result": "Marcellus SC"
+        },
+        {
+          "dimension": "body face",
+          "bytes": [
+            7
+          ],
+          "hex": "a0",
+          "rule": "160 mod 62 = 36",
+          "result": "Libre Franklin"
+        },
+        {
+          "dimension": "display case · weight",
+          "bytes": [
+            8
+          ],
+          "hex": "d5",
+          "rule": "213 mod 4 = 1; ⌊213/4⌋ mod 1",
+          "result": "upper, 400"
+        },
+        {
+          "dimension": "display tracking",
+          "bytes": [
+            9
+          ],
+          "hex": "43",
+          "rule": "−0.04 + 67/255 × 0.24",
+          "result": "0.023em"
+        },
+        {
+          "dimension": "type scale ratio",
+          "bytes": [
+            10
+          ],
+          "hex": "a7",
+          "rule": "1.067 + 167/255 × 0.551",
+          "result": "1.428"
+        },
+        {
+          "dimension": "density",
+          "bytes": [
+            11
+          ],
+          "hex": "b7",
+          "rule": "t = 183/255",
+          "result": "t 0.718: base 15px, line-height 1.43, unit 6px"
+        },
+        {
+          "dimension": "grid columns · gutter",
+          "bytes": [
+            12
+          ],
+          "hex": "c5",
+          "rule": "3 + 197 mod 10; unit × (1 + ⌊197/10⌋ mod 4)",
+          "result": "10 columns, 24px gutter"
+        },
+        {
+          "dimension": "text block span · start",
+          "bytes": [
+            13
+          ],
+          "hex": "2a",
+          "rule": "span 10/15, start 2/15",
+          "result": "columns 1–8 of 10"
+        },
+        {
+          "dimension": "first-screen height",
+          "bytes": [
+            14
+          ],
+          "hex": "64",
+          "rule": "45 + 100/255 × 55",
+          "result": "67%"
+        },
+        {
+          "dimension": "sections · separator",
+          "bytes": [
+            15
+          ],
+          "hex": "44",
+          "rule": "3 + 68 mod 6; ⌊68/6⌋ mod 5",
+          "result": "5 sections, bands"
+        },
+        {
+          "dimension": "anchor subject · size",
+          "bytes": [
+            16
+          ],
+          "hex": "e1",
+          "rule": "225 mod 8; 25 + ⌊225/8⌋/31 × 75",
+          "result": "number, 93%"
+        },
+        {
+          "dimension": "anchor position · rotation",
+          "bytes": [
+            17
+          ],
+          "hex": "a6",
+          "rule": "x 6/15; ((10) − 7.5)/7.5 × 8",
+          "result": "x 0.4, 2.5°"
+        },
+        {
+          "dimension": "motif shape · size",
+          "bytes": [
+            18
+          ],
+          "hex": "ae",
+          "rule": "174 mod 12; unit × (1 + ⌊174/12⌋ mod 8)",
+          "result": "arrows, 42px"
+        },
+        {
+          "dimension": "motif placement · angle",
+          "bytes": [
+            19
+          ],
+          "hex": "63",
+          "rule": "99 mod 4; ⌊99/4⌋ × 180/63",
+          "result": "markers, 69°"
+        },
+        {
+          "dimension": "radius · border",
+          "bytes": [
+            20
+          ],
+          "hex": "bd",
+          "rule": "RADII[189 mod 8]; ⌊189/8⌋ mod 4; ⌊189/32⌋ mod 4",
+          "result": "4px radius, 3px solid border"
+        },
+        {
+          "dimension": "shadow · texture",
+          "bytes": [
+            21
+          ],
+          "hex": "c8",
+          "rule": "200 & 3; (200 >> 2) & 3; 3 + 12 × 0.6",
+          "result": "no shadow, line-screen 10.2%"
+        },
+        {
+          "dimension": "motion property · duration",
+          "bytes": [
+            22
+          ],
+          "hex": "c8",
+          "rule": "⌊200/64⌋; (200 mod 64)/63 × 600",
+          "result": "colour, 80ms"
+        },
+        {
+          "dimension": "easing",
+          "bytes": [
+            23
+          ],
+          "hex": "66",
+          "rule": "102 ≥ 32 → cubic-bezier from bits",
+          "result": "cubic-bezier(0.13, 0.6, 0.63, 1)"
+        },
+        {
+          "dimension": "voice person · headline form",
+          "bytes": [
+            24
+          ],
+          "hex": "7f",
+          "rule": "127 mod 4; ⌊127/4⌋ mod 6",
+          "result": "none, question"
+        },
+        {
+          "dimension": "sentence length · register",
+          "bytes": [
+            25
+          ],
+          "hex": "2b",
+          "rule": "3 + (43 & 15); (43 >> 4)/15",
+          "result": "14 words, register 0.13"
+        },
+        {
+          "dimension": "twist target",
+          "bytes": [
+            26
+          ],
+          "hex": "67",
+          "rule": "103 mod 9",
+          "result": "section-heads"
+        },
+        {
+          "dimension": "twist operation · amount",
+          "bytes": [
+            27
+          ],
+          "hex": "7d",
+          "rule": "125 mod 10; ⌊125/10⌋",
+          "result": "repeat, 12"
+        },
+        {
+          "dimension": "CJK display face",
+          "bytes": [
+            29
+          ],
+          "hex": "b0",
+          "rule": "176 mod 14",
+          "result": "Noto Serif SC",
+          "note": "used on Chinese pages"
+        },
+        {
+          "dimension": "mono face",
+          "bytes": [
+            30
+          ],
+          "hex": "ac",
+          "rule": "172 mod 8",
+          "result": "IBM Plex Mono"
+        }
+      ]
+    },
+    {
+      "number": 3,
+      "slug": "03-e549475c",
+      "ref": "e549475c754fbf8e6eb63f4742d0b341d3be2a502f95729ac8335bf152e4177d",
+      "hash": "e549475c754fbf8e6eb63f4742d0b341d3be2a502f95729ac8335bf152e4177d",
+      "short": "e549475c",
+      "algorithm": "hash-design/v2",
+      "library": "bd20321c36ab",
+      "constraints": {
+        "lightOnly": false,
+        "darkOnly": false,
+        "reducedMotion": false,
+        "brandColors": []
+      },
+      "content": {
+        "subject": "Causeway — a music festival on Skerrow Island",
+        "facts": [
+          "Name: Causeway — a one-day music festival on Skerrow Island",
+          "Date: Saturday 19 June 2027",
+          "The island is reached on foot over a 1.2 km tidal causeway",
+          "Causeway open for arrivals 09:40–13:10 and for departures 22:15–01:30 (that day's tide times)",
+          "Nobody crosses outside those windows; the harbour boat is for emergencies only",
+          "Capacity: 900 people",
+          "Tickets: £54 adult, £27 for ages 12–17, free under 12; on sale 1 March 2027",
+          "Two stages: the Boathouse (indoors, 220 people) and the Field (outdoors)",
+          "Field line-up: The Lantern Choir, Mara Quist, Seven Herons, Low Orbit Brass",
+          "Boathouse line-up: Ada Fenwick (solo cello), Tomasz & the Weir, Kelp, Ruth Ono Trio",
+          "The last set ends at 21:45 so everyone reaches the causeway in time",
+          "No single-use plastic on the island: bring a cup, or buy an enamel one for £6",
+          "Food from two island kitchens; cash and card",
+          "Organised by the Skerrow Island Trust, a volunteer charity; profits go to repairing the sea wall",
+          "Fourth year of the festival, first held in 2024",
+          "Wear boots: parts of the causeway are wet sand and seaweed"
+        ],
+        "language": "en"
+      },
+      "label": "dark · 322° · Xanh Mono / DotGothic16 · 9 col",
+      "palette": {
+        "polarity": "dark",
+        "hue": 322.43,
+        "paperL": 0.252,
+        "paperC": 0.016,
+        "accentC": 0.143,
+        "accent2Offset": 122.94,
+        "colors": {
+          "paper": "#262027",
+          "ink": "#d4c5d5",
+          "muted": "#918792",
+          "accent": "#a15aab",
+          "accent2": "#9a7400",
+          "rule": "#554956",
+          "panel": "#342a36"
+        }
+      },
+      "contrast": {
+        "lines": [
+          {
+            "pair": "ink on paper",
+            "ratio": 9.67,
+            "verdict": "AAA — any text"
+          },
+          {
+            "pair": "muted on paper",
+            "ratio": 4.62,
+            "verdict": "AA — body text OK"
+          },
+          {
+            "pair": "ink on panel",
+            "ratio": 8.33,
+            "verdict": "AAA — any text"
+          },
+          {
+            "pair": "accent on paper",
+            "ratio": 3.46,
+            "verdict": "large text / UI marks only (≥24px or bold ≥19px)"
+          },
+          {
+            "pair": "accent2 on paper",
+            "ratio": 3.7,
+            "verdict": "large text / UI marks only (≥24px or bold ≥19px)"
+          },
+          {
+            "pair": "#ffffff on accent",
+            "ratio": 4.6,
+            "verdict": "AA — body text OK"
+          },
+          {
+            "pair": "#000000 on accent2",
+            "ratio": 4.87,
+            "verdict": "AA — body text OK"
+          }
+        ],
+        "onAccent": "#ffffff",
+        "onAccent2": "#000000"
+      },
+      "type": {
+        "display": {
+          "family": "Xanh Mono",
+          "weights": [
+            400
+          ],
+          "italic": true,
+          "fallback": "\"Courier New\", monospace",
+          "source": "google"
+        },
+        "body": {
+          "family": "DotGothic16",
+          "weights": [
+            400
+          ],
+          "fallback": "\"Courier New\", monospace",
+          "source": "google"
+        },
+        "mono": {
+          "family": "Share Tech Mono",
+          "weights": [
+            400
+          ],
+          "fallback": "\"Courier New\", monospace",
+          "source": "google"
+        },
+        "cjk": {
+          "display": "Long Cang",
+          "body": "Noto Sans SC"
+        },
+        "case": {
+          "id": "lower",
+          "text": "lowercase"
+        },
+        "weight": 400,
+        "tracking": 0.131
+      },
+      "fonts": {
+        "stacks": {
+          "display": "\"Xanh Mono\", \"Courier New\", monospace",
+          "body": "\"DotGothic16\", \"Courier New\", monospace",
+          "mono": "\"Share Tech Mono\", \"Courier New\", monospace"
+        },
+        "googleFontsUrl": "https://fonts.googleapis.com/css2?family=Xanh+Mono:ital,wght@0,400;1,400&family=DotGothic16&family=Share+Tech+Mono&display=swap"
+      },
+      "scale": {
+        "ratio": 1.203,
+        "steps": [
+          {
+            "step": -2,
+            "px": 11.7,
+            "rem": 0.734
+          },
+          {
+            "step": -1,
+            "px": 14.1,
+            "rem": 0.883
+          },
+          {
+            "step": 0,
+            "px": 17,
+            "rem": 1.063
+          },
+          {
+            "step": 1,
+            "px": 20.5,
+            "rem": 1.278
+          },
+          {
+            "step": 2,
+            "px": 24.6,
+            "rem": 1.538
+          },
+          {
+            "step": 3,
+            "px": 29.6,
+            "rem": 1.85
+          },
+          {
+            "step": 4,
+            "px": 35.6,
+            "rem": 2.225
+          },
+          {
+            "step": 5,
+            "px": 42.8,
+            "rem": 2.677
+          },
+          {
+            "step": 6,
+            "px": 51.5,
+            "rem": 3.22
+          },
+          {
+            "step": 7,
+            "px": 62,
+            "rem": 3.874
+          }
+        ]
+      },
+      "density": {
+        "t": 0.278,
+        "baseSize": 17,
+        "lineHeight": 1.57,
+        "unit": 8,
+        "sectionGap": 130,
+        "maxWidth": 1180
+      },
+      "layout": {
+        "columns": 9,
+        "gutter": 24,
+        "span": 3,
+        "start": 6,
+        "firstScreen": 84,
+        "sections": 8,
+        "separator": {
+          "id": "rules",
+          "text": "hairline rules in the rule colour"
+        }
+      },
+      "anchor": {
+        "subject": {
+          "id": "colour-block",
+          "text": "a solid block of the accent colour holding the headline"
+        },
+        "size": 88,
+        "x": 0.93,
+        "rotation": 3.5
+      },
+      "motif": {
+        "shape": {
+          "id": "arrows",
+          "text": "arrows"
+        },
+        "size": 32,
+        "placement": {
+          "id": "edges",
+          "text": "along the page edges"
+        },
+        "angle": 57
+      },
+      "surface": {
+        "radius": 16,
+        "border": 1,
+        "borderStyle": "solid",
+        "shadow": 0,
+        "texture": {
+          "id": "grain",
+          "text": "fine noise grain over the paper"
+        },
+        "textureOpacity": 8.4
+      },
+      "motion": {
+        "still": false,
+        "property": {
+          "id": "transform",
+          "text": "position (transform: translate)"
+        },
+        "duration": 480,
+        "easing": "cubic-bezier(0.77, 0.8, 0.63, 1)"
+      },
+      "voice": {
+        "person": {
+          "id": "i",
+          "text": "first person singular (\"I\")"
+        },
+        "headline": {
+          "id": "label",
+          "text": "a label: a noun phrase, no verb"
+        },
+        "sentenceWords": 6,
+        "register": 0.2
+      },
+      "twist": {
+        "target": {
+          "id": "navigation",
+          "text": "the navigation"
+        },
+        "operation": {
+          "id": "vertical",
+          "text": "set vertically (writing-mode: vertical-rl)"
+        },
+        "amount": 24,
+        "text": "The navigation: set vertically (writing-mode: vertical-rl)."
+      },
+      "bans": [
+        "generic-sans",
+        "purple-blue-gradient",
+        "centered-hero-two-buttons",
+        "identical-cards",
+        "glassmorphism",
+        "emoji-icons",
+        "buzzword-copy",
+        "soft-shadow-rounded",
+        "invented-facts",
+        "tailwind-default-palette",
+        "scroll-fade-everything",
+        "pill-badge-sparkle",
+        "placeholder-content",
+        "template-sections"
+      ],
+      "tokensCss": "/* hash-design hash-design/v2 · e549475c */\n:root {\n  --paper: #262027;\n  --ink: #d4c5d5;\n  --muted: #918792;\n  --accent: #a15aab;\n  --on-accent: #ffffff;\n  --accent2: #9a7400;\n  --on-accent2: #000000;\n  --rule: #554956;\n  --panel: #342a36;\n\n  --font-display: \"Xanh Mono\", \"Courier New\", monospace;\n  --font-body: \"DotGothic16\", \"Courier New\", monospace;\n  --font-mono: \"Share Tech Mono\", \"Courier New\", monospace;\n  --display-weight: 400;\n  --display-tracking: 0.131em;\n\n  --step-n2: 0.734rem; /* 11.7px */\n  --step-n1: 0.883rem; /* 14.1px */\n  --step-0: 1.063rem; /* 17px */\n  --step-1: 1.278rem; /* 20.5px */\n  --step-2: 1.538rem; /* 24.6px */\n  --step-3: 1.85rem; /* 29.6px */\n  --step-4: 2.225rem; /* 35.6px */\n  --step-5: 2.677rem; /* 42.8px */\n  --step-6: 3.22rem; /* 51.5px */\n  --step-7: 3.874rem; /* 62px */\n  --leading: 1.57;\n\n  --space-1: 8px;\n  --space-2: 16px;\n  --space-3: 24px;\n  --space-4: 32px;\n  --space-5: 40px;\n  --space-6: 48px;\n  --space-7: 56px;\n  --space-8: 64px;\n  --section-gap: 130px;\n  --max-width: 1180px;\n  --columns: 9;\n  --gutter: 24px;\n\n  --radius: 16px;\n  --border: 1px solid var(--rule);\n  --shadow: none;\n\n  --motion-duration: 480ms;\n  --motion-easing: cubic-bezier(0.77, 0.8, 0.63, 1);\n}\n\nhtml { font-size: 106.3%; }\nbody { background: var(--paper); color: var(--ink); font-family: var(--font-body); line-height: var(--leading); }\n@media (prefers-reduced-motion: reduce) {\n  *, *::before, *::after { animation: none !important; transition: none !important; }\n}",
+      "trace": [
+        {
+          "dimension": "hue",
+          "bytes": [
+            0,
+            1
+          ],
+          "hex": "e5 49",
+          "rule": "0xe549 = 58697; 58697/65536 × 360",
+          "result": "322.43°"
+        },
+        {
+          "dimension": "polarity · paper lightness",
+          "bytes": [
+            2
+          ],
+          "hex": "47",
+          "rule": "71 < 77 → dark; L = 0.14 + 71/76 × 0.12",
+          "result": "dark, L 0.252"
+        },
+        {
+          "dimension": "paper chroma",
+          "bytes": [
+            3
+          ],
+          "hex": "5c",
+          "rule": "92/255 × 0.045",
+          "result": "0.016"
+        },
+        {
+          "dimension": "accent chroma",
+          "bytes": [
+            4
+          ],
+          "hex": "75",
+          "rule": "0.07 + 117/255 × 0.16",
+          "result": "0.143"
+        },
+        {
+          "dimension": "accent2 hue offset",
+          "bytes": [
+            5
+          ],
+          "hex": "4f",
+          "rule": "30 + 79/255 × 300",
+          "result": "+122.94°"
+        },
+        {
+          "dimension": "display face",
+          "bytes": [
+            6
+          ],
+          "hex": "bf",
+          "rule": "191 mod 98 = 93",
+          "result": "Xanh Mono"
+        },
+        {
+          "dimension": "body face",
+          "bytes": [
+            7
+          ],
+          "hex": "8e",
+          "rule": "142 mod 62 = 18",
+          "result": "DotGothic16"
+        },
+        {
+          "dimension": "display case · weight",
+          "bytes": [
+            8
+          ],
+          "hex": "6e",
+          "rule": "110 mod 4 = 2; ⌊110/4⌋ mod 1",
+          "result": "lower, 400"
+        },
+        {
+          "dimension": "display tracking",
+          "bytes": [
+            9
+          ],
+          "hex": "b6",
+          "rule": "−0.04 + 182/255 × 0.24",
+          "result": "0.131em"
+        },
+        {
+          "dimension": "type scale ratio",
+          "bytes": [
+            10
+          ],
+          "hex": "3f",
+          "rule": "1.067 + 63/255 × 0.551",
+          "result": "1.203"
+        },
+        {
+          "dimension": "density",
+          "bytes": [
+            11
+          ],
+          "hex": "47",
+          "rule": "t = 71/255",
+          "result": "t 0.278: base 17px, line-height 1.57, unit 8px"
+        },
+        {
+          "dimension": "grid columns · gutter",
+          "bytes": [
+            12
+          ],
+          "hex": "42",
+          "rule": "3 + 66 mod 10; unit × (1 + ⌊66/10⌋ mod 4)",
+          "result": "9 columns, 24px gutter"
+        },
+        {
+          "dimension": "text block span · start",
+          "bytes": [
+            13
+          ],
+          "hex": "d0",
+          "rule": "span 0/15, start 13/15",
+          "result": "columns 6–8 of 9"
+        },
+        {
+          "dimension": "first-screen height",
+          "bytes": [
+            14
+          ],
+          "hex": "b3",
+          "rule": "45 + 179/255 × 55",
+          "result": "84%"
+        },
+        {
+          "dimension": "sections · separator",
+          "bytes": [
+            15
+          ],
+          "hex": "41",
+          "rule": "3 + 65 mod 6; ⌊65/6⌋ mod 5",
+          "result": "8 sections, rules"
+        },
+        {
+          "dimension": "anchor subject · size",
+          "bytes": [
+            16
+          ],
+          "hex": "d3",
+          "rule": "211 mod 8; 25 + ⌊211/8⌋/31 × 75",
+          "result": "colour-block, 88%"
+        },
+        {
+          "dimension": "anchor position · rotation",
+          "bytes": [
+            17
+          ],
+          "hex": "be",
+          "rule": "x 14/15; ((11) − 7.5)/7.5 × 8",
+          "result": "x 0.93, 3.5°"
+        },
+        {
+          "dimension": "motif shape · size",
+          "bytes": [
+            18
+          ],
+          "hex": "2a",
+          "rule": "42 mod 12; unit × (1 + ⌊42/12⌋ mod 8)",
+          "result": "arrows, 32px"
+        },
+        {
+          "dimension": "motif placement · angle",
+          "bytes": [
+            19
+          ],
+          "hex": "50",
+          "rule": "80 mod 4; ⌊80/4⌋ × 180/63",
+          "result": "edges, 57°"
+        },
+        {
+          "dimension": "radius · border",
+          "bytes": [
+            20
+          ],
+          "hex": "2f",
+          "rule": "RADII[47 mod 8]; ⌊47/8⌋ mod 4; ⌊47/32⌋ mod 4",
+          "result": "16px radius, 1px solid border"
+        },
+        {
+          "dimension": "shadow · texture",
+          "bytes": [
+            21
+          ],
+          "hex": "95",
+          "rule": "149 & 3; (149 >> 2) & 3; 3 + 9 × 0.6",
+          "result": "no shadow, grain 8.4%"
+        },
+        {
+          "dimension": "motion property · duration",
+          "bytes": [
+            22
+          ],
+          "hex": "72",
+          "rule": "⌊114/64⌋; (114 mod 64)/63 × 600",
+          "result": "transform, 480ms"
+        },
+        {
+          "dimension": "easing",
+          "bytes": [
+            23
+          ],
+          "hex": "9a",
+          "rule": "154 ≥ 32 → cubic-bezier from bits",
+          "result": "cubic-bezier(0.77, 0.8, 0.63, 1)"
+        },
+        {
+          "dimension": "voice person · headline form",
+          "bytes": [
+            24
+          ],
+          "hex": "c8",
+          "rule": "200 mod 4; ⌊200/4⌋ mod 6",
+          "result": "i, label"
+        },
+        {
+          "dimension": "sentence length · register",
+          "bytes": [
+            25
+          ],
+          "hex": "33",
+          "rule": "3 + (51 & 15); (51 >> 4)/15",
+          "result": "6 words, register 0.2"
+        },
+        {
+          "dimension": "twist target",
+          "bytes": [
+            26
+          ],
+          "hex": "5b",
+          "rule": "91 mod 9",
+          "result": "navigation"
+        },
+        {
+          "dimension": "twist operation · amount",
+          "bytes": [
+            27
+          ],
+          "hex": "f1",
+          "rule": "241 mod 10; ⌊241/10⌋",
+          "result": "vertical, 24"
+        },
+        {
+          "dimension": "CJK display face",
+          "bytes": [
+            29
+          ],
+          "hex": "e4",
+          "rule": "228 mod 14",
+          "result": "Long Cang",
+          "note": "used on Chinese pages"
+        },
+        {
+          "dimension": "mono face",
+          "bytes": [
+            30
+          ],
+          "hex": "17",
+          "rule": "23 mod 8",
+          "result": "Share Tech Mono"
+        }
+      ]
+    },
+    {
+      "number": 4,
+      "slug": "04-e53aea10",
+      "ref": "e53aea1015641f05538eb15f105881456fef8688c32ff5b23718bea54346ef5b",
+      "hash": "e53aea1015641f05538eb15f105881456fef8688c32ff5b23718bea54346ef5b",
+      "short": "e53aea10",
+      "algorithm": "hash-design/v2",
+      "library": "bd20321c36ab",
+      "constraints": {
+        "lightOnly": false,
+        "darkOnly": false,
+        "reducedMotion": false,
+        "brandColors": []
+      },
+      "content": {
+        "subject": "Causeway — a music festival on Skerrow Island",
+        "facts": [
+          "Name: Causeway — a one-day music festival on Skerrow Island",
+          "Date: Saturday 19 June 2027",
+          "The island is reached on foot over a 1.2 km tidal causeway",
+          "Causeway open for arrivals 09:40–13:10 and for departures 22:15–01:30 (that day's tide times)",
+          "Nobody crosses outside those windows; the harbour boat is for emergencies only",
+          "Capacity: 900 people",
+          "Tickets: £54 adult, £27 for ages 12–17, free under 12; on sale 1 March 2027",
+          "Two stages: the Boathouse (indoors, 220 people) and the Field (outdoors)",
+          "Field line-up: The Lantern Choir, Mara Quist, Seven Herons, Low Orbit Brass",
+          "Boathouse line-up: Ada Fenwick (solo cello), Tomasz & the Weir, Kelp, Ruth Ono Trio",
+          "The last set ends at 21:45 so everyone reaches the causeway in time",
+          "No single-use plastic on the island: bring a cup, or buy an enamel one for £6",
+          "Food from two island kitchens; cash and card",
+          "Organised by the Skerrow Island Trust, a volunteer charity; profits go to repairing the sea wall",
+          "Fourth year of the festival, first held in 2024",
+          "Wear boots: parts of the causeway are wet sand and seaweed"
+        ],
+        "language": "en"
+      },
+      "label": "light · 322° · Hanken Grotesk / Atkinson Hyperlegible · 9 col",
+      "palette": {
+        "polarity": "light",
+        "hue": 322.35,
+        "paperL": 0.975,
+        "paperC": 0.003,
+        "accentC": 0.083,
+        "accent2Offset": 147.65,
+        "colors": {
+          "paper": "#f8f6f8",
+          "ink": "#3c353d",
+          "muted": "#766c77",
+          "accent": "#a47baa",
+          "accent2": "#90925c",
+          "rule": "#c3bdc4",
+          "panel": "#ebe5ec"
+        }
+      },
+      "contrast": {
+        "lines": [
+          {
+            "pair": "ink on paper",
+            "ratio": 11.04,
+            "verdict": "AAA — any text"
+          },
+          {
+            "pair": "muted on paper",
+            "ratio": 4.67,
+            "verdict": "AA — body text OK"
+          },
+          {
+            "pair": "ink on panel",
+            "ratio": 9.58,
+            "verdict": "AAA — any text"
+          },
+          {
+            "pair": "accent on paper",
+            "ratio": 3.26,
+            "verdict": "large text / UI marks only (≥24px or bold ≥19px)"
+          },
+          {
+            "pair": "accent2 on paper",
+            "ratio": 3.03,
+            "verdict": "large text / UI marks only (≥24px or bold ≥19px)"
+          },
+          {
+            "pair": "#000000 on accent",
+            "ratio": 5.99,
+            "verdict": "AA — body text OK"
+          },
+          {
+            "pair": "#000000 on accent2",
+            "ratio": 6.45,
+            "verdict": "AA — body text OK"
+          }
+        ],
+        "onAccent": "#000000",
+        "onAccent2": "#000000"
+      },
+      "type": {
+        "display": {
+          "family": "Hanken Grotesk",
+          "weights": [
+            300,
+            400,
+            500
+          ],
+          "italic": true,
+          "fallback": "\"Helvetica Neue\", Arial, sans-serif",
+          "source": "google"
+        },
+        "body": {
+          "family": "Atkinson Hyperlegible",
+          "weights": [
+            400,
+            700
+          ],
+          "italic": true,
+          "fallback": "Verdana, Arial, sans-serif",
+          "source": "google"
+        },
+        "mono": {
+          "family": "Share Tech Mono",
+          "weights": [
+            400
+          ],
+          "fallback": "\"Courier New\", monospace",
+          "source": "google"
+        },
+        "cjk": {
+          "display": "Chiron Hei HK",
+          "body": "Noto Sans SC"
+        },
+        "case": {
+          "id": "small-caps",
+          "text": "small caps (font-variant-caps: all-small-caps)"
+        },
+        "weight": 500,
+        "tracking": 0.094
+      },
+      "fonts": {
+        "stacks": {
+          "display": "\"Hanken Grotesk\", \"Helvetica Neue\", Arial, sans-serif",
+          "body": "\"Atkinson Hyperlegible\", Verdana, Arial, sans-serif",
+          "mono": "\"Share Tech Mono\", \"Courier New\", monospace"
+        },
+        "googleFontsUrl": "https://fonts.googleapis.com/css2?family=Hanken+Grotesk:ital,wght@0,300;0,400;0,500;1,300;1,400;1,500&family=Atkinson+Hyperlegible:ital,wght@0,400;0,700;1,400;1,700&family=Share+Tech+Mono&display=swap"
+      },
+      "scale": {
+        "ratio": 1.449,
+        "steps": [
+          {
+            "step": -2,
+            "px": 7.9,
+            "rem": 0.491
+          },
+          {
+            "step": -1,
+            "px": 11.4,
+            "rem": 0.712
+          },
+          {
+            "step": 0,
+            "px": 16.5,
+            "rem": 1.031
+          },
+          {
+            "step": 1,
+            "px": 23.9,
+            "rem": 1.494
+          },
+          {
+            "step": 2,
+            "px": 34.6,
+            "rem": 2.165
+          },
+          {
+            "step": 3,
+            "px": 50.2,
+            "rem": 3.137
+          },
+          {
+            "step": 4,
+            "px": 72.7,
+            "rem": 4.546
+          },
+          {
+            "step": 5,
+            "px": 105.4,
+            "rem": 6.587
+          },
+          {
+            "step": 6,
+            "px": 152.7,
+            "rem": 9.545
+          },
+          {
+            "step": 7,
+            "px": 221.3,
+            "rem": 13.831
+          }
+        ]
+      },
+      "density": {
+        "t": 0.373,
+        "baseSize": 16.5,
+        "lineHeight": 1.54,
+        "unit": 8,
+        "sectionGap": 117,
+        "maxWidth": 1210
+      },
+      "layout": {
+        "columns": 9,
+        "gutter": 16,
+        "span": 6,
+        "start": 2,
+        "firstScreen": 73,
+        "sections": 6,
+        "separator": {
+          "id": "bands",
+          "text": "full-width bands alternating paper and panel"
+        }
+      },
+      "anchor": {
+        "subject": {
+          "id": "motif",
+          "text": "the motif drawn at full scale"
+        },
+        "size": 56,
+        "x": 1,
+        "rotation": 7
+      },
+      "motif": {
+        "shape": {
+          "id": "rings",
+          "text": "concentric circles"
+        },
+        "size": 32,
+        "placement": {
+          "id": "edges",
+          "text": "along the page edges"
+        },
+        "angle": 97
+      },
+      "surface": {
+        "radius": 0,
+        "border": 0,
+        "borderStyle": "dashed",
+        "shadow": 6,
+        "texture": {
+          "id": "dot-screen",
+          "text": "a fine dot screen (radial-gradient pattern)"
+        },
+        "textureOpacity": 4.2
+      },
+      "motion": {
+        "still": false,
+        "property": {
+          "id": "colour",
+          "text": "colour (color / background-color)"
+        },
+        "duration": 500,
+        "easing": "cubic-bezier(0.51, 1, 0.63, 1)"
+      },
+      "voice": {
+        "person": {
+          "id": "none",
+          "text": "impersonal: no pronouns, facts stated plainly"
+        },
+        "headline": {
+          "id": "question",
+          "text": "a question the facts answer"
+        },
+        "sentenceWords": 11,
+        "register": 0.07
+      },
+      "twist": {
+        "target": {
+          "id": "navigation",
+          "text": "the navigation"
+        },
+        "operation": {
+          "id": "repeat",
+          "text": "repeated"
+        },
+        "amount": 16,
+        "text": "Repeat the navigation 2 times in a row."
+      },
+      "bans": [
+        "generic-sans",
+        "purple-blue-gradient",
+        "centered-hero-two-buttons",
+        "identical-cards",
+        "glassmorphism",
+        "emoji-icons",
+        "buzzword-copy",
+        "soft-shadow-rounded",
+        "invented-facts",
+        "tailwind-default-palette",
+        "scroll-fade-everything",
+        "pill-badge-sparkle",
+        "placeholder-content",
+        "template-sections"
+      ],
+      "tokensCss": "/* hash-design hash-design/v2 · e53aea10 */\n:root {\n  --paper: #f8f6f8;\n  --ink: #3c353d;\n  --muted: #766c77;\n  --accent: #a47baa;\n  --on-accent: #000000;\n  --accent2: #90925c;\n  --on-accent2: #000000;\n  --rule: #c3bdc4;\n  --panel: #ebe5ec;\n\n  --font-display: \"Hanken Grotesk\", \"Helvetica Neue\", Arial, sans-serif;\n  --font-body: \"Atkinson Hyperlegible\", Verdana, Arial, sans-serif;\n  --font-mono: \"Share Tech Mono\", \"Courier New\", monospace;\n  --display-weight: 500;\n  --display-tracking: 0.094em;\n\n  --step-n2: 0.491rem; /* 7.9px */\n  --step-n1: 0.712rem; /* 11.4px */\n  --step-0: 1.031rem; /* 16.5px */\n  --step-1: 1.494rem; /* 23.9px */\n  --step-2: 2.165rem; /* 34.6px */\n  --step-3: 3.137rem; /* 50.2px */\n  --step-4: 4.546rem; /* 72.7px */\n  --step-5: 6.587rem; /* 105.4px */\n  --step-6: 9.545rem; /* 152.7px */\n  --step-7: 13.831rem; /* 221.3px */\n  --leading: 1.54;\n\n  --space-1: 8px;\n  --space-2: 16px;\n  --space-3: 24px;\n  --space-4: 32px;\n  --space-5: 40px;\n  --space-6: 48px;\n  --space-7: 56px;\n  --space-8: 64px;\n  --section-gap: 117px;\n  --max-width: 1210px;\n  --columns: 9;\n  --gutter: 16px;\n\n  --radius: 0px;\n  --border: 0px dashed var(--rule);\n  --shadow: 6px 6px 0 var(--ink);\n\n  --motion-duration: 500ms;\n  --motion-easing: cubic-bezier(0.51, 1, 0.63, 1);\n}\n\nhtml { font-size: 103.1%; }\nbody { background: var(--paper); color: var(--ink); font-family: var(--font-body); line-height: var(--leading); }\n@media (prefers-reduced-motion: reduce) {\n  *, *::before, *::after { animation: none !important; transition: none !important; }\n}",
+      "trace": [
+        {
+          "dimension": "hue",
+          "bytes": [
+            0,
+            1
+          ],
+          "hex": "e5 3a",
+          "rule": "0xe53a = 58682; 58682/65536 × 360",
+          "result": "322.35°"
+        },
+        {
+          "dimension": "polarity · paper lightness",
+          "bytes": [
+            2
+          ],
+          "hex": "ea",
+          "rule": "234 ≥ 77 → light; L = 0.90 + 157/178 × 0.085",
+          "result": "light, L 0.975"
+        },
+        {
+          "dimension": "paper chroma",
+          "bytes": [
+            3
+          ],
+          "hex": "10",
+          "rule": "16/255 × 0.045",
+          "result": "0.003"
+        },
+        {
+          "dimension": "accent chroma",
+          "bytes": [
+            4
+          ],
+          "hex": "15",
+          "rule": "0.07 + 21/255 × 0.16",
+          "result": "0.083"
+        },
+        {
+          "dimension": "accent2 hue offset",
+          "bytes": [
+            5
+          ],
+          "hex": "64",
+          "rule": "30 + 100/255 × 300",
+          "result": "+147.65°"
+        },
+        {
+          "dimension": "display face",
+          "bytes": [
+            6
+          ],
+          "hex": "1f",
+          "rule": "31 mod 98 = 31",
+          "result": "Hanken Grotesk"
+        },
+        {
+          "dimension": "body face",
+          "bytes": [
+            7
+          ],
+          "hex": "05",
+          "rule": "5 mod 62 = 5",
+          "result": "Atkinson Hyperlegible"
+        },
+        {
+          "dimension": "display case · weight",
+          "bytes": [
+            8
+          ],
+          "hex": "53",
+          "rule": "83 mod 4 = 3; ⌊83/4⌋ mod 3",
+          "result": "small-caps, 500"
+        },
+        {
+          "dimension": "display tracking",
+          "bytes": [
+            9
+          ],
+          "hex": "8e",
+          "rule": "−0.04 + 142/255 × 0.24",
+          "result": "0.094em"
+        },
+        {
+          "dimension": "type scale ratio",
+          "bytes": [
+            10
+          ],
+          "hex": "b1",
+          "rule": "1.067 + 177/255 × 0.551",
+          "result": "1.449"
+        },
+        {
+          "dimension": "density",
+          "bytes": [
+            11
+          ],
+          "hex": "5f",
+          "rule": "t = 95/255",
+          "result": "t 0.373: base 16.5px, line-height 1.54, unit 8px"
+        },
+        {
+          "dimension": "grid columns · gutter",
+          "bytes": [
+            12
+          ],
+          "hex": "10",
+          "rule": "3 + 16 mod 10; unit × (1 + ⌊16/10⌋ mod 4)",
+          "result": "9 columns, 16px gutter"
+        },
+        {
+          "dimension": "text block span · start",
+          "bytes": [
+            13
+          ],
+          "hex": "58",
+          "rule": "span 8/15, start 5/15",
+          "result": "columns 2–7 of 9"
+        },
+        {
+          "dimension": "first-screen height",
+          "bytes": [
+            14
+          ],
+          "hex": "81",
+          "rule": "45 + 129/255 × 55",
+          "result": "73%"
+        },
+        {
+          "dimension": "sections · separator",
+          "bytes": [
+            15
+          ],
+          "hex": "45",
+          "rule": "3 + 69 mod 6; ⌊69/6⌋ mod 5",
+          "result": "6 sections, bands"
+        },
+        {
+          "dimension": "anchor subject · size",
+          "bytes": [
+            16
+          ],
+          "hex": "6f",
+          "rule": "111 mod 8; 25 + ⌊111/8⌋/31 × 75",
+          "result": "motif, 56%"
+        },
+        {
+          "dimension": "anchor position · rotation",
+          "bytes": [
+            17
+          ],
+          "hex": "ef",
+          "rule": "x 15/15; ((14) − 7.5)/7.5 × 8",
+          "result": "x 1, 7°"
+        },
+        {
+          "dimension": "motif shape · size",
+          "bytes": [
+            18
+          ],
+          "hex": "86",
+          "rule": "134 mod 12; unit × (1 + ⌊134/12⌋ mod 8)",
+          "result": "rings, 32px"
+        },
+        {
+          "dimension": "motif placement · angle",
+          "bytes": [
+            19
+          ],
+          "hex": "88",
+          "rule": "136 mod 4; ⌊136/4⌋ × 180/63",
+          "result": "edges, 97°"
+        },
+        {
+          "dimension": "radius · border",
+          "bytes": [
+            20
+          ],
+          "hex": "c3",
+          "rule": "RADII[195 mod 8]; ⌊195/8⌋ mod 4; ⌊195/32⌋ mod 4",
+          "result": "0px radius, 0px dashed border"
+        },
+        {
+          "dimension": "shadow · texture",
+          "bytes": [
+            21
+          ],
+          "hex": "2f",
+          "rule": "47 & 3; (47 >> 2) & 3; 3 + 2 × 0.6",
+          "result": "6px hard shadow, dot-screen 4.2%"
+        },
+        {
+          "dimension": "motion property · duration",
+          "bytes": [
+            22
+          ],
+          "hex": "f5",
+          "rule": "⌊245/64⌋; (245 mod 64)/63 × 600",
+          "result": "colour, 500ms"
+        },
+        {
+          "dimension": "easing",
+          "bytes": [
+            23
+          ],
+          "hex": "b2",
+          "rule": "178 ≥ 32 → cubic-bezier from bits",
+          "result": "cubic-bezier(0.51, 1, 0.63, 1)"
+        },
+        {
+          "dimension": "voice person · headline form",
+          "bytes": [
+            24
+          ],
+          "hex": "37",
+          "rule": "55 mod 4; ⌊55/4⌋ mod 6",
+          "result": "none, question"
+        },
+        {
+          "dimension": "sentence length · register",
+          "bytes": [
+            25
+          ],
+          "hex": "18",
+          "rule": "3 + (24 & 15); (24 >> 4)/15",
+          "result": "11 words, register 0.07"
+        },
+        {
+          "dimension": "twist target",
+          "bytes": [
+            26
+          ],
+          "hex": "be",
+          "rule": "190 mod 9",
+          "result": "navigation"
+        },
+        {
+          "dimension": "twist operation · amount",
+          "bytes": [
+            27
+          ],
+          "hex": "a5",
+          "rule": "165 mod 10; ⌊165/10⌋",
+          "result": "repeat, 16"
+        },
+        {
+          "dimension": "CJK display face",
+          "bytes": [
+            29
+          ],
+          "hex": "46",
+          "rule": "70 mod 14",
+          "result": "Chiron Hei HK",
+          "note": "used on Chinese pages"
+        },
+        {
+          "dimension": "mono face",
+          "bytes": [
+            30
+          ],
+          "hex": "ef",
+          "rule": "239 mod 8",
+          "result": "Share Tech Mono"
+        }
+      ]
+    },
+    {
+      "number": 5,
+      "slug": "05-5b9a4050",
+      "ref": "5b9a405021a7f8eb44e02af3fc1f37381c0c40b06b9aa5ab38ad3e6a212df443",
+      "hash": "5b9a405021a7f8eb44e02af3fc1f37381c0c40b06b9aa5ab38ad3e6a212df443",
+      "short": "5b9a4050",
+      "algorithm": "hash-design/v2",
+      "library": "bd20321c36ab",
+      "constraints": {
+        "lightOnly": false,
+        "darkOnly": false,
+        "reducedMotion": false,
+        "brandColors": []
+      },
+      "content": {
+        "subject": "Causeway — a music festival on Skerrow Island",
+        "facts": [
+          "Name: Causeway — a one-day music festival on Skerrow Island",
+          "Date: Saturday 19 June 2027",
+          "The island is reached on foot over a 1.2 km tidal causeway",
+          "Causeway open for arrivals 09:40–13:10 and for departures 22:15–01:30 (that day's tide times)",
+          "Nobody crosses outside those windows; the harbour boat is for emergencies only",
+          "Capacity: 900 people",
+          "Tickets: £54 adult, £27 for ages 12–17, free under 12; on sale 1 March 2027",
+          "Two stages: the Boathouse (indoors, 220 people) and the Field (outdoors)",
+          "Field line-up: The Lantern Choir, Mara Quist, Seven Herons, Low Orbit Brass",
+          "Boathouse line-up: Ada Fenwick (solo cello), Tomasz & the Weir, Kelp, Ruth Ono Trio",
+          "The last set ends at 21:45 so everyone reaches the causeway in time",
+          "No single-use plastic on the island: bring a cup, or buy an enamel one for £6",
+          "Food from two island kitchens; cash and card",
+          "Organised by the Skerrow Island Trust, a volunteer charity; profits go to repairing the sea wall",
+          "Fourth year of the festival, first held in 2024",
+          "Wear boots: parts of the causeway are wet sand and seaweed"
+        ],
+        "language": "en"
+      },
+      "label": "dark · 129° · Martian Mono / Sorts Mill Goudy · 5 col",
+      "palette": {
+        "polarity": "dark",
+        "hue": 128.81,
+        "paperL": 0.241,
+        "paperC": 0.014,
+        "accentC": 0.091,
+        "accent2Offset": 226.47,
+        "colors": {
+          "paper": "#1d211a",
+          "ink": "#c5cebc",
+          "muted": "#848a7e",
+          "accent": "#6a8549",
+          "accent2": "#a1667c",
+          "rule": "#474d40",
+          "panel": "#282e22"
+        }
+      },
+      "contrast": {
+        "lines": [
+          {
+            "pair": "ink on paper",
+            "ratio": 10.06,
+            "verdict": "AAA — any text"
+          },
+          {
+            "pair": "muted on paper",
+            "ratio": 4.61,
+            "verdict": "AA — body text OK"
+          },
+          {
+            "pair": "ink on panel",
+            "ratio": 8.6,
+            "verdict": "AAA — any text"
+          },
+          {
+            "pair": "accent on paper",
+            "ratio": 3.94,
+            "verdict": "large text / UI marks only (≥24px or bold ≥19px)"
+          },
+          {
+            "pair": "accent2 on paper",
+            "ratio": 3.66,
+            "verdict": "large text / UI marks only (≥24px or bold ≥19px)"
+          },
+          {
+            "pair": "#000000 on accent",
+            "ratio": 5.06,
+            "verdict": "AA — body text OK"
+          },
+          {
+            "pair": "#000000 on accent2",
+            "ratio": 4.71,
+            "verdict": "AA — body text OK"
+          }
+        ],
+        "onAccent": "#000000",
+        "onAccent2": "#000000"
+      },
+      "type": {
+        "display": {
+          "family": "Martian Mono",
+          "weights": [
+            300,
+            400,
+            600
+          ],
+          "fallback": "\"Courier New\", monospace",
+          "source": "google"
+        },
+        "body": {
+          "family": "Sorts Mill Goudy",
+          "weights": [
+            400
+          ],
+          "italic": true,
+          "fallback": "Georgia, serif",
+          "source": "google"
+        },
+        "mono": {
+          "family": "IBM Plex Mono",
+          "weights": [
+            400,
+            500,
+            600
+          ],
+          "fallback": "\"Courier New\", monospace",
+          "source": "google"
+        },
+        "cjk": {
+          "display": "Liu Jian Mao Cao",
+          "body": "Noto Serif SC"
+        },
+        "case": {
+          "id": "as-written",
+          "text": "as written (sentence case)"
+        },
+        "weight": 600,
+        "tracking": 0.171
+      },
+      "fonts": {
+        "stacks": {
+          "display": "\"Martian Mono\", \"Courier New\", monospace",
+          "body": "\"Sorts Mill Goudy\", Georgia, serif",
+          "mono": "\"IBM Plex Mono\", \"Courier New\", monospace"
+        },
+        "googleFontsUrl": "https://fonts.googleapis.com/css2?family=Martian+Mono:wght@300;400;600&family=Sorts+Mill+Goudy:ital,wght@0,400;1,400&family=IBM+Plex+Mono:wght@400;500;600&display=swap"
+      },
+      "scale": {
+        "ratio": 1.158,
+        "steps": [
+          {
+            "step": -2,
+            "px": 10.4,
+            "rem": 0.653
+          },
+          {
+            "step": -1,
+            "px": 12.1,
+            "rem": 0.756
+          },
+          {
+            "step": 0,
+            "px": 14,
+            "rem": 0.875
+          },
+          {
+            "step": 1,
+            "px": 16.2,
+            "rem": 1.013
+          },
+          {
+            "step": 2,
+            "px": 18.8,
+            "rem": 1.173
+          },
+          {
+            "step": 3,
+            "px": 21.7,
+            "rem": 1.359
+          },
+          {
+            "step": 4,
+            "px": 25.2,
+            "rem": 1.573
+          },
+          {
+            "step": 5,
+            "px": 29.2,
+            "rem": 1.822
+          },
+          {
+            "step": 6,
+            "px": 33.8,
+            "rem": 2.11
+          },
+          {
+            "step": 7,
+            "px": 39.1,
+            "rem": 2.443
+          }
+        ]
+      },
+      "density": {
+        "t": 0.953,
+        "baseSize": 14,
+        "lineHeight": 1.36,
+        "unit": 4,
+        "sectionGap": 38,
+        "maxWidth": 1420
+      },
+      "layout": {
+        "columns": 5,
+        "gutter": 8,
+        "span": 5,
+        "start": 1,
+        "firstScreen": 57,
+        "sections": 5,
+        "separator": {
+          "id": "boxes",
+          "text": "each section in a bordered box on the grid"
+        }
+      },
+      "anchor": {
+        "subject": {
+          "id": "grid-diagram",
+          "text": "a diagram drawn from the grid lines themselves"
+        },
+        "size": 32,
+        "x": 0.8,
+        "rotation": -8
+      },
+      "motif": {
+        "shape": {
+          "id": "crosses",
+          "text": "small crosses (+)"
+        },
+        "size": 24,
+        "placement": {
+          "id": "edges",
+          "text": "along the page edges"
+        },
+        "angle": 126
+      },
+      "surface": {
+        "radius": 0,
+        "border": 1,
+        "borderStyle": "dotted",
+        "shadow": 2,
+        "texture": {
+          "id": "line-screen",
+          "text": "a fine line screen (repeating-linear-gradient)"
+        },
+        "textureOpacity": 8.4
+      },
+      "motion": {
+        "still": false,
+        "property": {
+          "id": "clip-path",
+          "text": "a wipe (clip-path)"
+        },
+        "duration": 350,
+        "easing": "cubic-bezier(0.26, 1, 0.9, 1)"
+      },
+      "voice": {
+        "person": {
+          "id": "i",
+          "text": "first person singular (\"I\")"
+        },
+        "headline": {
+          "id": "label",
+          "text": "a label: a noun phrase, no verb"
+        },
+        "sentenceWords": 16,
+        "register": 0.67
+      },
+      "twist": {
+        "target": {
+          "id": "cta",
+          "text": "the primary call to action"
+        },
+        "operation": {
+          "id": "strike",
+          "text": "struck through, with the correction set beside it"
+        },
+        "amount": 10,
+        "text": "The primary call to action: struck through, with the correction set beside it."
+      },
+      "bans": [
+        "generic-sans",
+        "purple-blue-gradient",
+        "centered-hero-two-buttons",
+        "identical-cards",
+        "glassmorphism",
+        "emoji-icons",
+        "buzzword-copy",
+        "soft-shadow-rounded",
+        "invented-facts",
+        "tailwind-default-palette",
+        "scroll-fade-everything",
+        "pill-badge-sparkle",
+        "placeholder-content",
+        "template-sections"
+      ],
+      "tokensCss": "/* hash-design hash-design/v2 · 5b9a4050 */\n:root {\n  --paper: #1d211a;\n  --ink: #c5cebc;\n  --muted: #848a7e;\n  --accent: #6a8549;\n  --on-accent: #000000;\n  --accent2: #a1667c;\n  --on-accent2: #000000;\n  --rule: #474d40;\n  --panel: #282e22;\n\n  --font-display: \"Martian Mono\", \"Courier New\", monospace;\n  --font-body: \"Sorts Mill Goudy\", Georgia, serif;\n  --font-mono: \"IBM Plex Mono\", \"Courier New\", monospace;\n  --display-weight: 600;\n  --display-tracking: 0.171em;\n\n  --step-n2: 0.653rem; /* 10.4px */\n  --step-n1: 0.756rem; /* 12.1px */\n  --step-0: 0.875rem; /* 14px */\n  --step-1: 1.013rem; /* 16.2px */\n  --step-2: 1.173rem; /* 18.8px */\n  --step-3: 1.359rem; /* 21.7px */\n  --step-4: 1.573rem; /* 25.2px */\n  --step-5: 1.822rem; /* 29.2px */\n  --step-6: 2.11rem; /* 33.8px */\n  --step-7: 2.443rem; /* 39.1px */\n  --leading: 1.36;\n\n  --space-1: 4px;\n  --space-2: 8px;\n  --space-3: 12px;\n  --space-4: 16px;\n  --space-5: 20px;\n  --space-6: 24px;\n  --space-7: 28px;\n  --space-8: 32px;\n  --section-gap: 38px;\n  --max-width: 1420px;\n  --columns: 5;\n  --gutter: 8px;\n\n  --radius: 0px;\n  --border: 1px dotted var(--rule);\n  --shadow: 2px 2px 0 var(--ink);\n\n  --motion-duration: 350ms;\n  --motion-easing: cubic-bezier(0.26, 1, 0.9, 1);\n}\n\nhtml { font-size: 87.5%; }\nbody { background: var(--paper); color: var(--ink); font-family: var(--font-body); line-height: var(--leading); }\n@media (prefers-reduced-motion: reduce) {\n  *, *::before, *::after { animation: none !important; transition: none !important; }\n}",
+      "trace": [
+        {
+          "dimension": "hue",
+          "bytes": [
+            0,
+            1
+          ],
+          "hex": "5b 9a",
+          "rule": "0x5b9a = 23450; 23450/65536 × 360",
+          "result": "128.81°"
+        },
+        {
+          "dimension": "polarity · paper lightness",
+          "bytes": [
+            2
+          ],
+          "hex": "40",
+          "rule": "64 < 77 → dark; L = 0.14 + 64/76 × 0.12",
+          "result": "dark, L 0.241"
+        },
+        {
+          "dimension": "paper chroma",
+          "bytes": [
+            3
+          ],
+          "hex": "50",
+          "rule": "80/255 × 0.045",
+          "result": "0.014"
+        },
+        {
+          "dimension": "accent chroma",
+          "bytes": [
+            4
+          ],
+          "hex": "21",
+          "rule": "0.07 + 33/255 × 0.16",
+          "result": "0.091"
+        },
+        {
+          "dimension": "accent2 hue offset",
+          "bytes": [
+            5
+          ],
+          "hex": "a7",
+          "rule": "30 + 167/255 × 300",
+          "result": "+226.47°"
+        },
+        {
+          "dimension": "display face",
+          "bytes": [
+            6
+          ],
+          "hex": "f8",
+          "rule": "248 mod 98 = 52",
+          "result": "Martian Mono"
+        },
+        {
+          "dimension": "body face",
+          "bytes": [
+            7
+          ],
+          "hex": "eb",
+          "rule": "235 mod 62 = 49",
+          "result": "Sorts Mill Goudy"
+        },
+        {
+          "dimension": "display case · weight",
+          "bytes": [
+            8
+          ],
+          "hex": "44",
+          "rule": "68 mod 4 = 0; ⌊68/4⌋ mod 3",
+          "result": "as-written, 600"
+        },
+        {
+          "dimension": "display tracking",
+          "bytes": [
+            9
+          ],
+          "hex": "e0",
+          "rule": "−0.04 + 224/255 × 0.24",
+          "result": "0.171em"
+        },
+        {
+          "dimension": "type scale ratio",
+          "bytes": [
+            10
+          ],
+          "hex": "2a",
+          "rule": "1.067 + 42/255 × 0.551",
+          "result": "1.158"
+        },
+        {
+          "dimension": "density",
+          "bytes": [
+            11
+          ],
+          "hex": "f3",
+          "rule": "t = 243/255",
+          "result": "t 0.953: base 14px, line-height 1.36, unit 4px"
+        },
+        {
+          "dimension": "grid columns · gutter",
+          "bytes": [
+            12
+          ],
+          "hex": "fc",
+          "rule": "3 + 252 mod 10; unit × (1 + ⌊252/10⌋ mod 4)",
+          "result": "5 columns, 8px gutter"
+        },
+        {
+          "dimension": "text block span · start",
+          "bytes": [
+            13
+          ],
+          "hex": "1f",
+          "rule": "span 15/15, start 1/15",
+          "result": "columns 1–5 of 5"
+        },
+        {
+          "dimension": "first-screen height",
+          "bytes": [
+            14
+          ],
+          "hex": "37",
+          "rule": "45 + 55/255 × 55",
+          "result": "57%"
+        },
+        {
+          "dimension": "sections · separator",
+          "bytes": [
+            15
+          ],
+          "hex": "38",
+          "rule": "3 + 56 mod 6; ⌊56/6⌋ mod 5",
+          "result": "5 sections, boxes"
+        },
+        {
+          "dimension": "anchor subject · size",
+          "bytes": [
+            16
+          ],
+          "hex": "1c",
+          "rule": "28 mod 8; 25 + ⌊28/8⌋/31 × 75",
+          "result": "grid-diagram, 32%"
+        },
+        {
+          "dimension": "anchor position · rotation",
+          "bytes": [
+            17
+          ],
+          "hex": "0c",
+          "rule": "x 12/15; ((0) − 7.5)/7.5 × 8",
+          "result": "x 0.8, -8°"
+        },
+        {
+          "dimension": "motif shape · size",
+          "bytes": [
+            18
+          ],
+          "hex": "40",
+          "rule": "64 mod 12; unit × (1 + ⌊64/12⌋ mod 8)",
+          "result": "crosses, 24px"
+        },
+        {
+          "dimension": "motif placement · angle",
+          "bytes": [
+            19
+          ],
+          "hex": "b0",
+          "rule": "176 mod 4; ⌊176/4⌋ × 180/63",
+          "result": "edges, 126°"
+        },
+        {
+          "dimension": "radius · border",
+          "bytes": [
+            20
+          ],
+          "hex": "6b",
+          "rule": "RADII[107 mod 8]; ⌊107/8⌋ mod 4; ⌊107/32⌋ mod 4",
+          "result": "0px radius, 1px dotted border"
+        },
+        {
+          "dimension": "shadow · texture",
+          "bytes": [
+            21
+          ],
+          "hex": "9a",
+          "rule": "154 & 3; (154 >> 2) & 3; 3 + 9 × 0.6",
+          "result": "2px hard shadow, line-screen 8.4%"
+        },
+        {
+          "dimension": "motion property · duration",
+          "bytes": [
+            22
+          ],
+          "hex": "a5",
+          "rule": "⌊165/64⌋; (165 mod 64)/63 × 600",
+          "result": "clip-path, 350ms"
+        },
+        {
+          "dimension": "easing",
+          "bytes": [
+            23
+          ],
+          "hex": "ab",
+          "rule": "171 ≥ 32 → cubic-bezier from bits",
+          "result": "cubic-bezier(0.26, 1, 0.9, 1)"
+        },
+        {
+          "dimension": "voice person · headline form",
+          "bytes": [
+            24
+          ],
+          "hex": "38",
+          "rule": "56 mod 4; ⌊56/4⌋ mod 6",
+          "result": "i, label"
+        },
+        {
+          "dimension": "sentence length · register",
+          "bytes": [
+            25
+          ],
+          "hex": "ad",
+          "rule": "3 + (173 & 15); (173 >> 4)/15",
+          "result": "16 words, register 0.67"
+        },
+        {
+          "dimension": "twist target",
+          "bytes": [
+            26
+          ],
+          "hex": "3e",
+          "rule": "62 mod 9",
+          "result": "cta"
+        },
+        {
+          "dimension": "twist operation · amount",
+          "bytes": [
+            27
+          ],
+          "hex": "6a",
+          "rule": "106 mod 10; ⌊106/10⌋",
+          "result": "strike, 10"
+        },
+        {
+          "dimension": "CJK display face",
+          "bytes": [
+            29
+          ],
+          "hex": "2d",
+          "rule": "45 mod 14",
+          "result": "Liu Jian Mao Cao",
+          "note": "used on Chinese pages"
+        },
+        {
+          "dimension": "mono face",
+          "bytes": [
+            30
+          ],
+          "hex": "f4",
+          "rule": "244 mod 8",
+          "result": "IBM Plex Mono"
+        }
+      ]
+    }
+  ]
+}

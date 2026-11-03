@@ -1,0 +1,462 @@
+<!-- hash-design #2 · 599481a7 · ref 599481a7a798601d36af352c4c6d9d5258964970e32c07c18a784219d3840aca -->
+<!doctype html>
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>Sluice — a self-hosted inbox for webhooks</title>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Zen+Old+Mincho:wght@400;700&family=Josefin+Sans:wght@400;600&family=Courier+Prime&display=swap">
+<style>
+/* hash-design hash-design/v2 · 599481a7 */
+:root {
+  --paper: #e1ead5;
+  --ink: #333b27;
+  --muted: #63685c;
+  --accent: #668a00;
+  --on-accent: #000000;
+  --accent2: #c160af;
+  --on-accent2: #000000;
+  --rule: #a9b49a;
+  --panel: #d1dcc2;
+
+  --font-display: "Zen Old Mincho", "Songti SC", "Yu Mincho", serif;
+  --font-body: "Josefin Sans", "Century Gothic", sans-serif;
+  --font-mono: "Courier Prime", "Courier New", monospace;
+  --display-weight: 700;
+  --display-tracking: 0.125em;
+
+  --step-n2: 0.783rem; /* 12.5px */
+  --step-n1: 0.925rem; /* 14.8px */
+  --step-0: 1.094rem; /* 17.5px */
+  --step-1: 1.293rem; /* 20.7px */
+  --step-2: 1.528rem; /* 24.4px */
+  --step-3: 1.806rem; /* 28.9px */
+  --step-4: 2.135rem; /* 34.2px */
+  --step-5: 2.524rem; /* 40.4px */
+  --step-6: 2.983rem; /* 47.7px */
+  --step-7: 3.526rem; /* 56.4px */
+  --leading: 1.6;
+
+  --space-1: 9px;
+  --space-2: 18px;
+  --space-3: 27px;
+  --space-4: 36px;
+  --space-5: 45px;
+  --space-6: 54px;
+  --space-7: 63px;
+  --space-8: 72px;
+  --section-gap: 144px;
+  --max-width: 1140px;
+  --columns: 9;
+  --gutter: 36px;
+
+  --radius: 0px;
+  --border: 0px dotted var(--rule);
+  --shadow: none;
+
+  --motion-duration: 70ms;
+  --motion-easing: cubic-bezier(0, 1.2, 0.37, 1);
+}
+
+html { font-size: 109.4%; }
+body { background: var(--paper); color: var(--ink); font-family: var(--font-body); line-height: var(--leading); }
+@media (prefers-reduced-motion: reduce) {
+  *, *::before, *::after { animation: none !important; transition: none !important; }
+}
+
+/* ── surface: dot screen at 4.2% ─────────────────────────────────────────── */
+body {
+  background-image: radial-gradient(color-mix(in srgb, var(--ink) 4.2%, transparent) 1px, transparent 1.5px);
+  background-size: 6px 6px;
+  margin: 0;
+  position: relative;
+  overflow-x: clip;
+  font-size: var(--step-0);
+}
+*, *::before, *::after { box-sizing: border-box; border-radius: var(--radius); box-shadow: var(--shadow); }
+h1, h2, p, dl, dd, figure, pre { margin: 0; }
+
+/* ── motif: 63px dots along both page edges, runs leaning at 80° ─────────── */
+.edge { position: absolute; top: 0; bottom: 0; width: 72px; overflow: hidden; pointer-events: none; z-index: 0; }
+.edge-l { left: 0; }
+.edge-r { right: 0; }
+.edge svg { position: absolute; top: 0; width: 72px; height: 100%; display: block; }
+.edge-l svg { left: 0; }
+.edge-r svg { right: 0; }
+.edge .d { fill: var(--accent); }
+.edge .hot { fill: var(--accent2); }
+
+/* ── 9-column grid, 36px gutter, max 1140px ──────────────────────────────── */
+.wrap { width: min(var(--max-width), 100% - 180px); margin-inline: auto; position: relative; z-index: 1; }
+.grid { display: grid; grid-template-columns: repeat(var(--columns), minmax(0, 1fr)); column-gap: var(--gutter); }
+.c1-2 { grid-column: 1 / 3; }
+.c1-4 { grid-column: 1 / 5; }
+.c1-5 { grid-column: 1 / 6; }
+.c1-6 { grid-column: 1 / 7; }
+.c1-7 { grid-column: 1 / 8; }
+.c1-8 { grid-column: 1 / 9; }
+.c2-6 { grid-column: 2 / 7; }
+.c2-7 { grid-column: 2 / 8; }
+.c3-6 { grid-column: 3 / 7; }
+.c3-8 { grid-column: 3 / 9; }
+.c4-8 { grid-column: 4 / 9; }
+.c5-8 { grid-column: 5 / 9; }
+.c6-8 { grid-column: 6 / 9; }
+.c7-8 { grid-column: 7 / 9; }
+
+/* sections: separated by space only */
+.s { position: relative; z-index: 1; }
+.s + .s { margin-top: var(--section-gap); }
+
+/* ── first screen: 79% of the viewport, built around the headline ────────── */
+.first {
+  min-height: 79vh;
+  min-height: 79svh;
+  display: grid;
+  grid-template-rows: auto 1fr auto;
+  padding-block: var(--space-4);
+}
+.masthead { align-items: baseline; row-gap: var(--space-1); }
+.mark {
+  font-family: var(--font-display); font-weight: var(--display-weight);
+  letter-spacing: var(--display-tracking); text-transform: lowercase;
+  font-size: var(--step-2); line-height: 1.2; color: var(--ink);
+}
+.desc { color: var(--muted); font-size: var(--step-n1); }
+.ver { font-family: var(--font-mono); font-size: var(--step-n1); color: var(--muted); text-align: right; }
+
+.anchor {
+  align-self: center;
+  width: 52vw;
+  margin: var(--space-6) 0 var(--space-6) 14vw; /* centre sits at 40% of the width */
+  font-family: var(--font-display);
+  font-weight: var(--display-weight);
+  letter-spacing: var(--display-tracking);
+  text-transform: lowercase;
+  color: var(--accent);
+  font-size: 6.1vw;
+  line-height: 1.12;
+  transform: rotate(1.5deg);
+  transform-origin: 50% 50%;
+  position: relative;
+  z-index: 1;
+  animation: anchor-in var(--motion-duration) var(--motion-easing) both;
+}
+.anchor .ln { display: block; white-space: nowrap; }
+@keyframes anchor-in { from { opacity: 0; } to { opacity: 1; } }
+
+.lead { font-size: var(--step-1); line-height: 1.5; align-self: end; }
+.lead + .cmd { margin-top: var(--space-3); }
+
+/* code + the one stateful control */
+.cmd { display: flex; align-items: stretch; background: var(--panel); }
+.cmd code, .code code { font-family: var(--font-mono); font-size: var(--step-n1); color: var(--ink); }
+.cmd code { flex: 1; padding: var(--space-2) var(--space-3); overflow-wrap: anywhere; line-height: 1.5; }
+.cmd code::before, .code code::before { content: "$ "; color: var(--muted); }
+.copy {
+  font: 600 var(--step-n1) / 1 var(--font-body);
+  letter-spacing: 0.04em;
+  text-transform: lowercase;
+  background: var(--accent);
+  color: var(--on-accent);
+  border: var(--border);
+  padding: 0 var(--space-3);
+  cursor: pointer;
+  position: relative;
+  transition: opacity var(--motion-duration) var(--motion-easing);
+}
+.copy:hover { opacity: 0.78; }
+.copy .now, .copy .then { transition: opacity var(--motion-duration) var(--motion-easing); }
+.copy .then { position: absolute; inset: 0; display: grid; place-items: center; opacity: 0; }
+.copy.is-done .now { opacity: 0; }
+.copy.is-done .then { opacity: 1; }
+:focus-visible { outline: 3px solid var(--accent2); outline-offset: 3px; }
+
+.code { background: var(--panel); padding: var(--space-2) var(--space-3); white-space: pre-wrap; overflow-wrap: anywhere; line-height: 1.5; }
+
+/* ── section type ────────────────────────────────────────────────────────── */
+h2 {
+  font-family: var(--font-display);
+  font-weight: var(--display-weight);
+  letter-spacing: var(--display-tracking);
+  text-transform: lowercase;
+  font-size: var(--step-5);
+  line-height: 1.22;
+  color: var(--ink);
+  margin-bottom: var(--space-5);
+}
+h2 .n { color: var(--accent); }
+.big h2 { font-size: var(--step-7); line-height: 1.16; }
+.mid h2 { font-size: var(--step-6); }
+.small h2 { font-size: var(--step-4); }
+.body p + p { margin-top: var(--space-2); }
+.body { max-width: 34em; }
+.label { font-family: var(--font-mono); font-size: var(--step-n2); color: var(--muted); letter-spacing: 0.06em; text-transform: lowercase; margin-bottom: var(--space-1); display: block; }
+.note { color: var(--muted); font-size: var(--step-n1); }
+.inline { font-family: var(--font-mono); font-size: 0.92em; }
+.row-gap { row-gap: var(--space-5); }
+.code-wrap { align-self: start; }
+
+/* retries: exponential spacing drawn with the dot */
+.backoff { position: relative; height: 54px; margin-top: var(--space-2); }
+.backoff::before { content: ""; position: absolute; left: 0; right: 0; top: 50%; height: 1px; background: var(--rule); }
+.backoff i { position: absolute; top: 50%; width: 14px; height: 14px; margin: -7px 0 0 -7px; border-radius: 50%; background: var(--accent); }
+.backoff i:last-child { width: 27px; height: 27px; margin: -13.5px 0 0 -13.5px; background: var(--accent2); }
+.backoff-cap { display: flex; justify-content: space-between; gap: var(--space-2); font-family: var(--font-mono); font-size: var(--step-n2); color: var(--muted); }
+
+/* signatures: two rule lines */
+.rules { display: grid; grid-template-columns: max-content 1fr; column-gap: var(--space-4); row-gap: var(--space-3); align-items: baseline; }
+.rules dt { font-family: var(--font-mono); font-size: var(--step-n1); color: var(--muted); }
+.rules dd { font-family: var(--font-display); font-size: var(--step-3); line-height: 1.3; letter-spacing: 0.02em; }
+.rules dd b { color: var(--accent); font-weight: var(--display-weight); }
+
+/* storage: a sketch of the web UI search */
+.ui { background: var(--panel); padding: var(--space-3); align-self: start; }
+.ui-top { display: flex; justify-content: space-between; font-family: var(--font-mono); font-size: var(--step-n2); color: var(--muted); }
+.ui-q { background: var(--paper); margin-top: var(--space-2); padding: var(--space-1) var(--space-2); font-family: var(--font-mono); font-size: var(--step-n1); color: var(--muted); }
+.ui-f { display: flex; flex-wrap: wrap; gap: var(--space-1); margin-top: var(--space-2); }
+.ui-f span { background: var(--ink); color: var(--paper); font-size: var(--step-n1); padding: 3px var(--space-1) 1px; }
+.ui figcaption { margin-top: var(--space-2); font-size: var(--step-n1); color: var(--ink); }
+
+/* binary: platform table */
+.plat { border-collapse: collapse; align-self: start; width: 100%; }
+.plat caption { text-align: left; caption-side: top; padding-bottom: var(--space-2); font-family: var(--font-mono); font-size: var(--step-n2); color: var(--muted); }
+.plat th, .plat td { padding: var(--space-1) 0; text-align: left; font-weight: 400; }
+.plat thead th { font-family: var(--font-mono); font-size: var(--step-n2); color: var(--muted); }
+.plat tbody th { font-size: var(--step-1); }
+.plat .yes { display: inline-block; width: 14px; height: 14px; border-radius: 50%; background: var(--accent); vertical-align: middle; }
+
+/* people */
+.story { font-size: var(--step-1); line-height: 1.5; }
+.facts-list { list-style: none; margin: 0; padding: 0; font-family: var(--font-mono); font-size: var(--step-n1); color: var(--muted); align-self: end; }
+.facts-list li + li { margin-top: var(--space-1); }
+
+/* ── footer, repeated ────────────────────────────────────────────────────── */
+.foot { position: relative; z-index: 1; padding-block: var(--space-2); align-items: baseline; row-gap: var(--space-1); }
+main + .foot { margin-top: var(--section-gap); }
+.foot:last-of-type { padding-bottom: var(--space-8); }
+.foot-mark { font-family: var(--font-display); font-weight: var(--display-weight); letter-spacing: var(--display-tracking); text-transform: lowercase; font-size: var(--step-2); line-height: 1.2; }
+.foot-line { font-family: var(--font-mono); font-size: var(--step-n1); color: var(--muted); }
+
+/* ── under 640px: one column; separators (space) and the anchor stay ─────── */
+@media (max-width: 900px) {
+  .wrap { width: min(var(--max-width), 100% - 144px); }
+  .grid { column-gap: var(--space-2); }
+}
+@media (max-width: 639px) {
+  .wrap { width: calc(100% - 72px); }
+  .grid { grid-template-columns: minmax(0, 1fr); }
+  .grid > * { grid-column: 1 / -1; }
+  .edge { width: 28px; }
+  .edge-l svg { left: -36px; }
+  .edge-r svg { right: -36px; }
+  .ver { display: none; }
+  .first { padding-block: var(--space-3); }
+  .anchor { font-size: 10.5vw; margin-block: var(--space-3); }
+  .anchor .w { display: block; }
+  h2, .mid h2 { font-size: var(--step-3); margin-bottom: var(--space-3); }
+  .big h2 { font-size: var(--step-4); }
+  .small h2 { font-size: var(--step-2); }
+  .lead, .story { font-size: var(--step-0); }
+  .row-gap { row-gap: var(--space-4); }
+  .rules { grid-template-columns: 1fr; row-gap: 0; }
+  .rules dd { font-size: var(--step-2); margin-bottom: var(--space-2); }
+  .cmd code { padding: var(--space-2); }
+  .copy { padding: 0 var(--space-2); }
+}
+</style>
+</head>
+<body>
+
+<!-- motif: dots ~63px (r 31.5) along the left and right page edges; each run of three steps 15.6px across per 88.6px down, i.e. a line at 80° -->
+<div class="edge edge-l" aria-hidden="true">
+  <svg xmlns="http://www.w3.org/2000/svg">
+    <defs>
+      <pattern id="run-l" width="72" height="360" patternUnits="userSpaceOnUse">
+        <circle class="d" cx="0" cy="40" r="31.5"/>
+        <circle class="d" cx="15.6" cy="128.6" r="31.5"/>
+        <circle class="d" cx="31.2" cy="217.2" r="31.5"/>
+      </pattern>
+    </defs>
+    <rect width="100%" height="100%" fill="url(#run-l)"/>
+  </svg>
+</div>
+<div class="edge edge-r" aria-hidden="true">
+  <svg xmlns="http://www.w3.org/2000/svg">
+    <defs>
+      <pattern id="run-r" y="180" width="72" height="360" patternUnits="userSpaceOnUse">
+        <circle class="d" cx="40.8" cy="40" r="31.5"/>
+        <circle class="d" cx="56.4" cy="128.6" r="31.5"/>
+        <circle class="d" cx="72" cy="217.2" r="31.5"/>
+      </pattern>
+    </defs>
+    <rect width="100%" height="100%" fill="url(#run-r)"/>
+    <circle class="hot" cx="56.4" cy="308.6" r="31.5"/>
+  </svg>
+</div>
+
+<main>
+
+  <!-- 1 · first screen: the headline is the anchor — 52% of the width, centred at 40%, rotated 1.5° -->
+  <section class="s first" aria-labelledby="h-top">
+    <header class="masthead wrap grid">
+      <p class="mark c1-2">sluice</p>
+      <p class="desc c3-6">a self-hosted inbox for webhooks</p>
+      <p class="ver c7-8">0.9.2 · 14 October 2026</p>
+    </header>
+
+    <h1 class="anchor" id="h-top">
+      <span class="ln"><span class="w">11 mb</span> <span class="w">keeps</span></span>
+      <span class="ln"><span class="w">every</span> <span class="w">webhook</span></span>
+      <span class="ln"><span class="w">sent to</span> <span class="w">you.</span></span>
+    </h1>
+
+    <div class="wrap grid">
+      <p class="lead c1-5">You get a public URL for your webhooks, and every delivery is stored.</p>
+      <div class="cmd c1-6">
+        <code id="install">curl -fsSL https://sluice.example/install.sh | sh</code>
+        <button class="copy" type="button" data-copy="install" aria-live="polite"><span class="now">copy</span><span class="then">copied</span></button>
+      </div>
+    </div>
+  </section>
+
+  <!-- 2 -->
+  <section class="s wrap grid row-gap mid" aria-labelledby="h-fwd">
+    <h2 class="c1-7" id="h-fwd"><span class="n">0.9.2</span> forwards each delivery to your local or internal service.</h2>
+    <div class="body c1-4">
+      <p>You start it with one command and a single flag.</p>
+      <p>The flag names the service that should receive your deliveries.</p>
+    </div>
+    <div class="code-wrap c5-8">
+      <span class="label">start</span>
+      <pre class="code"><code>sluice serve --forward http://localhost:3000</code></pre>
+      <p class="note" style="margin-top: var(--space-2)">Version 0.9.2 was released on 14 October 2026.</p>
+    </div>
+  </section>
+
+  <!-- 3 -->
+  <section class="s wrap grid row-gap big" aria-labelledby="h-retry">
+    <h2 class="c1-8" id="h-retry"><span class="n">72 hours</span> of retries when your service does not answer.</h2>
+    <div class="body c1-5">
+      <p>A failed forward is tried again with exponential backoff.</p>
+      <p>Sluice keeps trying for up to 72 hours.</p>
+    </div>
+    <div class="c1-8" aria-hidden="true">
+      <div class="backoff">
+        <i style="left:0%"></i><i style="left:1.6%"></i><i style="left:4.8%"></i><i style="left:11.1%"></i><i style="left:23.8%"></i><i style="left:49.2%"></i><i style="left:100%"></i>
+      </div>
+      <div class="backoff-cap"><span>first failed forward</span><span>up to 72 hours</span></div>
+    </div>
+    <div class="body c3-6">
+      <p>You can also replay any stored delivery with one command.</p>
+    </div>
+    <div class="code-wrap c3-8">
+      <span class="label">replay</span>
+      <pre class="code"><code>sluice replay &lt;delivery-id&gt;</code></pre>
+    </div>
+  </section>
+
+  <!-- 4 -->
+  <section class="s wrap grid small" aria-labelledby="h-sig">
+    <h2 class="c2-7" id="h-sig"><span class="n">5 minutes</span> is the oldest a delivery can be.</h2>
+    <dl class="rules c2-7">
+      <dt>signature</dt>
+      <dd>HMAC-SHA256, <b>verified</b></dd>
+      <dt>age</dt>
+      <dd>older than 5 minutes, <b>rejected</b></dd>
+    </dl>
+  </section>
+
+  <!-- 5 -->
+  <section class="s wrap grid row-gap" aria-labelledby="h-store">
+    <h2 class="c1-6" id="h-store"><span class="n">30 days</span> of deliveries, kept in a single SQLite file.</h2>
+    <div class="body c1-4">
+      <p>There is no Redis, no Postgres and no queue to run.</p>
+      <p>Deliveries are kept for 30 days unless you change it with <code class="inline">--retain</code>.</p>
+      <p>The web UI on port 8081 lets you search them.</p>
+      <p>You can search by path, by header or by body text.</p>
+    </div>
+    <figure class="ui c5-8" aria-label="Sketch of the web UI search">
+      <div class="ui-top"><span>:8081</span><span>sluice</span></div>
+      <div class="ui-q">search deliveries by</div>
+      <div class="ui-f"><span>path</span><span>header</span><span>body text</span></div>
+      <figcaption>The web UI listens on port 8081.</figcaption>
+    </figure>
+  </section>
+
+  <!-- 6 -->
+  <section class="s wrap grid row-gap mid" aria-labelledby="h-speed">
+    <h2 class="c1-8" id="h-speed"><span class="n">1,800</span> deliveries per second on a 2-vCPU VM.</h2>
+    <div class="body c1-4">
+      <p>That number comes from the project's own benchmark.</p>
+      <p>Sluice ships as one static binary of about 11 MB.</p>
+      <p>You can run it on Linux, macOS or Windows.</p>
+    </div>
+    <table class="plat c6-8">
+      <caption>one static binary, about 11 MB</caption>
+      <thead><tr><th scope="col"><span class="label" style="margin:0">os</span></th><th scope="col">amd64</th><th scope="col">arm64</th></tr></thead>
+      <tbody>
+        <tr><th scope="row">Linux</th><td><span class="yes" role="img" aria-label="built"></span></td><td><span class="yes" role="img" aria-label="built"></span></td></tr>
+        <tr><th scope="row">macOS</th><td><span class="yes" role="img" aria-label="built"></span></td><td><span class="yes" role="img" aria-label="built"></span></td></tr>
+        <tr><th scope="row">Windows</th><td><span class="yes" role="img" aria-label="built"></span></td><td><span class="yes" role="img" aria-label="built"></span></td></tr>
+      </tbody>
+    </table>
+  </section>
+
+  <!-- 7 -->
+  <section class="s wrap grid row-gap" aria-labelledby="h-people">
+    <h2 class="c1-7" id="h-people"><span class="n">41 contributors</span> since a lost weekend in 2023.</h2>
+    <div class="body story c1-5">
+      <p>Ines Okafor started Sluice in 2023 after losing a weekend of payment webhooks.</p>
+      <p>It is written in Go and released under the MIT licence.</p>
+      <p>There is no hosted service, no account and no telemetry.</p>
+    </div>
+    <ul class="facts-list c7-8">
+      <li>maintainer: Ines Okafor</li>
+      <li>written in Go</li>
+      <li>MIT licence</li>
+      <li>41 contributors</li>
+    </ul>
+  </section>
+
+</main>
+
+<!-- twist: "Repeat the footer 4 times in a row." Applied literally — the same footer, four identical copies, one after another.
+     (The mapping table lists the amount byte as 2; the brief's twist line says 4 times, and that line is followed.) -->
+<footer class="foot wrap grid">
+  <p class="foot-mark c1-2">sluice</p>
+  <p class="foot-line c3-8">0.9.2 · released 14 October 2026 · MIT licence · written in Go · no hosted service, no account, no telemetry</p>
+</footer>
+<footer class="foot wrap grid">
+  <p class="foot-mark c1-2">sluice</p>
+  <p class="foot-line c3-8">0.9.2 · released 14 October 2026 · MIT licence · written in Go · no hosted service, no account, no telemetry</p>
+</footer>
+<footer class="foot wrap grid">
+  <p class="foot-mark c1-2">sluice</p>
+  <p class="foot-line c3-8">0.9.2 · released 14 October 2026 · MIT licence · written in Go · no hosted service, no account, no telemetry</p>
+</footer>
+<footer class="foot wrap grid">
+  <p class="foot-mark c1-2">sluice</p>
+  <p class="foot-line c3-8">0.9.2 · released 14 October 2026 · MIT licence · written in Go · no hosted service, no account, no telemetry</p>
+</footer>
+
+<script>
+document.querySelectorAll('[data-copy]').forEach(function (btn) {
+  var timer;
+  btn.addEventListener('click', function () {
+    var text = document.getElementById(btn.dataset.copy).textContent;
+    var done = function () {
+      btn.classList.add('is-done');
+      clearTimeout(timer);
+      timer = setTimeout(function () { btn.classList.remove('is-done'); }, 1600);
+    };
+    if (navigator.clipboard && navigator.clipboard.writeText) {
+      navigator.clipboard.writeText(text).then(done, done);
+    } else { done(); }
+  });
+});
+</script>
+</body>
+</html>

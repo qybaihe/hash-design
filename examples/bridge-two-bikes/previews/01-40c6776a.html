@@ -1,0 +1,554 @@
+<!-- hash-design #1 · 40c6776a · ref 40c6776af6502e673a46946c3932a15634b90305cb479ac5f8f7b82997572213 -->
+<!doctype html>
+<html lang="zh-CN">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>二号桥单车铺 · Bridge No.2 Cycle Works</title>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Libre+Bodoni:ital,wght@0,400;0,700;1,400;1,700&family=Old+Standard+TT:ital,wght@0,400;0,700;1,400;1,700&family=Courier+Prime&family=Liu+Jian+Mao+Cao&family=Noto+Serif+SC:wght@400;700&display=swap">
+<style>
+/* hash-design hash-design/v2 · 40c6776a */
+:root {
+  --paper: #e9e4d7;
+  --ink: #3e3825;
+  --muted: #696458;
+  --accent: #987900;
+  --on-accent: #000000;
+  --accent2: #008ea6;
+  --on-accent2: #000000;
+  --rule: #b5ae9a;
+  --panel: #dcd6c2;
+
+  --font-display: "Libre Bodoni", "Liu Jian Mao Cao", Didot, "Bodoni 72", serif;
+  --font-body: "Old Standard TT", "Noto Serif SC", Georgia, "Times New Roman", serif;
+  --font-mono: "Courier Prime", "Courier New", monospace;
+  --display-weight: 400;
+  --display-tracking: 0.026em;
+
+  --step-n2: 0.536rem; /* 8.6px */
+  --step-n1: 0.744rem; /* 11.9px */
+  --step-0: 1.031rem; /* 16.5px */
+  --step-1: 1.43rem; /* 22.9px */
+  --step-2: 1.984rem; /* 31.7px */
+  --step-3: 2.752rem; /* 44px */
+  --step-4: 3.817rem; /* 61.1px */
+  --step-5: 5.294rem; /* 84.7px */
+  --step-6: 7.342rem; /* 117.5px */
+  --step-7: 10.184rem; /* 162.9px */
+  --leading: 1.52;
+
+  --space-1: 7px;
+  --space-2: 14px;
+  --space-3: 21px;
+  --space-4: 28px;
+  --space-5: 35px;
+  --space-6: 42px;
+  --space-7: 49px;
+  --space-8: 56px;
+  --section-gap: 110px;
+  --max-width: 1230px;
+  --columns: 10;
+  --gutter: 14px;
+
+  --radius: 0px;
+  --border: 1px dashed var(--rule);
+  --shadow: 6px 6px 0 var(--ink);
+
+  --motion-duration: 250ms;
+  --motion-easing: cubic-bezier(0.13, 1.2, 0.37, 1);
+}
+
+html { font-size: 103.1%; }
+body { background: var(--paper); color: var(--ink); font-family: var(--font-body); line-height: var(--leading); }
+@media (prefers-reduced-motion: reduce) {
+  *, *::before, *::after { animation: none !important; transition: none !important; }
+}
+
+/* grain texture from the brief */
+body { background-image: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='160' height='160'%3E%3Cfilter id='n'%3E%3CfeTurbulence type='fractalNoise' baseFrequency='.9'/%3E%3C/filter%3E%3Crect width='100%25' height='100%25' filter='url(%23n)' opacity='0.054000000000000006'/%3E%3C/svg%3E"); }
+
+/* ---------- base ---------- */
+*, *::before, *::after { box-sizing: border-box; }
+body { margin: 0; font-size: var(--step-0); overflow-x: clip; }
+p, ul, dl, dd, figure { margin: 0; }
+ul { padding: 0; list-style: none; }
+a { color: inherit; }
+:focus-visible { outline: 2px solid var(--accent2); outline-offset: 3px; }
+.mono { font-family: "Courier Prime", "Noto Serif SC", "Courier New", monospace; }
+.disp { font-family: var(--font-display); font-weight: var(--display-weight); letter-spacing: var(--display-tracking); text-transform: lowercase; }
+
+/* the 10-column grid, 14px gutters, 1230px wide */
+.page {
+  box-sizing: content-box;
+  max-width: var(--max-width);
+  margin-inline: auto;
+  padding-inline: var(--space-4);
+  display: grid;
+  grid-template-columns: repeat(var(--columns), minmax(0, 1fr));
+  column-gap: var(--gutter);
+}
+
+/* clip-path wipe used on hover / focus */
+.wipe { position: relative; isolation: isolate; text-decoration: none; }
+.wipe::before {
+  content: ""; position: absolute; inset: 0; z-index: -1;
+  background: var(--accent);
+  clip-path: inset(0 100% 0 0);
+  transition: clip-path var(--motion-duration) var(--motion-easing);
+}
+.wipe:hover, .wipe:focus-visible { color: var(--on-accent); }
+.wipe:hover::before, .wipe:focus-visible::before { clip-path: inset(0 0 0 0); }
+
+/* ---------- first screen: 80% of the viewport ---------- */
+.hero {
+  position: relative;
+  min-height: 80vh;
+  min-height: 80svh;
+  display: flex;
+  flex-direction: column;
+  justify-content: center;
+  overflow: clip;
+}
+.hero-body { position: relative; z-index: 2; padding-block: var(--space-6); }
+.hero-meta {
+  grid-column: 2 / 6;
+  display: flex; flex-wrap: wrap; gap: 0 var(--space-3);
+  font-size: var(--step-n1); letter-spacing: .06em; color: var(--muted);
+  margin-bottom: var(--space-5);
+}
+.hero-text { grid-column: 2 / 6; }
+h1 { margin: 0; line-height: 1; }
+.h1-zh { display: block; font-size: var(--step-6); line-height: 1.04; }
+.h1-en { display: block; font-size: var(--step-2); margin-top: var(--space-2); }
+.lede { font-size: var(--step-1); max-width: 16.5em; margin: var(--space-5) 0 var(--space-2); }
+.lede .s, .hours .s { display: block; }
+.hours { color: var(--muted); max-width: 22em; margin-bottom: var(--space-5); }
+.call {
+  display: inline-block;
+  padding: var(--space-1) var(--space-3);
+  border: var(--border); border-radius: var(--radius);
+  box-shadow: var(--shadow);
+  background: var(--paper);
+  font-size: var(--step-0);
+}
+.call .mono { letter-spacing: .04em; }
+
+/* anchor: a diagram drawn from the grid lines, 40% wide, centred at 60%, rotated 3.5deg */
+.anchor {
+  position: absolute; z-index: 1;
+  left: 60%; top: 50%; width: 40%;
+  transform: translate(-50%, -50%) rotate(3.5deg);
+  color: var(--accent);
+  pointer-events: none;
+}
+.anchor svg { display: block; width: 100%; height: auto; overflow: visible; animation: wipe-in var(--motion-duration) var(--motion-easing) 120ms both; }
+@keyframes wipe-in { from { clip-path: inset(0 100% 0 0); } to { clip-path: inset(0 0 0 0); } }
+.anchor .a-cols rect { fill: none; stroke: currentColor; stroke-width: 1; opacity: .55; }
+.anchor .a-rows line { stroke: currentColor; stroke-width: .8; opacity: .35; }
+.anchor .a-build line { stroke: currentColor; stroke-width: 1.6; stroke-dasharray: 6 5; }
+.anchor .a-build .a-ground { stroke-width: 3; stroke-dasharray: none; }
+.anchor .a-spokes line { stroke: currentColor; stroke-width: 1; }
+.anchor .a-rim { fill: none; stroke: currentColor; stroke-width: 6; }
+.anchor .a-rim-in { fill: none; stroke: currentColor; stroke-width: 1.5; }
+.anchor .a-hub { fill: var(--paper); stroke: currentColor; stroke-width: 3; }
+.anchor .a-frame { fill: none; stroke: currentColor; stroke-width: 7; stroke-linejoin: miter; stroke-linecap: square; }
+.anchor .a-saddle, .anchor .a-pedal { fill: currentColor; }
+.anchor .a-ring { fill: none; stroke: currentColor; stroke-width: 3; }
+.anchor .a-chain { fill: none; stroke: currentColor; stroke-width: 2; stroke-dasharray: 3 3; }
+.anchor .a-nodes rect { fill: var(--paper); stroke: currentColor; stroke-width: 3; }
+.anchor .a-lead line { stroke: currentColor; stroke-width: 1.5; }
+.anchor .a-label { fill: var(--ink); font-family: "Courier Prime", "Noto Serif SC", "Courier New", monospace; font-size: 25px; }
+
+/* ---------- motif: 7px stripes at 3deg between sections ---------- */
+.stripes {
+  grid-column: 1 / -1;
+  position: relative;
+  height: 0;
+  padding-bottom: calc(5.241% + 37px);
+  margin-block: var(--space-2);
+  overflow: clip;
+}
+.stripes::before {
+  content: ""; position: absolute; left: 0; right: 0; top: 50%;
+  height: 35px; margin-top: -17.5px;
+  transform: rotate(3deg);
+  background: repeating-linear-gradient(180deg, var(--ink) 0 7px, transparent 7px 14px);
+}
+
+/* ---------- five sections, each a bordered box on the grid ---------- */
+.sections { padding-bottom: var(--section-gap); }
+.box {
+  grid-column: 1 / 11;
+  display: grid;
+  grid-template-columns: subgrid;
+  align-items: start;
+  padding-block: var(--space-6) var(--space-7);
+  border: var(--border);
+  border-radius: var(--radius);
+  box-shadow: var(--shadow);
+}
+.box--used { grid-column: 1 / 9; }
+.box--owner { grid-column: 1 / 10; }
+.box--visit { grid-column: 1 / 9; }
+
+/* twist: section headings set vertically */
+.vhead {
+  grid-column: 1; grid-row: 1;
+  justify-self: center;
+  writing-mode: vertical-rl;
+  margin: 0;
+  font-size: var(--step-4);
+  line-height: 1.12;
+}
+.vhead .en { display: block; font-size: var(--step-0); color: var(--muted); letter-spacing: .08em; padding-top: var(--space-2); }
+.box-text { grid-column: 2 / 6; grid-row: 1; }
+.box-text p + p { margin-top: var(--space-2); }
+.box-text .lead { font-size: var(--step-1); line-height: 1.45; margin-bottom: var(--space-3); }
+.box-aside { grid-column: 6 / -1; grid-row: 1; padding-right: var(--space-5); }
+
+/* price list: the accent is the price mark */
+.prices li {
+  position: relative; isolation: isolate;
+  display: grid;
+  grid-template-columns: minmax(0, 1fr) auto;
+  column-gap: var(--space-3);
+  align-items: baseline;
+  padding: var(--space-2) var(--space-1);
+  border-bottom: var(--border);
+}
+.prices li:first-child { border-top: var(--border); }
+.prices li::before {
+  content: ""; position: absolute; inset: 0; z-index: -1;
+  background: var(--panel);
+  clip-path: inset(0 100% 0 0);
+  transition: clip-path var(--motion-duration) var(--motion-easing);
+}
+.prices li:hover::before { clip-path: inset(0 0 0 0); }
+.p-name { font-size: var(--step-1); }
+.p-note { grid-column: 1; font-size: var(--step-0); color: var(--muted); }
+.p-fig { grid-column: 2; grid-row: 1 / span 2; align-self: center; font-size: var(--step-2); color: var(--accent); line-height: 1; white-space: nowrap; }
+.p-fig small { font-family: var(--font-body); font-size: var(--step-1); color: var(--muted); }
+.p-major .p-name { font-weight: 700; }
+.p-major .p-fig { font-size: var(--step-4); }
+
+/* used bikes */
+.fig { display: flex; align-items: baseline; gap: var(--space-2); }
+.fig-n { font-size: var(--step-7); line-height: .82; }
+.fig-u { font-size: var(--step-1); }
+.fig-note { margin-top: var(--space-3); color: var(--muted); padding-top: var(--space-2); border-top: var(--border); max-width: 20em; }
+
+/* owner: a filing card */
+.card {
+  background: var(--panel);
+  border: var(--border);
+  padding: var(--space-3) var(--space-4);
+  max-width: 30em;
+}
+.card div { display: grid; grid-template-columns: 5em 1fr; gap: var(--space-2); padding: var(--space-1) 0; border-bottom: var(--border); }
+.card div:last-child { border-bottom: 0; }
+.card dt { color: var(--muted); font-size: var(--step-n1); letter-spacing: .1em; padding-top: .35em; }
+.card dd { font-size: var(--step-1); }
+.card-title { font-size: var(--step-n1); letter-spacing: .12em; color: var(--muted); margin-bottom: var(--space-1); }
+
+/* thursday ride */
+.ride-map { display: block; width: 100%; max-width: 520px; height: auto; margin-bottom: var(--space-3); }
+.ride-map .river { fill: none; stroke: var(--accent2); stroke-width: 3; }
+.ride-map .loop { fill: none; stroke: var(--ink); stroke-width: 2; stroke-dasharray: 8 6; }
+.ride-map .start { fill: var(--ink); }
+.ride-table { width: 100%; max-width: 520px; border-collapse: collapse; }
+.ride-table th, .ride-table td { text-align: left; vertical-align: baseline; padding: var(--space-1) var(--space-2) var(--space-1) 0; border-bottom: var(--border); }
+.ride-table th { font-weight: 400; color: var(--muted); font-size: var(--step-n1); letter-spacing: .1em; width: 6em; }
+.ride-table td { font-size: var(--step-1); word-break: keep-all; }
+
+/* visit */
+.hours-list div { display: flex; flex-wrap: wrap; justify-content: space-between; gap: 0 var(--space-3); padding: var(--space-1) 0; border-bottom: var(--border); }
+.hours-list div:first-child { border-top: var(--border); }
+.hours-list dt { color: var(--muted); }
+.front { display: block; width: 100%; max-width: 300px; height: auto; margin-top: var(--space-4); }
+.front .shutter { fill: var(--accent2); }
+.front .slat { stroke: var(--paper); stroke-width: 2; }
+.front .wall { fill: none; stroke: var(--ink); stroke-width: 2; }
+.front .wheel { fill: none; stroke: var(--ink); stroke-width: 3; }
+.front .spoke { stroke: var(--ink); stroke-width: 1; }
+.front-cap { font-size: var(--step-n1); color: var(--muted); letter-spacing: .06em; margin-top: var(--space-1); }
+.tel { padding: 0 2px; border-bottom: 1px dashed var(--ink); }
+
+/* footer */
+.foot { padding-block: 0 var(--space-6); font-size: var(--step-n1); color: var(--muted); letter-spacing: .06em; }
+.foot p:first-child { grid-column: 2 / 6; }
+.foot p:last-child { grid-column: 6 / 11; }
+
+/* ---------- below 640px: one column; separators and anchor stay ---------- */
+@media (max-width: 639px) {
+  .page { display: block; padding-inline: var(--space-3); }
+  .hero { justify-content: flex-start; }
+  .anchor {
+    position: relative; left: auto; top: auto;
+    width: 40%;
+    margin: var(--space-5) 0 0 40%;
+    transform: rotate(3.5deg);
+    order: -1;
+  }
+  .hero-body { padding-block: var(--space-4) var(--space-5); }
+  .hero-meta { margin-bottom: var(--space-3); }
+  .h1-zh { font-size: var(--step-5); }
+  .h1-en { font-size: var(--step-1); }
+  .lede { margin-top: var(--space-4); }
+  .box {
+    grid-template-columns: auto minmax(0, 1fr);
+    column-gap: var(--space-3);
+    row-gap: var(--space-4);
+    padding: var(--space-4) var(--space-3) var(--space-5) var(--space-2);
+  }
+  .vhead { grid-row: 1 / span 2; font-size: var(--step-3); }
+  .box-text { grid-column: 2; grid-row: 1; }
+  .box-aside { grid-column: 2; grid-row: 2; padding-right: 0; }
+  .fig-n { font-size: var(--step-6); }
+  .prices li { grid-template-columns: minmax(0, 1fr) auto; padding-inline: var(--space-1) 0; }
+  .p-note { grid-column: 1 / -1; grid-row: 2; }
+  .p-fig { grid-row: 1; align-self: baseline; }
+  .p-major .p-fig { font-size: var(--step-2); }
+  .ride-table th { width: 3.5em; }
+  .ride-table td { font-size: var(--step-0); }
+  .p-name { font-size: var(--step-0); }
+  .prices li { column-gap: var(--space-2); }
+  .p-fig small { display: block; text-align: right; font-size: var(--step-0); margin-top: 2px; }
+  .lede .s { display: inline; }
+  .card { padding: var(--space-2) var(--space-3); }
+  .card div { grid-template-columns: 3.5em 1fr; }
+  .foot p + p { margin-top: var(--space-1); }
+}
+</style>
+</head>
+<body>
+
+<header class="hero">
+  <div class="hero-body">
+    <div class="page">
+      <p class="hero-meta mono"><span>河西路二号桥桥洞下东侧</span><span>周三至周日 10:00–20:00</span></p>
+      <div class="hero-text">
+        <h1 class="disp"><span class="h1-zh">二号桥<br>单车铺</span><span class="h1-en" lang="en">Bridge No.2 Cycle Works</span></h1>
+        <p class="lede"><span class="s">我是陈立平，在二号桥桥洞下修车。</span><span class="s">我只修车，卖二手车和零件。</span><span class="s">我不卖新车。</span></p>
+        <p class="hours"><span class="s">营业时间：周三至周日 10:00–20:00；</span><span class="s">周一、周二休息。</span></p>
+        <a class="call wipe" href="tel:057155550222">预约电话 <span class="mono">0571-5555-0222</span></a>
+      </div>
+    </div>
+  </div>
+  <figure class="anchor" role="img" aria-label="以十栏栅格线绘制的自行车结构图：车架节点落在栅格交点上，标注全车保养、补胎与手工编轮组价目">
+    <svg viewBox="0 0 1000 784" xmlns="http://www.w3.org/2000/svg" aria-hidden="true">
+<g class="a-cols">
+<rect x="0" y="0" width="90" height="784"/>
+<rect x="101.1" y="0" width="90" height="784"/>
+<rect x="202.2" y="0" width="90" height="784"/>
+<rect x="303.3" y="0" width="90" height="784"/>
+<rect x="404.4" y="0" width="90" height="784"/>
+<rect x="505.6" y="0" width="90" height="784"/>
+<rect x="606.7" y="0" width="90" height="784"/>
+<rect x="707.8" y="0" width="90" height="784"/>
+<rect x="808.9" y="0" width="90" height="784"/>
+<rect x="910" y="0" width="90" height="784"/>
+</g>
+<g class="a-rows">
+<line x1="0" y1="56" x2="1000" y2="56"/>
+<line x1="0" y1="112" x2="1000" y2="112"/>
+<line x1="0" y1="168" x2="1000" y2="168"/>
+<line x1="0" y1="224" x2="1000" y2="224"/>
+<line x1="0" y1="280" x2="1000" y2="280"/>
+<line x1="0" y1="336" x2="1000" y2="336"/>
+<line x1="0" y1="392" x2="1000" y2="392"/>
+<line x1="0" y1="448" x2="1000" y2="448"/>
+<line x1="0" y1="504" x2="1000" y2="504"/>
+<line x1="0" y1="560" x2="1000" y2="560"/>
+<line x1="0" y1="616" x2="1000" y2="616"/>
+<line x1="0" y1="672" x2="1000" y2="672"/>
+<line x1="0" y1="728" x2="1000" y2="728"/>
+</g>
+<g class="a-build">
+<line x1="0" y1="168" x2="1000" y2="168"/><line x1="0" y1="448" x2="1000" y2="448"/><line x1="0" y1="616" x2="1000" y2="616" class="a-ground"/>
+<line x1="404.4" y1="0" x2="404.4" y2="784"/><line x1="505.6" y1="0" x2="505.6" y2="784"/><line x1="707.8" y1="0" x2="707.8" y2="784"/>
+</g>
+<g class="a-spokes">
+<line x1="306.8" y1="448.9" x2="441.9" y2="517.6"/>
+<line x1="305.7" y1="452.3" x2="404.3" y2="567.4"/>
+<line x1="303.5" y1="455" x2="350.5" y2="599.1"/>
+<line x1="300.4" y1="456.6" x2="288.6" y2="607.7"/>
+<line x1="296.9" y1="457" x2="228.2" y2="592.1"/>
+<line x1="293.5" y1="455.9" x2="178.4" y2="554.5"/>
+<line x1="290.8" y1="453.7" x2="146.7" y2="500.7"/>
+<line x1="289.2" y1="450.6" x2="138.1" y2="438.8"/>
+<line x1="288.8" y1="447.1" x2="153.7" y2="378.4"/>
+<line x1="289.9" y1="443.7" x2="191.3" y2="328.6"/>
+<line x1="292.1" y1="441" x2="245.1" y2="296.9"/>
+<line x1="295.2" y1="439.4" x2="307" y2="288.3"/>
+<line x1="298.7" y1="439" x2="367.4" y2="303.9"/>
+<line x1="302.1" y1="440.1" x2="417.2" y2="341.5"/>
+<line x1="304.8" y1="442.3" x2="448.9" y2="395.3"/>
+<line x1="306.4" y1="445.4" x2="457.5" y2="457.2"/>
+</g>
+<circle class="a-rim" cx="297.8" cy="448" r="168"/><circle class="a-rim-in" cx="297.8" cy="448" r="156"/><circle class="a-hub" cx="297.8" cy="448" r="9"/>
+<g class="a-spokes">
+<line x1="812.3" y1="448.9" x2="947.4" y2="517.6"/>
+<line x1="811.2" y1="452.3" x2="909.8" y2="567.4"/>
+<line x1="809" y1="455" x2="856" y2="599.1"/>
+<line x1="805.9" y1="456.6" x2="794.1" y2="607.7"/>
+<line x1="802.4" y1="457" x2="733.7" y2="592.1"/>
+<line x1="799" y1="455.9" x2="683.9" y2="554.5"/>
+<line x1="796.3" y1="453.7" x2="652.2" y2="500.7"/>
+<line x1="794.7" y1="450.6" x2="643.6" y2="438.8"/>
+<line x1="794.3" y1="447.1" x2="659.2" y2="378.4"/>
+<line x1="795.4" y1="443.7" x2="696.8" y2="328.6"/>
+<line x1="797.6" y1="441" x2="750.6" y2="296.9"/>
+<line x1="800.7" y1="439.4" x2="812.5" y2="288.3"/>
+<line x1="804.2" y1="439" x2="872.9" y2="303.9"/>
+<line x1="807.6" y1="440.1" x2="922.7" y2="341.5"/>
+<line x1="810.3" y1="442.3" x2="954.4" y2="395.3"/>
+<line x1="811.9" y1="445.4" x2="963" y2="457.2"/>
+</g>
+<circle class="a-rim" cx="803.3" cy="448" r="168"/><circle class="a-rim-in" cx="803.3" cy="448" r="156"/><circle class="a-hub" cx="803.3" cy="448" r="9"/>
+<g class="a-frame">
+<path d="M297.8,448 L505.6,448 L404.4,168 L707.8,168 L724.9,224 L505.6,448 M297.8,448 L414.5,196 M404.4,168 L388.5,124 M724.9,224 L780 404 Q790 440 803.3,448"/>
+<path d="M707.8,168 L713 140 L770 136 Q800 140 796 172 Q792 196 764 196"/>
+</g>
+<path class="a-saddle" d="M346 118 L432 112 L442 121 L362 127 Z"/>
+<circle class="a-ring" cx="505.6" cy="448" r="44"/><circle class="a-ring" cx="297.8" cy="448" r="20"/>
+<path class="a-chain" d="M297.8 428 L505.6 404 M297.8 468 L505.6 492"/>
+<path class="a-frame" d="M505.6,448 L548 524"/><rect class="a-pedal" x="530" y="518" width="38" height="12"/>
+<g class="a-nodes">
+<rect x="291.8" y="442" width="12" height="12"/>
+<rect x="797.3" y="442" width="12" height="12"/>
+<rect x="499.6" y="442" width="12" height="12"/>
+<rect x="398.4" y="162" width="12" height="12"/>
+<rect x="701.8" y="162" width="12" height="12"/>
+<rect x="718.9" y="218" width="12" height="12"/>
+</g>
+<g class="a-lead"><line x1="505.6" y1="492" x2="505.6" y2="664"/><line x1="297.8" y1="616" x2="297.8" y2="716"/><line x1="803.3" y1="616" x2="803.3" y2="716"/></g>
+<g class="a-label"><text x="517.6" y="694">全车保养 ¥180</text><text x="297.8" y="748" text-anchor="middle">补胎 ¥15</text><text x="803.3" y="748" text-anchor="middle">手工编轮组 ¥260 起</text></g>
+    </svg>
+  </figure>
+</header>
+
+<main class="page sections">
+
+  <div class="stripes" aria-hidden="true"></div>
+
+  <section class="box box--prices" aria-labelledby="h-prices">
+    <h2 id="h-prices" class="vhead disp">修车价目<span class="en" lang="en">price list</span></h2>
+    <div class="box-text">
+      <p class="lead">以下为我的修车价目。</p>
+      <p>全车保养约需 2 小时。我清洗传动，调校变速与刹车，紧固全车螺丝。</p>
+      <p>手工编轮组工期为 5 天。公路车 Fitting 约 90 分钟，须提前预约。</p>
+    </div>
+    <div class="box-aside">
+      <ul class="prices">
+        <li><span class="p-name">补胎</span><span class="p-fig disp">¥15</span></li>
+        <li><span class="p-name">换内胎</span><span class="p-note">含内胎</span><span class="p-fig disp">¥35</span></li>
+        <li class="p-major"><span class="p-name">全车保养</span><span class="p-note">清洗传动、调变速和刹车、紧固全车螺丝，约 2 小时</span><span class="p-fig disp">¥180</span></li>
+        <li><span class="p-name">手工编轮组</span><span class="p-note">工期 5 天</span><span class="p-fig disp">¥260<small> 起</small></span></li>
+        <li><span class="p-name">公路车 Fitting</span><span class="p-note">约 90 分钟，需预约</span><span class="p-fig disp">¥480</span></li>
+      </ul>
+    </div>
+  </section>
+
+  <div class="stripes" aria-hidden="true"></div>
+
+  <section class="box box--used" aria-labelledby="h-used">
+    <h2 id="h-used" class="vhead disp">二手车<span class="en" lang="en">used bicycles</span></h2>
+    <div class="box-text">
+      <p class="lead">我出售的每辆二手车，都换过链条与刹车皮。</p>
+      <p>每辆二手车保修 90 天。</p>
+      <p>二手车之外，我也出售零件。</p>
+    </div>
+    <div class="box-aside">
+      <p class="fig"><span class="fig-n disp">90</span><span class="fig-u">天保修</span></p>
+      <p class="fig-note">链条与刹车皮：每辆均已更换。</p>
+    </div>
+  </section>
+
+  <div class="stripes" aria-hidden="true"></div>
+
+  <section class="box box--owner" aria-labelledby="h-owner">
+    <h2 id="h-owner" class="vhead disp">店主老陈<span class="en" lang="en">the owner</span></h2>
+    <div class="box-text">
+      <p class="lead">我叫陈立平，大家叫我老陈。</p>
+      <p>我修车已有 27 年。</p>
+      <p>修车之前，我在自行车厂做装配。</p>
+    </div>
+    <div class="box-aside">
+      <dl class="card">
+        <div><dt class="mono">姓名</dt><dd>陈立平</dd></div>
+        <div><dt class="mono">称呼</dt><dd>老陈</dd></div>
+        <div><dt class="mono">修车</dt><dd><span class="disp">27</span> 年</dd></div>
+        <div><dt class="mono">此前</dt><dd>自行车厂装配</dd></div>
+      </dl>
+    </div>
+  </section>
+
+  <div class="stripes" aria-hidden="true"></div>
+
+  <section class="box box--ride" aria-labelledby="h-ride">
+    <h2 id="h-ride" class="vhead disp">周四夜骑<span class="en" lang="en">thursday night ride</span></h2>
+    <div class="box-text">
+      <p class="lead">每周四 19:30，夜骑从我的店门口出发。</p>
+      <p>路线沿江一圈，全程 24 公里。</p>
+      <p>夜骑不收费用，请自带车灯。</p>
+    </div>
+    <div class="box-aside">
+      <svg class="ride-map" viewBox="0 0 520 120" aria-hidden="true">
+        <path class="river" d="M0 14 L520 14"/>
+        <path class="loop" d="M40 104 L40 34 L480 34 L480 104 Z"/>
+        <rect class="start" x="31" y="95" width="18" height="18"/>
+      </svg>
+      <table class="ride-table">
+        <tr><th scope="row" class="mono">出发</th><td>每周四 <span class="mono">19:30</span>，店门口</td></tr>
+        <tr><th scope="row" class="mono">路线</th><td>沿江一圈，<span class="mono">24</span> 公里</td></tr>
+        <tr><th scope="row" class="mono">费用</th><td>免费</td></tr>
+        <tr><th scope="row" class="mono">自备</th><td>车灯</td></tr>
+      </table>
+    </div>
+  </section>
+
+  <div class="stripes" aria-hidden="true"></div>
+
+  <section class="box box--visit" aria-labelledby="h-visit">
+    <h2 id="h-visit" class="vhead disp">店址与预约<span class="en" lang="en">address</span></h2>
+    <div class="box-text">
+      <p class="lead">我的店在河西路二号桥桥洞下东侧。</p>
+      <p>店门是蓝色卷帘门，门口立着一个旧车轮。</p>
+      <p>门口气泵免费，24 小时可用。</p>
+      <p>预约请致电 <a class="tel wipe mono" href="tel:057155550222">0571-5555-0222</a>，或到店登记。</p>
+    </div>
+    <div class="box-aside">
+      <dl class="hours-list">
+        <div><dt>周三至周日</dt><dd class="mono">10:00–20:00</dd></div>
+        <div><dt>周一、周二</dt><dd>休息</dd></div>
+      </dl>
+      <svg class="front" viewBox="0 0 300 170" aria-hidden="true">
+        <path class="wall" d="M10 160 L290 160 M30 160 L30 30 L190 30 L190 160"/>
+        <rect class="shutter" x="42" y="42" width="136" height="118"/>
+        <g class="slat">
+          <line x1="42" y1="56" x2="178" y2="56"/><line x1="42" y1="70" x2="178" y2="70"/><line x1="42" y1="84" x2="178" y2="84"/>
+          <line x1="42" y1="98" x2="178" y2="98"/><line x1="42" y1="112" x2="178" y2="112"/><line x1="42" y1="126" x2="178" y2="126"/>
+          <line x1="42" y1="140" x2="178" y2="140"/>
+        </g>
+        <circle class="wheel" cx="245" cy="120" r="40"/>
+        <circle class="wheel" cx="245" cy="120" r="4"/>
+        <g class="spoke">
+          <line x1="245" y1="80" x2="245" y2="160"/><line x1="205" y1="120" x2="285" y2="120"/>
+          <line x1="216.7" y1="91.7" x2="273.3" y2="148.3"/><line x1="273.3" y1="91.7" x2="216.7" y2="148.3"/>
+        </g>
+      </svg>
+      <p class="front-cap">蓝色卷帘门　·　门口的旧车轮</p>
+    </div>
+  </section>
+
+</main>
+
+<footer class="page foot">
+  <p>二号桥单车铺 · <span lang="en">Bridge No.2 Cycle Works</span></p>
+  <p>不卖新车，只修车、卖二手车和零件。</p>
+</footer>
+
+</body>
+</html>

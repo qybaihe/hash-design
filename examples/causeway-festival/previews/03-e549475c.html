@@ -1,0 +1,574 @@
+<!-- hash-design #3 · e549475c · ref e549475c754fbf8e6eb63f4742d0b341d3be2a502f95729ac8335bf152e4177d -->
+<!doctype html>
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>Causeway — a one-day music festival on Skerrow Island</title>
+<meta name="description" content="Causeway, a one-day music festival on Skerrow Island. Saturday 19 June 2027. Reached on foot over a 1.2 km tidal causeway.">
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Xanh+Mono:ital,wght@0,400;1,400&family=DotGothic16&family=Share+Tech+Mono&display=swap">
+<style>
+/* hash-design hash-design/v2 · e549475c */
+:root {
+  --paper: #262027;
+  --ink: #d4c5d5;
+  --muted: #918792;
+  --accent: #a15aab;
+  --on-accent: #ffffff;
+  --accent2: #9a7400;
+  --on-accent2: #000000;
+  --rule: #554956;
+  --panel: #342a36;
+
+  --font-display: "Xanh Mono", "Courier New", monospace;
+  --font-body: "DotGothic16", "Courier New", monospace;
+  --font-mono: "Share Tech Mono", "Courier New", monospace;
+  --display-weight: 400;
+  --display-tracking: 0.131em;
+
+  --step-n2: 0.734rem; /* 11.7px */
+  --step-n1: 0.883rem; /* 14.1px */
+  --step-0: 1.063rem; /* 17px */
+  --step-1: 1.278rem; /* 20.5px */
+  --step-2: 1.538rem; /* 24.6px */
+  --step-3: 1.85rem; /* 29.6px */
+  --step-4: 2.225rem; /* 35.6px */
+  --step-5: 2.677rem; /* 42.8px */
+  --step-6: 3.22rem; /* 51.5px */
+  --step-7: 3.874rem; /* 62px */
+  --leading: 1.57;
+
+  --space-1: 8px;
+  --space-2: 16px;
+  --space-3: 24px;
+  --space-4: 32px;
+  --space-5: 40px;
+  --space-6: 48px;
+  --space-7: 56px;
+  --space-8: 64px;
+  --section-gap: 130px;
+  --max-width: 1180px;
+  --columns: 9;
+  --gutter: 24px;
+
+  --radius: 16px;
+  --border: 1px solid var(--rule);
+  --shadow: none;
+
+  --motion-duration: 480ms;
+  --motion-easing: cubic-bezier(0.77, 0.8, 0.63, 1);
+}
+
+html { font-size: 106.3%; }
+body { background: var(--paper); color: var(--ink); font-family: var(--font-body); line-height: var(--leading); }
+@media (prefers-reduced-motion: reduce) {
+  *, *::before, *::after { animation: none !important; transition: none !important; }
+}
+
+/* grain texture from the brief */
+body { background-image: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='160' height='160'%3E%3Cfilter id='n'%3E%3CfeTurbulence type='fractalNoise' baseFrequency='.9'/%3E%3C/filter%3E%3Crect width='100%25' height='100%25' filter='url(%23n)' opacity='0.084'/%3E%3C/svg%3E"); }
+
+/* ---------- page ---------- */
+:root { --navw: 48px; --pad: 56px; }
+*, *::before, *::after { box-sizing: border-box; }
+body { margin: 0; padding-left: var(--navw); position: relative; font-size: var(--step-0); }
+p, h1, h2, h3, dl, dd, ul, ol { margin: 0; }
+ul, ol { padding: 0; list-style: none; }
+a { color: inherit; }
+:focus-visible { outline: 2px solid var(--accent2); outline-offset: 3px; }
+
+.display {
+  font-family: var(--font-display);
+  font-weight: var(--display-weight);
+  letter-spacing: var(--display-tracking);
+  text-transform: lowercase;
+}
+.mono { font-family: var(--font-mono); }
+.label { font-family: var(--font-mono); font-size: var(--step-n1); color: var(--muted); }
+
+/* ---------- twist: vertical navigation ---------- */
+.nav {
+  position: fixed; left: 0; top: 0; bottom: 0; z-index: 20;
+  width: var(--navw);
+  background: inherit;
+  border-right: var(--border);
+  writing-mode: vertical-rl;
+  display: flex; align-items: center; justify-content: space-between;
+  padding: var(--space-3) 0;
+  overflow: auto;
+}
+.nav-brand {
+  font-family: var(--font-display); font-weight: 400; text-transform: lowercase;
+  letter-spacing: var(--display-tracking); font-size: var(--step-1);
+  color: var(--ink); text-decoration: none;
+  display: inline-block;
+  transition: transform var(--motion-duration) var(--motion-easing);
+}
+.nav ul { display: flex; gap: var(--space-3); }
+.nav ul a {
+  font-family: var(--font-mono); font-size: var(--step-n1); color: var(--muted);
+  text-decoration: none; display: inline-block; padding: 2px 0;
+  transition: transform var(--motion-duration) var(--motion-easing);
+}
+.nav ul a:hover, .nav ul a:focus-visible { color: var(--ink); }
+.nav .arw { color: var(--accent2); }
+
+/* ---------- motif: arrows on the page edges, 32px, 57deg ---------- */
+.arw { width: 32px; height: 32px; display: block; transform: rotate(57deg); flex: none; }
+.edge {
+  position: absolute; top: 0; bottom: 0; width: 32px; z-index: 0;
+  display: flex; flex-direction: column; justify-content: space-around; align-items: center;
+  padding: 120px 0; pointer-events: none;
+}
+.edge-l { left: calc(var(--navw) + 12px); }
+.edge-r { right: 12px; }
+.c1 { color: var(--rule); }
+.c2 { color: var(--muted); }
+.c3 { color: var(--accent2); }
+
+main { position: relative; z-index: 1; }
+
+/* ---------- grid ---------- */
+.wrap { width: min(var(--max-width), 100% - 2 * var(--pad)); margin-inline: auto; }
+.grid {
+  display: grid;
+  grid-template-columns: repeat(9, minmax(0, 1fr));
+  column-gap: var(--gutter);
+  row-gap: var(--space-6);
+}
+.side { grid-column: 1 / 6; }
+.text { grid-column: 6 / 9; }       /* text block: columns 6–8 of 9 */
+.full { grid-column: 1 / -1; }
+.tall { grid-row: 1 / span 2; }
+
+section { padding-block: calc(var(--section-gap) / 2); }
+hr.rule { border: 0; border-top: 1px solid var(--rule); margin: 0; }
+
+h2 {
+  font-family: var(--font-display); font-weight: var(--display-weight);
+  letter-spacing: var(--display-tracking); text-transform: lowercase;
+  font-size: var(--step-5); line-height: 1.12; color: var(--ink);
+}
+.text p + p { margin-top: var(--space-2); }
+.text p { max-width: 34ch; }
+
+/* ---------- section 1: first screen + anchor ---------- */
+.hero {
+  position: relative; height: 84vh; min-height: 600px;
+  padding: 0; overflow: hidden;
+  container-type: inline-size;
+}
+.hero-side {
+  position: absolute; inset: 0;
+  grid-template-rows: 1fr auto;
+  padding-block: 9vh 7vh;
+}
+.hero-date { grid-column: 1 / 5; align-self: start; font-size: var(--step-5); line-height: 1.12; color: var(--ink); }
+.hero-times { grid-column: 1 / 5; display: grid; grid-template-columns: max-content 1fr; column-gap: var(--space-3); row-gap: 4px; font-family: var(--font-mono); font-size: var(--step-1); }
+.hero-times dt { color: var(--muted); }
+.hero-times dd { color: var(--ink); }
+
+.anchor {
+  /* solid accent block: 88% of the first screen's width, centred at 93% from the left, rotated 3.5deg */
+  position: absolute; left: 49%; width: 88%; top: 10%; bottom: 10%;
+  background: var(--accent); color: var(--on-accent);
+  border-radius: var(--radius);
+  transform: rotate(3.5deg);
+  display: flex; flex-direction: column; justify-content: center;
+  --C: min(1180px, 100cqw - 2 * var(--pad));
+  --col: calc((var(--C) - 8 * var(--gutter)) / 9);
+  padding-left: calc((100cqw - var(--C)) / 2 + 5 * (var(--col) + var(--gutter)) - 49cqw);
+  z-index: 2;
+}
+.anchor-text { width: calc(3 * var(--col) + 2 * var(--gutter)); }
+.anchor :focus-visible { outline-color: var(--on-accent); }
+.kicker { font-family: var(--font-mono); font-size: var(--step-n1); margin-bottom: var(--space-2); }
+.anchor h1 { font-size: var(--step-7); line-height: 1; white-space: nowrap; }
+.anchor .sub { font-family: var(--font-display); font-style: italic; letter-spacing: var(--display-tracking); text-transform: lowercase; font-size: var(--step-3); margin: var(--space-1) 0 var(--space-4); }
+.anchor-copy { max-width: 30ch; }
+.anchor-link {
+  display: inline-flex; align-items: center; gap: var(--space-1);
+  margin-top: var(--space-4);
+  font-family: var(--font-mono); font-size: var(--step-0);
+  color: var(--on-accent); text-underline-offset: 5px;
+}
+.anchor-link .arw { width: 24px; height: 24px; transition: transform var(--motion-duration) var(--motion-easing); }
+
+@keyframes anchor-in {
+  from { transform: translateX(8%) rotate(3.5deg); }
+  to   { transform: translateX(0) rotate(3.5deg); }
+}
+
+/* ---------- section 2: crossing ---------- */
+.causeway-svg { width: 100%; height: auto; display: block; }
+.causeway-cap {
+  display: flex; justify-content: space-between; gap: var(--space-2); flex-wrap: wrap;
+  margin-top: var(--space-2); font-family: var(--font-mono); font-size: var(--step-n1); color: var(--muted);
+}
+.causeway-cap b { font-weight: 400; color: var(--ink); }
+.nw { white-space: nowrap; }
+
+/* ---------- section 3: windows ---------- */
+.tide { position: relative; padding-top: 40px; }
+.tide-bar {
+  position: relative; height: 32px;
+  background: var(--panel); border: var(--border); border-radius: var(--radius);
+  overflow: hidden;
+}
+.seg { position: absolute; top: 0; bottom: 0; background: var(--accent2); }
+.mark { position: absolute; top: 0; height: 72px; width: 2px; background: var(--accent); }
+.mark-label {
+  position: absolute; top: 0; transform: translateX(calc(-100% - 10px));
+  font-family: var(--font-mono); font-size: var(--step-n1); color: var(--ink); white-space: nowrap;
+}
+.tide-labels {
+  display: flex; justify-content: space-between; flex-wrap: wrap; gap: var(--space-1) var(--space-3);
+  margin-top: var(--space-2); font-family: var(--font-mono); font-size: var(--step-0);
+}
+.tide-labels .mid { color: var(--muted); }
+
+/* ---------- section 4: stages ---------- */
+.acts-big li {
+  font-family: var(--font-display); letter-spacing: var(--display-tracking); text-transform: lowercase;
+  font-size: var(--step-4); line-height: 1.25; padding: var(--space-1) 0;
+  border-bottom: 1px solid var(--rule);
+  transition: transform var(--motion-duration) var(--motion-easing);
+}
+.acts-big li:last-child { border-bottom: 0; }
+.box { background: var(--panel); border: var(--border); border-radius: var(--radius); padding: var(--space-3); box-shadow: var(--shadow); align-self: start; }
+.acts-small { margin-top: var(--space-2); }
+.acts-small li { padding: 6px 0; transition: transform var(--motion-duration) var(--motion-easing); }
+.acts-small li span { color: var(--muted); font-size: var(--step-n1); }
+.field .label, .box .label { margin-bottom: var(--space-1); }
+
+/* ---------- section 5: tickets ---------- */
+.prices div { display: flex; justify-content: space-between; align-items: baseline; gap: var(--space-3); border-bottom: 1px solid var(--rule); padding: var(--space-1) 0; }
+.prices div:first-child { border-top: 1px solid var(--rule); }
+.prices dt { font-family: var(--font-mono); font-size: var(--step-1); color: var(--muted); }
+.prices dd { font-family: var(--font-display); letter-spacing: var(--display-tracking); line-height: 1.1; }
+.prices .p1 { font-size: var(--step-7); }
+.prices .p2 { font-size: var(--step-6); }
+.prices .p3 { font-size: var(--step-5); text-transform: lowercase; }
+.tbc { font-family: var(--font-mono); font-size: var(--step-n1); color: var(--muted); }
+
+/* ---------- section 6: cups ---------- */
+.cup-wrap { position: relative; max-width: 360px; }
+.cup-svg { width: 100%; height: auto; display: block; }
+.tag {
+  position: absolute; right: 0; top: 8%;
+  border: var(--border); border-radius: var(--radius); background: var(--accent2); color: var(--on-accent2);
+  font-family: var(--font-display); letter-spacing: var(--display-tracking); font-size: var(--step-4);
+  padding: 2px var(--space-2); transform: rotate(3.5deg);
+}
+
+/* ---------- section 7: trust ---------- */
+.wall-svg { width: 100%; height: auto; display: block; }
+
+/* ---------- section 8: kit ---------- */
+.kit div { display: grid; grid-template-columns: minmax(0, 2fr) minmax(0, 3fr); gap: var(--space-3); padding: var(--space-2) 0; border-bottom: 1px solid var(--rule); }
+.kit div:first-child { border-top: 1px solid var(--rule); }
+.kit dt { font-family: var(--font-display); letter-spacing: var(--display-tracking); text-transform: lowercase; font-size: var(--step-3); line-height: 1.2; }
+.kit dd { color: var(--ink); align-self: center; }
+.foot { display: flex; flex-wrap: wrap; justify-content: space-between; gap: var(--space-1) var(--space-3); font-family: var(--font-mono); font-size: var(--step-n1); color: var(--muted); padding-top: var(--space-6); }
+
+/* ---------- motion: transform only, 480ms; nothing moves under reduced motion ---------- */
+@media (prefers-reduced-motion: no-preference) {
+  .anchor { animation: anchor-in var(--motion-duration) var(--motion-easing) both; }
+  .nav ul a:hover, .nav ul a:focus-visible, .nav-brand:hover, .nav-brand:focus-visible { transform: translateX(4px); }
+  .anchor-link:hover .arw, .anchor-link:focus-visible .arw { transform: translate(8px, 0) rotate(57deg); }
+  .acts-big li:hover, .acts-small li:hover { transform: translateX(8px); }
+}
+
+/* ---------- mid widths ---------- */
+@media (max-width: 1180px) {
+  .anchor h1 { font-size: var(--step-6); }
+}
+@media (max-width: 900px) {
+  .anchor h1 { font-size: var(--step-5); }
+  .anchor .sub { font-size: var(--step-2); }
+  .hero-date { font-size: var(--step-4); }
+}
+
+/* ---------- below 640px: one column; separators and anchor stay ---------- */
+@media (max-width: 639px) {
+  :root { --navw: 40px; --pad: 16px; }
+  .wrap { width: auto; margin-left: 16px; margin-right: 52px; }
+  .grid { grid-template-columns: minmax(0, 1fr); row-gap: var(--space-4); }
+  .side, .text, .full, .hero-date, .hero-times { grid-column: 1 / -1; }
+  .tall { grid-row: auto; }
+  .edge-l { display: none; }
+  .edge-r { right: 10px; }
+  .nav ul { gap: var(--space-2); }
+  .nav-brand { font-size: var(--step-0); }
+
+  .hero { height: auto; min-height: 84vh; display: flex; flex-direction: column; justify-content: space-between; padding-block: var(--space-4); gap: var(--space-4); }
+  .hero-side { display: contents; }
+  .hero-date { order: 1; margin: 0 52px 0 16px; font-size: var(--step-3); }
+  .hero-times { order: 3; margin: 0 52px 0 16px; font-size: var(--step-0); }
+  /* Below 640px the block keeps its 88% width and 3.5deg turn and still bleeds off the right edge,
+     but its centre moves from 93% to 58% so the headline fits a 390px screen. */
+  .anchor {
+    order: 2; position: relative; left: auto; top: auto; bottom: auto;
+    width: 88%; margin-left: 14%;
+    padding: var(--space-5) calc(2% + var(--space-3)) var(--space-5) var(--space-3);
+  }
+  .anchor-text { width: auto; }
+  .anchor h1 { font-size: var(--step-4); }
+  .anchor .sub { font-size: var(--step-1); margin-bottom: var(--space-3); }
+  .anchor-link { margin-top: var(--space-3); font-size: var(--step-n1); }
+
+  h2 { font-size: var(--step-3); }
+  .acts-big li { font-size: var(--step-3); }
+  .prices .p1 { font-size: var(--step-6); }
+  .prices .p2 { font-size: var(--step-5); }
+  .prices .p3 { font-size: var(--step-4); }
+  .kit div { grid-template-columns: minmax(0, 1fr); gap: 4px; }
+  .tide-labels .mid { order: 3; width: 100%; }
+  .causeway-cap .cap-mid { order: 3; width: 100%; }
+  .tag { font-size: var(--step-3); }
+}
+</style>
+</head>
+<body>
+
+<svg width="0" height="0" style="position:absolute" aria-hidden="true" focusable="false">
+  <symbol id="arw" viewBox="0 0 32 32"><path d="M3 16h24M19 8l8 8-8 8" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="square"/></symbol>
+</svg>
+
+<!-- twist: the navigation is set vertically (writing-mode: vertical-rl), fixed on the left edge at every width -->
+<nav class="nav" aria-label="Sections">
+  <a class="nav-brand" href="#top">causeway</a>
+  <ul>
+    <li><a href="#crossing">crossing</a></li>
+    <li><a href="#windows">windows</a></li>
+    <li><a href="#stages">stages</a></li>
+    <li><a href="#tickets">tickets</a></li>
+    <li><a href="#cups">cups</a></li>
+    <li><a href="#trust">trust</a></li>
+    <li><a href="#kit">kit</a></li>
+  </ul>
+  <svg class="arw" aria-hidden="true"><use href="#arw"/></svg>
+</nav>
+
+<div class="edge edge-l" aria-hidden="true">
+  <svg class="arw c1"><use href="#arw"/></svg><svg class="arw c2"><use href="#arw"/></svg><svg class="arw c1"><use href="#arw"/></svg>
+  <svg class="arw c3"><use href="#arw"/></svg><svg class="arw c1"><use href="#arw"/></svg><svg class="arw c2"><use href="#arw"/></svg>
+  <svg class="arw c1"><use href="#arw"/></svg><svg class="arw c1"><use href="#arw"/></svg><svg class="arw c2"><use href="#arw"/></svg>
+  <svg class="arw c1"><use href="#arw"/></svg><svg class="arw c3"><use href="#arw"/></svg><svg class="arw c1"><use href="#arw"/></svg>
+  <svg class="arw c2"><use href="#arw"/></svg><svg class="arw c1"><use href="#arw"/></svg><svg class="arw c1"><use href="#arw"/></svg>
+  <svg class="arw c2"><use href="#arw"/></svg><svg class="arw c1"><use href="#arw"/></svg><svg class="arw c3"><use href="#arw"/></svg>
+</div>
+<div class="edge edge-r" aria-hidden="true">
+  <svg class="arw c2"><use href="#arw"/></svg><svg class="arw c1"><use href="#arw"/></svg><svg class="arw c1"><use href="#arw"/></svg>
+  <svg class="arw c2"><use href="#arw"/></svg><svg class="arw c3"><use href="#arw"/></svg><svg class="arw c1"><use href="#arw"/></svg>
+  <svg class="arw c2"><use href="#arw"/></svg><svg class="arw c1"><use href="#arw"/></svg><svg class="arw c1"><use href="#arw"/></svg>
+  <svg class="arw c3"><use href="#arw"/></svg><svg class="arw c1"><use href="#arw"/></svg><svg class="arw c2"><use href="#arw"/></svg>
+  <svg class="arw c1"><use href="#arw"/></svg><svg class="arw c1"><use href="#arw"/></svg><svg class="arw c2"><use href="#arw"/></svg>
+  <svg class="arw c1"><use href="#arw"/></svg><svg class="arw c3"><use href="#arw"/></svg><svg class="arw c1"><use href="#arw"/></svg>
+</div>
+
+<main>
+
+  <!-- 1 · first screen -->
+  <section class="hero" id="top" aria-labelledby="h1">
+    <div class="hero-side wrap grid">
+      <p class="hero-date display">saturday<br>19 june 2027</p>
+      <dl class="hero-times">
+        <dt>in</dt><dd>09:40–13:10</dd>
+        <dt>out</dt><dd>22:15–01:30</dd>
+        <dt>on foot</dt><dd>1.2 km</dd>
+      </dl>
+    </div>
+    <div class="anchor">
+      <div class="anchor-text">
+        <p class="kicker">a one-day music festival</p>
+        <h1 id="h1" class="display">causeway</h1>
+        <p class="sub">on skerrow island</p>
+        <p class="anchor-copy">I'm a path over the sea. Walk me at low tide. Wear boots.</p>
+        <a class="anchor-link" href="#tickets">tickets · on sale 1 March 2027 <svg class="arw" aria-hidden="true"><use href="#arw"/></svg></a>
+      </div>
+    </div>
+  </section>
+
+  <hr class="rule">
+
+  <!-- 2 · crossing -->
+  <section id="crossing" aria-labelledby="h-crossing">
+    <div class="wrap grid">
+      <h2 id="h-crossing" class="side">the crossing</h2>
+      <div class="text">
+        <p>I'm 1.2 km of tidal causeway.</p>
+        <p>Everyone crosses me on foot. Parts of me are wet sand. Other parts are seaweed.</p>
+        <p>So wear boots. Really.</p>
+      </div>
+      <figure class="full" style="margin:0">
+        <svg class="causeway-svg" viewBox="0 0 1000 220" role="img" aria-label="The shore, a 1.2 km causeway on foot, and Skerrow Island">
+          <g fill="none" style="stroke:var(--rule)" stroke-width="1.5">
+            <path d="M150 60 q25 -10 50 0 t50 0 t50 0 t50 0 t50 0 t50 0 t50 0 t50 0 t50 0 t50 0 t50 0 t50 0 t50 0 t50 0"/>
+            <path d="M175 196 q25 -10 50 0 t50 0 t50 0 t50 0 t50 0 t50 0 t50 0 t50 0 t50 0 t50 0 t50 0 t50 0 t50 0"/>
+          </g>
+          <path d="M0 96 Q90 98 130 128 Q150 144 152 220 L0 220 Z" style="fill:var(--panel);stroke:var(--rule)" stroke-width="1.5"/>
+          <path d="M1000 84 Q900 82 862 118 Q842 140 846 220 L1000 220 Z" style="fill:var(--panel);stroke:var(--rule)" stroke-width="1.5"/>
+          <path d="M146 140 Q500 116 852 140" fill="none" style="stroke:var(--muted)" stroke-width="10" stroke-dasharray="3 9" stroke-linecap="square"/>
+          <g fill="none" stroke-width="3" stroke-linecap="square">
+            <path d="M420 104 h120 M526 92 l14 12 -14 12" style="stroke:var(--accent2)"/>
+            <path d="M580 168 h-120 M474 156 l-14 12 14 12" style="stroke:var(--muted)"/>
+          </g>
+        </svg>
+        <figcaption class="causeway-cap"><span>shore</span><span class="cap-mid"><b>1.2 km</b> on foot · in by day, out by night</span><span>skerrow island</span></figcaption>
+      </figure>
+    </div>
+  </section>
+
+  <hr class="rule">
+
+  <!-- 3 · windows -->
+  <section id="windows" aria-labelledby="h-windows">
+    <div class="wrap grid">
+      <h2 id="h-windows" class="side">two tide windows</h2>
+      <div class="text">
+        <p>I open twice that day. Arrivals: 09:40 to 13:10. Departures: 22:15 to 01:30.</p>
+        <p>Those are the tide times. Nobody crosses outside those windows. The harbour boat? Emergencies only.</p>
+        <p>The last set ends at 21:45. So everyone reaches me in time.</p>
+      </div>
+      <!-- bar runs from 09:40 to 01:30; segment positions are proportional to the facts' times -->
+      <div class="tide full" role="img" aria-label="Arrivals 09:40 to 13:10, last set ends 21:45, departures 22:15 to 01:30">
+        <span class="mark" style="left:76.3%"><span class="mark-label">last set ends 21:45</span></span>
+        <div class="tide-bar">
+          <span class="seg" style="left:0;width:22.1%"></span>
+          <span class="seg" style="left:79.5%;right:0"></span>
+        </div>
+        <p class="tide-labels"><span>in · 09:40–13:10</span><span class="mid">nobody crosses</span><span>out · 22:15–01:30</span></p>
+      </div>
+    </div>
+  </section>
+
+  <hr class="rule">
+
+  <!-- 4 · stages -->
+  <section id="stages" aria-labelledby="h-stages">
+    <div class="wrap grid">
+      <h2 id="h-stages" class="side">the field and the boathouse</h2>
+      <div class="text">
+        <p>Two stages on one island. The Field is outdoors. The Boathouse is indoors. It holds 220 people.</p>
+      </div>
+      <div class="field side">
+        <p class="label">the field · outdoors</p>
+        <ul class="acts-big">
+          <li>The Lantern Choir</li>
+          <li>Mara Quist</li>
+          <li>Seven Herons</li>
+          <li>Low Orbit Brass</li>
+        </ul>
+      </div>
+      <div class="box text">
+        <p class="label">the boathouse · indoors · 220 people</p>
+        <ul class="acts-small">
+          <li>Ada Fenwick <span>solo cello</span></li>
+          <li>Tomasz &amp; the Weir</li>
+          <li>Kelp</li>
+          <li>Ruth Ono Trio</li>
+        </ul>
+      </div>
+    </div>
+  </section>
+
+  <hr class="rule">
+
+  <!-- 5 · tickets -->
+  <section id="tickets" aria-labelledby="h-tickets">
+    <div class="wrap grid">
+      <h2 id="h-tickets" class="side">tickets</h2>
+      <div class="text tall">
+        <p>On sale 1 March 2027.</p>
+        <p>I only hold 900 people. Under 12? Free.</p>
+        <p class="tbc">[to be confirmed: where tickets are sold]</p>
+      </div>
+      <dl class="prices side">
+        <div><dt>adult</dt><dd class="p1">£54</dd></div>
+        <div><dt>ages 12–17</dt><dd class="p2">£27</dd></div>
+        <div><dt>under 12</dt><dd class="p3">free</dd></div>
+      </dl>
+    </div>
+  </section>
+
+  <hr class="rule">
+
+  <!-- 6 · cups and kitchens -->
+  <section id="cups" aria-labelledby="h-cups">
+    <div class="wrap grid">
+      <h2 id="h-cups" class="side">cups and kitchens</h2>
+      <div class="text tall">
+        <p>No single-use plastic on me. None.</p>
+        <p>Bring a cup. Or buy an enamel one. They're £6.</p>
+        <p>Food comes from two island kitchens. Cash and card, both fine.</p>
+      </div>
+      <div class="cup-wrap side">
+        <svg class="cup-svg" viewBox="0 0 300 240" role="img" aria-label="An enamel cup">
+          <path d="M196 92 q58 0 58 46 q0 46 -58 46" fill="none" style="stroke:var(--ink)" stroke-width="12"/>
+          <path d="M60 64 h136 v122 q0 30 -30 30 h-76 q-30 0 -30 -30 z" style="fill:var(--panel);stroke:var(--ink)" stroke-width="3"/>
+          <path d="M54 64 h148" style="stroke:var(--ink)" stroke-width="8" stroke-linecap="round"/>
+          <path d="M60 120 h136" style="stroke:var(--accent)" stroke-width="6"/>
+          <path d="M84 60 q8 12 20 4" style="fill:var(--paper)"/>
+          <path d="M150 200 q6 10 16 2" style="fill:var(--paper)"/>
+        </svg>
+        <span class="tag">£6</span>
+      </div>
+    </div>
+  </section>
+
+  <hr class="rule">
+
+  <!-- 7 · trust -->
+  <section id="trust" aria-labelledby="h-trust">
+    <div class="wrap grid">
+      <h2 id="h-trust" class="side">the skerrow island trust</h2>
+      <div class="text tall">
+        <p>The Skerrow Island Trust runs me. It's a volunteer charity.</p>
+        <p>Profits go to the sea wall. It needs repairing.</p>
+        <p>This is my fourth year. I started in 2024.</p>
+      </div>
+      <svg class="wall-svg side" viewBox="0 0 600 200" role="img" aria-label="A sea wall with a gap under repair">
+        <g style="fill:var(--panel);stroke:var(--rule)" stroke-width="1.5">
+          <rect x="0" y="20" width="96" height="36"/><rect x="96" y="20" width="96" height="36"/><rect x="192" y="20" width="96" height="36"/>
+          <rect x="480" y="20" width="96" height="36"/><rect x="576" y="20" width="24" height="36"/>
+          <rect x="0" y="56" width="48" height="36"/><rect x="48" y="56" width="96" height="36"/><rect x="144" y="56" width="96" height="36"/>
+          <rect x="432" y="56" width="96" height="36"/><rect x="528" y="56" width="72" height="36"/>
+          <rect x="0" y="92" width="96" height="36"/><rect x="96" y="92" width="96" height="36"/><rect x="192" y="92" width="96" height="36"/>
+          <rect x="288" y="92" width="96" height="36"/><rect x="384" y="92" width="96" height="36"/><rect x="480" y="92" width="96" height="36"/><rect x="576" y="92" width="24" height="36"/>
+        </g>
+        <g style="fill:var(--accent)">
+          <rect x="300" y="44" width="80" height="28" transform="rotate(-8 340 58)"/>
+        </g>
+        <g fill="none" style="stroke:var(--muted)" stroke-width="2">
+          <path d="M0 152 q25 -12 50 0 t50 0 t50 0 t50 0 t50 0 t50 0 t50 0 t50 0 t50 0 t50 0 t50 0 t50 0"/>
+          <path d="M25 180 q25 -12 50 0 t50 0 t50 0 t50 0 t50 0 t50 0 t50 0 t50 0 t50 0 t50 0 t50 0"/>
+        </g>
+      </svg>
+    </div>
+  </section>
+
+  <hr class="rule">
+
+  <!-- 8 · kit -->
+  <section id="kit" aria-labelledby="h-kit">
+    <div class="wrap grid">
+      <h2 id="h-kit" class="side">kit for the crossing</h2>
+      <div class="text tall">
+        <p>A short list from me. Then off you go.</p>
+      </div>
+      <dl class="kit side">
+        <div><dt>boots</dt><dd>Wet sand and seaweed on me.</dd></div>
+        <div><dt>a cup</dt><dd>Or £6 for an enamel one.</dd></div>
+        <div><dt>cash or card</dt><dd>Both work at the kitchens.</dd></div>
+        <div><dt>the windows</dt><dd>In <span class="nw">09:40–13:10</span>. Out <span class="nw">22:15–01:30</span>.</dd></div>
+      </dl>
+      <p class="foot full"><span>Causeway · Skerrow Island · Saturday 19 June 2027</span><span>organised by the Skerrow Island Trust, a volunteer charity</span></p>
+    </div>
+  </section>
+
+</main>
+</body>
+</html>

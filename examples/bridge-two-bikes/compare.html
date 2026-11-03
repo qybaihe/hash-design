@@ -1,0 +1,269 @@
+<!doctype html>
+<html lang="zh-CN">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>二号桥单车铺 — hash-design 对比</title>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=IBM+Plex+Mono:wght@400;600&family=IBM+Plex+Sans+Condensed:wght@400;600&family=Noto+Sans+SC:wght@400;700&display=swap">
+<style>
+  :root {
+    --table: #d8d5ce; --ink: #151412; --muted: #55524b; --line: #151412; --mark: #e2401c; --card: #f3f1ec;
+    --mono: "IBM Plex Mono", ui-monospace, Menlo, monospace;
+    --sans: "IBM Plex Sans Condensed", "Noto Sans SC", "Arial Narrow", sans-serif;
+  }
+  * { box-sizing: border-box; }
+  html, body { margin: 0; }
+  body { background: var(--table); color: var(--ink); font: 14px/1.45 var(--sans); }
+  .bar { display: grid; grid-template-columns: 1fr auto; gap: 8px 24px; align-items: end; padding: 20px 24px 16px; border-bottom: 2px solid var(--line); }
+  .bar h1 { margin: 0; font: 600 28px/1.1 var(--sans); letter-spacing: -0.01em; }
+  .bar p { margin: 4px 0 0; font: 12px/1.4 var(--mono); color: var(--muted); }
+  .controls { display: flex; gap: 6px; flex-wrap: wrap; justify-content: flex-end; }
+  .controls button { font: 600 12px var(--mono); padding: 6px 10px; border: 1.5px solid var(--line); background: transparent; color: var(--ink); cursor: pointer; }
+  .controls button[aria-pressed="true"] { background: var(--ink); color: var(--table); }
+  .strip { display: grid; grid-auto-flow: column; grid-auto-columns: minmax(300px, 1fr); gap: 16px; padding: 16px 24px 24px; overflow-x: auto; scroll-snap-type: x mandatory; }
+  body.cols-2 .strip { grid-auto-flow: row; grid-template-columns: repeat(2, 1fr); }
+  body.focus .strip { grid-auto-flow: row; grid-template-columns: 1fr; }
+  body.focus .frame:not(.on) { display: none; }
+  .frame { scroll-snap-align: start; background: var(--card); border: 2px solid var(--line); display: flex; flex-direction: column; min-width: 0; }
+  .frame.on { outline: 4px solid var(--mark); outline-offset: 2px; }
+  .frame-head { display: grid; grid-template-columns: auto 1fr auto; gap: 10px; align-items: center; padding: 8px 10px; border-bottom: 2px solid var(--line); }
+  .num { font: 600 30px/1 var(--mono); }
+  .who { display: flex; flex-direction: column; min-width: 0; }
+  .who strong { font-size: 16px; }
+  .who span { font: 11px var(--mono); color: var(--muted); white-space: nowrap; overflow: hidden; text-overflow: ellipsis; }
+  .hash { font: 11px var(--mono); background: var(--ink); color: var(--card); padding: 2px 6px; }
+  .screen { position: relative; overflow: hidden; background: #fff; border-bottom: 2px solid var(--line); }
+  .screen iframe { position: absolute; top: 0; left: 0; border: 0; transform-origin: 0 0; background: #fff; }
+  .spec { display: grid; grid-template-columns: auto 1fr; gap: 3px 10px; margin: 0; padding: 10px; font-size: 12.5px; }
+  .spec dt { font: 600 11px/1.6 var(--mono); color: var(--muted); }
+  .spec dd { margin: 0; min-width: 0; }
+  .sw { display: inline-flex; vertical-align: -2px; margin-right: 4px; border: 1px solid var(--line); }
+  .sw i { width: 12px; height: 12px; display: block; }
+  .frame-foot { margin-top: auto; display: flex; gap: 12px; align-items: center; padding: 8px 10px; border-top: 1px dashed var(--line); font: 12px var(--mono); }
+  .frame-foot a { color: var(--ink); }
+  .focus-btn { margin-left: auto; font: 600 12px var(--mono); border: 1.5px solid var(--line); background: transparent; padding: 4px 8px; cursor: pointer; }
+  .pick { margin: 0 24px 32px; padding: 14px 16px; border: 2px dashed var(--line); font-size: 15px; }
+  .pick b { font-family: var(--mono); }
+  @media (max-width: 720px) { .bar { grid-template-columns: 1fr; } .controls { justify-content: flex-start; } body.cols-2 .strip { grid-template-columns: 1fr; } }
+</style>
+</head>
+<body>
+  <header class="bar">
+    <div>
+      <h1>二号桥单车铺</h1>
+      <p>5 个方向 · seed:bridge-two-bikes · hash-design/v2 · library bd20321c36ab · 2026-11-03</p>
+    </div>
+    <div class="controls" role="toolbar" aria-label="视图">
+      <button type="button" data-view="strip" aria-pressed="true">并排</button>
+      <button type="button" data-view="cols-2" aria-pressed="false">两列</button>
+      <button type="button" data-view="focus" aria-pressed="false">单张</button>
+      <button type="button" data-device="desktop" aria-pressed="true">桌面 1440</button>
+      <button type="button" data-device="mobile" aria-pressed="false">手机 390</button>
+    </div>
+  </header>
+  <main class="strip">
+
+    <article class="frame" id="d1" data-n="1">
+      <header class="frame-head">
+        <span class="num">01</span>
+        <div class="who">
+          <strong>方向 40c6776a</strong>
+          <span>light · 91°</span>
+        </div>
+        <code class="hash" title="40c6776af6502e673a46946c3932a15634b90305cb479ac5f8f7b82997572213">40c6776a</code>
+      </header>
+      <div class="screen" data-src="previews/01-40c6776a.html">
+        <iframe src="previews/01-40c6776a.html" title="#1 方向 40c6776a" loading="lazy"></iframe>
+      </div>
+      <dl class="spec">
+        <dt>版式</dt><dd>10 col · 2–5 · grid-diagram</dd>
+        <dt>字体</dt><dd>Libre Bodoni / Old Standard TT</dd>
+        <dt>配色</dt><dd><span class="sw"><i style="background:#e9e4d7" title="paper #e9e4d7"></i><i style="background:#3e3825" title="ink #3e3825"></i><i style="background:#987900" title="accent #987900"></i><i style="background:#008ea6" title="accent2 #008ea6"></i><i style="background:#dcd6c2" title="panel #dcd6c2"></i><i style="background:#696458" title="muted #696458"></i><i style="background:#b5ae9a" title="rule #b5ae9a"></i></span> light · 91°</dd>
+        <dt>密度</dt><dd>0.424</dd>
+        <dt>语气</dt><dd>i · label</dd>
+        <dt>变数</dt><dd>section-heads → vertical</dd>
+      </dl>
+      <footer class="frame-foot">
+        <a href="previews/01-40c6776a.html" target="_blank" rel="noopener">打开整页 ↗</a>
+        <a href="briefs/01-40c6776a.md" target="_blank" rel="noopener">brief.md</a>
+        <button type="button" class="focus-btn" data-n="1">放大看 · 1</button>
+      </footer>
+    </article>
+
+    <article class="frame" id="d2" data-n="2">
+      <header class="frame-head">
+        <span class="num">02</span>
+        <div class="who">
+          <strong>方向 ff97f5eb</strong>
+          <span>light · 359°</span>
+        </div>
+        <code class="hash" title="ff97f5eb7af797dedf971e60545913ce41ba9815941b805785faec5e78028650">ff97f5eb</code>
+      </header>
+      <div class="screen" data-src="previews/02-ff97f5eb.html">
+        <iframe src="previews/02-ff97f5eb.html" title="#2 方向 ff97f5eb" loading="lazy"></iframe>
+      </div>
+      <dl class="spec">
+        <dt>版式</dt><dd>7 col · 2–6 · number</dd>
+        <dt>字体</dt><dd>Michroma / Libre Franklin</dd>
+        <dt>配色</dt><dd><span class="sw"><i style="background:#fff6f8" title="paper #fff6f8"></i><i style="background:#473037" title="ink #473037"></i><i style="background:#d6668e" title="accent #d6668e"></i><i style="background:#b777c6" title="accent2 #b777c6"></i><i style="background:#ffe0e9" title="panel #ffe0e9"></i><i style="background:#7c6d71" title="muted #7c6d71"></i><i style="background:#deb4c0" title="rule #deb4c0"></i></span> light · 359°</dd>
+        <dt>密度</dt><dd>0.376</dd>
+        <dt>语气</dt><dd>we · imperative</dd>
+        <dt>变数</dt><dd>numbers → invert</dd>
+      </dl>
+      <footer class="frame-foot">
+        <a href="previews/02-ff97f5eb.html" target="_blank" rel="noopener">打开整页 ↗</a>
+        <a href="briefs/02-ff97f5eb.md" target="_blank" rel="noopener">brief.md</a>
+        <button type="button" class="focus-btn" data-n="2">放大看 · 2</button>
+      </footer>
+    </article>
+
+    <article class="frame" id="d3" data-n="3">
+      <header class="frame-head">
+        <span class="num">03</span>
+        <div class="who">
+          <strong>方向 b924a406</strong>
+          <span>light · 260°</span>
+        </div>
+        <code class="hash" title="b924a406afcf83926ccff8ce5da78e3572110c1bdf752a9b17b3caeb8ef64f26">b924a406</code>
+      </header>
+      <div class="screen" data-src="previews/03-b924a406.html">
+        <iframe src="previews/03-b924a406.html" title="#3 方向 b924a406" loading="lazy"></iframe>
+      </div>
+      <dl class="spec">
+        <dt>版式</dt><dd>6 col · 2–5 · initial</dd>
+        <dt>字体</dt><dd>Homemade Apple / Hanken Grotesk</dd>
+        <dt>配色</dt><dd><span class="sw"><i style="background:#ebecec" title="paper #ebecec"></i><i style="background:#34383f" title="ink #34383f"></i><i style="background:#3d7eed" title="accent #3d7eed"></i><i style="background:#00997e" title="accent2 #00997e"></i><i style="background:#dadde3" title="panel #dadde3"></i><i style="background:#626975" title="muted #626975"></i><i style="background:#b1b5bc" title="rule #b1b5bc"></i></span> light · 260°</dd>
+        <dt>密度</dt><dd>0.808</dd>
+        <dt>语气</dt><dd>none · two-words</dd>
+        <dt>变数</dt><dd>section-heads → repeat</dd>
+      </dl>
+      <footer class="frame-foot">
+        <a href="previews/03-b924a406.html" target="_blank" rel="noopener">打开整页 ↗</a>
+        <a href="briefs/03-b924a406.md" target="_blank" rel="noopener">brief.md</a>
+        <button type="button" class="focus-btn" data-n="3">放大看 · 3</button>
+      </footer>
+    </article>
+
+    <article class="frame" id="d4" data-n="4">
+      <header class="frame-head">
+        <span class="num">04</span>
+        <div class="who">
+          <strong>方向 f3b1e77a</strong>
+          <span>light · 343°</span>
+        </div>
+        <code class="hash" title="f3b1e77a9af302d06082ad6e19cffb7ede96eefb3dcca2619177519ad6f0bd99">f3b1e77a</code>
+      </header>
+      <div class="screen" data-src="previews/04-f3b1e77a.html">
+        <iframe src="previews/04-f3b1e77a.html" title="#4 方向 f3b1e77a" loading="lazy"></iframe>
+      </div>
+      <dl class="spec">
+        <dt>版式</dt><dd>8 col · 1–8 · word</dd>
+        <dt>字体</dt><dd>Alfa Slab One / Hanken Grotesk</dd>
+        <dt>配色</dt><dd><span class="sw"><i style="background:#fff2f9" title="paper #fff2f9"></i><i style="background:#45313d" title="ink #45313d"></i><i style="background:#d160aa" title="accent #d160aa"></i><i style="background:#9f7be1" title="accent2 #9f7be1"></i><i style="background:#f7e0ed" title="panel #f7e0ed"></i><i style="background:#776a72" title="muted #776a72"></i><i style="background:#cfb7c5" title="rule #cfb7c5"></i></span> light · 343°</dd>
+        <dt>密度</dt><dd>0.431</dd>
+        <dt>语气</dt><dd>we · statement</dd>
+        <dt>变数</dt><dd>headline → invert</dd>
+      </dl>
+      <footer class="frame-foot">
+        <a href="previews/04-f3b1e77a.html" target="_blank" rel="noopener">打开整页 ↗</a>
+        <a href="briefs/04-f3b1e77a.md" target="_blank" rel="noopener">brief.md</a>
+        <button type="button" class="focus-btn" data-n="4">放大看 · 4</button>
+      </footer>
+    </article>
+
+    <article class="frame" id="d5" data-n="5">
+      <header class="frame-head">
+        <span class="num">05</span>
+        <div class="who">
+          <strong>方向 6ef0bf96</strong>
+          <span>light · 156°</span>
+        </div>
+        <code class="hash" title="6ef0bf969f3cbf602400997a7e378c74429955cf879684fdb1e9d8338faed12e">6ef0bf96</code>
+      </header>
+      <div class="screen" data-src="previews/05-6ef0bf96.html">
+        <iframe src="previews/05-6ef0bf96.html" title="#5 方向 6ef0bf96" loading="lazy"></iframe>
+      </div>
+      <dl class="spec">
+        <dt>版式</dt><dd>9 col · 2–7 · initial</dd>
+        <dt>字体</dt><dd>Xanh Mono / Libre Baskerville</dd>
+        <dt>配色</dt><dd><span class="sw"><i style="background:#e3f5e9" title="paper #e3f5e9"></i><i style="background:#293d30" title="ink #293d30"></i><i style="background:#00995a" title="accent #00995a"></i><i style="background:#478be5" title="accent2 #478be5"></i><i style="background:#d0e8d8" title="panel #d0e8d8"></i><i style="background:#636f67" title="muted #636f67"></i><i style="background:#a7c0af" title="rule #a7c0af"></i></span> light · 156°</dd>
+        <dt>密度</dt><dd>0.478</dd>
+        <dt>语气</dt><dd>we · label</dd>
+        <dt>变数</dt><dd>headline → vertical</dd>
+      </dl>
+      <footer class="frame-foot">
+        <a href="previews/05-6ef0bf96.html" target="_blank" rel="noopener">打开整页 ↗</a>
+        <a href="briefs/05-6ef0bf96.md" target="_blank" rel="noopener">brief.md</a>
+        <button type="button" class="focus-btn" data-n="5">放大看 · 5</button>
+      </footer>
+    </article>
+  </main>
+  <p class="pick">看完后，<b>回复编号（1–5）</b>选定一个方向，Agent 会按该编号的 brief 落地正式页面。默认整套采用，不混搭；确需混搭请明确说出“取 #a 的什么 + #b 的什么”。键盘：<b>1–5</b> 放大 · <b>←/→</b> 切换 · <b>D/M</b> 桌面/手机 · <b>Esc</b> 返回并排。</p>
+<script>
+(() => {
+  const devices = { desktop: [1440, 900], mobile: [390, 844] };
+  let device = 'desktop';
+  const body = document.body;
+  const frames = [...document.querySelectorAll('.frame')];
+  function fit() {
+    const [w, h] = devices[device];
+    for (const screen of document.querySelectorAll('.screen')) {
+      const iframe = screen.querySelector('iframe');
+      const avail = screen.clientWidth;
+      const scale = Math.min(1, avail / w);
+      iframe.style.width = w + 'px';
+      iframe.style.height = h + 'px';
+      iframe.style.transform = 'scale(' + scale + ')';
+      screen.style.height = Math.round(h * scale) + 'px';
+      if (device === 'mobile') { iframe.style.left = Math.max(0, (avail - w * scale) / 2) + 'px'; } else { iframe.style.left = '0'; }
+    }
+  }
+  function setView(view) {
+    body.classList.remove('cols-2', 'focus');
+    if (view !== 'strip') body.classList.add(view);
+    for (const b of document.querySelectorAll('[data-view]')) b.setAttribute('aria-pressed', String(b.dataset.view === view));
+    if (view !== 'focus') frames.forEach((f) => f.classList.remove('on'));
+    requestAnimationFrame(fit);
+  }
+  function focus(n) {
+    const target = frames.find((f) => f.dataset.n === String(n));
+    if (!target) return;
+    frames.forEach((f) => f.classList.toggle('on', f === target));
+    setView('focus');
+    target.scrollIntoView({ block: 'start' });
+  }
+  function setDevice(d) {
+    device = d;
+    for (const b of document.querySelectorAll('[data-device]')) b.setAttribute('aria-pressed', String(b.dataset.device === d));
+    fit();
+  }
+  document.addEventListener('click', (e) => {
+    const t = e.target.closest('button');
+    if (!t) return;
+    if (t.dataset.view) setView(t.dataset.view);
+    if (t.dataset.device) setDevice(t.dataset.device);
+    if (t.classList.contains('focus-btn')) focus(t.dataset.n);
+  });
+  document.addEventListener('keydown', (e) => {
+    if (e.target.closest('input, textarea')) return;
+    const n = Number(e.key);
+    if (n >= 1 && n <= frames.length) focus(n);
+    const cur = frames.findIndex((f) => f.classList.contains('on'));
+    if (e.key === 'ArrowRight' && cur >= 0) focus(((cur + 1) % frames.length) + 1);
+    if (e.key === 'ArrowLeft' && cur >= 0) focus(((cur - 1 + frames.length) % frames.length) + 1);
+    if (e.key === 'Escape') setView('strip');
+    if (e.key === 'd' || e.key === 'D') setDevice('desktop');
+    if (e.key === 'm' || e.key === 'M') setDevice('mobile');
+  });
+  const params = new URLSearchParams(location.search);
+  if (params.get('device') === 'mobile') setDevice('mobile');
+  if (params.get('view')) setView(params.get('view'));
+  if (params.get('focus')) focus(params.get('focus'));
+  addEventListener('resize', fit);
+  fit();
+})();
+</script>
+</body>
+</html>

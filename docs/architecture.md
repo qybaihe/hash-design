@@ -78,9 +78,9 @@ Fonts, primitives and `BYTE_MAP` are hashed into the library fingerprint, which 
 
 `skill.test.ts` fails if any of these is stale.
 
-## The examples: recorded v1 runs
+## The examples
 
-The four runs under `examples/` (a bakery, a developer tool, a bicycle repair shop and a music festival) were rolled with `hash-design/v1`, the 40-branch library that v2 removed. They are kept as records of real runs (facts, frozen briefs, previews made by agents following the Skill, screenshots and compare pages), not as fixtures of the current mapping: v2 cannot reproduce their refs. `examples.test.ts` checks that each one is labelled `hash-design/v1` in its `roll.json` and README, that every brief, preview and screenshot is present, that each preview still scores at least 90 on the critique with no critical or major findings, and that the Pages index and every README link to each example. `scripts/examples.mjs` lists the examples and critiques their previews; it refuses to re-roll a v1 record or rebuild its compare page, since both need v1.
+The four runs under `examples/` (a bakery, a developer tool, a bicycle repair shop and a music festival) are `hash-design/v2` runs: facts, a roll from a fixed seed (the folder name), frozen briefs, previews made by one sub-agent per brief following the Skill, screenshots and a compare page. `examples.test.ts` checks that each roll reproduces from its seed and the current library fingerprint, that every brief on disk is exactly what its ref renders, that every preview and screenshot is present, that each preview scores at least 90 on the critique with brief adherence of at least 80 and no critical or major findings, and that the Pages index and the README link to each example. `scripts/examples.mjs` re-rolls, critiques and rebuilds the compare pages and the Pages index; `scripts/showcase.mjs`, `hero.mjs` and `hero-gif.mjs` build the README plates and hero from the rolls and screenshots.
 
 ## Testing and CI
 

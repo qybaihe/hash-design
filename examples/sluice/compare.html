@@ -1,0 +1,269 @@
+<!doctype html>
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>Sluice — self-hosted webhook inbox — hash-design compare</title>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=IBM+Plex+Mono:wght@400;600&family=IBM+Plex+Sans+Condensed:wght@400;600&family=Noto+Sans+SC:wght@400;700&display=swap">
+<style>
+  :root {
+    --table: #d8d5ce; --ink: #151412; --muted: #55524b; --line: #151412; --mark: #e2401c; --card: #f3f1ec;
+    --mono: "IBM Plex Mono", ui-monospace, Menlo, monospace;
+    --sans: "IBM Plex Sans Condensed", "Noto Sans SC", "Arial Narrow", sans-serif;
+  }
+  * { box-sizing: border-box; }
+  html, body { margin: 0; }
+  body { background: var(--table); color: var(--ink); font: 14px/1.45 var(--sans); }
+  .bar { display: grid; grid-template-columns: 1fr auto; gap: 8px 24px; align-items: end; padding: 20px 24px 16px; border-bottom: 2px solid var(--line); }
+  .bar h1 { margin: 0; font: 600 28px/1.1 var(--sans); letter-spacing: -0.01em; }
+  .bar p { margin: 4px 0 0; font: 12px/1.4 var(--mono); color: var(--muted); }
+  .controls { display: flex; gap: 6px; flex-wrap: wrap; justify-content: flex-end; }
+  .controls button { font: 600 12px var(--mono); padding: 6px 10px; border: 1.5px solid var(--line); background: transparent; color: var(--ink); cursor: pointer; }
+  .controls button[aria-pressed="true"] { background: var(--ink); color: var(--table); }
+  .strip { display: grid; grid-auto-flow: column; grid-auto-columns: minmax(300px, 1fr); gap: 16px; padding: 16px 24px 24px; overflow-x: auto; scroll-snap-type: x mandatory; }
+  body.cols-2 .strip { grid-auto-flow: row; grid-template-columns: repeat(2, 1fr); }
+  body.focus .strip { grid-auto-flow: row; grid-template-columns: 1fr; }
+  body.focus .frame:not(.on) { display: none; }
+  .frame { scroll-snap-align: start; background: var(--card); border: 2px solid var(--line); display: flex; flex-direction: column; min-width: 0; }
+  .frame.on { outline: 4px solid var(--mark); outline-offset: 2px; }
+  .frame-head { display: grid; grid-template-columns: auto 1fr auto; gap: 10px; align-items: center; padding: 8px 10px; border-bottom: 2px solid var(--line); }
+  .num { font: 600 30px/1 var(--mono); }
+  .who { display: flex; flex-direction: column; min-width: 0; }
+  .who strong { font-size: 16px; }
+  .who span { font: 11px var(--mono); color: var(--muted); white-space: nowrap; overflow: hidden; text-overflow: ellipsis; }
+  .hash { font: 11px var(--mono); background: var(--ink); color: var(--card); padding: 2px 6px; }
+  .screen { position: relative; overflow: hidden; background: #fff; border-bottom: 2px solid var(--line); }
+  .screen iframe { position: absolute; top: 0; left: 0; border: 0; transform-origin: 0 0; background: #fff; }
+  .spec { display: grid; grid-template-columns: auto 1fr; gap: 3px 10px; margin: 0; padding: 10px; font-size: 12.5px; }
+  .spec dt { font: 600 11px/1.6 var(--mono); color: var(--muted); }
+  .spec dd { margin: 0; min-width: 0; }
+  .sw { display: inline-flex; vertical-align: -2px; margin-right: 4px; border: 1px solid var(--line); }
+  .sw i { width: 12px; height: 12px; display: block; }
+  .frame-foot { margin-top: auto; display: flex; gap: 12px; align-items: center; padding: 8px 10px; border-top: 1px dashed var(--line); font: 12px var(--mono); }
+  .frame-foot a { color: var(--ink); }
+  .focus-btn { margin-left: auto; font: 600 12px var(--mono); border: 1.5px solid var(--line); background: transparent; padding: 4px 8px; cursor: pointer; }
+  .pick { margin: 0 24px 32px; padding: 14px 16px; border: 2px dashed var(--line); font-size: 15px; }
+  .pick b { font-family: var(--mono); }
+  @media (max-width: 720px) { .bar { grid-template-columns: 1fr; } .controls { justify-content: flex-start; } body.cols-2 .strip { grid-template-columns: 1fr; } }
+</style>
+</head>
+<body>
+  <header class="bar">
+    <div>
+      <h1>Sluice — self-hosted webhook inbox</h1>
+      <p>5 directions · seed:sluice · hash-design/v2 · library bd20321c36ab · 2026-11-03</p>
+    </div>
+    <div class="controls" role="toolbar" aria-label="View">
+      <button type="button" data-view="strip" aria-pressed="true">Strip</button>
+      <button type="button" data-view="cols-2" aria-pressed="false">2 columns</button>
+      <button type="button" data-view="focus" aria-pressed="false">Single</button>
+      <button type="button" data-device="desktop" aria-pressed="true">Desktop 1440</button>
+      <button type="button" data-device="mobile" aria-pressed="false">Mobile 390</button>
+    </div>
+  </header>
+  <main class="strip">
+
+    <article class="frame" id="d1" data-n="1">
+      <header class="frame-head">
+        <span class="num">01</span>
+        <div class="who">
+          <strong>Direction 484a15b6</strong>
+          <span>dark · 102°</span>
+        </div>
+        <code class="hash" title="484a15b64867e03aaf0d0be02da68ff09776e4bbfbdcfdc23070083359cf770d">484a15b6</code>
+      </header>
+      <div class="screen" data-src="previews/01-484a15b6.html">
+        <iframe src="previews/01-484a15b6.html" title="#1 Direction 484a15b6" loading="lazy"></iframe>
+      </div>
+      <dl class="spec">
+        <dt>Layout</dt><dd>8 col · 3–7 · motif</dd>
+        <dt>Type</dt><dd>EB Garamond / Young Serif</dd>
+        <dt>Colour</dt><dd><span class="sw"><i style="background:#131001" title="paper #131001"></i><i style="background:#cfccb2" title="ink #cfccb2"></i><i style="background:#897c15" title="accent #897c15"></i><i style="background:#4b7db6" title="accent2 #4b7db6"></i><i style="background:#1f1c04" title="panel #1f1c04"></i><i style="background:#7f7e70" title="muted #7f7e70"></i><i style="background:#3d3a1f" title="rule #3d3a1f"></i></span> dark · 102°</dd>
+        <dt>Density</dt><dd>0.878</dd>
+        <dt>Voice</dt><dd>i · statement</dd>
+        <dt>Twist</dt><dd>cta → vertical</dd>
+      </dl>
+      <footer class="frame-foot">
+        <a href="previews/01-484a15b6.html" target="_blank" rel="noopener">Open page ↗</a>
+        <a href="briefs/01-484a15b6.md" target="_blank" rel="noopener">brief.md</a>
+        <button type="button" class="focus-btn" data-n="1">Zoom · 1</button>
+      </footer>
+    </article>
+
+    <article class="frame" id="d2" data-n="2">
+      <header class="frame-head">
+        <span class="num">02</span>
+        <div class="who">
+          <strong>Direction 599481a7</strong>
+          <span>light · 126°</span>
+        </div>
+        <code class="hash" title="599481a7a798601d36af352c4c6d9d5258964970e32c07c18a784219d3840aca">599481a7</code>
+      </header>
+      <div class="screen" data-src="previews/02-599481a7.html">
+        <iframe src="previews/02-599481a7.html" title="#2 Direction 599481a7" loading="lazy"></iframe>
+      </div>
+      <dl class="spec">
+        <dt>Layout</dt><dd>9 col · 1–8 · headline</dd>
+        <dt>Type</dt><dd>Zen Old Mincho / Josefin Sans</dd>
+        <dt>Colour</dt><dd><span class="sw"><i style="background:#e1ead5" title="paper #e1ead5"></i><i style="background:#333b27" title="ink #333b27"></i><i style="background:#668a00" title="accent #668a00"></i><i style="background:#c160af" title="accent2 #c160af"></i><i style="background:#d1dcc2" title="panel #d1dcc2"></i><i style="background:#63685c" title="muted #63685c"></i><i style="background:#a9b49a" title="rule #a9b49a"></i></span> light · 126°</dd>
+        <dt>Density</dt><dd>0.173</dd>
+        <dt>Voice</dt><dd>you · number-first</dd>
+        <dt>Twist</dt><dd>footer → repeat</dd>
+      </dl>
+      <footer class="frame-foot">
+        <a href="previews/02-599481a7.html" target="_blank" rel="noopener">Open page ↗</a>
+        <a href="briefs/02-599481a7.md" target="_blank" rel="noopener">brief.md</a>
+        <button type="button" class="focus-btn" data-n="2">Zoom · 2</button>
+      </footer>
+    </article>
+
+    <article class="frame" id="d3" data-n="3">
+      <header class="frame-head">
+        <span class="num">03</span>
+        <div class="who">
+          <strong>Direction 1cd7911b</strong>
+          <span>light · 41°</span>
+        </div>
+        <code class="hash" title="1cd7911b8574fe1900d372c843e42efbd961ed3c5dbc6436b17d4b2c7bbc2304">1cd7911b</code>
+      </header>
+      <div class="screen" data-src="previews/03-1cd7911b.html">
+        <iframe src="previews/03-1cd7911b.html" title="#3 Direction 1cd7911b" loading="lazy"></iframe>
+      </div>
+      <dl class="spec">
+        <dt>Layout</dt><dd>10 col · 6–10 · number</dd>
+        <dt>Type</dt><dd>Permanent Marker / IBM Plex Sans Condensed</dd>
+        <dt>Colour</dt><dd><span class="sw"><i style="background:#ece7e6" title="paper #ece7e6"></i><i style="background:#403531" title="ink #403531"></i><i style="background:#ce5f34" title="accent #ce5f34"></i><i style="background:#0093a1" title="accent2 #0093a1"></i><i style="background:#e2d7d3" title="panel #e2d7d3"></i><i style="background:#72645f" title="muted #72645f"></i><i style="background:#bbafab" title="rule #bbafab"></i></span> light · 41°</dd>
+        <dt>Density</dt><dd>0.784</dd>
+        <dt>Voice</dt><dd>we · label</dd>
+        <dt>Twist</dt><dd>footer → invert</dd>
+      </dl>
+      <footer class="frame-foot">
+        <a href="previews/03-1cd7911b.html" target="_blank" rel="noopener">Open page ↗</a>
+        <a href="briefs/03-1cd7911b.md" target="_blank" rel="noopener">brief.md</a>
+        <button type="button" class="focus-btn" data-n="3">Zoom · 3</button>
+      </footer>
+    </article>
+
+    <article class="frame" id="d4" data-n="4">
+      <header class="frame-head">
+        <span class="num">04</span>
+        <div class="who">
+          <strong>Direction 6f5edb67</strong>
+          <span>light · 157°</span>
+        </div>
+        <code class="hash" title="6f5edb678505792a5df56fcaf6fcfb16f70d7cb066532939b252c0df0136a59b">6f5edb67</code>
+      </header>
+      <div class="screen" data-src="previews/04-6f5edb67.html">
+        <iframe src="previews/04-6f5edb67.html" title="#4 Direction 6f5edb67" loading="lazy"></iframe>
+      </div>
+      <dl class="spec">
+        <dt>Layout</dt><dd>9 col · 2–9 · motif</dd>
+        <dt>Type</dt><dd>Cormorant SC / Overpass</dd>
+        <dt>Colour</dt><dd><span class="sw"><i style="background:#ebf8f0" title="paper #ebf8f0"></i><i style="background:#2b3d32" title="ink #2b3d32"></i><i style="background:#009c5d" title="accent #009c5d"></i><i style="background:#009d9a" title="accent2 #009d9a"></i><i style="background:#d8ebdf" title="panel #d8ebdf"></i><i style="background:#647169" title="muted #647169"></i><i style="background:#afc3b6" title="rule #afc3b6"></i></span> light · 157°</dd>
+        <dt>Density</dt><dd>0.792</dd>
+        <dt>Voice</dt><dd>you · label</dd>
+        <dt>Twist</dt><dd>footer → undersize</dd>
+      </dl>
+      <footer class="frame-foot">
+        <a href="previews/04-6f5edb67.html" target="_blank" rel="noopener">Open page ↗</a>
+        <a href="briefs/04-6f5edb67.md" target="_blank" rel="noopener">brief.md</a>
+        <button type="button" class="focus-btn" data-n="4">Zoom · 4</button>
+      </footer>
+    </article>
+
+    <article class="frame" id="d5" data-n="5">
+      <header class="frame-head">
+        <span class="num">05</span>
+        <div class="who">
+          <strong>Direction 08b46918</strong>
+          <span>light · 12°</span>
+        </div>
+        <code class="hash" title="08b4691844e6d5dfec8f67699f5a2ee99d6d45ab4b948f79e17097a21d3ecdab">08b46918</code>
+      </header>
+      <div class="screen" data-src="previews/05-08b46918.html">
+        <iframe src="previews/05-08b46918.html" title="#5 Direction 08b46918" loading="lazy"></iframe>
+      </div>
+      <dl class="spec">
+        <dt>Layout</dt><dd>12 col · 2–10 · fact-list</dd>
+        <dt>Type</dt><dd>Bodoni Moda / Literata</dd>
+        <dt>Colour</dt><dd><span class="sw"><i style="background:#e5e1e1" title="paper #e5e1e1"></i><i style="background:#403536" title="ink #403536"></i><i style="background:#b9626e" title="accent #b9626e"></i><i style="background:#9871af" title="accent2 #9871af"></i><i style="background:#dbd0d1" title="panel #dbd0d1"></i><i style="background:#6e5f60" title="muted #6e5f60"></i><i style="background:#b4a8a9" title="rule #b4a8a9"></i></span> light · 12°</dd>
+        <dt>Density</dt><dd>0.412</dd>
+        <dt>Voice</dt><dd>we · label</dd>
+        <dt>Twist</dt><dd>links → oversize</dd>
+      </dl>
+      <footer class="frame-foot">
+        <a href="previews/05-08b46918.html" target="_blank" rel="noopener">Open page ↗</a>
+        <a href="briefs/05-08b46918.md" target="_blank" rel="noopener">brief.md</a>
+        <button type="button" class="focus-btn" data-n="5">Zoom · 5</button>
+      </footer>
+    </article>
+  </main>
+  <p class="pick">When you have looked, <b>reply with a number (1–5)</b> to choose a direction, and the agent builds the final page from that brief. A brief is used whole; to mix, say exactly what to take: “X from #a + Y from #b”. Keys: <b>1–5</b> zoom · <b>←/→</b> previous/next · <b>D/M</b> desktop/mobile · <b>Esc</b> back to the strip.</p>
+<script>
+(() => {
+  const devices = { desktop: [1440, 900], mobile: [390, 844] };
+  let device = 'desktop';
+  const body = document.body;
+  const frames = [...document.querySelectorAll('.frame')];
+  function fit() {
+    const [w, h] = devices[device];
+    for (const screen of document.querySelectorAll('.screen')) {
+      const iframe = screen.querySelector('iframe');
+      const avail = screen.clientWidth;
+      const scale = Math.min(1, avail / w);
+      iframe.style.width = w + 'px';
+      iframe.style.height = h + 'px';
+      iframe.style.transform = 'scale(' + scale + ')';
+      screen.style.height = Math.round(h * scale) + 'px';
+      if (device === 'mobile') { iframe.style.left = Math.max(0, (avail - w * scale) / 2) + 'px'; } else { iframe.style.left = '0'; }
+    }
+  }
+  function setView(view) {
+    body.classList.remove('cols-2', 'focus');
+    if (view !== 'strip') body.classList.add(view);
+    for (const b of document.querySelectorAll('[data-view]')) b.setAttribute('aria-pressed', String(b.dataset.view === view));
+    if (view !== 'focus') frames.forEach((f) => f.classList.remove('on'));
+    requestAnimationFrame(fit);
+  }
+  function focus(n) {
+    const target = frames.find((f) => f.dataset.n === String(n));
+    if (!target) return;
+    frames.forEach((f) => f.classList.toggle('on', f === target));
+    setView('focus');
+    target.scrollIntoView({ block: 'start' });
+  }
+  function setDevice(d) {
+    device = d;
+    for (const b of document.querySelectorAll('[data-device]')) b.setAttribute('aria-pressed', String(b.dataset.device === d));
+    fit();
+  }
+  document.addEventListener('click', (e) => {
+    const t = e.target.closest('button');
+    if (!t) return;
+    if (t.dataset.view) setView(t.dataset.view);
+    if (t.dataset.device) setDevice(t.dataset.device);
+    if (t.classList.contains('focus-btn')) focus(t.dataset.n);
+  });
+  document.addEventListener('keydown', (e) => {
+    if (e.target.closest('input, textarea')) return;
+    const n = Number(e.key);
+    if (n >= 1 && n <= frames.length) focus(n);
+    const cur = frames.findIndex((f) => f.classList.contains('on'));
+    if (e.key === 'ArrowRight' && cur >= 0) focus(((cur + 1) % frames.length) + 1);
+    if (e.key === 'ArrowLeft' && cur >= 0) focus(((cur - 1 + frames.length) % frames.length) + 1);
+    if (e.key === 'Escape') setView('strip');
+    if (e.key === 'd' || e.key === 'D') setDevice('desktop');
+    if (e.key === 'm' || e.key === 'M') setDevice('mobile');
+  });
+  const params = new URLSearchParams(location.search);
+  if (params.get('device') === 'mobile') setDevice('mobile');
+  if (params.get('view')) setView(params.get('view'));
+  if (params.get('focus')) focus(params.get('focus'));
+  addEventListener('resize', fit);
+  fit();
+})();
+</script>
+</body>
+</html>

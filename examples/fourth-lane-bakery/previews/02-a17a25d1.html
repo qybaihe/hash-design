@@ -1,0 +1,480 @@
+<!-- hash-design #2 · a17a25d1 · ref a17a25d1d63e6f2fc423f096120fa702bb57745598bd794862649df3c5aa0b6d -->
+<!doctype html>
+<html lang="zh-CN">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>第四巷面包店 · Fourth Lane Bakery</title>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Bevan&family=Red+Hat+Text:wght@400;500&family=Cousine:wght@400;700&family=LXGW+WenKai+TC&family=Noto+Sans+SC:wght@400;700&display=swap">
+<!--
+  Twist (section-heads · undersize · 0.31x): on this scale a section heading would
+  normally be set at --step-3 (61.8px). Every <h2> is set at calc(var(--step-3) * 0.31)
+  = 19.2px, while the times, prices and the phone number around it stay large.
+-->
+<style>
+/* hash-design hash-design/v2 · a17a25d1 */
+:root {
+  --paper: #011922;
+  --ink: #b4d0dd;
+  --muted: #74838a;
+  --accent: #0087ad;
+  --on-accent: #000000;
+  --accent2: #b348ad;
+  --on-accent2: #ffffff;
+  --rule: #224453;
+  --panel: #032532;
+
+  --font-display: Bevan, "LXGW WenKai TC", Rockwell, Georgia, serif;
+  --font-body: "Red Hat Text", "Noto Sans SC", Helvetica, Arial, sans-serif;
+  --font-mono: Cousine, "Courier New", Courier, monospace;
+  --display-weight: 400;
+  --display-tracking: -0.007em;
+
+  --step-n2: 0.385rem; /* 6.2px */
+  --step-n1: 0.611rem; /* 9.8px */
+  --step-0: 0.969rem; /* 15.5px */
+  --step-1: 1.536rem; /* 24.6px */
+  --step-2: 2.437rem; /* 39px */
+  --step-3: 3.865rem; /* 61.8px */
+  --step-4: 6.129rem; /* 98.1px */
+  --step-5: 9.721rem; /* 155.5px */
+  --step-6: 15.418rem; /* 246.7px */
+  --step-7: 24.453rem; /* 391.2px */
+  --leading: 1.47;
+
+  --space-1: 6px;
+  --space-2: 12px;
+  --space-3: 18px;
+  --space-4: 24px;
+  --space-5: 30px;
+  --space-6: 36px;
+  --space-7: 42px;
+  --space-8: 48px;
+  --section-gap: 88px;
+  --max-width: 1290px;
+  --columns: 11;
+  --gutter: 12px;
+
+  --radius: 0px;
+  --border: 3px solid var(--rule);
+  --shadow: none;
+
+  --motion-duration: 540ms;
+  --motion-easing: cubic-bezier(0.26, 0.4, 0.1, 1);
+}
+
+html { font-size: 96.9%; }
+body { background: var(--paper); color: var(--ink); font-family: var(--font-body); line-height: var(--leading); }
+@media (prefers-reduced-motion: reduce) {
+  *, *::before, *::after { animation: none !important; transition: none !important; }
+}
+
+/* ---- page ---- */
+*, *::before, *::after { box-sizing: border-box; }
+html { -webkit-text-size-adjust: 100%; }
+body {
+  margin: 0;
+  font-size: var(--step-0);
+  background-image: radial-gradient(color-mix(in srgb, var(--ink) 9.6%, transparent) 1px, transparent 1.5px);
+  background-size: 6px 6px;
+  overflow-x: hidden;
+}
+h1, h2, h3, p, ol, ul, dl, dd { margin: 0; padding: 0; }
+ol, ul { list-style: none; }
+a { color: inherit; }
+:focus-visible { outline: 3px solid var(--accent); outline-offset: 3px; border-radius: var(--radius); }
+
+.wrap { max-width: var(--max-width); margin-inline: auto; padding-inline: var(--space-4); }
+.grid {
+  display: grid;
+  grid-template-columns: repeat(var(--columns), minmax(0, 1fr));
+  column-gap: var(--gutter);
+}
+.display {
+  font-family: var(--font-display);
+  font-weight: var(--display-weight);
+  letter-spacing: var(--display-tracking);
+}
+.mono { font-family: var(--font-mono); }
+.label {
+  font-family: var(--font-mono);
+  font-size: var(--step-0);
+  letter-spacing: 0.04em;
+  color: var(--muted);
+  text-transform: uppercase;
+}
+
+/* ---- first screen: the anchor ---- */
+.first {
+  position: relative;
+  min-height: 81vh;
+  min-height: 81svh;
+  display: flex;
+  flex-direction: column;
+  justify-content: space-between;
+  padding-block: var(--space-8) var(--space-5);
+  overflow-x: clip;
+}
+.anchor {
+  /* 81% of the first screen's width, centred at 47% from the left: 47 - 40.5 = 6.5 */
+  margin-left: 6.5%;
+  width: 81%;
+  background: var(--accent);
+  color: var(--on-accent);
+  border-radius: var(--radius);
+  box-shadow: var(--shadow);
+  padding: var(--space-6) var(--space-8) var(--space-7);
+  transform: rotate(-2.5deg);
+  transform-origin: 50% 50%;
+  animation: anchor-in var(--motion-duration) var(--motion-easing) both;
+}
+@keyframes anchor-in {
+  from { transform: translateY(var(--space-8)) rotate(-2.5deg); }
+  to { transform: translateY(0) rotate(-2.5deg); }
+}
+.anchor-name {
+  display: flex;
+  flex-wrap: wrap;
+  align-items: baseline;
+  gap: var(--space-1) var(--space-4);
+  padding-bottom: var(--space-3);
+  border-bottom: 3px solid var(--on-accent);
+}
+.anchor-name .latin { font-size: var(--step-2); line-height: 1.1; }
+.anchor-name .cn { font-size: var(--step-1); line-height: 1.2; }
+.anchor h1 {
+  font-size: clamp(var(--step-2), 6.9vw, var(--step-4));
+  line-height: 1.12;
+  margin-top: var(--space-5);
+}
+.anchor-note {
+  margin-top: var(--space-5);
+  font-size: var(--step-1);
+  line-height: 1.35;
+  max-width: 30em;
+}
+.first-foot { row-gap: var(--space-3); margin-top: var(--space-8); width: 100%; }
+.first-foot > div { border-top: 1px solid var(--rule); padding-top: var(--space-2); }
+.first-foot p { margin-top: var(--space-1); }
+.ff-hours { grid-column: 1 / 5; }
+.ff-addr { grid-column: 5 / 9; }
+.ff-book { grid-column: 9 / 12; }
+
+/* ---- separators: hairline rule + 12px squares at 60deg ---- */
+.sep {
+  position: relative;
+  height: 12px;
+  margin-block: calc(var(--section-gap) / 2);
+}
+.sep::before {
+  content: "";
+  position: absolute;
+  left: var(--space-4);
+  right: var(--space-4);
+  top: 50%;
+  border-top: 1px solid var(--rule);
+}
+.sep i {
+  position: absolute;
+  top: 0;
+  width: 12px;
+  height: 12px;
+  background: var(--accent);
+  transform: rotate(60deg);
+}
+.sep i:nth-child(1) { left: var(--space-4); }
+.sep i:nth-child(2) { left: calc(var(--space-4) + 22px); background: var(--paper); border: 1px solid var(--accent); }
+.sep i:nth-child(3) { left: calc(var(--space-4) + 44px); }
+.sep i:nth-child(4) { right: var(--space-4); background: var(--accent2); }
+.sep--b i:nth-child(1) { left: 36%; }
+.sep--b i:nth-child(2) { left: calc(36% + 22px); }
+.sep--b i:nth-child(3) { left: calc(36% + 44px); }
+.sep--c i:nth-child(1) { left: 63%; }
+.sep--c i:nth-child(2) { left: calc(63% + 22px); }
+.sep--c i:nth-child(3) { left: calc(63% + 44px); }
+
+/* ---- sections ---- */
+section.block { row-gap: var(--space-5); }
+.sec-head { grid-column: 1 / 4; align-self: start; }
+/* the twist: 0.31 x the --step-3 a section heading would normally get */
+h2 {
+  font-family: var(--font-display);
+  font-weight: var(--display-weight);
+  letter-spacing: var(--display-tracking);
+  font-size: calc(var(--step-3) * 0.31);
+  line-height: 1.3;
+  color: var(--ink);
+  padding-top: var(--space-2);
+  border-top: 3px solid var(--accent);
+  max-width: 11em;
+}
+.body-col { grid-column: 4 / 12; }
+.lead { font-size: var(--step-1); line-height: 1.4; }
+
+/* batches */
+.batch { border-top: var(--border); padding-top: var(--space-3); }
+.batch--1 { grid-column: 4 / 9; }
+.batch--2 { grid-column: 9 / 12; margin-top: var(--space-8); }
+.batch .time { display: block; line-height: 1; }
+.batch--1 .time { font-size: clamp(var(--step-3), 10vw, var(--step-5)); color: var(--accent); }
+.batch--2 .time { font-size: clamp(var(--step-3), 6.2vw, var(--step-4)); color: var(--ink); }
+.batch .which { display: block; margin-top: var(--space-3); }
+.batch .what { display: block; margin-top: var(--space-1); font-size: var(--step-1); line-height: 1.35; }
+.notes { grid-column: 4 / 12; display: flex; flex-wrap: wrap; gap: var(--space-2) var(--space-5); align-items: baseline; margin-top: var(--space-4); }
+.tag {
+  display: inline-block;
+  background: var(--accent2);
+  color: var(--on-accent2);
+  padding: 2px var(--space-2);
+  font-weight: 700;
+  border-radius: var(--radius);
+}
+
+/* ledger */
+.ledger { grid-column: 4 / 12; grid-row: 1 / span 2; border: var(--border); border-radius: var(--radius); }
+.ledger li {
+  display: grid;
+  grid-template-columns: minmax(0, 4fr) minmax(0, 4fr) minmax(0, 3fr);
+  gap: var(--space-1) var(--gutter);
+  align-items: baseline;
+  padding: var(--space-3) var(--space-4);
+  border-top: 1px solid var(--rule);
+  transition: transform var(--motion-duration) var(--motion-easing);
+}
+.ledger li:first-child { border-top: 0; }
+.ledger li:hover { transform: translateX(var(--space-1)); }
+.ledger .name { font-family: var(--font-display); font-weight: var(--display-weight); font-size: var(--step-1); line-height: 1.2; }
+.ledger .detail { color: var(--muted); }
+.ledger .price { font-family: var(--font-display); font-weight: var(--display-weight); letter-spacing: var(--display-tracking); text-align: right; font-size: var(--step-2); line-height: 1.1; }
+.ledger .price small { font-family: var(--font-body); font-size: var(--step-0); color: var(--muted); margin-right: var(--space-1); }
+.ledger .lead-row { background: var(--panel); padding-block: var(--space-5); }
+.ledger .lead-row .name { font-size: var(--step-2); }
+.ledger .lead-row .price { font-size: var(--step-3); }
+.ledger .lead-row .price + .price { grid-column: 3; font-size: var(--step-2); }
+.ledger .quiet .name { font-size: var(--step-0); font-family: var(--font-body); font-weight: 500; }
+.ledger .quiet .price { font-size: var(--step-1); }
+.starter { grid-column: 1 / 4; align-self: end; border-top: 1px solid var(--rule); padding-top: var(--space-3); }
+.starter p + p { margin-top: var(--space-2); }
+.starter .lao { font-family: var(--font-display); font-size: var(--step-2); line-height: 1.1; color: var(--ink); margin-block: var(--space-1); }
+
+/* booking + class */
+.book { grid-column: 4 / 8; }
+.book p + p { margin-top: var(--space-1); }
+.phone {
+  display: inline-block;
+  margin-top: var(--space-4);
+  font-family: var(--font-mono);
+  font-weight: 700;
+  font-size: clamp(var(--step-1), 2.9vw, var(--step-2));
+  color: var(--accent);
+  text-decoration: none;
+  border-bottom: 3px solid var(--accent);
+  transition: transform var(--motion-duration) var(--motion-easing);
+}
+.phone:hover, .phone:focus-visible { transform: translateX(var(--space-2)); }
+.class {
+  grid-column: 8 / 12;
+  background: var(--panel);
+  border: var(--border);
+  border-radius: var(--radius);
+  padding: var(--space-4);
+}
+.class .when { font-family: var(--font-display); font-size: var(--step-2); line-height: 1.1; margin-block: var(--space-2) var(--space-3); }
+.class li { padding-block: var(--space-1); border-top: 1px solid var(--rule); }
+
+/* find us */
+.addr { grid-column: 4 / 8; }
+.addr .street { font-family: var(--font-display); font-size: var(--step-2); line-height: 1.15; margin-bottom: var(--space-3); }
+.addr dl { display: grid; grid-template-columns: auto 1fr; gap: var(--space-1) var(--space-3); margin-top: var(--space-4); }
+.addr dt { font-family: var(--font-mono); color: var(--muted); }
+.plan { margin: 0; grid-column: 8 / 12; align-self: start; border: var(--border); background: var(--panel); }
+.plan svg { display: block; width: 100%; height: auto; }
+.plan .wall { stroke: var(--ink); stroke-width: 3; fill: none; }
+.plan .door { fill: var(--paper); stroke: var(--muted); stroke-width: 2; }
+.plan .door--ours { fill: var(--accent2); stroke: var(--accent2); }
+.plan .path { stroke: var(--accent); stroke-width: 2; fill: none; stroke-dasharray: 6 6; }
+.plan .sq { fill: var(--accent); }
+.plan text { font-family: var(--font-mono); font-size: 15px; fill: var(--muted); }
+.plan .t-ours { fill: var(--ink); font-family: var(--font-body); font-size: 17px; font-weight: 700; }
+.owner { grid-column: 4 / 12; border-top: 1px solid var(--rule); padding-top: var(--space-3); display: flex; flex-wrap: wrap; gap: var(--space-1) var(--space-5); }
+.owner strong { font-family: var(--font-display); font-weight: var(--display-weight); }
+.colophon { margin-top: var(--section-gap); padding-block: var(--space-4) var(--space-6); border-top: 1px solid var(--rule); color: var(--muted); font-size: var(--step-0); }
+.colophon .grid > * { grid-column: 1 / -1; }
+
+/* ---- below 640px: one column; separators and the anchor stay ---- */
+@media (max-width: 639px) {
+  .wrap { padding-inline: var(--space-3); }
+  .grid { grid-template-columns: minmax(0, 1fr); }
+  .grid > * { grid-column: 1 / -1 !important; grid-row: auto !important; }
+  .first { padding-block: var(--space-6) var(--space-4); }
+  .anchor { padding: var(--space-4) var(--space-3) var(--space-5); }
+  .anchor-name .latin { font-size: var(--step-1); }
+  .anchor-name .cn { font-size: var(--step-0); }
+  .anchor-note { font-size: var(--step-0); }
+  .first-foot { margin-top: var(--space-6); }
+  .batch--2 { margin-top: var(--space-2); }
+  .sep::before { left: var(--space-3); right: var(--space-3); }
+  .sep i:nth-child(1) { left: var(--space-3); }
+  .sep i:nth-child(2) { left: calc(var(--space-3) + 22px); }
+  .sep i:nth-child(3) { left: calc(var(--space-3) + 44px); }
+  .sep i:nth-child(4) { right: var(--space-3); }
+  .lead { font-size: var(--step-0); }
+  .ledger li { grid-template-columns: minmax(0, 1fr) auto; padding: var(--space-3); }
+  .ledger .detail { grid-column: 1 / -1; grid-row: 2; }
+  .ledger .price { grid-column: 2; grid-row: 1; }
+  .ledger .lead-row .price + .price { grid-column: 2; grid-row: 2; }
+  .ledger .lead-row .detail { grid-row: 3; }
+  .ledger .lead-row .price { font-size: var(--step-2); }
+  .ledger .lead-row .price + .price { font-size: var(--step-1); }
+  .plan { max-width: 420px; }
+}
+</style>
+</head>
+<body>
+<main>
+
+  <section class="first" aria-labelledby="hero-title">
+    <div class="anchor">
+      <p class="anchor-name display"><span class="latin">Fourth Lane Bakery</span><span class="cn">第四巷面包店</span></p>
+      <h1 id="hero-title" class="display">你要的面包，<br>七点出第一炉。</h1>
+      <p class="anchor-note">每天烤两炉。卖完即止，当天不留货。</p>
+    </div>
+    <div class="wrap grid first-foot">
+      <div class="ff-hours"><span class="label">营业</span><p>周二至周日 7:00–19:00，周一休息。</p></div>
+      <div class="ff-addr"><span class="label">地址</span><p>老城区第四巷 17 号，绿色木门。</p></div>
+      <div class="ff-book"><span class="label">预订</span><p><a href="tel:02155550417" class="mono">021-5555-0417</a></p></div>
+    </div>
+  </section>
+
+  <div class="sep" aria-hidden="true"><i></i><i></i><i></i><i></i></div>
+
+  <section class="wrap grid block" id="bake" aria-labelledby="h-bake">
+    <header class="sec-head">
+      <h2 id="h-bake">你一天能赶上两炉。</h2>
+    </header>
+    <p class="body-col lead">第一炉七点出，第二炉十一点出。</p>
+    <div class="batch batch--1">
+      <span class="time display">7:00</span>
+      <span class="which label">第一炉</span>
+      <span class="what">乡村面包、可颂</span>
+    </div>
+    <div class="batch batch--2">
+      <span class="time display">11:00</span>
+      <span class="which label">第二炉</span>
+      <span class="what">肉桂卷、黑麦面包</span>
+    </div>
+    <p class="notes">
+      <span class="tag">卖完即止，当天不留货</span>
+      <span>想买肉桂卷，你得等第二炉。</span>
+      <span>黑麦面包每天限 12 个。</span>
+    </p>
+  </section>
+
+  <div class="sep sep--b" aria-hidden="true"><i></i><i></i><i></i><i></i></div>
+
+  <section class="wrap grid block" id="bread" aria-labelledby="h-bread">
+    <header class="sec-head">
+      <h2 id="h-bread">你能买到这四种面包。</h2>
+    </header>
+    <ul class="ledger">
+      <li class="lead-row">
+        <span class="name">乡村面包</span>
+        <span class="detail">天然酵种，48 小时低温发酵。</span>
+        <span class="price"><small>整个</small>¥38</span>
+        <span class="price"><small>半个</small>¥20</span>
+      </li>
+      <li>
+        <span class="name">黑麦面包</span>
+        <span class="detail">70% 黑麦，750 g。每日限 12 个。</span>
+        <span class="price">¥42</span>
+      </li>
+      <li>
+        <span class="name">可颂</span>
+        <span class="detail">用法国发酵黄油。</span>
+        <span class="price">¥16</span>
+      </li>
+      <li>
+        <span class="name">肉桂卷</span>
+        <span class="detail">只在第二炉。</span>
+        <span class="price">¥18</span>
+      </li>
+      <li class="quiet">
+        <span class="name">手冲咖啡</span>
+        <span class="detail">店里有 6 个座位。</span>
+        <span class="price">¥22</span>
+      </li>
+    </ul>
+    <div class="starter">
+      <span class="label">酵种</span>
+      <p class="lao">“老周”</p>
+      <p>酵种养了 9 年，店里叫它老周。</p>
+      <p>面粉是本地石磨全麦粉，加法国 T65。</p>
+    </div>
+  </section>
+
+  <div class="sep sep--c" aria-hidden="true"><i></i><i></i><i></i><i></i></div>
+
+  <section class="wrap grid block" id="order" aria-labelledby="h-order">
+    <header class="sec-head">
+      <h2 id="h-order">你可以提前一天订。</h2>
+    </header>
+    <div class="book">
+      <p class="lead">前一天 17:00 前订好。</p>
+      <p>打电话，或者来店里登记。</p>
+      <a class="phone" href="tel:02155550417">021-5555-0417</a>
+    </div>
+    <div class="class">
+      <span class="label">周六面包课</span>
+      <p class="when">9:00–11:30</p>
+      <ul>
+        <li>6 人小班。</li>
+        <li>每人 ¥260。</li>
+        <li>你烤的面包，你自己带走。</li>
+      </ul>
+    </div>
+  </section>
+
+  <div class="sep" aria-hidden="true"><i></i><i></i><i></i><i></i></div>
+
+  <section class="wrap grid block" id="visit" aria-labelledby="h-visit">
+    <header class="sec-head">
+      <h2 id="h-visit">你从巷口数第二个门。</h2>
+    </header>
+    <div class="addr">
+      <p class="street">老城区第四巷 17 号</p>
+      <p>巷口数第二个门，是绿色木门。</p>
+      <dl>
+        <dt>营业</dt><dd>周二至周日 7:00–19:00</dd>
+        <dt>休息</dt><dd>周一</dd>
+        <dt>座位</dt><dd>店里有 6 个座位。</dd>
+      </dl>
+    </div>
+    <figure class="plan">
+      <svg viewBox="0 0 400 230" role="img" aria-label="第四巷示意：从巷口数第二个门，是 17 号的绿色木门">
+        <line class="wall" x1="40" y1="70" x2="390" y2="70"/>
+        <line class="wall" x1="40" y1="160" x2="390" y2="160"/>
+        <rect class="door" x="100" y="52" width="40" height="18"/>
+        <rect class="door door--ours" x="190" y="52" width="40" height="18"/>
+        <rect class="door" x="280" y="52" width="40" height="18"/>
+        <path class="path" d="M20 115 H210 V82"/>
+        <rect class="sq" x="14" y="109" width="12" height="12" transform="rotate(60 20 115)"/>
+        <text x="14" y="200">巷口</text>
+        <text x="90" y="40">第一个门</text>
+        <text class="t-ours" x="188" y="38">17 号</text>
+        <text x="150" y="200">第二个门 · 绿色木门</text>
+      </svg>
+    </figure>
+    <p class="owner">
+      <span>店主 <strong>周岚</strong>，以前是建筑师。</span>
+      <span>2019 年开了这家店。</span>
+    </p>
+  </section>
+
+</main>
+<footer class="colophon">
+  <div class="wrap grid"><p class="mono">第四巷面包店 · Fourth Lane Bakery · 老城区第四巷 17 号</p></div>
+</footer>
+</body>
+</html>

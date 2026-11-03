@@ -1,0 +1,496 @@
+<!-- hash-design #1 · 8b44644e · ref 8b44644e4d48e4d3e33b76679ed7306d39eebb8c554f265b676a829891c3e96f -->
+<!doctype html>
+<html lang="zh-CN">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>第四巷面包店 · 老城区第四巷 17 号</title>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Holtwood+One+SC&family=IBM+Plex+Sans+Condensed:wght@400;500;600&family=B612+Mono&family=Zhi+Mang+Xing&family=Noto+Sans+SC:wght@400;700&display=swap">
+<!--
+  Twist (section-heads · oversize · 15): applied literally.
+  A section heading on this page would normally be set at --step-2 (28.8px; --step-1 below 640px).
+  Every section heading is set at 3.5x that size: calc(var(--head-normal) * 3.5), about 104px on desktop and 79px on phones.
+-->
+<style>
+/* hash-design hash-design/v2 · 8b44644e */
+:root {
+  --paper: #d8e5e4;
+  --ink: #283c3c;
+  --muted: #566767;
+  --accent: #008a8c;
+  --on-accent: #000000;
+  --accent2: #9770b2;
+  --on-accent2: #000000;
+  --rule: #9ab0b0;
+  --panel: #c3d8d7;
+
+  --font-display: "Holtwood One SC", "Zhi Mang Xing", Rockwell, Georgia, serif;
+  --font-body: "IBM Plex Sans Condensed", "Noto Sans SC", "Arial Narrow", sans-serif;
+  --font-mono: "B612 Mono", "Courier New", monospace;
+  --display-weight: 400;
+  --display-tracking: 0.016em;
+
+  --step-n2: 0.59rem; /* 9.4px */
+  --step-n1: 0.78rem; /* 12.5px */
+  --step-0: 1.031rem; /* 16.5px */
+  --step-1: 1.363rem; /* 21.8px */
+  --step-2: 1.802rem; /* 28.8px */
+  --step-3: 2.383rem; /* 38.1px */
+  --step-4: 3.15rem; /* 50.4px */
+  --step-5: 4.164rem; /* 66.6px */
+  --step-6: 5.505rem; /* 88.1px */
+  --step-7: 7.278rem; /* 116.4px */
+  --leading: 1.53;
+
+  --space-1: 8px;
+  --space-2: 16px;
+  --space-3: 24px;
+  --space-4: 32px;
+  --space-5: 40px;
+  --space-6: 48px;
+  --space-7: 56px;
+  --space-8: 64px;
+  --section-gap: 113px;
+  --max-width: 1230px;
+  --columns: 11;
+  --gutter: 32px;
+
+  --radius: 4px;
+  --border: 2px dashed var(--rule);
+  --shadow: 6px 6px 0 var(--ink);
+
+  --motion-duration: 360ms;
+  --motion-easing: cubic-bezier(0.77, 0.4, 0.9, 1);
+}
+
+html { font-size: 103.1%; }
+body { background: var(--paper); color: var(--ink); font-family: var(--font-body); line-height: var(--leading); }
+@media (prefers-reduced-motion: reduce) {
+  *, *::before, *::after { animation: none !important; transition: none !important; }
+}
+
+/* ---------- page ---------- */
+:root {
+  --edge: 100px;                 /* room at the page edges for the index numerals */
+  --head-normal: var(--step-2);  /* what a section heading would normally get */
+  --anchor-y: 52%;
+}
+*, *::before, *::after { box-sizing: border-box; }
+body {
+  margin: 0;
+  font-size: var(--step-0);
+  overflow-x: clip;
+  background-image: radial-gradient(color-mix(in srgb, var(--ink) 5.4%, transparent) 1px, transparent 1.5px);
+  background-size: 6px 6px;
+}
+h1, h2, h3, p, ul, ol, dl, dd, figure { margin: 0; padding: 0; }
+ul, ol { list-style: none; }
+
+.wrap { width: min(var(--max-width), 100% - 2 * var(--edge)); margin-inline: auto; }
+.grid {
+  display: grid;
+  grid-template-columns: repeat(var(--columns), minmax(0, 1fr));
+  column-gap: var(--gutter);
+}
+.side { grid-column: 1 / span 3; }
+.text { grid-column: 4 / span 7; }   /* columns 4–10 of 11 */
+.r2 { grid-row: 2; }
+
+a {
+  color: inherit;
+  text-decoration-color: var(--accent);
+  text-decoration-thickness: 2px;
+  text-underline-offset: 0.22em;
+  transition: opacity var(--motion-duration) var(--motion-easing);
+}
+a:hover, a:focus-visible { opacity: 0.58; }
+:focus-visible { outline: 2px dashed var(--accent); outline-offset: 4px; border-radius: var(--radius); }
+
+.display {
+  font-family: var(--font-display);
+  font-weight: var(--display-weight);
+  letter-spacing: var(--display-tracking);
+  font-variant-caps: all-small-caps;
+}
+
+/* ---------- first screen: anchor ---------- */
+.hero {
+  position: relative;
+  min-height: 55vh;
+  min-height: 55svh;
+  overflow: hidden;
+  display: flex;
+  flex-direction: column;
+  padding-block: var(--space-4) var(--space-5);
+}
+.topbar { position: relative; z-index: 1; align-items: baseline; row-gap: var(--space-1); }
+.brand { font-weight: 600; font-size: var(--step-1); line-height: 1.2; }
+.brand .en { display: block; font-size: var(--step-n1); color: var(--muted); margin-top: 4px; }
+.nav { display: flex; flex-wrap: wrap; column-gap: var(--space-4); row-gap: var(--space-1); font-weight: 500; }
+.nav a { text-decoration: none; border-bottom: var(--border); padding-bottom: 2px; }
+
+.hero-body { position: relative; z-index: 1; margin-top: auto; padding-top: var(--space-6); }
+.hero h1 { font-size: var(--step-4); line-height: 1.16; }
+.ph { display: inline-block; }
+.lede { margin-top: var(--space-3); max-width: 31em; }
+.meta { margin-top: var(--space-3); font-family: var(--font-mono); font-size: var(--step-n1); color: var(--muted); }
+.meta span { white-space: nowrap; }
+.meta span + span::before { content: "/ "; color: var(--rule); }
+
+.anchor {
+  position: absolute;
+  left: 93%;
+  top: var(--anchor-y);
+  z-index: 0;
+  transform: translate(-50%, -50%) rotate(7deg);
+  font-family: var(--font-display);
+  font-weight: var(--display-weight);
+  letter-spacing: var(--display-tracking);
+  font-size: 36.8vw;          /* "17" in Holtwood is 1.14em wide: 36.8vw x 1.14 = 42% of the first screen's width */
+  line-height: 1;
+  white-space: nowrap;
+  color: var(--accent);
+  user-select: none;
+  animation: anchor-in var(--motion-duration) var(--motion-easing) both;
+}
+@keyframes anchor-in { from { opacity: 0; } to { opacity: 1; } }
+
+/* ---------- sections, separated by space only ---------- */
+main { padding-top: var(--section-gap); }
+main > section { position: relative; overflow-x: clip; }
+main > section + section { margin-top: var(--section-gap); }
+
+.sec-head {
+  font-family: var(--font-display);
+  font-weight: var(--display-weight);
+  letter-spacing: var(--display-tracking);
+  font-variant-caps: all-small-caps;
+  font-size: calc(var(--head-normal) * 3.5);   /* twist: 3.5x */
+  line-height: 1.04;
+  margin-bottom: var(--space-5);
+}
+.sec-head span { display: inline-block; }
+.cjk { font-family: "Zhi Mang Xing", var(--font-display); }
+
+.body > * + * { margin-top: var(--space-3); }
+.body p { max-width: 34em; }
+
+/* motif: index numerals at the page edges, 64px, turned 100deg */
+.idx {
+  position: absolute;
+  top: 0;
+  width: 88px;
+  height: 136px;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  pointer-events: none;
+}
+.idx--l { left: 6px; }
+.idx--r { right: 6px; }
+.idx span {
+  display: block;
+  transform: rotate(100deg);
+  font-family: var(--font-display);
+  font-weight: var(--display-weight);
+  letter-spacing: var(--display-tracking);
+  font-size: 64px;
+  line-height: 1;
+  white-space: nowrap;
+  color: var(--accent);
+}
+
+/* section 1: ovens */
+.ovens { border-top: var(--border); display: grid; grid-template-columns: max-content minmax(0, 1fr); column-gap: var(--space-4); }
+.ovens li {
+  grid-column: 1 / -1;
+  display: grid;
+  grid-template-columns: subgrid;
+  column-gap: var(--space-4);
+  align-items: baseline;
+  padding-block: var(--space-3);
+  border-bottom: var(--border);
+}
+.ovens time { font-family: var(--font-mono); font-size: var(--step-4); line-height: 1; }
+.ovens li:last-child time { font-size: var(--step-3); }
+.ovens .batch { display: block; font-weight: 600; font-size: var(--step-1); line-height: 1.3; }
+.ovens .items { display: block; color: var(--muted); }
+.stamp {
+  display: inline-block;
+  background: var(--accent2);
+  color: var(--on-accent2);
+  font-weight: 600;
+  font-size: var(--step-1);
+  line-height: 1.3;
+  padding: var(--space-1) var(--space-2);
+  border-radius: var(--radius);
+}
+.side-note { font-family: var(--font-mono); font-size: var(--step-n1); color: var(--muted); margin-top: var(--space-2); }
+
+/* section 2: price board */
+.board {
+  background: var(--paper);
+  border: var(--border);
+  border-radius: var(--radius);
+  box-shadow: var(--shadow);
+}
+.board li {
+  display: grid;
+  grid-template-columns: minmax(0, 1fr) auto;
+  column-gap: var(--space-4);
+  align-items: baseline;
+  padding: var(--space-2) var(--space-4);
+}
+.board li + li { border-top: var(--border); }
+.board .name { display: block; font-weight: 600; font-size: var(--step-1); line-height: 1.3; }
+.board .note { display: block; color: var(--muted); font-size: var(--step-0); }
+.board .price { font-family: var(--font-mono); font-size: var(--step-2); line-height: 1.1; text-align: right; white-space: nowrap; }
+.board .lead { background: var(--panel); padding-block: var(--space-4); }
+.board .lead .name { font-size: var(--step-3); line-height: 1.15; }
+.board .lead .note { color: var(--ink); }
+.board .lead .price span { display: block; }
+.board .lead .price small { font-family: var(--font-body); font-size: var(--step-0); margin-right: 6px; }
+.board .small .name { font-size: var(--step-0); }
+.board .small .price { font-size: var(--step-1); }
+.mark { white-space: nowrap; color: var(--on-accent2); background: var(--accent2); padding: 0 6px; border-radius: var(--radius); font-weight: 600; }
+
+/* section 3: starter */
+.big-num { font-family: var(--font-mono); font-size: var(--step-7); line-height: 0.9; color: var(--ink); }
+.big-num small { font-family: var(--font-body); font-size: var(--step-1); margin-left: 6px; }
+.ruler { max-width: 640px; }
+.ruler svg { display: block; width: 100%; height: auto; }
+.ruler figcaption, .lane figcaption { font-size: var(--step-n1); font-family: var(--font-mono); color: var(--muted); margin-top: var(--space-1); }
+.r-axis { stroke: var(--ink); stroke-width: 2; }
+.r-tick { stroke: var(--rule); stroke-width: 2; }
+.r-bar { fill: var(--accent); }
+.r-lab { fill: var(--ink); font-family: var(--font-body); font-size: 20px; }
+.r-big { fill: var(--accent); font-family: var(--font-display); font-size: 40px; }
+
+/* section 4: booking, lane, class */
+.phone { font-family: var(--font-mono); font-size: var(--step-3); line-height: 1.1; text-decoration: none; border-bottom: 3px solid var(--accent); display: inline-block; }
+.lane { max-width: 680px; }
+.lane svg { display: block; width: 100%; height: auto; }
+.l-wall { fill: var(--panel); }
+.l-road { fill: var(--paper); stroke: var(--rule); stroke-width: 2; stroke-dasharray: 8 6; }
+.l-door { fill: var(--paper); stroke: var(--ink); stroke-width: 2; }
+.l-door--it { fill: var(--accent); stroke: var(--ink); }
+.l-arrow { stroke: var(--ink); stroke-width: 2; fill: none; }
+.l-head { fill: var(--ink); }
+.l-lab { fill: var(--ink); font-family: var(--font-body); font-size: 24px; }
+.l-num { fill: var(--accent); font-family: var(--font-display); font-size: 30px; }
+.course {
+  background: var(--panel);
+  border: var(--border);
+  border-radius: var(--radius);
+  box-shadow: var(--shadow);
+  padding: var(--space-4);
+  max-width: 34em;
+}
+.course h3 { font-size: var(--step-2); font-weight: 600; line-height: 1.2; margin-bottom: var(--space-2); }
+.course dl { display: grid; grid-template-columns: auto minmax(0, 1fr); column-gap: var(--space-3); row-gap: var(--space-1); }
+.course dt { font-family: var(--font-mono); font-size: var(--step-n1); line-height: 2; }
+.course dd { font-weight: 500; }
+
+footer { margin-top: var(--section-gap); padding-bottom: var(--space-6); }
+footer p { font-family: var(--font-mono); font-size: var(--step-n1); color: var(--muted); }
+
+/* ---------- below 640px: one column; separators and anchor stay ---------- */
+@media (max-width: 640px) {
+  :root {
+    --edge: 20px;
+    --head-normal: var(--step-1);
+    --anchor-y: 30%;
+  }
+  .grid { grid-template-columns: minmax(0, 1fr); }
+  .side, .text { grid-column: 1 / -1; }
+  .r2 { grid-row: auto; }
+  .hero { padding-block: var(--space-3) var(--space-4); }
+  .brand { font-size: var(--step-0); }
+  .nav { margin-top: var(--space-2); column-gap: var(--space-3); }
+  .hero h1 { font-size: var(--step-3); }
+  .idx { top: calc(-1 * var(--section-gap)); height: var(--section-gap); width: 72px; }
+  .idx--l { left: 0; }
+  .idx--r { right: 0; }
+  .side { margin-bottom: var(--space-3); }
+  .ovens { column-gap: var(--space-3); }
+  .ovens time, .ovens li:last-child time { font-size: var(--step-2); }
+  .board li { padding: var(--space-2) var(--space-2); column-gap: var(--space-2); }
+  .board .lead .name { font-size: var(--step-2); }
+  .board .price { font-size: var(--step-1); }
+  .course { padding: var(--space-3); }
+  .big-num { font-size: var(--step-6); }
+}
+</style>
+</head>
+<body>
+
+<header class="hero">
+  <div class="wrap grid topbar">
+    <p class="brand side">第四巷面包店<span class="en display">Fourth Lane Bakery</span></p>
+    <nav class="nav text" aria-label="页面目录">
+      <a href="#chulu">出炉</a>
+      <a href="#jiamu">价目</a>
+      <a href="#laozhou">老周</a>
+      <a href="#yuding">预订</a>
+    </nav>
+  </div>
+
+  <div class="wrap grid hero-body">
+    <div class="text">
+      <h1 class="display"><span class="ph">第四巷 17 号，</span><span class="ph">是哪一扇门？</span></h1>
+      <p class="lede">巷口数第二个门，绿色木门，门后就是第四巷面包店。每天两炉，卖完即止，当天不留货。</p>
+      <p class="meta"><span>周二至周日 7:00–19:00</span> <span>周一休息</span> <span>021-5555-0417</span></p>
+    </div>
+  </div>
+
+  <span class="anchor" aria-hidden="true">17</span>
+</header>
+
+<main>
+
+  <section class="s-ovens" id="chulu" aria-labelledby="h-chulu">
+    <span class="idx idx--l" aria-hidden="true"><span>1</span></span>
+    <div class="wrap grid">
+      <h2 class="sec-head text" id="h-chulu"><span>几点</span><span>出炉？</span></h2>
+      <div class="side r2">
+        <p class="stamp">当天不留货</p>
+        <p class="side-note">卖完即止</p>
+      </div>
+      <div class="text body r2">
+        <p>每天两炉：早上 7:00 出第一炉，11:00 再出第二炉。</p>
+        <ol class="ovens">
+          <li>
+            <time datetime="07:00">7:00</time>
+            <span><span class="batch">第一炉</span><span class="items">乡村面包、可颂</span></span>
+          </li>
+          <li>
+            <time datetime="11:00">11:00</time>
+            <span><span class="batch">第二炉</span><span class="items">肉桂卷、黑麦面包</span></span>
+          </li>
+        </ol>
+        <p>肉桂卷只在第二炉出，黑麦面包每天只做 12 个。</p>
+        <p>周二至周日 7:00–19:00 营业，周一休息。</p>
+      </div>
+    </div>
+  </section>
+
+  <section class="s-prices" id="jiamu" aria-labelledby="h-jiamu">
+    <span class="idx idx--r" aria-hidden="true"><span>2</span></span>
+    <div class="wrap grid">
+      <h2 class="sec-head text" id="h-jiamu"><span>一个面包</span><span>多少钱？</span></h2>
+      <div class="text body">
+        <p>四种面包，加一杯手冲咖啡，价钱都列在下面。</p>
+        <ul class="board">
+          <li class="lead">
+            <span><span class="name">乡村面包</span><span class="note">天然酵种，48 小时低温发酵，可以只买半个。</span></span>
+            <span class="price"><span><small>整个</small>¥38</span><span><small>半个</small>¥20</span></span>
+          </li>
+          <li>
+            <span><span class="name">黑麦面包</span><span class="note">70% 黑麦，每个 750 g，<span class="mark">每日限 12 个</span></span></span>
+            <span class="price">¥42</span>
+          </li>
+          <li>
+            <span><span class="name">可颂</span><span class="note">法国发酵黄油</span></span>
+            <span class="price">¥16</span>
+          </li>
+          <li>
+            <span><span class="name">肉桂卷</span><span class="note">只在第二炉</span></span>
+            <span class="price">¥18</span>
+          </li>
+          <li class="small">
+            <span><span class="name">手冲咖啡</span><span class="note">店内 6 个座位</span></span>
+            <span class="price">¥22</span>
+          </li>
+        </ul>
+      </div>
+    </div>
+  </section>
+
+  <section class="s-starter" id="laozhou" aria-labelledby="h-laozhou">
+    <span class="idx idx--l" aria-hidden="true"><span>3</span></span>
+    <div class="wrap grid">
+      <h2 class="sec-head text" id="h-laozhou"><span class="cjk">“老周”</span><span>是谁？</span></h2>
+      <div class="side r2">
+        <p class="big-num">9<small>年</small></p>
+        <p class="side-note">酵种“老周”的岁数</p>
+      </div>
+      <div class="text body r2">
+        <p>“老周”是店里养了 9 年的天然酵种，不是店员。</p>
+        <p>乡村面包靠这份酵种发面，低温发酵 48 小时。</p>
+        <figure class="ruler">
+          <svg viewBox="0 0 640 110" role="img" aria-labelledby="ruler-t">
+            <title id="ruler-t">乡村面包低温发酵 48 小时</title>
+            <rect class="r-bar" x="16" y="52" width="608" height="14" rx="2"/>
+            <line class="r-axis" x1="16" y1="76" x2="624" y2="76"/>
+            <line class="r-tick" x1="16" y1="70" x2="16" y2="92"/>
+            <line class="r-tick" x1="92" y1="76" x2="92" y2="86"/>
+            <line class="r-tick" x1="168" y1="76" x2="168" y2="86"/>
+            <line class="r-tick" x1="244" y1="76" x2="244" y2="86"/>
+            <line class="r-tick" x1="320" y1="76" x2="320" y2="86"/>
+            <line class="r-tick" x1="396" y1="76" x2="396" y2="86"/>
+            <line class="r-tick" x1="472" y1="76" x2="472" y2="86"/>
+            <line class="r-tick" x1="548" y1="76" x2="548" y2="86"/>
+            <line class="r-tick" x1="624" y1="70" x2="624" y2="92"/>
+            <text class="r-lab" x="16" y="40">开始</text>
+            <text class="r-big" x="624" y="40" text-anchor="end">48</text>
+            <text class="r-lab" x="624" y="108" text-anchor="end">小时</text>
+          </svg>
+          <figcaption>乡村面包：天然酵种，48 小时低温发酵</figcaption>
+        </figure>
+        <p>面粉用两种：本地石磨全麦粉，加上法国 T65。</p>
+        <p>店主周岚以前是建筑师，2019 年开了这家店。</p>
+      </div>
+    </div>
+  </section>
+
+  <section class="s-visit" id="yuding" aria-labelledby="h-yuding">
+    <span class="idx idx--r" aria-hidden="true"><span>4</span></span>
+    <div class="wrap grid">
+      <h2 class="sec-head text" id="h-yuding"><span>怎么订，</span><span>怎么来？</span></h2>
+      <div class="text body">
+        <p>预订须提前一天，在 17:00 前打电话，或到店里登记。</p>
+        <p><a class="phone" href="tel:02155550417">021-5555-0417</a></p>
+        <figure class="lane">
+          <svg viewBox="0 0 680 220" role="img" aria-labelledby="lane-t">
+            <title id="lane-t">第四巷示意：从巷口数第二个门是绿色木门，17 号</title>
+            <rect class="l-wall" x="60" y="20" width="620" height="110"/>
+            <rect class="l-road" x="0" y="130" width="680" height="64"/>
+            <rect class="l-door" x="130" y="50" width="56" height="80" rx="2"/>
+            <rect class="l-door l-door--it" x="262" y="50" width="56" height="80" rx="2"/>
+            <rect class="l-door" x="394" y="50" width="56" height="80" rx="2"/>
+            <rect class="l-door" x="526" y="50" width="56" height="80" rx="2"/>
+            <text class="l-num" x="290" y="42" text-anchor="middle">17</text>
+            <path class="l-arrow" d="M16 180 H272"/>
+            <path class="l-head" d="M286 180 l-14 -7 v14 z"/>
+            <text class="l-lab" x="16" y="162">巷口</text>
+            <text class="l-lab" x="300" y="188">第二个门，绿色木门</text>
+          </svg>
+          <figcaption>老城区第四巷 17 号（示意，不按比例）</figcaption>
+        </figure>
+        <p>地址是老城区第四巷 17 号，从巷口数第二个门。</p>
+        <p>店内有 6 个座位，周二至周日 7:00–19:00 开门。</p>
+        <div class="course">
+          <h3>周六有面包课吗？</h3>
+          <dl>
+            <dt>时间</dt><dd>周六 9:00–11:30</dd>
+            <dt>人数</dt><dd>6 人小班</dd>
+            <dt>费用</dt><dd>¥260/人</dd>
+            <dt>带走</dt><dd>课上烤好的面包</dd>
+          </dl>
+        </div>
+      </div>
+    </div>
+  </section>
+
+</main>
+
+<footer>
+  <div class="wrap grid">
+    <p class="text">第四巷面包店 Fourth Lane Bakery · 老城区第四巷 17 号 · 周一休息</p>
+  </div>
+</footer>
+
+</body>
+</html>

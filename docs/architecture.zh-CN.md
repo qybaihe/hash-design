@@ -78,9 +78,9 @@ hash-design 是一个 npm workspaces monorepo，包含两个包、一个 Skill �
 
 其中任何一个过期，`skill.test.ts` 都会失败。
 
-## 示例：记录下来的 v1 运行
+## 示例
 
-`examples/` 下的 4 个示例（面包店、开发者工具、单车修理铺、音乐节）是用 `hash-design/v1`（v2 删除的那个 40 分支库）掷出来的。它们作为真实运行的记录保留（事实、冻结的 brief、Agent 按 Skill 流程做的预览、截图和对比页），而不是当前映射的测试夹具：v2 无法复现它们的 ref。`examples.test.ts` 检查：每个示例的 `roll.json` 和 README 都标明 `hash-design/v1`；每个 brief、预览和截图都在；每个预览的 critique 仍不低于 90 分且没有 critical/major；Pages 首页和每份 README 都链接到每个示例。`scripts/examples.mjs` 列出示例并批量 critique 预览；它拒绝重掷 v1 记录或重建其对比页，因为两者都需要 v1。
+`examples/` 下的 4 个示例（面包店、开发者工具、单车修理铺、音乐节）是 `hash-design/v2` 的运行：事实、用固定 seed（文件夹名）的一次掷骰、冻结的 brief、每份 brief 一个子 Agent 按 Skill 流程做的预览、截图和对比页。`examples.test.ts` 检查：每次掷骰能用 seed 和当前库指纹复现；磁盘上的每份 brief 都和它的 ref 渲染出来的一字不差；每个预览和截图都在；每个预览 critique 不低于 90 分、brief 遵守度不低于 80，且没有 critical/major；Pages 首页和 README 链接到每个示例。`scripts/examples.mjs` 负责重掷、批量 critique、重建对比页和 Pages 首页；`scripts/showcase.mjs`、`hero.mjs` 和 `hero-gif.mjs` 用掷骰结果和截图生成 README 的展示图和首图。
 
 ## 测试与 CI
 

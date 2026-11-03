@@ -1,0 +1,2849 @@
+{
+  "algorithm": "hash-design/v2",
+  "library": "bd20321c36ab",
+  "createdAt": "2026-11-03T11:21:11.896Z",
+  "source": "seed:bridge-two-bikes",
+  "constraints": {
+    "lightOnly": false,
+    "darkOnly": false,
+    "reducedMotion": false,
+    "brandColors": []
+  },
+  "content": {
+    "subject": "二号桥单车铺",
+    "facts": [
+      "店名：二号桥单车铺（Bridge No.2 Cycle Works）",
+      "地址：河西路二号桥桥洞下东侧，蓝色卷帘门，门口立着一个旧车轮",
+      "营业：周三至周日 10:00–20:00；周一、周二休息",
+      "补胎 ¥15；换内胎 ¥35（含内胎）",
+      "全车保养 ¥180：清洗传动、调变速和刹车、紧固全车螺丝，约 2 小时",
+      "手工编轮组 ¥260 起，工期 5 天",
+      "二手车：每辆都换过链条和刹车皮，保修 90 天",
+      "公路车 Fitting ¥480，约 90 分钟，需预约",
+      "店主：陈立平，大家叫他老陈，修车 27 年，以前在自行车厂做装配",
+      "周四夜骑：每周四 19:30 店门口出发，沿江一圈 24 公里，免费，自带车灯",
+      "门口气泵免费，24 小时可用",
+      "预约：电话 0571-5555-0222，或到店登记",
+      "不卖新车，只修车、卖二手车和零件"
+    ],
+    "language": "zh"
+  },
+  "designs": [
+    {
+      "number": 1,
+      "slug": "01-40c6776a",
+      "ref": "40c6776af6502e673a46946c3932a15634b90305cb479ac5f8f7b82997572213",
+      "hash": "40c6776af6502e673a46946c3932a15634b90305cb479ac5f8f7b82997572213",
+      "short": "40c6776a",
+      "algorithm": "hash-design/v2",
+      "library": "bd20321c36ab",
+      "constraints": {
+        "lightOnly": false,
+        "darkOnly": false,
+        "reducedMotion": false,
+        "brandColors": []
+      },
+      "content": {
+        "subject": "二号桥单车铺",
+        "facts": [
+          "店名：二号桥单车铺（Bridge No.2 Cycle Works）",
+          "地址：河西路二号桥桥洞下东侧，蓝色卷帘门，门口立着一个旧车轮",
+          "营业：周三至周日 10:00–20:00；周一、周二休息",
+          "补胎 ¥15；换内胎 ¥35（含内胎）",
+          "全车保养 ¥180：清洗传动、调变速和刹车、紧固全车螺丝，约 2 小时",
+          "手工编轮组 ¥260 起，工期 5 天",
+          "二手车：每辆都换过链条和刹车皮，保修 90 天",
+          "公路车 Fitting ¥480，约 90 分钟，需预约",
+          "店主：陈立平，大家叫他老陈，修车 27 年，以前在自行车厂做装配",
+          "周四夜骑：每周四 19:30 店门口出发，沿江一圈 24 公里，免费，自带车灯",
+          "门口气泵免费，24 小时可用",
+          "预约：电话 0571-5555-0222，或到店登记",
+          "不卖新车，只修车、卖二手车和零件"
+        ],
+        "language": "zh"
+      },
+      "label": "light · 91° · Libre Bodoni / Old Standard TT · 10 col",
+      "palette": {
+        "polarity": "light",
+        "hue": 91.09,
+        "paperL": 0.92,
+        "paperC": 0.019,
+        "accentC": 0.224,
+        "accent2Offset": 124.12,
+        "colors": {
+          "paper": "#e9e4d7",
+          "ink": "#3e3825",
+          "muted": "#696458",
+          "accent": "#987900",
+          "accent2": "#008ea6",
+          "rule": "#b5ae9a",
+          "panel": "#dcd6c2"
+        }
+      },
+      "contrast": {
+        "lines": [
+          {
+            "pair": "ink on paper",
+            "ratio": 9.21,
+            "verdict": "AAA — any text"
+          },
+          {
+            "pair": "muted on paper",
+            "ratio": 4.64,
+            "verdict": "AA — body text OK"
+          },
+          {
+            "pair": "ink on panel",
+            "ratio": 8.04,
+            "verdict": "AAA — any text"
+          },
+          {
+            "pair": "accent on paper",
+            "ratio": 3.26,
+            "verdict": "large text / UI marks only (≥24px or bold ≥19px)"
+          },
+          {
+            "pair": "accent2 on paper",
+            "ratio": 3.05,
+            "verdict": "large text / UI marks only (≥24px or bold ≥19px)"
+          },
+          {
+            "pair": "#000000 on accent",
+            "ratio": 5.07,
+            "verdict": "AA — body text OK"
+          },
+          {
+            "pair": "#000000 on accent2",
+            "ratio": 5.42,
+            "verdict": "AA — body text OK"
+          }
+        ],
+        "onAccent": "#000000",
+        "onAccent2": "#000000"
+      },
+      "type": {
+        "display": {
+          "family": "Libre Bodoni",
+          "weights": [
+            400,
+            700
+          ],
+          "italic": true,
+          "fallback": "Didot, \"Bodoni 72\", serif",
+          "source": "google"
+        },
+        "body": {
+          "family": "Old Standard TT",
+          "weights": [
+            400,
+            700
+          ],
+          "italic": true,
+          "fallback": "Georgia, \"Times New Roman\", serif",
+          "source": "google"
+        },
+        "mono": {
+          "family": "Courier Prime",
+          "weights": [
+            400
+          ],
+          "fallback": "\"Courier New\", monospace",
+          "source": "google"
+        },
+        "cjk": {
+          "display": "Liu Jian Mao Cao",
+          "body": "Noto Serif SC"
+        },
+        "case": {
+          "id": "lower",
+          "text": "lowercase"
+        },
+        "weight": 400,
+        "tracking": 0.026
+      },
+      "fonts": {
+        "stacks": {
+          "display": "\"Libre Bodoni\", \"Liu Jian Mao Cao\", Didot, \"Bodoni 72\", serif",
+          "body": "\"Old Standard TT\", \"Noto Serif SC\", Georgia, \"Times New Roman\", serif",
+          "mono": "\"Courier Prime\", \"Courier New\", monospace"
+        },
+        "googleFontsUrl": "https://fonts.googleapis.com/css2?family=Libre+Bodoni:ital,wght@0,400;0,700;1,400;1,700&family=Old+Standard+TT:ital,wght@0,400;0,700;1,400;1,700&family=Courier+Prime&family=Liu+Jian+Mao+Cao&family=Noto+Serif+SC:wght@400;700&display=swap"
+      },
+      "scale": {
+        "ratio": 1.387,
+        "steps": [
+          {
+            "step": -2,
+            "px": 8.6,
+            "rem": 0.536
+          },
+          {
+            "step": -1,
+            "px": 11.9,
+            "rem": 0.744
+          },
+          {
+            "step": 0,
+            "px": 16.5,
+            "rem": 1.031
+          },
+          {
+            "step": 1,
+            "px": 22.9,
+            "rem": 1.43
+          },
+          {
+            "step": 2,
+            "px": 31.7,
+            "rem": 1.984
+          },
+          {
+            "step": 3,
+            "px": 44,
+            "rem": 2.752
+          },
+          {
+            "step": 4,
+            "px": 61.1,
+            "rem": 3.817
+          },
+          {
+            "step": 5,
+            "px": 84.7,
+            "rem": 5.294
+          },
+          {
+            "step": 6,
+            "px": 117.5,
+            "rem": 7.342
+          },
+          {
+            "step": 7,
+            "px": 162.9,
+            "rem": 10.184
+          }
+        ]
+      },
+      "density": {
+        "t": 0.424,
+        "baseSize": 16.5,
+        "lineHeight": 1.52,
+        "unit": 7,
+        "sectionGap": 110,
+        "maxWidth": 1230
+      },
+      "layout": {
+        "columns": 10,
+        "gutter": 14,
+        "span": 4,
+        "start": 2,
+        "firstScreen": 80,
+        "sections": 5,
+        "separator": {
+          "id": "boxes",
+          "text": "each section in a bordered box on the grid"
+        }
+      },
+      "anchor": {
+        "subject": {
+          "id": "grid-diagram",
+          "text": "a diagram drawn from the grid lines themselves"
+        },
+        "size": 40,
+        "x": 0.6,
+        "rotation": 3.5
+      },
+      "motif": {
+        "shape": {
+          "id": "stripes",
+          "text": "parallel stripes"
+        },
+        "size": 7,
+        "placement": {
+          "id": "dividers",
+          "text": "between sections"
+        },
+        "angle": 3
+      },
+      "surface": {
+        "radius": 0,
+        "border": 1,
+        "borderStyle": "dashed",
+        "shadow": 6,
+        "texture": {
+          "id": "grain",
+          "text": "fine noise grain over the paper"
+        },
+        "textureOpacity": 5.4
+      },
+      "motion": {
+        "still": false,
+        "property": {
+          "id": "clip-path",
+          "text": "a wipe (clip-path)"
+        },
+        "duration": 250,
+        "easing": "cubic-bezier(0.13, 1.2, 0.37, 1)"
+      },
+      "voice": {
+        "person": {
+          "id": "i",
+          "text": "first person singular (\"I\")"
+        },
+        "headline": {
+          "id": "label",
+          "text": "a label: a noun phrase, no verb"
+        },
+        "sentenceWords": 10,
+        "register": 1
+      },
+      "twist": {
+        "target": {
+          "id": "section-heads",
+          "text": "the section headings"
+        },
+        "operation": {
+          "id": "vertical",
+          "text": "set vertically (writing-mode: vertical-rl)"
+        },
+        "amount": 4,
+        "text": "The section headings: set vertically (writing-mode: vertical-rl)."
+      },
+      "bans": [
+        "generic-sans",
+        "purple-blue-gradient",
+        "centered-hero-two-buttons",
+        "identical-cards",
+        "glassmorphism",
+        "emoji-icons",
+        "buzzword-copy",
+        "soft-shadow-rounded",
+        "invented-facts",
+        "tailwind-default-palette",
+        "scroll-fade-everything",
+        "pill-badge-sparkle",
+        "placeholder-content",
+        "template-sections"
+      ],
+      "tokensCss": "/* hash-design hash-design/v2 · 40c6776a */\n:root {\n  --paper: #e9e4d7;\n  --ink: #3e3825;\n  --muted: #696458;\n  --accent: #987900;\n  --on-accent: #000000;\n  --accent2: #008ea6;\n  --on-accent2: #000000;\n  --rule: #b5ae9a;\n  --panel: #dcd6c2;\n\n  --font-display: \"Libre Bodoni\", \"Liu Jian Mao Cao\", Didot, \"Bodoni 72\", serif;\n  --font-body: \"Old Standard TT\", \"Noto Serif SC\", Georgia, \"Times New Roman\", serif;\n  --font-mono: \"Courier Prime\", \"Courier New\", monospace;\n  --display-weight: 400;\n  --display-tracking: 0.026em;\n\n  --step-n2: 0.536rem; /* 8.6px */\n  --step-n1: 0.744rem; /* 11.9px */\n  --step-0: 1.031rem; /* 16.5px */\n  --step-1: 1.43rem; /* 22.9px */\n  --step-2: 1.984rem; /* 31.7px */\n  --step-3: 2.752rem; /* 44px */\n  --step-4: 3.817rem; /* 61.1px */\n  --step-5: 5.294rem; /* 84.7px */\n  --step-6: 7.342rem; /* 117.5px */\n  --step-7: 10.184rem; /* 162.9px */\n  --leading: 1.52;\n\n  --space-1: 7px;\n  --space-2: 14px;\n  --space-3: 21px;\n  --space-4: 28px;\n  --space-5: 35px;\n  --space-6: 42px;\n  --space-7: 49px;\n  --space-8: 56px;\n  --section-gap: 110px;\n  --max-width: 1230px;\n  --columns: 10;\n  --gutter: 14px;\n\n  --radius: 0px;\n  --border: 1px dashed var(--rule);\n  --shadow: 6px 6px 0 var(--ink);\n\n  --motion-duration: 250ms;\n  --motion-easing: cubic-bezier(0.13, 1.2, 0.37, 1);\n}\n\nhtml { font-size: 103.1%; }\nbody { background: var(--paper); color: var(--ink); font-family: var(--font-body); line-height: var(--leading); }\n@media (prefers-reduced-motion: reduce) {\n  *, *::before, *::after { animation: none !important; transition: none !important; }\n}",
+      "trace": [
+        {
+          "dimension": "hue",
+          "bytes": [
+            0,
+            1
+          ],
+          "hex": "40 c6",
+          "rule": "0x40c6 = 16582; 16582/65536 × 360",
+          "result": "91.09°"
+        },
+        {
+          "dimension": "polarity · paper lightness",
+          "bytes": [
+            2
+          ],
+          "hex": "77",
+          "rule": "119 ≥ 77 → light; L = 0.90 + 42/178 × 0.085",
+          "result": "light, L 0.92"
+        },
+        {
+          "dimension": "paper chroma",
+          "bytes": [
+            3
+          ],
+          "hex": "6a",
+          "rule": "106/255 × 0.045",
+          "result": "0.019"
+        },
+        {
+          "dimension": "accent chroma",
+          "bytes": [
+            4
+          ],
+          "hex": "f6",
+          "rule": "0.07 + 246/255 × 0.16",
+          "result": "0.224"
+        },
+        {
+          "dimension": "accent2 hue offset",
+          "bytes": [
+            5
+          ],
+          "hex": "50",
+          "rule": "30 + 80/255 × 300",
+          "result": "+124.12°"
+        },
+        {
+          "dimension": "display face",
+          "bytes": [
+            6
+          ],
+          "hex": "2e",
+          "rule": "46 mod 98 = 46",
+          "result": "Libre Bodoni"
+        },
+        {
+          "dimension": "body face",
+          "bytes": [
+            7
+          ],
+          "hex": "67",
+          "rule": "103 mod 62 = 41",
+          "result": "Old Standard TT"
+        },
+        {
+          "dimension": "display case · weight",
+          "bytes": [
+            8
+          ],
+          "hex": "3a",
+          "rule": "58 mod 4 = 2; ⌊58/4⌋ mod 2",
+          "result": "lower, 400"
+        },
+        {
+          "dimension": "display tracking",
+          "bytes": [
+            9
+          ],
+          "hex": "46",
+          "rule": "−0.04 + 70/255 × 0.24",
+          "result": "0.026em"
+        },
+        {
+          "dimension": "type scale ratio",
+          "bytes": [
+            10
+          ],
+          "hex": "94",
+          "rule": "1.067 + 148/255 × 0.551",
+          "result": "1.387"
+        },
+        {
+          "dimension": "density",
+          "bytes": [
+            11
+          ],
+          "hex": "6c",
+          "rule": "t = 108/255",
+          "result": "t 0.424: base 16.5px, line-height 1.52, unit 7px"
+        },
+        {
+          "dimension": "grid columns · gutter",
+          "bytes": [
+            12
+          ],
+          "hex": "39",
+          "rule": "3 + 57 mod 10; unit × (1 + ⌊57/10⌋ mod 4)",
+          "result": "10 columns, 14px gutter"
+        },
+        {
+          "dimension": "text block span · start",
+          "bytes": [
+            13
+          ],
+          "hex": "32",
+          "rule": "span 2/15, start 3/15",
+          "result": "columns 2–5 of 10"
+        },
+        {
+          "dimension": "first-screen height",
+          "bytes": [
+            14
+          ],
+          "hex": "a1",
+          "rule": "45 + 161/255 × 55",
+          "result": "80%"
+        },
+        {
+          "dimension": "sections · separator",
+          "bytes": [
+            15
+          ],
+          "hex": "56",
+          "rule": "3 + 86 mod 6; ⌊86/6⌋ mod 5",
+          "result": "5 sections, boxes"
+        },
+        {
+          "dimension": "anchor subject · size",
+          "bytes": [
+            16
+          ],
+          "hex": "34",
+          "rule": "52 mod 8; 25 + ⌊52/8⌋/31 × 75",
+          "result": "grid-diagram, 40%"
+        },
+        {
+          "dimension": "anchor position · rotation",
+          "bytes": [
+            17
+          ],
+          "hex": "b9",
+          "rule": "x 9/15; ((11) − 7.5)/7.5 × 8",
+          "result": "x 0.6, 3.5°"
+        },
+        {
+          "dimension": "motif shape · size",
+          "bytes": [
+            18
+          ],
+          "hex": "03",
+          "rule": "3 mod 12; unit × (1 + ⌊3/12⌋ mod 8)",
+          "result": "stripes, 7px"
+        },
+        {
+          "dimension": "motif placement · angle",
+          "bytes": [
+            19
+          ],
+          "hex": "05",
+          "rule": "5 mod 4; ⌊5/4⌋ × 180/63",
+          "result": "dividers, 3°"
+        },
+        {
+          "dimension": "radius · border",
+          "bytes": [
+            20
+          ],
+          "hex": "cb",
+          "rule": "RADII[203 mod 8]; ⌊203/8⌋ mod 4; ⌊203/32⌋ mod 4",
+          "result": "0px radius, 1px dashed border"
+        },
+        {
+          "dimension": "shadow · texture",
+          "bytes": [
+            21
+          ],
+          "hex": "47",
+          "rule": "71 & 3; (71 >> 2) & 3; 3 + 4 × 0.6",
+          "result": "6px hard shadow, grain 5.4%"
+        },
+        {
+          "dimension": "motion property · duration",
+          "bytes": [
+            22
+          ],
+          "hex": "9a",
+          "rule": "⌊154/64⌋; (154 mod 64)/63 × 600",
+          "result": "clip-path, 250ms"
+        },
+        {
+          "dimension": "easing",
+          "bytes": [
+            23
+          ],
+          "hex": "c5",
+          "rule": "197 ≥ 32 → cubic-bezier from bits",
+          "result": "cubic-bezier(0.13, 1.2, 0.37, 1)"
+        },
+        {
+          "dimension": "voice person · headline form",
+          "bytes": [
+            24
+          ],
+          "hex": "f8",
+          "rule": "248 mod 4; ⌊248/4⌋ mod 6",
+          "result": "i, label"
+        },
+        {
+          "dimension": "sentence length · register",
+          "bytes": [
+            25
+          ],
+          "hex": "f7",
+          "rule": "3 + (247 & 15); (247 >> 4)/15",
+          "result": "10 words, register 1"
+        },
+        {
+          "dimension": "twist target",
+          "bytes": [
+            26
+          ],
+          "hex": "b8",
+          "rule": "184 mod 9",
+          "result": "section-heads"
+        },
+        {
+          "dimension": "twist operation · amount",
+          "bytes": [
+            27
+          ],
+          "hex": "29",
+          "rule": "41 mod 10; ⌊41/10⌋",
+          "result": "vertical, 4"
+        },
+        {
+          "dimension": "CJK display face",
+          "bytes": [
+            29
+          ],
+          "hex": "57",
+          "rule": "87 mod 14",
+          "result": "Liu Jian Mao Cao",
+          "note": "used on Chinese pages"
+        },
+        {
+          "dimension": "mono face",
+          "bytes": [
+            30
+          ],
+          "hex": "22",
+          "rule": "34 mod 8",
+          "result": "Courier Prime"
+        }
+      ]
+    },
+    {
+      "number": 2,
+      "slug": "02-ff97f5eb",
+      "ref": "ff97f5eb7af797dedf971e60545913ce41ba9815941b805785faec5e78028650",
+      "hash": "ff97f5eb7af797dedf971e60545913ce41ba9815941b805785faec5e78028650",
+      "short": "ff97f5eb",
+      "algorithm": "hash-design/v2",
+      "library": "bd20321c36ab",
+      "constraints": {
+        "lightOnly": false,
+        "darkOnly": false,
+        "reducedMotion": false,
+        "brandColors": []
+      },
+      "content": {
+        "subject": "二号桥单车铺",
+        "facts": [
+          "店名：二号桥单车铺（Bridge No.2 Cycle Works）",
+          "地址：河西路二号桥桥洞下东侧，蓝色卷帘门，门口立着一个旧车轮",
+          "营业：周三至周日 10:00–20:00；周一、周二休息",
+          "补胎 ¥15；换内胎 ¥35（含内胎）",
+          "全车保养 ¥180：清洗传动、调变速和刹车、紧固全车螺丝，约 2 小时",
+          "手工编轮组 ¥260 起，工期 5 天",
+          "二手车：每辆都换过链条和刹车皮，保修 90 天",
+          "公路车 Fitting ¥480，约 90 分钟，需预约",
+          "店主：陈立平，大家叫他老陈，修车 27 年，以前在自行车厂做装配",
+          "周四夜骑：每周四 19:30 店门口出发，沿江一圈 24 公里，免费，自带车灯",
+          "门口气泵免费，24 小时可用",
+          "预约：电话 0571-5555-0222，或到店登记",
+          "不卖新车，只修车、卖二手车和零件"
+        ],
+        "language": "zh"
+      },
+      "label": "light · 359° · Michroma / Libre Franklin · 7 col",
+      "palette": {
+        "polarity": "light",
+        "hue": 359.42,
+        "paperL": 0.98,
+        "paperC": 0.041,
+        "accentC": 0.147,
+        "accent2Offset": 320.59,
+        "colors": {
+          "paper": "#fff6f8",
+          "ink": "#473037",
+          "muted": "#7c6d71",
+          "accent": "#d6668e",
+          "accent2": "#b777c6",
+          "rule": "#deb4c0",
+          "panel": "#ffe0e9"
+        }
+      },
+      "contrast": {
+        "lines": [
+          {
+            "pair": "ink on paper",
+            "ratio": 11.34,
+            "verdict": "AAA — any text"
+          },
+          {
+            "pair": "muted on paper",
+            "ratio": 4.62,
+            "verdict": "AA — body text OK"
+          },
+          {
+            "pair": "ink on panel",
+            "ratio": 9.79,
+            "verdict": "AAA — any text"
+          },
+          {
+            "pair": "accent on paper",
+            "ratio": 3.22,
+            "verdict": "large text / UI marks only (≥24px or bold ≥19px)"
+          },
+          {
+            "pair": "accent2 on paper",
+            "ratio": 3.06,
+            "verdict": "large text / UI marks only (≥24px or bold ≥19px)"
+          },
+          {
+            "pair": "#000000 on accent",
+            "ratio": 6.15,
+            "verdict": "AA — body text OK"
+          },
+          {
+            "pair": "#000000 on accent2",
+            "ratio": 6.47,
+            "verdict": "AA — body text OK"
+          }
+        ],
+        "onAccent": "#000000",
+        "onAccent2": "#000000"
+      },
+      "type": {
+        "display": {
+          "family": "Michroma",
+          "weights": [
+            400
+          ],
+          "fallback": "\"Arial Black\", sans-serif",
+          "source": "google"
+        },
+        "body": {
+          "family": "Libre Franklin",
+          "weights": [
+            400,
+            500,
+            600,
+            700,
+            800,
+            900
+          ],
+          "italic": true,
+          "fallback": "\"Franklin Gothic Book\", Arial, sans-serif",
+          "source": "google"
+        },
+        "mono": {
+          "family": "Red Hat Mono",
+          "weights": [
+            400,
+            500
+          ],
+          "fallback": "\"Courier New\", monospace",
+          "source": "google"
+        },
+        "cjk": {
+          "display": "LXGW WenKai TC",
+          "body": "Noto Sans SC"
+        },
+        "case": {
+          "id": "small-caps",
+          "text": "small caps (font-variant-caps: all-small-caps)"
+        },
+        "weight": 400,
+        "tracking": 0.102
+      },
+      "fonts": {
+        "stacks": {
+          "display": "Michroma, \"LXGW WenKai TC\", \"Arial Black\", sans-serif",
+          "body": "\"Libre Franklin\", \"Noto Sans SC\", \"Franklin Gothic Book\", Arial, sans-serif",
+          "mono": "\"Red Hat Mono\", \"Courier New\", monospace"
+        },
+        "googleFontsUrl": "https://fonts.googleapis.com/css2?family=Michroma&family=Libre+Franklin:ital,wght@0,400;0,500;0,600;0,700;0,800;0,900;1,400;1,500;1,600;1,700;1,800;1,900&family=Red+Hat+Mono:wght@400;500&family=LXGW+WenKai+TC&family=Noto+Sans+SC:wght@400;700&display=swap"
+      },
+      "scale": {
+        "ratio": 1.132,
+        "steps": [
+          {
+            "step": -2,
+            "px": 12.9,
+            "rem": 0.805
+          },
+          {
+            "step": -1,
+            "px": 14.6,
+            "rem": 0.911
+          },
+          {
+            "step": 0,
+            "px": 16.5,
+            "rem": 1.031
+          },
+          {
+            "step": 1,
+            "px": 18.7,
+            "rem": 1.167
+          },
+          {
+            "step": 2,
+            "px": 21.1,
+            "rem": 1.321
+          },
+          {
+            "step": 3,
+            "px": 23.9,
+            "rem": 1.496
+          },
+          {
+            "step": 4,
+            "px": 27.1,
+            "rem": 1.693
+          },
+          {
+            "step": 5,
+            "px": 30.7,
+            "rem": 1.917
+          },
+          {
+            "step": 6,
+            "px": 34.7,
+            "rem": 2.17
+          },
+          {
+            "step": 7,
+            "px": 39.3,
+            "rem": 2.456
+          }
+        ]
+      },
+      "density": {
+        "t": 0.376,
+        "baseSize": 16.5,
+        "lineHeight": 1.54,
+        "unit": 8,
+        "sectionGap": 117,
+        "maxWidth": 1220
+      },
+      "layout": {
+        "columns": 7,
+        "gutter": 8,
+        "span": 5,
+        "start": 2,
+        "firstScreen": 49,
+        "sections": 5,
+        "separator": {
+          "id": "boxes",
+          "text": "each section in a bordered box on the grid"
+        }
+      },
+      "anchor": {
+        "subject": {
+          "id": "number",
+          "text": "one number taken from the facts"
+        },
+        "size": 44,
+        "x": 0.67,
+        "rotation": 3.5
+      },
+      "motif": {
+        "shape": {
+          "id": "squares",
+          "text": "squares"
+        },
+        "size": 40,
+        "placement": {
+          "id": "dividers",
+          "text": "between sections"
+        },
+        "angle": 14
+      },
+      "surface": {
+        "radius": 2,
+        "border": 2,
+        "borderStyle": "solid",
+        "shadow": 6,
+        "texture": {
+          "id": "line-screen",
+          "text": "a fine line screen (repeating-linear-gradient)"
+        },
+        "textureOpacity": 3.6
+      },
+      "motion": {
+        "still": false,
+        "property": {
+          "id": "clip-path",
+          "text": "a wipe (clip-path)"
+        },
+        "duration": 0,
+        "easing": "cubic-bezier(0.64, 0.4, 0.9, 1)"
+      },
+      "voice": {
+        "person": {
+          "id": "we",
+          "text": "first person plural (\"we\")"
+        },
+        "headline": {
+          "id": "imperative",
+          "text": "an instruction to the reader"
+        },
+        "sentenceWords": 13,
+        "register": 1
+      },
+      "twist": {
+        "target": {
+          "id": "numbers",
+          "text": "every number on the page"
+        },
+        "operation": {
+          "id": "invert",
+          "text": "inverted: paper-coloured on ink"
+        },
+        "amount": 9,
+        "text": "Every number on the page: inverted: paper-coloured on ink."
+      },
+      "bans": [
+        "generic-sans",
+        "purple-blue-gradient",
+        "centered-hero-two-buttons",
+        "identical-cards",
+        "glassmorphism",
+        "emoji-icons",
+        "buzzword-copy",
+        "soft-shadow-rounded",
+        "invented-facts",
+        "tailwind-default-palette",
+        "scroll-fade-everything",
+        "pill-badge-sparkle",
+        "placeholder-content",
+        "template-sections"
+      ],
+      "tokensCss": "/* hash-design hash-design/v2 · ff97f5eb */\n:root {\n  --paper: #fff6f8;\n  --ink: #473037;\n  --muted: #7c6d71;\n  --accent: #d6668e;\n  --on-accent: #000000;\n  --accent2: #b777c6;\n  --on-accent2: #000000;\n  --rule: #deb4c0;\n  --panel: #ffe0e9;\n\n  --font-display: Michroma, \"LXGW WenKai TC\", \"Arial Black\", sans-serif;\n  --font-body: \"Libre Franklin\", \"Noto Sans SC\", \"Franklin Gothic Book\", Arial, sans-serif;\n  --font-mono: \"Red Hat Mono\", \"Courier New\", monospace;\n  --display-weight: 400;\n  --display-tracking: 0.102em;\n\n  --step-n2: 0.805rem; /* 12.9px */\n  --step-n1: 0.911rem; /* 14.6px */\n  --step-0: 1.031rem; /* 16.5px */\n  --step-1: 1.167rem; /* 18.7px */\n  --step-2: 1.321rem; /* 21.1px */\n  --step-3: 1.496rem; /* 23.9px */\n  --step-4: 1.693rem; /* 27.1px */\n  --step-5: 1.917rem; /* 30.7px */\n  --step-6: 2.17rem; /* 34.7px */\n  --step-7: 2.456rem; /* 39.3px */\n  --leading: 1.54;\n\n  --space-1: 8px;\n  --space-2: 16px;\n  --space-3: 24px;\n  --space-4: 32px;\n  --space-5: 40px;\n  --space-6: 48px;\n  --space-7: 56px;\n  --space-8: 64px;\n  --section-gap: 117px;\n  --max-width: 1220px;\n  --columns: 7;\n  --gutter: 8px;\n\n  --radius: 2px;\n  --border: 2px solid var(--rule);\n  --shadow: 6px 6px 0 var(--ink);\n\n  --motion-duration: 0ms;\n  --motion-easing: cubic-bezier(0.64, 0.4, 0.9, 1);\n}\n\nhtml { font-size: 103.1%; }\nbody { background: var(--paper); color: var(--ink); font-family: var(--font-body); line-height: var(--leading); }\n@media (prefers-reduced-motion: reduce) {\n  *, *::before, *::after { animation: none !important; transition: none !important; }\n}",
+      "trace": [
+        {
+          "dimension": "hue",
+          "bytes": [
+            0,
+            1
+          ],
+          "hex": "ff 97",
+          "rule": "0xff97 = 65431; 65431/65536 × 360",
+          "result": "359.42°"
+        },
+        {
+          "dimension": "polarity · paper lightness",
+          "bytes": [
+            2
+          ],
+          "hex": "f5",
+          "rule": "245 ≥ 77 → light; L = 0.90 + 168/178 × 0.085",
+          "result": "light, L 0.98"
+        },
+        {
+          "dimension": "paper chroma",
+          "bytes": [
+            3
+          ],
+          "hex": "eb",
+          "rule": "235/255 × 0.045",
+          "result": "0.041"
+        },
+        {
+          "dimension": "accent chroma",
+          "bytes": [
+            4
+          ],
+          "hex": "7a",
+          "rule": "0.07 + 122/255 × 0.16",
+          "result": "0.147"
+        },
+        {
+          "dimension": "accent2 hue offset",
+          "bytes": [
+            5
+          ],
+          "hex": "f7",
+          "rule": "30 + 247/255 × 300",
+          "result": "+320.59°"
+        },
+        {
+          "dimension": "display face",
+          "bytes": [
+            6
+          ],
+          "hex": "97",
+          "rule": "151 mod 98 = 53",
+          "result": "Michroma"
+        },
+        {
+          "dimension": "body face",
+          "bytes": [
+            7
+          ],
+          "hex": "de",
+          "rule": "222 mod 62 = 36",
+          "result": "Libre Franklin"
+        },
+        {
+          "dimension": "display case · weight",
+          "bytes": [
+            8
+          ],
+          "hex": "df",
+          "rule": "223 mod 4 = 3; ⌊223/4⌋ mod 1",
+          "result": "small-caps, 400"
+        },
+        {
+          "dimension": "display tracking",
+          "bytes": [
+            9
+          ],
+          "hex": "97",
+          "rule": "−0.04 + 151/255 × 0.24",
+          "result": "0.102em"
+        },
+        {
+          "dimension": "type scale ratio",
+          "bytes": [
+            10
+          ],
+          "hex": "1e",
+          "rule": "1.067 + 30/255 × 0.551",
+          "result": "1.132"
+        },
+        {
+          "dimension": "density",
+          "bytes": [
+            11
+          ],
+          "hex": "60",
+          "rule": "t = 96/255",
+          "result": "t 0.376: base 16.5px, line-height 1.54, unit 8px"
+        },
+        {
+          "dimension": "grid columns · gutter",
+          "bytes": [
+            12
+          ],
+          "hex": "54",
+          "rule": "3 + 84 mod 10; unit × (1 + ⌊84/10⌋ mod 4)",
+          "result": "7 columns, 8px gutter"
+        },
+        {
+          "dimension": "text block span · start",
+          "bytes": [
+            13
+          ],
+          "hex": "59",
+          "rule": "span 9/15, start 5/15",
+          "result": "columns 2–6 of 7"
+        },
+        {
+          "dimension": "first-screen height",
+          "bytes": [
+            14
+          ],
+          "hex": "13",
+          "rule": "45 + 19/255 × 55",
+          "result": "49%"
+        },
+        {
+          "dimension": "sections · separator",
+          "bytes": [
+            15
+          ],
+          "hex": "ce",
+          "rule": "3 + 206 mod 6; ⌊206/6⌋ mod 5",
+          "result": "5 sections, boxes"
+        },
+        {
+          "dimension": "anchor subject · size",
+          "bytes": [
+            16
+          ],
+          "hex": "41",
+          "rule": "65 mod 8; 25 + ⌊65/8⌋/31 × 75",
+          "result": "number, 44%"
+        },
+        {
+          "dimension": "anchor position · rotation",
+          "bytes": [
+            17
+          ],
+          "hex": "ba",
+          "rule": "x 10/15; ((11) − 7.5)/7.5 × 8",
+          "result": "x 0.67, 3.5°"
+        },
+        {
+          "dimension": "motif shape · size",
+          "bytes": [
+            18
+          ],
+          "hex": "98",
+          "rule": "152 mod 12; unit × (1 + ⌊152/12⌋ mod 8)",
+          "result": "squares, 40px"
+        },
+        {
+          "dimension": "motif placement · angle",
+          "bytes": [
+            19
+          ],
+          "hex": "15",
+          "rule": "21 mod 4; ⌊21/4⌋ × 180/63",
+          "result": "dividers, 14°"
+        },
+        {
+          "dimension": "radius · border",
+          "bytes": [
+            20
+          ],
+          "hex": "94",
+          "rule": "RADII[148 mod 8]; ⌊148/8⌋ mod 4; ⌊148/32⌋ mod 4",
+          "result": "2px radius, 2px solid border"
+        },
+        {
+          "dimension": "shadow · texture",
+          "bytes": [
+            21
+          ],
+          "hex": "1b",
+          "rule": "27 & 3; (27 >> 2) & 3; 3 + 1 × 0.6",
+          "result": "6px hard shadow, line-screen 3.6%"
+        },
+        {
+          "dimension": "motion property · duration",
+          "bytes": [
+            22
+          ],
+          "hex": "80",
+          "rule": "⌊128/64⌋; (128 mod 64)/63 × 600",
+          "result": "clip-path, 0ms"
+        },
+        {
+          "dimension": "easing",
+          "bytes": [
+            23
+          ],
+          "hex": "57",
+          "rule": "87 ≥ 32 → cubic-bezier from bits",
+          "result": "cubic-bezier(0.64, 0.4, 0.9, 1)"
+        },
+        {
+          "dimension": "voice person · headline form",
+          "bytes": [
+            24
+          ],
+          "hex": "85",
+          "rule": "133 mod 4; ⌊133/4⌋ mod 6",
+          "result": "we, imperative"
+        },
+        {
+          "dimension": "sentence length · register",
+          "bytes": [
+            25
+          ],
+          "hex": "fa",
+          "rule": "3 + (250 & 15); (250 >> 4)/15",
+          "result": "13 words, register 1"
+        },
+        {
+          "dimension": "twist target",
+          "bytes": [
+            26
+          ],
+          "hex": "ec",
+          "rule": "236 mod 9",
+          "result": "numbers"
+        },
+        {
+          "dimension": "twist operation · amount",
+          "bytes": [
+            27
+          ],
+          "hex": "5e",
+          "rule": "94 mod 10; ⌊94/10⌋",
+          "result": "invert, 9"
+        },
+        {
+          "dimension": "CJK display face",
+          "bytes": [
+            29
+          ],
+          "hex": "02",
+          "rule": "2 mod 14",
+          "result": "LXGW WenKai TC",
+          "note": "used on Chinese pages"
+        },
+        {
+          "dimension": "mono face",
+          "bytes": [
+            30
+          ],
+          "hex": "86",
+          "rule": "134 mod 8",
+          "result": "Red Hat Mono"
+        }
+      ]
+    },
+    {
+      "number": 3,
+      "slug": "03-b924a406",
+      "ref": "b924a406afcf83926ccff8ce5da78e3572110c1bdf752a9b17b3caeb8ef64f26",
+      "hash": "b924a406afcf83926ccff8ce5da78e3572110c1bdf752a9b17b3caeb8ef64f26",
+      "short": "b924a406",
+      "algorithm": "hash-design/v2",
+      "library": "bd20321c36ab",
+      "constraints": {
+        "lightOnly": false,
+        "darkOnly": false,
+        "reducedMotion": false,
+        "brandColors": []
+      },
+      "content": {
+        "subject": "二号桥单车铺",
+        "facts": [
+          "店名：二号桥单车铺（Bridge No.2 Cycle Works）",
+          "地址：河西路二号桥桥洞下东侧，蓝色卷帘门，门口立着一个旧车轮",
+          "营业：周三至周日 10:00–20:00；周一、周二休息",
+          "补胎 ¥15；换内胎 ¥35（含内胎）",
+          "全车保养 ¥180：清洗传动、调变速和刹车、紧固全车螺丝，约 2 小时",
+          "手工编轮组 ¥260 起，工期 5 天",
+          "二手车：每辆都换过链条和刹车皮，保修 90 天",
+          "公路车 Fitting ¥480，约 90 分钟，需预约",
+          "店主：陈立平，大家叫他老陈，修车 27 年，以前在自行车厂做装配",
+          "周四夜骑：每周四 19:30 店门口出发，沿江一圈 24 公里，免费，自带车灯",
+          "门口气泵免费，24 小时可用",
+          "预约：电话 0571-5555-0222，或到店登记",
+          "不卖新车，只修车、卖二手车和零件"
+        ],
+        "language": "zh"
+      },
+      "label": "light · 260° · Homemade Apple / Hanken Grotesk · 6 col",
+      "palette": {
+        "polarity": "light",
+        "hue": 260.35,
+        "paperL": 0.942,
+        "paperC": 0.001,
+        "accentC": 0.18,
+        "accent2Offset": 273.53,
+        "colors": {
+          "paper": "#ebecec",
+          "ink": "#34383f",
+          "muted": "#626975",
+          "accent": "#3d7eed",
+          "accent2": "#00997e",
+          "rule": "#b1b5bc",
+          "panel": "#dadde3"
+        }
+      },
+      "contrast": {
+        "lines": [
+          {
+            "pair": "ink on paper",
+            "ratio": 9.95,
+            "verdict": "AAA — any text"
+          },
+          {
+            "pair": "muted on paper",
+            "ratio": 4.67,
+            "verdict": "AA — body text OK"
+          },
+          {
+            "pair": "ink on panel",
+            "ratio": 8.65,
+            "verdict": "AAA — any text"
+          },
+          {
+            "pair": "accent on paper",
+            "ratio": 3.28,
+            "verdict": "large text / UI marks only (≥24px or bold ≥19px)"
+          },
+          {
+            "pair": "accent2 on paper",
+            "ratio": 3.03,
+            "verdict": "large text / UI marks only (≥24px or bold ≥19px)"
+          },
+          {
+            "pair": "#000000 on accent",
+            "ratio": 5.41,
+            "verdict": "AA — body text OK"
+          },
+          {
+            "pair": "#000000 on accent2",
+            "ratio": 5.86,
+            "verdict": "AA — body text OK"
+          }
+        ],
+        "onAccent": "#000000",
+        "onAccent2": "#000000"
+      },
+      "type": {
+        "display": {
+          "family": "Homemade Apple",
+          "weights": [
+            400
+          ],
+          "fallback": "\"Segoe Script\", \"Brush Script MT\", cursive",
+          "source": "google"
+        },
+        "body": {
+          "family": "Hanken Grotesk",
+          "weights": [
+            400,
+            500,
+            600
+          ],
+          "italic": true,
+          "fallback": "Helvetica, Arial, sans-serif",
+          "source": "google"
+        },
+        "mono": {
+          "family": "Share Tech Mono",
+          "weights": [
+            400
+          ],
+          "fallback": "\"Courier New\", monospace",
+          "source": "google"
+        },
+        "cjk": {
+          "display": "Noto Serif SC",
+          "body": "Noto Sans SC"
+        },
+        "case": {
+          "id": "as-written",
+          "text": "as written (sentence case)"
+        },
+        "weight": 400,
+        "tracking": 0.155
+      },
+      "fonts": {
+        "stacks": {
+          "display": "\"Homemade Apple\", \"Noto Serif SC\", \"Segoe Script\", \"Brush Script MT\", cursive",
+          "body": "\"Hanken Grotesk\", \"Noto Sans SC\", Helvetica, Arial, sans-serif",
+          "mono": "\"Share Tech Mono\", \"Courier New\", monospace"
+        },
+        "googleFontsUrl": "https://fonts.googleapis.com/css2?family=Homemade+Apple&family=Hanken+Grotesk:ital,wght@0,400;0,500;0,600;1,400;1,500;1,600&family=Share+Tech+Mono&family=Noto+Serif+SC:wght@400;700&family=Noto+Sans+SC:wght@400;700&display=swap"
+      },
+      "scale": {
+        "ratio": 1.603,
+        "steps": [
+          {
+            "step": -2,
+            "px": 5.8,
+            "rem": 0.365
+          },
+          {
+            "step": -1,
+            "px": 9.4,
+            "rem": 0.585
+          },
+          {
+            "step": 0,
+            "px": 15,
+            "rem": 0.938
+          },
+          {
+            "step": 1,
+            "px": 24,
+            "rem": 1.503
+          },
+          {
+            "step": 2,
+            "px": 38.5,
+            "rem": 2.409
+          },
+          {
+            "step": 3,
+            "px": 61.8,
+            "rem": 3.862
+          },
+          {
+            "step": 4,
+            "px": 99,
+            "rem": 6.19
+          },
+          {
+            "step": 5,
+            "px": 158.8,
+            "rem": 9.923
+          },
+          {
+            "step": 6,
+            "px": 254.5,
+            "rem": 15.906
+          },
+          {
+            "step": 7,
+            "px": 408,
+            "rem": 25.498
+          }
+        ]
+      },
+      "density": {
+        "t": 0.808,
+        "baseSize": 15,
+        "lineHeight": 1.41,
+        "unit": 5,
+        "sectionGap": 58,
+        "maxWidth": 1370
+      },
+      "layout": {
+        "columns": 6,
+        "gutter": 10,
+        "span": 4,
+        "start": 2,
+        "firstScreen": 76,
+        "sections": 8,
+        "separator": {
+          "id": "space",
+          "text": "space only: the section gap, no lines or fills"
+        }
+      },
+      "anchor": {
+        "subject": {
+          "id": "initial",
+          "text": "the initial letter (or first character) of the subject"
+        },
+        "size": 59,
+        "x": 0.07,
+        "rotation": -7
+      },
+      "motif": {
+        "shape": {
+          "id": "rules",
+          "text": "hairline rules"
+        },
+        "size": 10,
+        "placement": {
+          "id": "markers",
+          "text": "as list and heading markers"
+        },
+        "angle": 17
+      },
+      "surface": {
+        "radius": 16,
+        "border": 3,
+        "borderStyle": "dashed",
+        "shadow": 0,
+        "texture": {
+          "id": "grain",
+          "text": "fine noise grain over the paper"
+        },
+        "textureOpacity": 7.2
+      },
+      "motion": {
+        "still": false,
+        "property": {
+          "id": "opacity",
+          "text": "opacity"
+        },
+        "duration": 400,
+        "easing": "cubic-bezier(0.77, 0.8, 0.9, 1)"
+      },
+      "voice": {
+        "person": {
+          "id": "none",
+          "text": "impersonal: no pronouns, facts stated plainly"
+        },
+        "headline": {
+          "id": "two-words",
+          "text": "two words at most"
+        },
+        "sentenceWords": 6,
+        "register": 0.73
+      },
+      "twist": {
+        "target": {
+          "id": "section-heads",
+          "text": "the section headings"
+        },
+        "operation": {
+          "id": "repeat",
+          "text": "repeated"
+        },
+        "amount": 23,
+        "text": "Repeat the section headings 5 times in a row."
+      },
+      "bans": [
+        "generic-sans",
+        "purple-blue-gradient",
+        "centered-hero-two-buttons",
+        "identical-cards",
+        "glassmorphism",
+        "emoji-icons",
+        "buzzword-copy",
+        "soft-shadow-rounded",
+        "invented-facts",
+        "tailwind-default-palette",
+        "scroll-fade-everything",
+        "pill-badge-sparkle",
+        "placeholder-content",
+        "template-sections"
+      ],
+      "tokensCss": "/* hash-design hash-design/v2 · b924a406 */\n:root {\n  --paper: #ebecec;\n  --ink: #34383f;\n  --muted: #626975;\n  --accent: #3d7eed;\n  --on-accent: #000000;\n  --accent2: #00997e;\n  --on-accent2: #000000;\n  --rule: #b1b5bc;\n  --panel: #dadde3;\n\n  --font-display: \"Homemade Apple\", \"Noto Serif SC\", \"Segoe Script\", \"Brush Script MT\", cursive;\n  --font-body: \"Hanken Grotesk\", \"Noto Sans SC\", Helvetica, Arial, sans-serif;\n  --font-mono: \"Share Tech Mono\", \"Courier New\", monospace;\n  --display-weight: 400;\n  --display-tracking: 0.155em;\n\n  --step-n2: 0.365rem; /* 5.8px */\n  --step-n1: 0.585rem; /* 9.4px */\n  --step-0: 0.938rem; /* 15px */\n  --step-1: 1.503rem; /* 24px */\n  --step-2: 2.409rem; /* 38.5px */\n  --step-3: 3.862rem; /* 61.8px */\n  --step-4: 6.19rem; /* 99px */\n  --step-5: 9.923rem; /* 158.8px */\n  --step-6: 15.906rem; /* 254.5px */\n  --step-7: 25.498rem; /* 408px */\n  --leading: 1.41;\n\n  --space-1: 5px;\n  --space-2: 10px;\n  --space-3: 15px;\n  --space-4: 20px;\n  --space-5: 25px;\n  --space-6: 30px;\n  --space-7: 35px;\n  --space-8: 40px;\n  --section-gap: 58px;\n  --max-width: 1370px;\n  --columns: 6;\n  --gutter: 10px;\n\n  --radius: 16px;\n  --border: 3px dashed var(--rule);\n  --shadow: none;\n\n  --motion-duration: 400ms;\n  --motion-easing: cubic-bezier(0.77, 0.8, 0.9, 1);\n}\n\nhtml { font-size: 93.8%; }\nbody { background: var(--paper); color: var(--ink); font-family: var(--font-body); line-height: var(--leading); }\n@media (prefers-reduced-motion: reduce) {\n  *, *::before, *::after { animation: none !important; transition: none !important; }\n}",
+      "trace": [
+        {
+          "dimension": "hue",
+          "bytes": [
+            0,
+            1
+          ],
+          "hex": "b9 24",
+          "rule": "0xb924 = 47396; 47396/65536 × 360",
+          "result": "260.35°"
+        },
+        {
+          "dimension": "polarity · paper lightness",
+          "bytes": [
+            2
+          ],
+          "hex": "a4",
+          "rule": "164 ≥ 77 → light; L = 0.90 + 87/178 × 0.085",
+          "result": "light, L 0.942"
+        },
+        {
+          "dimension": "paper chroma",
+          "bytes": [
+            3
+          ],
+          "hex": "06",
+          "rule": "6/255 × 0.045",
+          "result": "0.001"
+        },
+        {
+          "dimension": "accent chroma",
+          "bytes": [
+            4
+          ],
+          "hex": "af",
+          "rule": "0.07 + 175/255 × 0.16",
+          "result": "0.18"
+        },
+        {
+          "dimension": "accent2 hue offset",
+          "bytes": [
+            5
+          ],
+          "hex": "cf",
+          "rule": "30 + 207/255 × 300",
+          "result": "+273.53°"
+        },
+        {
+          "dimension": "display face",
+          "bytes": [
+            6
+          ],
+          "hex": "83",
+          "rule": "131 mod 98 = 33",
+          "result": "Homemade Apple"
+        },
+        {
+          "dimension": "body face",
+          "bytes": [
+            7
+          ],
+          "hex": "92",
+          "rule": "146 mod 62 = 22",
+          "result": "Hanken Grotesk"
+        },
+        {
+          "dimension": "display case · weight",
+          "bytes": [
+            8
+          ],
+          "hex": "6c",
+          "rule": "108 mod 4 = 0; ⌊108/4⌋ mod 1",
+          "result": "as-written, 400"
+        },
+        {
+          "dimension": "display tracking",
+          "bytes": [
+            9
+          ],
+          "hex": "cf",
+          "rule": "−0.04 + 207/255 × 0.24",
+          "result": "0.155em"
+        },
+        {
+          "dimension": "type scale ratio",
+          "bytes": [
+            10
+          ],
+          "hex": "f8",
+          "rule": "1.067 + 248/255 × 0.551",
+          "result": "1.603"
+        },
+        {
+          "dimension": "density",
+          "bytes": [
+            11
+          ],
+          "hex": "ce",
+          "rule": "t = 206/255",
+          "result": "t 0.808: base 15px, line-height 1.41, unit 5px"
+        },
+        {
+          "dimension": "grid columns · gutter",
+          "bytes": [
+            12
+          ],
+          "hex": "5d",
+          "rule": "3 + 93 mod 10; unit × (1 + ⌊93/10⌋ mod 4)",
+          "result": "6 columns, 10px gutter"
+        },
+        {
+          "dimension": "text block span · start",
+          "bytes": [
+            13
+          ],
+          "hex": "a7",
+          "rule": "span 7/15, start 10/15",
+          "result": "columns 2–5 of 6"
+        },
+        {
+          "dimension": "first-screen height",
+          "bytes": [
+            14
+          ],
+          "hex": "8e",
+          "rule": "45 + 142/255 × 55",
+          "result": "76%"
+        },
+        {
+          "dimension": "sections · separator",
+          "bytes": [
+            15
+          ],
+          "hex": "35",
+          "rule": "3 + 53 mod 6; ⌊53/6⌋ mod 5",
+          "result": "8 sections, space"
+        },
+        {
+          "dimension": "anchor subject · size",
+          "bytes": [
+            16
+          ],
+          "hex": "72",
+          "rule": "114 mod 8; 25 + ⌊114/8⌋/31 × 75",
+          "result": "initial, 59%"
+        },
+        {
+          "dimension": "anchor position · rotation",
+          "bytes": [
+            17
+          ],
+          "hex": "11",
+          "rule": "x 1/15; ((1) − 7.5)/7.5 × 8",
+          "result": "x 0.07, -7°"
+        },
+        {
+          "dimension": "motif shape · size",
+          "bytes": [
+            18
+          ],
+          "hex": "0c",
+          "rule": "12 mod 12; unit × (1 + ⌊12/12⌋ mod 8)",
+          "result": "rules, 10px"
+        },
+        {
+          "dimension": "motif placement · angle",
+          "bytes": [
+            19
+          ],
+          "hex": "1b",
+          "rule": "27 mod 4; ⌊27/4⌋ × 180/63",
+          "result": "markers, 17°"
+        },
+        {
+          "dimension": "radius · border",
+          "bytes": [
+            20
+          ],
+          "hex": "df",
+          "rule": "RADII[223 mod 8]; ⌊223/8⌋ mod 4; ⌊223/32⌋ mod 4",
+          "result": "16px radius, 3px dashed border"
+        },
+        {
+          "dimension": "shadow · texture",
+          "bytes": [
+            21
+          ],
+          "hex": "75",
+          "rule": "117 & 3; (117 >> 2) & 3; 3 + 7 × 0.6",
+          "result": "no shadow, grain 7.2%"
+        },
+        {
+          "dimension": "motion property · duration",
+          "bytes": [
+            22
+          ],
+          "hex": "2a",
+          "rule": "⌊42/64⌋; (42 mod 64)/63 × 600",
+          "result": "opacity, 400ms"
+        },
+        {
+          "dimension": "easing",
+          "bytes": [
+            23
+          ],
+          "hex": "9b",
+          "rule": "155 ≥ 32 → cubic-bezier from bits",
+          "result": "cubic-bezier(0.77, 0.8, 0.9, 1)"
+        },
+        {
+          "dimension": "voice person · headline form",
+          "bytes": [
+            24
+          ],
+          "hex": "17",
+          "rule": "23 mod 4; ⌊23/4⌋ mod 6",
+          "result": "none, two-words"
+        },
+        {
+          "dimension": "sentence length · register",
+          "bytes": [
+            25
+          ],
+          "hex": "b3",
+          "rule": "3 + (179 & 15); (179 >> 4)/15",
+          "result": "6 words, register 0.73"
+        },
+        {
+          "dimension": "twist target",
+          "bytes": [
+            26
+          ],
+          "hex": "ca",
+          "rule": "202 mod 9",
+          "result": "section-heads"
+        },
+        {
+          "dimension": "twist operation · amount",
+          "bytes": [
+            27
+          ],
+          "hex": "eb",
+          "rule": "235 mod 10; ⌊235/10⌋",
+          "result": "repeat, 23"
+        },
+        {
+          "dimension": "CJK display face",
+          "bytes": [
+            29
+          ],
+          "hex": "f6",
+          "rule": "246 mod 14",
+          "result": "Noto Serif SC",
+          "note": "used on Chinese pages"
+        },
+        {
+          "dimension": "mono face",
+          "bytes": [
+            30
+          ],
+          "hex": "4f",
+          "rule": "79 mod 8",
+          "result": "Share Tech Mono"
+        }
+      ]
+    },
+    {
+      "number": 4,
+      "slug": "04-f3b1e77a",
+      "ref": "f3b1e77a9af302d06082ad6e19cffb7ede96eefb3dcca2619177519ad6f0bd99",
+      "hash": "f3b1e77a9af302d06082ad6e19cffb7ede96eefb3dcca2619177519ad6f0bd99",
+      "short": "f3b1e77a",
+      "algorithm": "hash-design/v2",
+      "library": "bd20321c36ab",
+      "constraints": {
+        "lightOnly": false,
+        "darkOnly": false,
+        "reducedMotion": false,
+        "brandColors": []
+      },
+      "content": {
+        "subject": "二号桥单车铺",
+        "facts": [
+          "店名：二号桥单车铺（Bridge No.2 Cycle Works）",
+          "地址：河西路二号桥桥洞下东侧，蓝色卷帘门，门口立着一个旧车轮",
+          "营业：周三至周日 10:00–20:00；周一、周二休息",
+          "补胎 ¥15；换内胎 ¥35（含内胎）",
+          "全车保养 ¥180：清洗传动、调变速和刹车、紧固全车螺丝，约 2 小时",
+          "手工编轮组 ¥260 起，工期 5 天",
+          "二手车：每辆都换过链条和刹车皮，保修 90 天",
+          "公路车 Fitting ¥480，约 90 分钟，需预约",
+          "店主：陈立平，大家叫他老陈，修车 27 年，以前在自行车厂做装配",
+          "周四夜骑：每周四 19:30 店门口出发，沿江一圈 24 公里，免费，自带车灯",
+          "门口气泵免费，24 小时可用",
+          "预约：电话 0571-5555-0222，或到店登记",
+          "不卖新车，只修车、卖二手车和零件"
+        ],
+        "language": "zh"
+      },
+      "label": "light · 343° · Alfa Slab One / Hanken Grotesk · 8 col",
+      "palette": {
+        "polarity": "light",
+        "hue": 342.69,
+        "paperL": 0.974,
+        "paperC": 0.022,
+        "accentC": 0.167,
+        "accent2Offset": 315.88,
+        "colors": {
+          "paper": "#fff2f9",
+          "ink": "#45313d",
+          "muted": "#776a72",
+          "accent": "#d160aa",
+          "accent2": "#9f7be1",
+          "rule": "#cfb7c5",
+          "panel": "#f7e0ed"
+        }
+      },
+      "contrast": {
+        "lines": [
+          {
+            "pair": "ink on paper",
+            "ratio": 10.98,
+            "verdict": "AAA — any text"
+          },
+          {
+            "pair": "muted on paper",
+            "ratio": 4.73,
+            "verdict": "AA — body text OK"
+          },
+          {
+            "pair": "ink on panel",
+            "ratio": 9.57,
+            "verdict": "AAA — any text"
+          },
+          {
+            "pair": "accent on paper",
+            "ratio": 3.24,
+            "verdict": "large text / UI marks only (≥24px or bold ≥19px)"
+          },
+          {
+            "pair": "accent2 on paper",
+            "ratio": 3.02,
+            "verdict": "large text / UI marks only (≥24px or bold ≥19px)"
+          },
+          {
+            "pair": "#000000 on accent",
+            "ratio": 5.96,
+            "verdict": "AA — body text OK"
+          },
+          {
+            "pair": "#000000 on accent2",
+            "ratio": 6.39,
+            "verdict": "AA — body text OK"
+          }
+        ],
+        "onAccent": "#000000",
+        "onAccent2": "#000000"
+      },
+      "type": {
+        "display": {
+          "family": "Alfa Slab One",
+          "weights": [
+            400
+          ],
+          "fallback": "Rockwell, serif",
+          "source": "google"
+        },
+        "body": {
+          "family": "Hanken Grotesk",
+          "weights": [
+            400,
+            500,
+            600
+          ],
+          "italic": true,
+          "fallback": "Helvetica, Arial, sans-serif",
+          "source": "google"
+        },
+        "mono": {
+          "family": "Overpass Mono",
+          "weights": [
+            400,
+            600
+          ],
+          "fallback": "\"Courier New\", monospace",
+          "source": "google"
+        },
+        "cjk": {
+          "display": "LXGW WenKai TC",
+          "body": "Noto Sans SC"
+        },
+        "case": {
+          "id": "as-written",
+          "text": "as written (sentence case)"
+        },
+        "weight": 400,
+        "tracking": 0.082
+      },
+      "fonts": {
+        "stacks": {
+          "display": "\"Alfa Slab One\", \"LXGW WenKai TC\", Rockwell, serif",
+          "body": "\"Hanken Grotesk\", \"Noto Sans SC\", Helvetica, Arial, sans-serif",
+          "mono": "\"Overpass Mono\", \"Courier New\", monospace"
+        },
+        "googleFontsUrl": "https://fonts.googleapis.com/css2?family=Alfa+Slab+One&family=Hanken+Grotesk:ital,wght@0,400;0,500;0,600;1,400;1,500;1,600&family=Overpass+Mono:wght@400;600&family=LXGW+WenKai+TC&family=Noto+Sans+SC:wght@400;700&display=swap"
+      },
+      "scale": {
+        "ratio": 1.441,
+        "steps": [
+          {
+            "step": -2,
+            "px": 7.9,
+            "rem": 0.497
+          },
+          {
+            "step": -1,
+            "px": 11.5,
+            "rem": 0.716
+          },
+          {
+            "step": 0,
+            "px": 16.5,
+            "rem": 1.031
+          },
+          {
+            "step": 1,
+            "px": 23.8,
+            "rem": 1.486
+          },
+          {
+            "step": 2,
+            "px": 34.3,
+            "rem": 2.141
+          },
+          {
+            "step": 3,
+            "px": 49.4,
+            "rem": 3.086
+          },
+          {
+            "step": 4,
+            "px": 71.1,
+            "rem": 4.447
+          },
+          {
+            "step": 5,
+            "px": 102.5,
+            "rem": 6.407
+          },
+          {
+            "step": 6,
+            "px": 147.7,
+            "rem": 9.233
+          },
+          {
+            "step": 7,
+            "px": 212.9,
+            "rem": 13.305
+          }
+        ]
+      },
+      "density": {
+        "t": 0.431,
+        "baseSize": 16.5,
+        "lineHeight": 1.52,
+        "unit": 7,
+        "sectionGap": 109,
+        "maxWidth": 1240
+      },
+      "layout": {
+        "columns": 8,
+        "gutter": 21,
+        "span": 8,
+        "start": 1,
+        "firstScreen": 99,
+        "sections": 3,
+        "separator": {
+          "id": "bands",
+          "text": "full-width bands alternating paper and panel"
+        }
+      },
+      "anchor": {
+        "subject": {
+          "id": "word",
+          "text": "one word from the subject"
+        },
+        "size": 90,
+        "x": 0.4,
+        "rotation": 1.5
+      },
+      "motif": {
+        "shape": {
+          "id": "zigzags",
+          "text": "zigzag lines"
+        },
+        "size": 28,
+        "placement": {
+          "id": "markers",
+          "text": "as list and heading markers"
+        },
+        "angle": 177
+      },
+      "surface": {
+        "radius": 4,
+        "border": 3,
+        "borderStyle": "solid",
+        "shadow": 0,
+        "texture": {
+          "id": "dot-screen",
+          "text": "a fine dot screen (radial-gradient pattern)"
+        },
+        "textureOpacity": 10.2
+      },
+      "motion": {
+        "still": false,
+        "property": {
+          "id": "clip-path",
+          "text": "a wipe (clip-path)"
+        },
+        "duration": 320,
+        "easing": "cubic-bezier(0, 0.6, 0.37, 1)"
+      },
+      "voice": {
+        "person": {
+          "id": "we",
+          "text": "first person plural (\"we\")"
+        },
+        "headline": {
+          "id": "statement",
+          "text": "a plain statement"
+        },
+        "sentenceWords": 10,
+        "register": 0.47
+      },
+      "twist": {
+        "target": {
+          "id": "headline",
+          "text": "the main headline"
+        },
+        "operation": {
+          "id": "invert",
+          "text": "inverted: paper-coloured on ink"
+        },
+        "amount": 15,
+        "text": "The main headline: inverted: paper-coloured on ink."
+      },
+      "bans": [
+        "generic-sans",
+        "purple-blue-gradient",
+        "centered-hero-two-buttons",
+        "identical-cards",
+        "glassmorphism",
+        "emoji-icons",
+        "buzzword-copy",
+        "soft-shadow-rounded",
+        "invented-facts",
+        "tailwind-default-palette",
+        "scroll-fade-everything",
+        "pill-badge-sparkle",
+        "placeholder-content",
+        "template-sections"
+      ],
+      "tokensCss": "/* hash-design hash-design/v2 · f3b1e77a */\n:root {\n  --paper: #fff2f9;\n  --ink: #45313d;\n  --muted: #776a72;\n  --accent: #d160aa;\n  --on-accent: #000000;\n  --accent2: #9f7be1;\n  --on-accent2: #000000;\n  --rule: #cfb7c5;\n  --panel: #f7e0ed;\n\n  --font-display: \"Alfa Slab One\", \"LXGW WenKai TC\", Rockwell, serif;\n  --font-body: \"Hanken Grotesk\", \"Noto Sans SC\", Helvetica, Arial, sans-serif;\n  --font-mono: \"Overpass Mono\", \"Courier New\", monospace;\n  --display-weight: 400;\n  --display-tracking: 0.082em;\n\n  --step-n2: 0.497rem; /* 7.9px */\n  --step-n1: 0.716rem; /* 11.5px */\n  --step-0: 1.031rem; /* 16.5px */\n  --step-1: 1.486rem; /* 23.8px */\n  --step-2: 2.141rem; /* 34.3px */\n  --step-3: 3.086rem; /* 49.4px */\n  --step-4: 4.447rem; /* 71.1px */\n  --step-5: 6.407rem; /* 102.5px */\n  --step-6: 9.233rem; /* 147.7px */\n  --step-7: 13.305rem; /* 212.9px */\n  --leading: 1.52;\n\n  --space-1: 7px;\n  --space-2: 14px;\n  --space-3: 21px;\n  --space-4: 28px;\n  --space-5: 35px;\n  --space-6: 42px;\n  --space-7: 49px;\n  --space-8: 56px;\n  --section-gap: 109px;\n  --max-width: 1240px;\n  --columns: 8;\n  --gutter: 21px;\n\n  --radius: 4px;\n  --border: 3px solid var(--rule);\n  --shadow: none;\n\n  --motion-duration: 320ms;\n  --motion-easing: cubic-bezier(0, 0.6, 0.37, 1);\n}\n\nhtml { font-size: 103.1%; }\nbody { background: var(--paper); color: var(--ink); font-family: var(--font-body); line-height: var(--leading); }\n@media (prefers-reduced-motion: reduce) {\n  *, *::before, *::after { animation: none !important; transition: none !important; }\n}",
+      "trace": [
+        {
+          "dimension": "hue",
+          "bytes": [
+            0,
+            1
+          ],
+          "hex": "f3 b1",
+          "rule": "0xf3b1 = 62385; 62385/65536 × 360",
+          "result": "342.69°"
+        },
+        {
+          "dimension": "polarity · paper lightness",
+          "bytes": [
+            2
+          ],
+          "hex": "e7",
+          "rule": "231 ≥ 77 → light; L = 0.90 + 154/178 × 0.085",
+          "result": "light, L 0.974"
+        },
+        {
+          "dimension": "paper chroma",
+          "bytes": [
+            3
+          ],
+          "hex": "7a",
+          "rule": "122/255 × 0.045",
+          "result": "0.022"
+        },
+        {
+          "dimension": "accent chroma",
+          "bytes": [
+            4
+          ],
+          "hex": "9a",
+          "rule": "0.07 + 154/255 × 0.16",
+          "result": "0.167"
+        },
+        {
+          "dimension": "accent2 hue offset",
+          "bytes": [
+            5
+          ],
+          "hex": "f3",
+          "rule": "30 + 243/255 × 300",
+          "result": "+315.88°"
+        },
+        {
+          "dimension": "display face",
+          "bytes": [
+            6
+          ],
+          "hex": "02",
+          "rule": "2 mod 98 = 2",
+          "result": "Alfa Slab One"
+        },
+        {
+          "dimension": "body face",
+          "bytes": [
+            7
+          ],
+          "hex": "d0",
+          "rule": "208 mod 62 = 22",
+          "result": "Hanken Grotesk"
+        },
+        {
+          "dimension": "display case · weight",
+          "bytes": [
+            8
+          ],
+          "hex": "60",
+          "rule": "96 mod 4 = 0; ⌊96/4⌋ mod 1",
+          "result": "as-written, 400"
+        },
+        {
+          "dimension": "display tracking",
+          "bytes": [
+            9
+          ],
+          "hex": "82",
+          "rule": "−0.04 + 130/255 × 0.24",
+          "result": "0.082em"
+        },
+        {
+          "dimension": "type scale ratio",
+          "bytes": [
+            10
+          ],
+          "hex": "ad",
+          "rule": "1.067 + 173/255 × 0.551",
+          "result": "1.441"
+        },
+        {
+          "dimension": "density",
+          "bytes": [
+            11
+          ],
+          "hex": "6e",
+          "rule": "t = 110/255",
+          "result": "t 0.431: base 16.5px, line-height 1.52, unit 7px"
+        },
+        {
+          "dimension": "grid columns · gutter",
+          "bytes": [
+            12
+          ],
+          "hex": "19",
+          "rule": "3 + 25 mod 10; unit × (1 + ⌊25/10⌋ mod 4)",
+          "result": "8 columns, 21px gutter"
+        },
+        {
+          "dimension": "text block span · start",
+          "bytes": [
+            13
+          ],
+          "hex": "cf",
+          "rule": "span 15/15, start 12/15",
+          "result": "columns 1–8 of 8"
+        },
+        {
+          "dimension": "first-screen height",
+          "bytes": [
+            14
+          ],
+          "hex": "fb",
+          "rule": "45 + 251/255 × 55",
+          "result": "99%"
+        },
+        {
+          "dimension": "sections · separator",
+          "bytes": [
+            15
+          ],
+          "hex": "7e",
+          "rule": "3 + 126 mod 6; ⌊126/6⌋ mod 5",
+          "result": "3 sections, bands"
+        },
+        {
+          "dimension": "anchor subject · size",
+          "bytes": [
+            16
+          ],
+          "hex": "de",
+          "rule": "222 mod 8; 25 + ⌊222/8⌋/31 × 75",
+          "result": "word, 90%"
+        },
+        {
+          "dimension": "anchor position · rotation",
+          "bytes": [
+            17
+          ],
+          "hex": "96",
+          "rule": "x 6/15; ((9) − 7.5)/7.5 × 8",
+          "result": "x 0.4, 1.5°"
+        },
+        {
+          "dimension": "motif shape · size",
+          "bytes": [
+            18
+          ],
+          "hex": "ee",
+          "rule": "238 mod 12; unit × (1 + ⌊238/12⌋ mod 8)",
+          "result": "zigzags, 28px"
+        },
+        {
+          "dimension": "motif placement · angle",
+          "bytes": [
+            19
+          ],
+          "hex": "fb",
+          "rule": "251 mod 4; ⌊251/4⌋ × 180/63",
+          "result": "markers, 177°"
+        },
+        {
+          "dimension": "radius · border",
+          "bytes": [
+            20
+          ],
+          "hex": "3d",
+          "rule": "RADII[61 mod 8]; ⌊61/8⌋ mod 4; ⌊61/32⌋ mod 4",
+          "result": "4px radius, 3px solid border"
+        },
+        {
+          "dimension": "shadow · texture",
+          "bytes": [
+            21
+          ],
+          "hex": "cc",
+          "rule": "204 & 3; (204 >> 2) & 3; 3 + 12 × 0.6",
+          "result": "no shadow, dot-screen 10.2%"
+        },
+        {
+          "dimension": "motion property · duration",
+          "bytes": [
+            22
+          ],
+          "hex": "a2",
+          "rule": "⌊162/64⌋; (162 mod 64)/63 × 600",
+          "result": "clip-path, 320ms"
+        },
+        {
+          "dimension": "easing",
+          "bytes": [
+            23
+          ],
+          "hex": "61",
+          "rule": "97 ≥ 32 → cubic-bezier from bits",
+          "result": "cubic-bezier(0, 0.6, 0.37, 1)"
+        },
+        {
+          "dimension": "voice person · headline form",
+          "bytes": [
+            24
+          ],
+          "hex": "91",
+          "rule": "145 mod 4; ⌊145/4⌋ mod 6",
+          "result": "we, statement"
+        },
+        {
+          "dimension": "sentence length · register",
+          "bytes": [
+            25
+          ],
+          "hex": "77",
+          "rule": "3 + (119 & 15); (119 >> 4)/15",
+          "result": "10 words, register 0.47"
+        },
+        {
+          "dimension": "twist target",
+          "bytes": [
+            26
+          ],
+          "hex": "51",
+          "rule": "81 mod 9",
+          "result": "headline"
+        },
+        {
+          "dimension": "twist operation · amount",
+          "bytes": [
+            27
+          ],
+          "hex": "9a",
+          "rule": "154 mod 10; ⌊154/10⌋",
+          "result": "invert, 15"
+        },
+        {
+          "dimension": "CJK display face",
+          "bytes": [
+            29
+          ],
+          "hex": "f0",
+          "rule": "240 mod 14",
+          "result": "LXGW WenKai TC",
+          "note": "used on Chinese pages"
+        },
+        {
+          "dimension": "mono face",
+          "bytes": [
+            30
+          ],
+          "hex": "bd",
+          "rule": "189 mod 8",
+          "result": "Overpass Mono"
+        }
+      ]
+    },
+    {
+      "number": 5,
+      "slug": "05-6ef0bf96",
+      "ref": "6ef0bf969f3cbf602400997a7e378c74429955cf879684fdb1e9d8338faed12e",
+      "hash": "6ef0bf969f3cbf602400997a7e378c74429955cf879684fdb1e9d8338faed12e",
+      "short": "6ef0bf96",
+      "algorithm": "hash-design/v2",
+      "library": "bd20321c36ab",
+      "constraints": {
+        "lightOnly": false,
+        "darkOnly": false,
+        "reducedMotion": false,
+        "brandColors": []
+      },
+      "content": {
+        "subject": "二号桥单车铺",
+        "facts": [
+          "店名：二号桥单车铺（Bridge No.2 Cycle Works）",
+          "地址：河西路二号桥桥洞下东侧，蓝色卷帘门，门口立着一个旧车轮",
+          "营业：周三至周日 10:00–20:00；周一、周二休息",
+          "补胎 ¥15；换内胎 ¥35（含内胎）",
+          "全车保养 ¥180：清洗传动、调变速和刹车、紧固全车螺丝，约 2 小时",
+          "手工编轮组 ¥260 起，工期 5 天",
+          "二手车：每辆都换过链条和刹车皮，保修 90 天",
+          "公路车 Fitting ¥480，约 90 分钟，需预约",
+          "店主：陈立平，大家叫他老陈，修车 27 年，以前在自行车厂做装配",
+          "周四夜骑：每周四 19:30 店门口出发，沿江一圈 24 公里，免费，自带车灯",
+          "门口气泵免费，24 小时可用",
+          "预约：电话 0571-5555-0222，或到店登记",
+          "不卖新车，只修车、卖二手车和零件"
+        ],
+        "language": "zh"
+      },
+      "label": "light · 156° · Xanh Mono / Libre Baskerville · 9 col",
+      "palette": {
+        "polarity": "light",
+        "hue": 156.01,
+        "paperL": 0.954,
+        "paperC": 0.026,
+        "accentC": 0.17,
+        "accent2Offset": 100.59,
+        "colors": {
+          "paper": "#e3f5e9",
+          "ink": "#293d30",
+          "muted": "#636f67",
+          "accent": "#00995a",
+          "accent2": "#478be5",
+          "rule": "#a7c0af",
+          "panel": "#d0e8d8"
+        }
+      },
+      "contrast": {
+        "lines": [
+          {
+            "pair": "ink on paper",
+            "ratio": 10.25,
+            "verdict": "AAA — any text"
+          },
+          {
+            "pair": "muted on paper",
+            "ratio": 4.63,
+            "verdict": "AA — body text OK"
+          },
+          {
+            "pair": "ink on panel",
+            "ratio": 8.99,
+            "verdict": "AAA — any text"
+          },
+          {
+            "pair": "accent on paper",
+            "ratio": 3.24,
+            "verdict": "large text / UI marks only (≥24px or bold ≥19px)"
+          },
+          {
+            "pair": "accent2 on paper",
+            "ratio": 3.04,
+            "verdict": "large text / UI marks only (≥24px or bold ≥19px)"
+          },
+          {
+            "pair": "#000000 on accent",
+            "ratio": 5.7,
+            "verdict": "AA — body text OK"
+          },
+          {
+            "pair": "#000000 on accent2",
+            "ratio": 6.09,
+            "verdict": "AA — body text OK"
+          }
+        ],
+        "onAccent": "#000000",
+        "onAccent2": "#000000"
+      },
+      "type": {
+        "display": {
+          "family": "Xanh Mono",
+          "weights": [
+            400
+          ],
+          "italic": true,
+          "fallback": "\"Courier New\", monospace",
+          "source": "google"
+        },
+        "body": {
+          "family": "Libre Baskerville",
+          "weights": [
+            400,
+            700
+          ],
+          "italic": true,
+          "fallback": "Baskerville, Georgia, serif",
+          "source": "google"
+        },
+        "mono": {
+          "family": "B612 Mono",
+          "weights": [
+            400
+          ],
+          "fallback": "\"Courier New\", monospace",
+          "source": "google"
+        },
+        "cjk": {
+          "display": "Noto Sans SC",
+          "body": "Noto Serif SC"
+        },
+        "case": {
+          "id": "as-written",
+          "text": "as written (sentence case)"
+        },
+        "weight": 400,
+        "tracking": -0.04
+      },
+      "fonts": {
+        "stacks": {
+          "display": "\"Xanh Mono\", \"Noto Sans SC\", \"Courier New\", monospace",
+          "body": "\"Libre Baskerville\", \"Noto Serif SC\", Baskerville, Georgia, serif",
+          "mono": "\"B612 Mono\", \"Courier New\", monospace"
+        },
+        "googleFontsUrl": "https://fonts.googleapis.com/css2?family=Xanh+Mono:ital,wght@0,400;1,400&family=Libre+Baskerville:ital,wght@0,400;0,700;1,400;1,700&family=B612+Mono&family=Noto+Sans+SC:wght@400;700&family=Noto+Serif+SC:wght@400;700&display=swap"
+      },
+      "scale": {
+        "ratio": 1.398,
+        "steps": [
+          {
+            "step": -2,
+            "px": 8.2,
+            "rem": 0.512
+          },
+          {
+            "step": -1,
+            "px": 11.4,
+            "rem": 0.715
+          },
+          {
+            "step": 0,
+            "px": 16,
+            "rem": 1
+          },
+          {
+            "step": 1,
+            "px": 22.4,
+            "rem": 1.398
+          },
+          {
+            "step": 2,
+            "px": 31.3,
+            "rem": 1.954
+          },
+          {
+            "step": 3,
+            "px": 43.7,
+            "rem": 2.732
+          },
+          {
+            "step": 4,
+            "px": 61.1,
+            "rem": 3.82
+          },
+          {
+            "step": 5,
+            "px": 85.4,
+            "rem": 5.34
+          },
+          {
+            "step": 6,
+            "px": 119.4,
+            "rem": 7.465
+          },
+          {
+            "step": 7,
+            "px": 167,
+            "rem": 10.436
+          }
+        ]
+      },
+      "density": {
+        "t": 0.478,
+        "baseSize": 16,
+        "lineHeight": 1.51,
+        "unit": 7,
+        "sectionGap": 103,
+        "maxWidth": 1250
+      },
+      "layout": {
+        "columns": 9,
+        "gutter": 7,
+        "span": 6,
+        "start": 2,
+        "firstScreen": 75,
+        "sections": 5,
+        "separator": {
+          "id": "boxes",
+          "text": "each section in a bordered box on the grid"
+        }
+      },
+      "anchor": {
+        "subject": {
+          "id": "initial",
+          "text": "the initial letter (or first character) of the subject"
+        },
+        "size": 44,
+        "x": 0.6,
+        "rotation": 1.5
+      },
+      "motif": {
+        "shape": {
+          "id": "dots",
+          "text": "dots"
+        },
+        "size": 56,
+        "placement": {
+          "id": "markers",
+          "text": "as list and heading markers"
+        },
+        "angle": 146
+      },
+      "surface": {
+        "radius": 16,
+        "border": 0,
+        "borderStyle": "solid",
+        "shadow": 2,
+        "texture": {
+          "id": "grain",
+          "text": "fine noise grain over the paper"
+        },
+        "textureOpacity": 8.4
+      },
+      "motion": {
+        "still": false,
+        "property": {
+          "id": "clip-path",
+          "text": "a wipe (clip-path)"
+        },
+        "duration": 40,
+        "easing": "cubic-bezier(0.9, 1.4, 0.37, 1)"
+      },
+      "voice": {
+        "person": {
+          "id": "we",
+          "text": "first person plural (\"we\")"
+        },
+        "headline": {
+          "id": "label",
+          "text": "a label: a noun phrase, no verb"
+        },
+        "sentenceWords": 12,
+        "register": 0.93
+      },
+      "twist": {
+        "target": {
+          "id": "headline",
+          "text": "the main headline"
+        },
+        "operation": {
+          "id": "vertical",
+          "text": "set vertically (writing-mode: vertical-rl)"
+        },
+        "amount": 5,
+        "text": "The main headline: set vertically (writing-mode: vertical-rl)."
+      },
+      "bans": [
+        "generic-sans",
+        "purple-blue-gradient",
+        "centered-hero-two-buttons",
+        "identical-cards",
+        "glassmorphism",
+        "emoji-icons",
+        "buzzword-copy",
+        "soft-shadow-rounded",
+        "invented-facts",
+        "tailwind-default-palette",
+        "scroll-fade-everything",
+        "pill-badge-sparkle",
+        "placeholder-content",
+        "template-sections"
+      ],
+      "tokensCss": "/* hash-design hash-design/v2 · 6ef0bf96 */\n:root {\n  --paper: #e3f5e9;\n  --ink: #293d30;\n  --muted: #636f67;\n  --accent: #00995a;\n  --on-accent: #000000;\n  --accent2: #478be5;\n  --on-accent2: #000000;\n  --rule: #a7c0af;\n  --panel: #d0e8d8;\n\n  --font-display: \"Xanh Mono\", \"Noto Sans SC\", \"Courier New\", monospace;\n  --font-body: \"Libre Baskerville\", \"Noto Serif SC\", Baskerville, Georgia, serif;\n  --font-mono: \"B612 Mono\", \"Courier New\", monospace;\n  --display-weight: 400;\n  --display-tracking: -0.04em;\n\n  --step-n2: 0.512rem; /* 8.2px */\n  --step-n1: 0.715rem; /* 11.4px */\n  --step-0: 1rem; /* 16px */\n  --step-1: 1.398rem; /* 22.4px */\n  --step-2: 1.954rem; /* 31.3px */\n  --step-3: 2.732rem; /* 43.7px */\n  --step-4: 3.82rem; /* 61.1px */\n  --step-5: 5.34rem; /* 85.4px */\n  --step-6: 7.465rem; /* 119.4px */\n  --step-7: 10.436rem; /* 167px */\n  --leading: 1.51;\n\n  --space-1: 7px;\n  --space-2: 14px;\n  --space-3: 21px;\n  --space-4: 28px;\n  --space-5: 35px;\n  --space-6: 42px;\n  --space-7: 49px;\n  --space-8: 56px;\n  --section-gap: 103px;\n  --max-width: 1250px;\n  --columns: 9;\n  --gutter: 7px;\n\n  --radius: 16px;\n  --border: 0px solid var(--rule);\n  --shadow: 2px 2px 0 var(--ink);\n\n  --motion-duration: 40ms;\n  --motion-easing: cubic-bezier(0.9, 1.4, 0.37, 1);\n}\n\nhtml { font-size: 100%; }\nbody { background: var(--paper); color: var(--ink); font-family: var(--font-body); line-height: var(--leading); }\n@media (prefers-reduced-motion: reduce) {\n  *, *::before, *::after { animation: none !important; transition: none !important; }\n}",
+      "trace": [
+        {
+          "dimension": "hue",
+          "bytes": [
+            0,
+            1
+          ],
+          "hex": "6e f0",
+          "rule": "0x6ef0 = 28400; 28400/65536 × 360",
+          "result": "156.01°"
+        },
+        {
+          "dimension": "polarity · paper lightness",
+          "bytes": [
+            2
+          ],
+          "hex": "bf",
+          "rule": "191 ≥ 77 → light; L = 0.90 + 114/178 × 0.085",
+          "result": "light, L 0.954"
+        },
+        {
+          "dimension": "paper chroma",
+          "bytes": [
+            3
+          ],
+          "hex": "96",
+          "rule": "150/255 × 0.045",
+          "result": "0.026"
+        },
+        {
+          "dimension": "accent chroma",
+          "bytes": [
+            4
+          ],
+          "hex": "9f",
+          "rule": "0.07 + 159/255 × 0.16",
+          "result": "0.17"
+        },
+        {
+          "dimension": "accent2 hue offset",
+          "bytes": [
+            5
+          ],
+          "hex": "3c",
+          "rule": "30 + 60/255 × 300",
+          "result": "+100.59°"
+        },
+        {
+          "dimension": "display face",
+          "bytes": [
+            6
+          ],
+          "hex": "bf",
+          "rule": "191 mod 98 = 93",
+          "result": "Xanh Mono"
+        },
+        {
+          "dimension": "body face",
+          "bytes": [
+            7
+          ],
+          "hex": "60",
+          "rule": "96 mod 62 = 34",
+          "result": "Libre Baskerville"
+        },
+        {
+          "dimension": "display case · weight",
+          "bytes": [
+            8
+          ],
+          "hex": "24",
+          "rule": "36 mod 4 = 0; ⌊36/4⌋ mod 1",
+          "result": "as-written, 400"
+        },
+        {
+          "dimension": "display tracking",
+          "bytes": [
+            9
+          ],
+          "hex": "00",
+          "rule": "−0.04 + 0/255 × 0.24",
+          "result": "-0.04em"
+        },
+        {
+          "dimension": "type scale ratio",
+          "bytes": [
+            10
+          ],
+          "hex": "99",
+          "rule": "1.067 + 153/255 × 0.551",
+          "result": "1.398"
+        },
+        {
+          "dimension": "density",
+          "bytes": [
+            11
+          ],
+          "hex": "7a",
+          "rule": "t = 122/255",
+          "result": "t 0.478: base 16px, line-height 1.51, unit 7px"
+        },
+        {
+          "dimension": "grid columns · gutter",
+          "bytes": [
+            12
+          ],
+          "hex": "7e",
+          "rule": "3 + 126 mod 10; unit × (1 + ⌊126/10⌋ mod 4)",
+          "result": "9 columns, 7px gutter"
+        },
+        {
+          "dimension": "text block span · start",
+          "bytes": [
+            13
+          ],
+          "hex": "37",
+          "rule": "span 7/15, start 3/15",
+          "result": "columns 2–7 of 9"
+        },
+        {
+          "dimension": "first-screen height",
+          "bytes": [
+            14
+          ],
+          "hex": "8c",
+          "rule": "45 + 140/255 × 55",
+          "result": "75%"
+        },
+        {
+          "dimension": "sections · separator",
+          "bytes": [
+            15
+          ],
+          "hex": "74",
+          "rule": "3 + 116 mod 6; ⌊116/6⌋ mod 5",
+          "result": "5 sections, boxes"
+        },
+        {
+          "dimension": "anchor subject · size",
+          "bytes": [
+            16
+          ],
+          "hex": "42",
+          "rule": "66 mod 8; 25 + ⌊66/8⌋/31 × 75",
+          "result": "initial, 44%"
+        },
+        {
+          "dimension": "anchor position · rotation",
+          "bytes": [
+            17
+          ],
+          "hex": "99",
+          "rule": "x 9/15; ((9) − 7.5)/7.5 × 8",
+          "result": "x 0.6, 1.5°"
+        },
+        {
+          "dimension": "motif shape · size",
+          "bytes": [
+            18
+          ],
+          "hex": "55",
+          "rule": "85 mod 12; unit × (1 + ⌊85/12⌋ mod 8)",
+          "result": "dots, 56px"
+        },
+        {
+          "dimension": "motif placement · angle",
+          "bytes": [
+            19
+          ],
+          "hex": "cf",
+          "rule": "207 mod 4; ⌊207/4⌋ × 180/63",
+          "result": "markers, 146°"
+        },
+        {
+          "dimension": "radius · border",
+          "bytes": [
+            20
+          ],
+          "hex": "87",
+          "rule": "RADII[135 mod 8]; ⌊135/8⌋ mod 4; ⌊135/32⌋ mod 4",
+          "result": "16px radius, 0px solid border"
+        },
+        {
+          "dimension": "shadow · texture",
+          "bytes": [
+            21
+          ],
+          "hex": "96",
+          "rule": "150 & 3; (150 >> 2) & 3; 3 + 9 × 0.6",
+          "result": "2px hard shadow, grain 8.4%"
+        },
+        {
+          "dimension": "motion property · duration",
+          "bytes": [
+            22
+          ],
+          "hex": "84",
+          "rule": "⌊132/64⌋; (132 mod 64)/63 × 600",
+          "result": "clip-path, 40ms"
+        },
+        {
+          "dimension": "easing",
+          "bytes": [
+            23
+          ],
+          "hex": "fd",
+          "rule": "253 ≥ 32 → cubic-bezier from bits",
+          "result": "cubic-bezier(0.9, 1.4, 0.37, 1)"
+        },
+        {
+          "dimension": "voice person · headline form",
+          "bytes": [
+            24
+          ],
+          "hex": "b1",
+          "rule": "177 mod 4; ⌊177/4⌋ mod 6",
+          "result": "we, label"
+        },
+        {
+          "dimension": "sentence length · register",
+          "bytes": [
+            25
+          ],
+          "hex": "e9",
+          "rule": "3 + (233 & 15); (233 >> 4)/15",
+          "result": "12 words, register 0.93"
+        },
+        {
+          "dimension": "twist target",
+          "bytes": [
+            26
+          ],
+          "hex": "d8",
+          "rule": "216 mod 9",
+          "result": "headline"
+        },
+        {
+          "dimension": "twist operation · amount",
+          "bytes": [
+            27
+          ],
+          "hex": "33",
+          "rule": "51 mod 10; ⌊51/10⌋",
+          "result": "vertical, 5"
+        },
+        {
+          "dimension": "CJK display face",
+          "bytes": [
+            29
+          ],
+          "hex": "ae",
+          "rule": "174 mod 14",
+          "result": "Noto Sans SC",
+          "note": "used on Chinese pages"
+        },
+        {
+          "dimension": "mono face",
+          "bytes": [
+            30
+          ],
+          "hex": "d1",
+          "rule": "209 mod 8",
+          "result": "B612 Mono"
+        }
+      ]
+    }
+  ]
+}

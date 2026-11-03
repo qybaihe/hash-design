@@ -1,0 +1,2857 @@
+{
+  "algorithm": "hash-design/v2",
+  "library": "bd20321c36ab",
+  "createdAt": "2026-11-03T11:21:11.761Z",
+  "source": "seed:fourth-lane-bakery",
+  "constraints": {
+    "lightOnly": false,
+    "darkOnly": false,
+    "reducedMotion": false,
+    "brandColors": []
+  },
+  "content": {
+    "subject": "第四巷面包店",
+    "facts": [
+      "店名：第四巷面包店（Fourth Lane Bakery）",
+      "地址：老城区第四巷 17 号，巷口数第二个门，绿色木门",
+      "营业：周二至周日 7:00–19:00；周一休息",
+      "每天两炉：7:00 第一炉（乡村面包、可颂），11:00 第二炉（肉桂卷、黑麦面包）",
+      "卖完即止，当天不留货",
+      "乡村面包：天然酵种，48 小时低温发酵，整个 ¥38，半个 ¥20",
+      "黑麦面包：70% 黑麦，750 g，每日限 12 个，¥42",
+      "可颂：法国发酵黄油，¥16",
+      "肉桂卷：¥18，只在第二炉",
+      "酵种养了 9 年，店里叫它“老周”",
+      "面粉：本地石磨全麦粉 + 法国 T65",
+      "预订：提前一天 17:00 前，电话 021-5555-0417 或店内登记",
+      "周六 9:00–11:30 面包课，6 人小班，¥260/人，带走自己烤的面包",
+      "店主：周岚，前建筑师，2019 年开店",
+      "店内 6 个座位，手冲咖啡 ¥22"
+    ],
+    "language": "zh"
+  },
+  "designs": [
+    {
+      "number": 1,
+      "slug": "01-8b44644e",
+      "ref": "8b44644e4d48e4d3e33b76679ed7306d39eebb8c554f265b676a829891c3e96f",
+      "hash": "8b44644e4d48e4d3e33b76679ed7306d39eebb8c554f265b676a829891c3e96f",
+      "short": "8b44644e",
+      "algorithm": "hash-design/v2",
+      "library": "bd20321c36ab",
+      "constraints": {
+        "lightOnly": false,
+        "darkOnly": false,
+        "reducedMotion": false,
+        "brandColors": []
+      },
+      "content": {
+        "subject": "第四巷面包店",
+        "facts": [
+          "店名：第四巷面包店（Fourth Lane Bakery）",
+          "地址：老城区第四巷 17 号，巷口数第二个门，绿色木门",
+          "营业：周二至周日 7:00–19:00；周一休息",
+          "每天两炉：7:00 第一炉（乡村面包、可颂），11:00 第二炉（肉桂卷、黑麦面包）",
+          "卖完即止，当天不留货",
+          "乡村面包：天然酵种，48 小时低温发酵，整个 ¥38，半个 ¥20",
+          "黑麦面包：70% 黑麦，750 g，每日限 12 个，¥42",
+          "可颂：法国发酵黄油，¥16",
+          "肉桂卷：¥18，只在第二炉",
+          "酵种养了 9 年，店里叫它“老周”",
+          "面粉：本地石磨全麦粉 + 法国 T65",
+          "预订：提前一天 17:00 前，电话 021-5555-0417 或店内登记",
+          "周六 9:00–11:30 面包课，6 人小班，¥260/人，带走自己烤的面包",
+          "店主：周岚，前建筑师，2019 年开店",
+          "店内 6 个座位，手冲咖啡 ¥22"
+        ],
+        "language": "zh"
+      },
+      "label": "light · 196° · Holtwood One SC / IBM Plex Sans Condensed · 11 col",
+      "palette": {
+        "polarity": "light",
+        "hue": 195.84,
+        "paperL": 0.911,
+        "paperC": 0.014,
+        "accentC": 0.118,
+        "accent2Offset": 114.71,
+        "colors": {
+          "paper": "#d8e5e4",
+          "ink": "#283c3c",
+          "muted": "#566767",
+          "accent": "#008a8c",
+          "accent2": "#9770b2",
+          "rule": "#9ab0b0",
+          "panel": "#c3d8d7"
+        }
+      },
+      "contrast": {
+        "lines": [
+          {
+            "pair": "ink on paper",
+            "ratio": 9.02,
+            "verdict": "AAA — any text"
+          },
+          {
+            "pair": "muted on paper",
+            "ratio": 4.6,
+            "verdict": "AA — body text OK"
+          },
+          {
+            "pair": "ink on panel",
+            "ratio": 7.84,
+            "verdict": "AAA — any text"
+          },
+          {
+            "pair": "accent on paper",
+            "ratio": 3.24,
+            "verdict": "large text / UI marks only (≥24px or bold ≥19px)"
+          },
+          {
+            "pair": "accent2 on paper",
+            "ratio": 3.08,
+            "verdict": "large text / UI marks only (≥24px or bold ≥19px)"
+          },
+          {
+            "pair": "#000000 on accent",
+            "ratio": 5.01,
+            "verdict": "AA — body text OK"
+          },
+          {
+            "pair": "#000000 on accent2",
+            "ratio": 5.28,
+            "verdict": "AA — body text OK"
+          }
+        ],
+        "onAccent": "#000000",
+        "onAccent2": "#000000"
+      },
+      "type": {
+        "display": {
+          "family": "Holtwood One SC",
+          "weights": [
+            400
+          ],
+          "fallback": "Rockwell, Georgia, serif",
+          "source": "google"
+        },
+        "body": {
+          "family": "IBM Plex Sans Condensed",
+          "weights": [
+            400,
+            500,
+            600
+          ],
+          "fallback": "\"Arial Narrow\", sans-serif",
+          "source": "google"
+        },
+        "mono": {
+          "family": "B612 Mono",
+          "weights": [
+            400
+          ],
+          "fallback": "\"Courier New\", monospace",
+          "source": "google"
+        },
+        "cjk": {
+          "display": "Zhi Mang Xing",
+          "body": "Noto Sans SC"
+        },
+        "case": {
+          "id": "small-caps",
+          "text": "small caps (font-variant-caps: all-small-caps)"
+        },
+        "weight": 400,
+        "tracking": 0.016
+      },
+      "fonts": {
+        "stacks": {
+          "display": "\"Holtwood One SC\", \"Zhi Mang Xing\", Rockwell, Georgia, serif",
+          "body": "\"IBM Plex Sans Condensed\", \"Noto Sans SC\", \"Arial Narrow\", sans-serif",
+          "mono": "\"B612 Mono\", \"Courier New\", monospace"
+        },
+        "googleFontsUrl": "https://fonts.googleapis.com/css2?family=Holtwood+One+SC&family=IBM+Plex+Sans+Condensed:wght@400;500;600&family=B612+Mono&family=Zhi+Mang+Xing&family=Noto+Sans+SC:wght@400;700&display=swap"
+      },
+      "scale": {
+        "ratio": 1.322,
+        "steps": [
+          {
+            "step": -2,
+            "px": 9.4,
+            "rem": 0.59
+          },
+          {
+            "step": -1,
+            "px": 12.5,
+            "rem": 0.78
+          },
+          {
+            "step": 0,
+            "px": 16.5,
+            "rem": 1.031
+          },
+          {
+            "step": 1,
+            "px": 21.8,
+            "rem": 1.363
+          },
+          {
+            "step": 2,
+            "px": 28.8,
+            "rem": 1.802
+          },
+          {
+            "step": 3,
+            "px": 38.1,
+            "rem": 2.383
+          },
+          {
+            "step": 4,
+            "px": 50.4,
+            "rem": 3.15
+          },
+          {
+            "step": 5,
+            "px": 66.6,
+            "rem": 4.164
+          },
+          {
+            "step": 6,
+            "px": 88.1,
+            "rem": 5.505
+          },
+          {
+            "step": 7,
+            "px": 116.4,
+            "rem": 7.278
+          }
+        ]
+      },
+      "density": {
+        "t": 0.404,
+        "baseSize": 16.5,
+        "lineHeight": 1.53,
+        "unit": 8,
+        "sectionGap": 113,
+        "maxWidth": 1230
+      },
+      "layout": {
+        "columns": 11,
+        "gutter": 32,
+        "span": 7,
+        "start": 4,
+        "firstScreen": 55,
+        "sections": 4,
+        "separator": {
+          "id": "space",
+          "text": "space only: the section gap, no lines or fills"
+        }
+      },
+      "anchor": {
+        "subject": {
+          "id": "number",
+          "text": "one number taken from the facts"
+        },
+        "size": 42,
+        "x": 0.93,
+        "rotation": 7
+      },
+      "motif": {
+        "shape": {
+          "id": "numerals",
+          "text": "index numerals"
+        },
+        "size": 64,
+        "placement": {
+          "id": "edges",
+          "text": "along the page edges"
+        },
+        "angle": 100
+      },
+      "surface": {
+        "radius": 4,
+        "border": 2,
+        "borderStyle": "dashed",
+        "shadow": 6,
+        "texture": {
+          "id": "dot-screen",
+          "text": "a fine dot screen (radial-gradient pattern)"
+        },
+        "textureOpacity": 5.4
+      },
+      "motion": {
+        "still": false,
+        "property": {
+          "id": "opacity",
+          "text": "opacity"
+        },
+        "duration": 360,
+        "easing": "cubic-bezier(0.77, 0.4, 0.9, 1)"
+      },
+      "voice": {
+        "person": {
+          "id": "none",
+          "text": "impersonal: no pronouns, facts stated plainly"
+        },
+        "headline": {
+          "id": "question",
+          "text": "a question the facts answer"
+        },
+        "sentenceWords": 13,
+        "register": 0.4
+      },
+      "twist": {
+        "target": {
+          "id": "section-heads",
+          "text": "the section headings"
+        },
+        "operation": {
+          "id": "oversize",
+          "text": "set far larger than expected"
+        },
+        "amount": 15,
+        "text": "Set the section headings at 3.5× the size it would normally get."
+      },
+      "bans": [
+        "generic-sans",
+        "purple-blue-gradient",
+        "centered-hero-two-buttons",
+        "identical-cards",
+        "glassmorphism",
+        "emoji-icons",
+        "buzzword-copy",
+        "soft-shadow-rounded",
+        "invented-facts",
+        "tailwind-default-palette",
+        "scroll-fade-everything",
+        "pill-badge-sparkle",
+        "placeholder-content",
+        "template-sections"
+      ],
+      "tokensCss": "/* hash-design hash-design/v2 · 8b44644e */\n:root {\n  --paper: #d8e5e4;\n  --ink: #283c3c;\n  --muted: #566767;\n  --accent: #008a8c;\n  --on-accent: #000000;\n  --accent2: #9770b2;\n  --on-accent2: #000000;\n  --rule: #9ab0b0;\n  --panel: #c3d8d7;\n\n  --font-display: \"Holtwood One SC\", \"Zhi Mang Xing\", Rockwell, Georgia, serif;\n  --font-body: \"IBM Plex Sans Condensed\", \"Noto Sans SC\", \"Arial Narrow\", sans-serif;\n  --font-mono: \"B612 Mono\", \"Courier New\", monospace;\n  --display-weight: 400;\n  --display-tracking: 0.016em;\n\n  --step-n2: 0.59rem; /* 9.4px */\n  --step-n1: 0.78rem; /* 12.5px */\n  --step-0: 1.031rem; /* 16.5px */\n  --step-1: 1.363rem; /* 21.8px */\n  --step-2: 1.802rem; /* 28.8px */\n  --step-3: 2.383rem; /* 38.1px */\n  --step-4: 3.15rem; /* 50.4px */\n  --step-5: 4.164rem; /* 66.6px */\n  --step-6: 5.505rem; /* 88.1px */\n  --step-7: 7.278rem; /* 116.4px */\n  --leading: 1.53;\n\n  --space-1: 8px;\n  --space-2: 16px;\n  --space-3: 24px;\n  --space-4: 32px;\n  --space-5: 40px;\n  --space-6: 48px;\n  --space-7: 56px;\n  --space-8: 64px;\n  --section-gap: 113px;\n  --max-width: 1230px;\n  --columns: 11;\n  --gutter: 32px;\n\n  --radius: 4px;\n  --border: 2px dashed var(--rule);\n  --shadow: 6px 6px 0 var(--ink);\n\n  --motion-duration: 360ms;\n  --motion-easing: cubic-bezier(0.77, 0.4, 0.9, 1);\n}\n\nhtml { font-size: 103.1%; }\nbody { background: var(--paper); color: var(--ink); font-family: var(--font-body); line-height: var(--leading); }\n@media (prefers-reduced-motion: reduce) {\n  *, *::before, *::after { animation: none !important; transition: none !important; }\n}",
+      "trace": [
+        {
+          "dimension": "hue",
+          "bytes": [
+            0,
+            1
+          ],
+          "hex": "8b 44",
+          "rule": "0x8b44 = 35652; 35652/65536 × 360",
+          "result": "195.84°"
+        },
+        {
+          "dimension": "polarity · paper lightness",
+          "bytes": [
+            2
+          ],
+          "hex": "64",
+          "rule": "100 ≥ 77 → light; L = 0.90 + 23/178 × 0.085",
+          "result": "light, L 0.911"
+        },
+        {
+          "dimension": "paper chroma",
+          "bytes": [
+            3
+          ],
+          "hex": "4e",
+          "rule": "78/255 × 0.045",
+          "result": "0.014"
+        },
+        {
+          "dimension": "accent chroma",
+          "bytes": [
+            4
+          ],
+          "hex": "4d",
+          "rule": "0.07 + 77/255 × 0.16",
+          "result": "0.118"
+        },
+        {
+          "dimension": "accent2 hue offset",
+          "bytes": [
+            5
+          ],
+          "hex": "48",
+          "rule": "30 + 72/255 × 300",
+          "result": "+114.71°"
+        },
+        {
+          "dimension": "display face",
+          "bytes": [
+            6
+          ],
+          "hex": "e4",
+          "rule": "228 mod 98 = 32",
+          "result": "Holtwood One SC"
+        },
+        {
+          "dimension": "body face",
+          "bytes": [
+            7
+          ],
+          "hex": "d3",
+          "rule": "211 mod 62 = 25",
+          "result": "IBM Plex Sans Condensed"
+        },
+        {
+          "dimension": "display case · weight",
+          "bytes": [
+            8
+          ],
+          "hex": "e3",
+          "rule": "227 mod 4 = 3; ⌊227/4⌋ mod 1",
+          "result": "small-caps, 400"
+        },
+        {
+          "dimension": "display tracking",
+          "bytes": [
+            9
+          ],
+          "hex": "3b",
+          "rule": "−0.04 + 59/255 × 0.24",
+          "result": "0.016em"
+        },
+        {
+          "dimension": "type scale ratio",
+          "bytes": [
+            10
+          ],
+          "hex": "76",
+          "rule": "1.067 + 118/255 × 0.551",
+          "result": "1.322"
+        },
+        {
+          "dimension": "density",
+          "bytes": [
+            11
+          ],
+          "hex": "67",
+          "rule": "t = 103/255",
+          "result": "t 0.404: base 16.5px, line-height 1.53, unit 8px"
+        },
+        {
+          "dimension": "grid columns · gutter",
+          "bytes": [
+            12
+          ],
+          "hex": "9e",
+          "rule": "3 + 158 mod 10; unit × (1 + ⌊158/10⌋ mod 4)",
+          "result": "11 columns, 32px gutter"
+        },
+        {
+          "dimension": "text block span · start",
+          "bytes": [
+            13
+          ],
+          "hex": "d7",
+          "rule": "span 7/15, start 13/15",
+          "result": "columns 4–10 of 11"
+        },
+        {
+          "dimension": "first-screen height",
+          "bytes": [
+            14
+          ],
+          "hex": "30",
+          "rule": "45 + 48/255 × 55",
+          "result": "55%"
+        },
+        {
+          "dimension": "sections · separator",
+          "bytes": [
+            15
+          ],
+          "hex": "6d",
+          "rule": "3 + 109 mod 6; ⌊109/6⌋ mod 5",
+          "result": "4 sections, space"
+        },
+        {
+          "dimension": "anchor subject · size",
+          "bytes": [
+            16
+          ],
+          "hex": "39",
+          "rule": "57 mod 8; 25 + ⌊57/8⌋/31 × 75",
+          "result": "number, 42%"
+        },
+        {
+          "dimension": "anchor position · rotation",
+          "bytes": [
+            17
+          ],
+          "hex": "ee",
+          "rule": "x 14/15; ((14) − 7.5)/7.5 × 8",
+          "result": "x 0.93, 7°"
+        },
+        {
+          "dimension": "motif shape · size",
+          "bytes": [
+            18
+          ],
+          "hex": "bb",
+          "rule": "187 mod 12; unit × (1 + ⌊187/12⌋ mod 8)",
+          "result": "numerals, 64px"
+        },
+        {
+          "dimension": "motif placement · angle",
+          "bytes": [
+            19
+          ],
+          "hex": "8c",
+          "rule": "140 mod 4; ⌊140/4⌋ × 180/63",
+          "result": "edges, 100°"
+        },
+        {
+          "dimension": "radius · border",
+          "bytes": [
+            20
+          ],
+          "hex": "55",
+          "rule": "RADII[85 mod 8]; ⌊85/8⌋ mod 4; ⌊85/32⌋ mod 4",
+          "result": "4px radius, 2px dashed border"
+        },
+        {
+          "dimension": "shadow · texture",
+          "bytes": [
+            21
+          ],
+          "hex": "4f",
+          "rule": "79 & 3; (79 >> 2) & 3; 3 + 4 × 0.6",
+          "result": "6px hard shadow, dot-screen 5.4%"
+        },
+        {
+          "dimension": "motion property · duration",
+          "bytes": [
+            22
+          ],
+          "hex": "26",
+          "rule": "⌊38/64⌋; (38 mod 64)/63 × 600",
+          "result": "opacity, 360ms"
+        },
+        {
+          "dimension": "easing",
+          "bytes": [
+            23
+          ],
+          "hex": "5b",
+          "rule": "91 ≥ 32 → cubic-bezier from bits",
+          "result": "cubic-bezier(0.77, 0.4, 0.9, 1)"
+        },
+        {
+          "dimension": "voice person · headline form",
+          "bytes": [
+            24
+          ],
+          "hex": "67",
+          "rule": "103 mod 4; ⌊103/4⌋ mod 6",
+          "result": "none, question"
+        },
+        {
+          "dimension": "sentence length · register",
+          "bytes": [
+            25
+          ],
+          "hex": "6a",
+          "rule": "3 + (106 & 15); (106 >> 4)/15",
+          "result": "13 words, register 0.4"
+        },
+        {
+          "dimension": "twist target",
+          "bytes": [
+            26
+          ],
+          "hex": "82",
+          "rule": "130 mod 9",
+          "result": "section-heads"
+        },
+        {
+          "dimension": "twist operation · amount",
+          "bytes": [
+            27
+          ],
+          "hex": "98",
+          "rule": "152 mod 10; ⌊152/10⌋",
+          "result": "oversize, 15"
+        },
+        {
+          "dimension": "CJK display face",
+          "bytes": [
+            29
+          ],
+          "hex": "c3",
+          "rule": "195 mod 14",
+          "result": "Zhi Mang Xing",
+          "note": "used on Chinese pages"
+        },
+        {
+          "dimension": "mono face",
+          "bytes": [
+            30
+          ],
+          "hex": "e9",
+          "rule": "233 mod 8",
+          "result": "B612 Mono"
+        }
+      ]
+    },
+    {
+      "number": 2,
+      "slug": "02-a17a25d1",
+      "ref": "a17a25d1d63e6f2fc423f096120fa702bb57745598bd794862649df3c5aa0b6d",
+      "hash": "a17a25d1d63e6f2fc423f096120fa702bb57745598bd794862649df3c5aa0b6d",
+      "short": "a17a25d1",
+      "algorithm": "hash-design/v2",
+      "library": "bd20321c36ab",
+      "constraints": {
+        "lightOnly": false,
+        "darkOnly": false,
+        "reducedMotion": false,
+        "brandColors": []
+      },
+      "content": {
+        "subject": "第四巷面包店",
+        "facts": [
+          "店名：第四巷面包店（Fourth Lane Bakery）",
+          "地址：老城区第四巷 17 号，巷口数第二个门，绿色木门",
+          "营业：周二至周日 7:00–19:00；周一休息",
+          "每天两炉：7:00 第一炉（乡村面包、可颂），11:00 第二炉（肉桂卷、黑麦面包）",
+          "卖完即止，当天不留货",
+          "乡村面包：天然酵种，48 小时低温发酵，整个 ¥38，半个 ¥20",
+          "黑麦面包：70% 黑麦，750 g，每日限 12 个，¥42",
+          "可颂：法国发酵黄油，¥16",
+          "肉桂卷：¥18，只在第二炉",
+          "酵种养了 9 年，店里叫它“老周”",
+          "面粉：本地石磨全麦粉 + 法国 T65",
+          "预订：提前一天 17:00 前，电话 021-5555-0417 或店内登记",
+          "周六 9:00–11:30 面包课，6 人小班，¥260/人，带走自己烤的面包",
+          "店主：周岚，前建筑师，2019 年开店",
+          "店内 6 个座位，手冲咖啡 ¥22"
+        ],
+        "language": "zh"
+      },
+      "label": "dark · 227° · Bevan / Red Hat Text · 11 col",
+      "palette": {
+        "polarity": "dark",
+        "hue": 227.08,
+        "paperL": 0.198,
+        "paperC": 0.037,
+        "accentC": 0.204,
+        "accent2Offset": 102.94,
+        "colors": {
+          "paper": "#011922",
+          "ink": "#b4d0dd",
+          "muted": "#74838a",
+          "accent": "#0087ad",
+          "accent2": "#b348ad",
+          "rule": "#224453",
+          "panel": "#032532"
+        }
+      },
+      "contrast": {
+        "lines": [
+          {
+            "pair": "ink on paper",
+            "ratio": 11.18,
+            "verdict": "AAA — any text"
+          },
+          {
+            "pair": "muted on paper",
+            "ratio": 4.6,
+            "verdict": "AA — body text OK"
+          },
+          {
+            "pair": "ink on panel",
+            "ratio": 9.89,
+            "verdict": "AAA — any text"
+          },
+          {
+            "pair": "accent on paper",
+            "ratio": 4.36,
+            "verdict": "large text / UI marks only (≥24px or bold ≥19px)"
+          },
+          {
+            "pair": "accent2 on paper",
+            "ratio": 3.82,
+            "verdict": "large text / UI marks only (≥24px or bold ≥19px)"
+          },
+          {
+            "pair": "#000000 on accent",
+            "ratio": 5.07,
+            "verdict": "AA — body text OK"
+          },
+          {
+            "pair": "#ffffff on accent2",
+            "ratio": 4.72,
+            "verdict": "AA — body text OK"
+          }
+        ],
+        "onAccent": "#000000",
+        "onAccent2": "#ffffff"
+      },
+      "type": {
+        "display": {
+          "family": "Bevan",
+          "weights": [
+            400
+          ],
+          "fallback": "Rockwell, Georgia, serif",
+          "source": "google"
+        },
+        "body": {
+          "family": "Red Hat Text",
+          "weights": [
+            400,
+            500
+          ],
+          "fallback": "Helvetica, Arial, sans-serif",
+          "source": "google"
+        },
+        "mono": {
+          "family": "Cousine",
+          "weights": [
+            400,
+            700
+          ],
+          "fallback": "\"Courier New\", Courier, monospace",
+          "source": "google"
+        },
+        "cjk": {
+          "display": "LXGW WenKai TC",
+          "body": "Noto Sans SC"
+        },
+        "case": {
+          "id": "as-written",
+          "text": "as written (sentence case)"
+        },
+        "weight": 400,
+        "tracking": -0.007
+      },
+      "fonts": {
+        "stacks": {
+          "display": "Bevan, \"LXGW WenKai TC\", Rockwell, Georgia, serif",
+          "body": "\"Red Hat Text\", \"Noto Sans SC\", Helvetica, Arial, sans-serif",
+          "mono": "Cousine, \"Courier New\", Courier, monospace"
+        },
+        "googleFontsUrl": "https://fonts.googleapis.com/css2?family=Bevan&family=Red+Hat+Text:wght@400;500&family=Cousine:wght@400;700&family=LXGW+WenKai+TC&family=Noto+Sans+SC:wght@400;700&display=swap"
+      },
+      "scale": {
+        "ratio": 1.586,
+        "steps": [
+          {
+            "step": -2,
+            "px": 6.2,
+            "rem": 0.385
+          },
+          {
+            "step": -1,
+            "px": 9.8,
+            "rem": 0.611
+          },
+          {
+            "step": 0,
+            "px": 15.5,
+            "rem": 0.969
+          },
+          {
+            "step": 1,
+            "px": 24.6,
+            "rem": 1.536
+          },
+          {
+            "step": 2,
+            "px": 39,
+            "rem": 2.437
+          },
+          {
+            "step": 3,
+            "px": 61.8,
+            "rem": 3.865
+          },
+          {
+            "step": 4,
+            "px": 98.1,
+            "rem": 6.129
+          },
+          {
+            "step": 5,
+            "px": 155.5,
+            "rem": 9.721
+          },
+          {
+            "step": 6,
+            "px": 246.7,
+            "rem": 15.418
+          },
+          {
+            "step": 7,
+            "px": 391.2,
+            "rem": 24.453
+          }
+        ]
+      },
+      "density": {
+        "t": 0.588,
+        "baseSize": 15.5,
+        "lineHeight": 1.47,
+        "unit": 6,
+        "sectionGap": 88,
+        "maxWidth": 1290
+      },
+      "layout": {
+        "columns": 11,
+        "gutter": 12,
+        "span": 11,
+        "start": 1,
+        "firstScreen": 81,
+        "sections": 5,
+        "separator": {
+          "id": "rules",
+          "text": "hairline rules in the rule colour"
+        }
+      },
+      "anchor": {
+        "subject": {
+          "id": "colour-block",
+          "text": "a solid block of the accent colour holding the headline"
+        },
+        "size": 81,
+        "x": 0.47,
+        "rotation": -2.5
+      },
+      "motif": {
+        "shape": {
+          "id": "squares",
+          "text": "squares"
+        },
+        "size": 12,
+        "placement": {
+          "id": "dividers",
+          "text": "between sections"
+        },
+        "angle": 60
+      },
+      "surface": {
+        "radius": 0,
+        "border": 3,
+        "borderStyle": "solid",
+        "shadow": 0,
+        "texture": {
+          "id": "dot-screen",
+          "text": "a fine dot screen (radial-gradient pattern)"
+        },
+        "textureOpacity": 9.6
+      },
+      "motion": {
+        "still": false,
+        "property": {
+          "id": "transform",
+          "text": "position (transform: translate)"
+        },
+        "duration": 540,
+        "easing": "cubic-bezier(0.26, 0.4, 0.1, 1)"
+      },
+      "voice": {
+        "person": {
+          "id": "you",
+          "text": "second person (\"you\")"
+        },
+        "headline": {
+          "id": "statement",
+          "text": "a plain statement"
+        },
+        "sentenceWords": 7,
+        "register": 0.4
+      },
+      "twist": {
+        "target": {
+          "id": "section-heads",
+          "text": "the section headings"
+        },
+        "operation": {
+          "id": "undersize",
+          "text": "set far smaller than expected"
+        },
+        "amount": 24,
+        "text": "Set the section headings at 0.31× the size it would normally get."
+      },
+      "bans": [
+        "generic-sans",
+        "purple-blue-gradient",
+        "centered-hero-two-buttons",
+        "identical-cards",
+        "glassmorphism",
+        "emoji-icons",
+        "buzzword-copy",
+        "soft-shadow-rounded",
+        "invented-facts",
+        "tailwind-default-palette",
+        "scroll-fade-everything",
+        "pill-badge-sparkle",
+        "placeholder-content",
+        "template-sections"
+      ],
+      "tokensCss": "/* hash-design hash-design/v2 · a17a25d1 */\n:root {\n  --paper: #011922;\n  --ink: #b4d0dd;\n  --muted: #74838a;\n  --accent: #0087ad;\n  --on-accent: #000000;\n  --accent2: #b348ad;\n  --on-accent2: #ffffff;\n  --rule: #224453;\n  --panel: #032532;\n\n  --font-display: Bevan, \"LXGW WenKai TC\", Rockwell, Georgia, serif;\n  --font-body: \"Red Hat Text\", \"Noto Sans SC\", Helvetica, Arial, sans-serif;\n  --font-mono: Cousine, \"Courier New\", Courier, monospace;\n  --display-weight: 400;\n  --display-tracking: -0.007em;\n\n  --step-n2: 0.385rem; /* 6.2px */\n  --step-n1: 0.611rem; /* 9.8px */\n  --step-0: 0.969rem; /* 15.5px */\n  --step-1: 1.536rem; /* 24.6px */\n  --step-2: 2.437rem; /* 39px */\n  --step-3: 3.865rem; /* 61.8px */\n  --step-4: 6.129rem; /* 98.1px */\n  --step-5: 9.721rem; /* 155.5px */\n  --step-6: 15.418rem; /* 246.7px */\n  --step-7: 24.453rem; /* 391.2px */\n  --leading: 1.47;\n\n  --space-1: 6px;\n  --space-2: 12px;\n  --space-3: 18px;\n  --space-4: 24px;\n  --space-5: 30px;\n  --space-6: 36px;\n  --space-7: 42px;\n  --space-8: 48px;\n  --section-gap: 88px;\n  --max-width: 1290px;\n  --columns: 11;\n  --gutter: 12px;\n\n  --radius: 0px;\n  --border: 3px solid var(--rule);\n  --shadow: none;\n\n  --motion-duration: 540ms;\n  --motion-easing: cubic-bezier(0.26, 0.4, 0.1, 1);\n}\n\nhtml { font-size: 96.9%; }\nbody { background: var(--paper); color: var(--ink); font-family: var(--font-body); line-height: var(--leading); }\n@media (prefers-reduced-motion: reduce) {\n  *, *::before, *::after { animation: none !important; transition: none !important; }\n}",
+      "trace": [
+        {
+          "dimension": "hue",
+          "bytes": [
+            0,
+            1
+          ],
+          "hex": "a1 7a",
+          "rule": "0xa17a = 41338; 41338/65536 × 360",
+          "result": "227.08°"
+        },
+        {
+          "dimension": "polarity · paper lightness",
+          "bytes": [
+            2
+          ],
+          "hex": "25",
+          "rule": "37 < 77 → dark; L = 0.14 + 37/76 × 0.12",
+          "result": "dark, L 0.198"
+        },
+        {
+          "dimension": "paper chroma",
+          "bytes": [
+            3
+          ],
+          "hex": "d1",
+          "rule": "209/255 × 0.045",
+          "result": "0.037"
+        },
+        {
+          "dimension": "accent chroma",
+          "bytes": [
+            4
+          ],
+          "hex": "d6",
+          "rule": "0.07 + 214/255 × 0.16",
+          "result": "0.204"
+        },
+        {
+          "dimension": "accent2 hue offset",
+          "bytes": [
+            5
+          ],
+          "hex": "3e",
+          "rule": "30 + 62/255 × 300",
+          "result": "+102.94°"
+        },
+        {
+          "dimension": "display face",
+          "bytes": [
+            6
+          ],
+          "hex": "6f",
+          "rule": "111 mod 98 = 13",
+          "result": "Bevan"
+        },
+        {
+          "dimension": "body face",
+          "bytes": [
+            7
+          ],
+          "hex": "2f",
+          "rule": "47 mod 62 = 47",
+          "result": "Red Hat Text"
+        },
+        {
+          "dimension": "display case · weight",
+          "bytes": [
+            8
+          ],
+          "hex": "c4",
+          "rule": "196 mod 4 = 0; ⌊196/4⌋ mod 1",
+          "result": "as-written, 400"
+        },
+        {
+          "dimension": "display tracking",
+          "bytes": [
+            9
+          ],
+          "hex": "23",
+          "rule": "−0.04 + 35/255 × 0.24",
+          "result": "-0.007em"
+        },
+        {
+          "dimension": "type scale ratio",
+          "bytes": [
+            10
+          ],
+          "hex": "f0",
+          "rule": "1.067 + 240/255 × 0.551",
+          "result": "1.586"
+        },
+        {
+          "dimension": "density",
+          "bytes": [
+            11
+          ],
+          "hex": "96",
+          "rule": "t = 150/255",
+          "result": "t 0.588: base 15.5px, line-height 1.47, unit 6px"
+        },
+        {
+          "dimension": "grid columns · gutter",
+          "bytes": [
+            12
+          ],
+          "hex": "12",
+          "rule": "3 + 18 mod 10; unit × (1 + ⌊18/10⌋ mod 4)",
+          "result": "11 columns, 12px gutter"
+        },
+        {
+          "dimension": "text block span · start",
+          "bytes": [
+            13
+          ],
+          "hex": "0f",
+          "rule": "span 15/15, start 0/15",
+          "result": "columns 1–11 of 11"
+        },
+        {
+          "dimension": "first-screen height",
+          "bytes": [
+            14
+          ],
+          "hex": "a7",
+          "rule": "45 + 167/255 × 55",
+          "result": "81%"
+        },
+        {
+          "dimension": "sections · separator",
+          "bytes": [
+            15
+          ],
+          "hex": "02",
+          "rule": "3 + 2 mod 6; ⌊2/6⌋ mod 5",
+          "result": "5 sections, rules"
+        },
+        {
+          "dimension": "anchor subject · size",
+          "bytes": [
+            16
+          ],
+          "hex": "bb",
+          "rule": "187 mod 8; 25 + ⌊187/8⌋/31 × 75",
+          "result": "colour-block, 81%"
+        },
+        {
+          "dimension": "anchor position · rotation",
+          "bytes": [
+            17
+          ],
+          "hex": "57",
+          "rule": "x 7/15; ((5) − 7.5)/7.5 × 8",
+          "result": "x 0.47, -2.5°"
+        },
+        {
+          "dimension": "motif shape · size",
+          "bytes": [
+            18
+          ],
+          "hex": "74",
+          "rule": "116 mod 12; unit × (1 + ⌊116/12⌋ mod 8)",
+          "result": "squares, 12px"
+        },
+        {
+          "dimension": "motif placement · angle",
+          "bytes": [
+            19
+          ],
+          "hex": "55",
+          "rule": "85 mod 4; ⌊85/4⌋ × 180/63",
+          "result": "dividers, 60°"
+        },
+        {
+          "dimension": "radius · border",
+          "bytes": [
+            20
+          ],
+          "hex": "98",
+          "rule": "RADII[152 mod 8]; ⌊152/8⌋ mod 4; ⌊152/32⌋ mod 4",
+          "result": "0px radius, 3px solid border"
+        },
+        {
+          "dimension": "shadow · texture",
+          "bytes": [
+            21
+          ],
+          "hex": "bd",
+          "rule": "189 & 3; (189 >> 2) & 3; 3 + 11 × 0.6",
+          "result": "no shadow, dot-screen 9.6%"
+        },
+        {
+          "dimension": "motion property · duration",
+          "bytes": [
+            22
+          ],
+          "hex": "79",
+          "rule": "⌊121/64⌋; (121 mod 64)/63 × 600",
+          "result": "transform, 540ms"
+        },
+        {
+          "dimension": "easing",
+          "bytes": [
+            23
+          ],
+          "hex": "48",
+          "rule": "72 ≥ 32 → cubic-bezier from bits",
+          "result": "cubic-bezier(0.26, 0.4, 0.1, 1)"
+        },
+        {
+          "dimension": "voice person · headline form",
+          "bytes": [
+            24
+          ],
+          "hex": "62",
+          "rule": "98 mod 4; ⌊98/4⌋ mod 6",
+          "result": "you, statement"
+        },
+        {
+          "dimension": "sentence length · register",
+          "bytes": [
+            25
+          ],
+          "hex": "64",
+          "rule": "3 + (100 & 15); (100 >> 4)/15",
+          "result": "7 words, register 0.4"
+        },
+        {
+          "dimension": "twist target",
+          "bytes": [
+            26
+          ],
+          "hex": "9d",
+          "rule": "157 mod 9",
+          "result": "section-heads"
+        },
+        {
+          "dimension": "twist operation · amount",
+          "bytes": [
+            27
+          ],
+          "hex": "f3",
+          "rule": "243 mod 10; ⌊243/10⌋",
+          "result": "undersize, 24"
+        },
+        {
+          "dimension": "CJK display face",
+          "bytes": [
+            29
+          ],
+          "hex": "aa",
+          "rule": "170 mod 14",
+          "result": "LXGW WenKai TC",
+          "note": "used on Chinese pages"
+        },
+        {
+          "dimension": "mono face",
+          "bytes": [
+            30
+          ],
+          "hex": "0b",
+          "rule": "11 mod 8",
+          "result": "Cousine"
+        }
+      ]
+    },
+    {
+      "number": 3,
+      "slug": "03-90bac13d",
+      "ref": "90bac13df32b8942d89782144f6718b002f4f4548780a159d93d317c025ff3c4",
+      "hash": "90bac13df32b8942d89782144f6718b002f4f4548780a159d93d317c025ff3c4",
+      "short": "90bac13d",
+      "algorithm": "hash-design/v2",
+      "library": "bd20321c36ab",
+      "constraints": {
+        "lightOnly": false,
+        "darkOnly": false,
+        "reducedMotion": false,
+        "brandColors": []
+      },
+      "content": {
+        "subject": "第四巷面包店",
+        "facts": [
+          "店名：第四巷面包店（Fourth Lane Bakery）",
+          "地址：老城区第四巷 17 号，巷口数第二个门，绿色木门",
+          "营业：周二至周日 7:00–19:00；周一休息",
+          "每天两炉：7:00 第一炉（乡村面包、可颂），11:00 第二炉（肉桂卷、黑麦面包）",
+          "卖完即止，当天不留货",
+          "乡村面包：天然酵种，48 小时低温发酵，整个 ¥38，半个 ¥20",
+          "黑麦面包：70% 黑麦，750 g，每日限 12 个，¥42",
+          "可颂：法国发酵黄油，¥16",
+          "肉桂卷：¥18，只在第二炉",
+          "酵种养了 9 年，店里叫它“老周”",
+          "面粉：本地石磨全麦粉 + 法国 T65",
+          "预订：提前一天 17:00 前，电话 021-5555-0417 或店内登记",
+          "周六 9:00–11:30 面包课，6 人小班，¥260/人，带走自己烤的面包",
+          "店主：周岚，前建筑师，2019 年开店",
+          "店内 6 个座位，手冲咖啡 ¥22"
+        ],
+        "language": "zh"
+      },
+      "label": "light · 204° · Italiana / Arimo · 12 col",
+      "palette": {
+        "polarity": "light",
+        "hue": 203.52,
+        "paperL": 0.955,
+        "paperC": 0.011,
+        "accentC": 0.222,
+        "accent2Offset": 80.59,
+        "colors": {
+          "paper": "#e8f2f3",
+          "ink": "#2a3c3d",
+          "muted": "#5f6f71",
+          "accent": "#00939d",
+          "accent2": "#8577ff",
+          "rule": "#aabdbf",
+          "panel": "#d4e5e7"
+        }
+      },
+      "contrast": {
+        "lines": [
+          {
+            "pair": "ink on paper",
+            "ratio": 10.17,
+            "verdict": "AAA — any text"
+          },
+          {
+            "pair": "muted on paper",
+            "ratio": 4.61,
+            "verdict": "AA — body text OK"
+          },
+          {
+            "pair": "ink on panel",
+            "ratio": 8.92,
+            "verdict": "AAA — any text"
+          },
+          {
+            "pair": "accent on paper",
+            "ratio": 3.26,
+            "verdict": "large text / UI marks only (≥24px or bold ≥19px)"
+          },
+          {
+            "pair": "accent2 on paper",
+            "ratio": 3.03,
+            "verdict": "large text / UI marks only (≥24px or bold ≥19px)"
+          },
+          {
+            "pair": "#000000 on accent",
+            "ratio": 5.66,
+            "verdict": "AA — body text OK"
+          },
+          {
+            "pair": "#000000 on accent2",
+            "ratio": 6.08,
+            "verdict": "AA — body text OK"
+          }
+        ],
+        "onAccent": "#000000",
+        "onAccent2": "#000000"
+      },
+      "type": {
+        "display": {
+          "family": "Italiana",
+          "weights": [
+            400
+          ],
+          "fallback": "Didot, serif",
+          "source": "google"
+        },
+        "body": {
+          "family": "Arimo",
+          "weights": [
+            400,
+            700
+          ],
+          "fallback": "Arial, \"Liberation Sans\", sans-serif",
+          "source": "google"
+        },
+        "mono": {
+          "family": "Cousine",
+          "weights": [
+            400,
+            700
+          ],
+          "fallback": "\"Courier New\", Courier, monospace",
+          "source": "google"
+        },
+        "cjk": {
+          "display": "ZCOOL QingKe HuangYou",
+          "body": "Noto Sans SC"
+        },
+        "case": {
+          "id": "as-written",
+          "text": "as written (sentence case)"
+        },
+        "weight": 400,
+        "tracking": 0.102
+      },
+      "fonts": {
+        "stacks": {
+          "display": "Italiana, \"ZCOOL QingKe HuangYou\", Didot, serif",
+          "body": "Arimo, \"Noto Sans SC\", Arial, \"Liberation Sans\", sans-serif",
+          "mono": "Cousine, \"Courier New\", Courier, monospace"
+        },
+        "googleFontsUrl": "https://fonts.googleapis.com/css2?family=Italiana&family=Arimo:wght@400;700&family=Cousine:wght@400;700&family=ZCOOL+QingKe+HuangYou&family=Noto+Sans+SC:wght@400;700&display=swap"
+      },
+      "scale": {
+        "ratio": 1.348,
+        "steps": [
+          {
+            "step": -2,
+            "px": 9.6,
+            "rem": 0.602
+          },
+          {
+            "step": -1,
+            "px": 13,
+            "rem": 0.811
+          },
+          {
+            "step": 0,
+            "px": 17.5,
+            "rem": 1.094
+          },
+          {
+            "step": 1,
+            "px": 23.6,
+            "rem": 1.474
+          },
+          {
+            "step": 2,
+            "px": 31.8,
+            "rem": 1.987
+          },
+          {
+            "step": 3,
+            "px": 42.9,
+            "rem": 2.679
+          },
+          {
+            "step": 4,
+            "px": 57.8,
+            "rem": 3.611
+          },
+          {
+            "step": 5,
+            "px": 77.9,
+            "rem": 4.868
+          },
+          {
+            "step": 6,
+            "px": 105,
+            "rem": 6.562
+          },
+          {
+            "step": 7,
+            "px": 141.5,
+            "rem": 8.846
+          }
+        ]
+      },
+      "density": {
+        "t": 0.078,
+        "baseSize": 17.5,
+        "lineHeight": 1.63,
+        "unit": 10,
+        "sectionGap": 157,
+        "maxWidth": 1110
+      },
+      "layout": {
+        "columns": 12,
+        "gutter": 40,
+        "span": 8,
+        "start": 3,
+        "firstScreen": 50,
+        "sections": 5,
+        "separator": {
+          "id": "boxes",
+          "text": "each section in a bordered box on the grid"
+        }
+      },
+      "anchor": {
+        "subject": {
+          "id": "initial",
+          "text": "the initial letter (or first character) of the subject"
+        },
+        "size": 25,
+        "x": 0.27,
+        "rotation": 8
+      },
+      "motif": {
+        "shape": {
+          "id": "crosses",
+          "text": "small crosses (+)"
+        },
+        "size": 50,
+        "placement": {
+          "id": "edges",
+          "text": "along the page edges"
+        },
+        "angle": 60
+      },
+      "surface": {
+        "radius": 16,
+        "border": 0,
+        "borderStyle": "solid",
+        "shadow": 0,
+        "texture": {
+          "id": "none",
+          "text": "flat colour, no texture"
+        },
+        "textureOpacity": 7.8
+      },
+      "motion": {
+        "still": false,
+        "property": {
+          "id": "clip-path",
+          "text": "a wipe (clip-path)"
+        },
+        "duration": 310,
+        "easing": "cubic-bezier(0.77, 0.4, 0.37, 1)"
+      },
+      "voice": {
+        "person": {
+          "id": "we",
+          "text": "first person plural (\"we\")"
+        },
+        "headline": {
+          "id": "statement",
+          "text": "a plain statement"
+        },
+        "sentenceWords": 16,
+        "register": 0.2
+      },
+      "twist": {
+        "target": {
+          "id": "section-heads",
+          "text": "the section headings"
+        },
+        "operation": {
+          "id": "invert",
+          "text": "inverted: paper-coloured on ink"
+        },
+        "amount": 12,
+        "text": "The section headings: inverted: paper-coloured on ink."
+      },
+      "bans": [
+        "generic-sans",
+        "purple-blue-gradient",
+        "centered-hero-two-buttons",
+        "identical-cards",
+        "glassmorphism",
+        "emoji-icons",
+        "buzzword-copy",
+        "soft-shadow-rounded",
+        "invented-facts",
+        "tailwind-default-palette",
+        "scroll-fade-everything",
+        "pill-badge-sparkle",
+        "placeholder-content",
+        "template-sections"
+      ],
+      "tokensCss": "/* hash-design hash-design/v2 · 90bac13d */\n:root {\n  --paper: #e8f2f3;\n  --ink: #2a3c3d;\n  --muted: #5f6f71;\n  --accent: #00939d;\n  --on-accent: #000000;\n  --accent2: #8577ff;\n  --on-accent2: #000000;\n  --rule: #aabdbf;\n  --panel: #d4e5e7;\n\n  --font-display: Italiana, \"ZCOOL QingKe HuangYou\", Didot, serif;\n  --font-body: Arimo, \"Noto Sans SC\", Arial, \"Liberation Sans\", sans-serif;\n  --font-mono: Cousine, \"Courier New\", Courier, monospace;\n  --display-weight: 400;\n  --display-tracking: 0.102em;\n\n  --step-n2: 0.602rem; /* 9.6px */\n  --step-n1: 0.811rem; /* 13px */\n  --step-0: 1.094rem; /* 17.5px */\n  --step-1: 1.474rem; /* 23.6px */\n  --step-2: 1.987rem; /* 31.8px */\n  --step-3: 2.679rem; /* 42.9px */\n  --step-4: 3.611rem; /* 57.8px */\n  --step-5: 4.868rem; /* 77.9px */\n  --step-6: 6.562rem; /* 105px */\n  --step-7: 8.846rem; /* 141.5px */\n  --leading: 1.63;\n\n  --space-1: 10px;\n  --space-2: 20px;\n  --space-3: 30px;\n  --space-4: 40px;\n  --space-5: 50px;\n  --space-6: 60px;\n  --space-7: 70px;\n  --space-8: 80px;\n  --section-gap: 157px;\n  --max-width: 1110px;\n  --columns: 12;\n  --gutter: 40px;\n\n  --radius: 16px;\n  --border: 0px solid var(--rule);\n  --shadow: none;\n\n  --motion-duration: 310ms;\n  --motion-easing: cubic-bezier(0.77, 0.4, 0.37, 1);\n}\n\nhtml { font-size: 109.4%; }\nbody { background: var(--paper); color: var(--ink); font-family: var(--font-body); line-height: var(--leading); }\n@media (prefers-reduced-motion: reduce) {\n  *, *::before, *::after { animation: none !important; transition: none !important; }\n}",
+      "trace": [
+        {
+          "dimension": "hue",
+          "bytes": [
+            0,
+            1
+          ],
+          "hex": "90 ba",
+          "rule": "0x90ba = 37050; 37050/65536 × 360",
+          "result": "203.52°"
+        },
+        {
+          "dimension": "polarity · paper lightness",
+          "bytes": [
+            2
+          ],
+          "hex": "c1",
+          "rule": "193 ≥ 77 → light; L = 0.90 + 116/178 × 0.085",
+          "result": "light, L 0.955"
+        },
+        {
+          "dimension": "paper chroma",
+          "bytes": [
+            3
+          ],
+          "hex": "3d",
+          "rule": "61/255 × 0.045",
+          "result": "0.011"
+        },
+        {
+          "dimension": "accent chroma",
+          "bytes": [
+            4
+          ],
+          "hex": "f3",
+          "rule": "0.07 + 243/255 × 0.16",
+          "result": "0.222"
+        },
+        {
+          "dimension": "accent2 hue offset",
+          "bytes": [
+            5
+          ],
+          "hex": "2b",
+          "rule": "30 + 43/255 × 300",
+          "result": "+80.59°"
+        },
+        {
+          "dimension": "display face",
+          "bytes": [
+            6
+          ],
+          "hex": "89",
+          "rule": "137 mod 98 = 39",
+          "result": "Italiana"
+        },
+        {
+          "dimension": "body face",
+          "bytes": [
+            7
+          ],
+          "hex": "42",
+          "rule": "66 mod 62 = 4",
+          "result": "Arimo"
+        },
+        {
+          "dimension": "display case · weight",
+          "bytes": [
+            8
+          ],
+          "hex": "d8",
+          "rule": "216 mod 4 = 0; ⌊216/4⌋ mod 1",
+          "result": "as-written, 400"
+        },
+        {
+          "dimension": "display tracking",
+          "bytes": [
+            9
+          ],
+          "hex": "97",
+          "rule": "−0.04 + 151/255 × 0.24",
+          "result": "0.102em"
+        },
+        {
+          "dimension": "type scale ratio",
+          "bytes": [
+            10
+          ],
+          "hex": "82",
+          "rule": "1.067 + 130/255 × 0.551",
+          "result": "1.348"
+        },
+        {
+          "dimension": "density",
+          "bytes": [
+            11
+          ],
+          "hex": "14",
+          "rule": "t = 20/255",
+          "result": "t 0.078: base 17.5px, line-height 1.63, unit 10px"
+        },
+        {
+          "dimension": "grid columns · gutter",
+          "bytes": [
+            12
+          ],
+          "hex": "4f",
+          "rule": "3 + 79 mod 10; unit × (1 + ⌊79/10⌋ mod 4)",
+          "result": "12 columns, 40px gutter"
+        },
+        {
+          "dimension": "text block span · start",
+          "bytes": [
+            13
+          ],
+          "hex": "67",
+          "rule": "span 7/15, start 6/15",
+          "result": "columns 3–10 of 12"
+        },
+        {
+          "dimension": "first-screen height",
+          "bytes": [
+            14
+          ],
+          "hex": "18",
+          "rule": "45 + 24/255 × 55",
+          "result": "50%"
+        },
+        {
+          "dimension": "sections · separator",
+          "bytes": [
+            15
+          ],
+          "hex": "b0",
+          "rule": "3 + 176 mod 6; ⌊176/6⌋ mod 5",
+          "result": "5 sections, boxes"
+        },
+        {
+          "dimension": "anchor subject · size",
+          "bytes": [
+            16
+          ],
+          "hex": "02",
+          "rule": "2 mod 8; 25 + ⌊2/8⌋/31 × 75",
+          "result": "initial, 25%"
+        },
+        {
+          "dimension": "anchor position · rotation",
+          "bytes": [
+            17
+          ],
+          "hex": "f4",
+          "rule": "x 4/15; ((15) − 7.5)/7.5 × 8",
+          "result": "x 0.27, 8°"
+        },
+        {
+          "dimension": "motif shape · size",
+          "bytes": [
+            18
+          ],
+          "hex": "f4",
+          "rule": "244 mod 12; unit × (1 + ⌊244/12⌋ mod 8)",
+          "result": "crosses, 50px"
+        },
+        {
+          "dimension": "motif placement · angle",
+          "bytes": [
+            19
+          ],
+          "hex": "54",
+          "rule": "84 mod 4; ⌊84/4⌋ × 180/63",
+          "result": "edges, 60°"
+        },
+        {
+          "dimension": "radius · border",
+          "bytes": [
+            20
+          ],
+          "hex": "87",
+          "rule": "RADII[135 mod 8]; ⌊135/8⌋ mod 4; ⌊135/32⌋ mod 4",
+          "result": "16px radius, 0px solid border"
+        },
+        {
+          "dimension": "shadow · texture",
+          "bytes": [
+            21
+          ],
+          "hex": "80",
+          "rule": "128 & 3; (128 >> 2) & 3; 3 + 8 × 0.6",
+          "result": "no shadow, none"
+        },
+        {
+          "dimension": "motion property · duration",
+          "bytes": [
+            22
+          ],
+          "hex": "a1",
+          "rule": "⌊161/64⌋; (161 mod 64)/63 × 600",
+          "result": "clip-path, 310ms"
+        },
+        {
+          "dimension": "easing",
+          "bytes": [
+            23
+          ],
+          "hex": "59",
+          "rule": "89 ≥ 32 → cubic-bezier from bits",
+          "result": "cubic-bezier(0.77, 0.4, 0.37, 1)"
+        },
+        {
+          "dimension": "voice person · headline form",
+          "bytes": [
+            24
+          ],
+          "hex": "d9",
+          "rule": "217 mod 4; ⌊217/4⌋ mod 6",
+          "result": "we, statement"
+        },
+        {
+          "dimension": "sentence length · register",
+          "bytes": [
+            25
+          ],
+          "hex": "3d",
+          "rule": "3 + (61 & 15); (61 >> 4)/15",
+          "result": "16 words, register 0.2"
+        },
+        {
+          "dimension": "twist target",
+          "bytes": [
+            26
+          ],
+          "hex": "31",
+          "rule": "49 mod 9",
+          "result": "section-heads"
+        },
+        {
+          "dimension": "twist operation · amount",
+          "bytes": [
+            27
+          ],
+          "hex": "7c",
+          "rule": "124 mod 10; ⌊124/10⌋",
+          "result": "invert, 12"
+        },
+        {
+          "dimension": "CJK display face",
+          "bytes": [
+            29
+          ],
+          "hex": "5f",
+          "rule": "95 mod 14",
+          "result": "ZCOOL QingKe HuangYou",
+          "note": "used on Chinese pages"
+        },
+        {
+          "dimension": "mono face",
+          "bytes": [
+            30
+          ],
+          "hex": "f3",
+          "rule": "243 mod 8",
+          "result": "Cousine"
+        }
+      ]
+    },
+    {
+      "number": 4,
+      "slug": "04-7273983d",
+      "ref": "7273983deffdd5db5989013db722f52780b1b90897de1a1d38c04423b966745c",
+      "hash": "7273983deffdd5db5989013db722f52780b1b90897de1a1d38c04423b966745c",
+      "short": "7273983d",
+      "algorithm": "hash-design/v2",
+      "library": "bd20321c36ab",
+      "constraints": {
+        "lightOnly": false,
+        "darkOnly": false,
+        "reducedMotion": false,
+        "brandColors": []
+      },
+      "content": {
+        "subject": "第四巷面包店",
+        "facts": [
+          "店名：第四巷面包店（Fourth Lane Bakery）",
+          "地址：老城区第四巷 17 号，巷口数第二个门，绿色木门",
+          "营业：周二至周日 7:00–19:00；周一休息",
+          "每天两炉：7:00 第一炉（乡村面包、可颂），11:00 第二炉（肉桂卷、黑麦面包）",
+          "卖完即止，当天不留货",
+          "乡村面包：天然酵种，48 小时低温发酵，整个 ¥38，半个 ¥20",
+          "黑麦面包：70% 黑麦，750 g，每日限 12 个，¥42",
+          "可颂：法国发酵黄油，¥16",
+          "肉桂卷：¥18，只在第二炉",
+          "酵种养了 9 年，店里叫它“老周”",
+          "面粉：本地石磨全麦粉 + 法国 T65",
+          "预订：提前一天 17:00 前，电话 021-5555-0417 或店内登记",
+          "周六 9:00–11:30 面包课，6 人小班，¥260/人，带走自己烤的面包",
+          "店主：周岚，前建筑师，2019 年开店",
+          "店内 6 个座位，手冲咖啡 ¥22"
+        ],
+        "language": "zh"
+      },
+      "label": "light · 161° · Bodoni Moda / Kumbh Sans · 6 col",
+      "palette": {
+        "polarity": "light",
+        "hue": 160.94,
+        "paperL": 0.936,
+        "paperC": 0.011,
+        "accentC": 0.22,
+        "accent2Offset": 327.65,
+        "colors": {
+          "paper": "#e4ece7",
+          "ink": "#2e3c34",
+          "muted": "#5e6b64",
+          "accent": "#009463",
+          "accent2": "#659400",
+          "rule": "#a8b7af",
+          "panel": "#d1dfd7"
+        }
+      },
+      "contrast": {
+        "lines": [
+          {
+            "pair": "ink on paper",
+            "ratio": 9.63,
+            "verdict": "AAA — any text"
+          },
+          {
+            "pair": "muted on paper",
+            "ratio": 4.64,
+            "verdict": "AA — body text OK"
+          },
+          {
+            "pair": "ink on panel",
+            "ratio": 8.41,
+            "verdict": "AAA — any text"
+          },
+          {
+            "pair": "accent on paper",
+            "ratio": 3.22,
+            "verdict": "large text / UI marks only (≥24px or bold ≥19px)"
+          },
+          {
+            "pair": "accent2 on paper",
+            "ratio": 3.01,
+            "verdict": "large text / UI marks only (≥24px or bold ≥19px)"
+          },
+          {
+            "pair": "#000000 on accent",
+            "ratio": 5.42,
+            "verdict": "AA — body text OK"
+          },
+          {
+            "pair": "#000000 on accent2",
+            "ratio": 5.79,
+            "verdict": "AA — body text OK"
+          }
+        ],
+        "onAccent": "#000000",
+        "onAccent2": "#000000"
+      },
+      "type": {
+        "display": {
+          "family": "Bodoni Moda",
+          "weights": [
+            400,
+            500,
+            700
+          ],
+          "italic": true,
+          "fallback": "Didot, \"Bodoni 72\", serif",
+          "source": "google"
+        },
+        "body": {
+          "family": "Kumbh Sans",
+          "weights": [
+            400,
+            600,
+            700
+          ],
+          "fallback": "Arial, sans-serif",
+          "source": "google"
+        },
+        "mono": {
+          "family": "IBM Plex Mono",
+          "weights": [
+            400,
+            500,
+            600
+          ],
+          "fallback": "\"Courier New\", monospace",
+          "source": "google"
+        },
+        "cjk": {
+          "display": "Long Cang",
+          "body": "Noto Sans SC"
+        },
+        "case": {
+          "id": "upper",
+          "text": "UPPERCASE"
+        },
+        "weight": 500,
+        "tracking": 0.089
+      },
+      "fonts": {
+        "stacks": {
+          "display": "\"Bodoni Moda\", \"Long Cang\", Didot, \"Bodoni 72\", serif",
+          "body": "\"Kumbh Sans\", \"Noto Sans SC\", Arial, sans-serif",
+          "mono": "\"IBM Plex Mono\", \"Courier New\", monospace"
+        },
+        "googleFontsUrl": "https://fonts.googleapis.com/css2?family=Bodoni+Moda:ital,wght@0,400;0,500;0,700;1,400;1,500;1,700&family=Kumbh+Sans:wght@400;600;700&family=IBM+Plex+Mono:wght@400;500;600&family=Long+Cang&family=Noto+Sans+SC:wght@400;700&display=swap"
+      },
+      "scale": {
+        "ratio": 1.069,
+        "steps": [
+          {
+            "step": -2,
+            "px": 14.9,
+            "rem": 0.93
+          },
+          {
+            "step": -1,
+            "px": 15.9,
+            "rem": 0.994
+          },
+          {
+            "step": 0,
+            "px": 17,
+            "rem": 1.063
+          },
+          {
+            "step": 1,
+            "px": 18.2,
+            "rem": 1.136
+          },
+          {
+            "step": 2,
+            "px": 19.4,
+            "rem": 1.214
+          },
+          {
+            "step": 3,
+            "px": 20.8,
+            "rem": 1.298
+          },
+          {
+            "step": 4,
+            "px": 22.2,
+            "rem": 1.388
+          },
+          {
+            "step": 5,
+            "px": 23.7,
+            "rem": 1.483
+          },
+          {
+            "step": 6,
+            "px": 25.4,
+            "rem": 1.586
+          },
+          {
+            "step": 7,
+            "px": 27.1,
+            "rem": 1.695
+          }
+        ]
+      },
+      "density": {
+        "t": 0.239,
+        "baseSize": 17,
+        "lineHeight": 1.58,
+        "unit": 9,
+        "sectionGap": 135,
+        "maxWidth": 1170
+      },
+      "layout": {
+        "columns": 6,
+        "gutter": 27,
+        "span": 3,
+        "start": 1,
+        "firstScreen": 98,
+        "sections": 6,
+        "separator": {
+          "id": "bands",
+          "text": "full-width bands alternating paper and panel"
+        }
+      },
+      "anchor": {
+        "subject": {
+          "id": "headline",
+          "text": "the headline, set as large as the width allows"
+        },
+        "size": 64,
+        "x": 0.07,
+        "rotation": 3.5
+      },
+      "motif": {
+        "shape": {
+          "id": "brackets",
+          "text": "square brackets"
+        },
+        "size": 72,
+        "placement": {
+          "id": "edges",
+          "text": "along the page edges"
+        },
+        "angle": 6
+      },
+      "surface": {
+        "radius": 16,
+        "border": 2,
+        "borderStyle": "solid",
+        "shadow": 2,
+        "texture": {
+          "id": "dot-screen",
+          "text": "a fine dot screen (radial-gradient pattern)"
+        },
+        "textureOpacity": 10.8
+      },
+      "motion": {
+        "still": false,
+        "property": {
+          "id": "opacity",
+          "text": "opacity"
+        },
+        "duration": 250,
+        "easing": "steps(7, end)"
+      },
+      "voice": {
+        "person": {
+          "id": "i",
+          "text": "first person singular (\"I\")"
+        },
+        "headline": {
+          "id": "label",
+          "text": "a label: a noun phrase, no verb"
+        },
+        "sentenceWords": 3,
+        "register": 0.8
+      },
+      "twist": {
+        "target": {
+          "id": "anchor",
+          "text": "the first-screen anchor"
+        },
+        "operation": {
+          "id": "repeat",
+          "text": "repeated"
+        },
+        "amount": 3,
+        "text": "Repeat the first-screen anchor 5 times in a row."
+      },
+      "bans": [
+        "generic-sans",
+        "purple-blue-gradient",
+        "centered-hero-two-buttons",
+        "identical-cards",
+        "glassmorphism",
+        "emoji-icons",
+        "buzzword-copy",
+        "soft-shadow-rounded",
+        "invented-facts",
+        "tailwind-default-palette",
+        "scroll-fade-everything",
+        "pill-badge-sparkle",
+        "placeholder-content",
+        "template-sections"
+      ],
+      "tokensCss": "/* hash-design hash-design/v2 · 7273983d */\n:root {\n  --paper: #e4ece7;\n  --ink: #2e3c34;\n  --muted: #5e6b64;\n  --accent: #009463;\n  --on-accent: #000000;\n  --accent2: #659400;\n  --on-accent2: #000000;\n  --rule: #a8b7af;\n  --panel: #d1dfd7;\n\n  --font-display: \"Bodoni Moda\", \"Long Cang\", Didot, \"Bodoni 72\", serif;\n  --font-body: \"Kumbh Sans\", \"Noto Sans SC\", Arial, sans-serif;\n  --font-mono: \"IBM Plex Mono\", \"Courier New\", monospace;\n  --display-weight: 500;\n  --display-tracking: 0.089em;\n\n  --step-n2: 0.93rem; /* 14.9px */\n  --step-n1: 0.994rem; /* 15.9px */\n  --step-0: 1.063rem; /* 17px */\n  --step-1: 1.136rem; /* 18.2px */\n  --step-2: 1.214rem; /* 19.4px */\n  --step-3: 1.298rem; /* 20.8px */\n  --step-4: 1.388rem; /* 22.2px */\n  --step-5: 1.483rem; /* 23.7px */\n  --step-6: 1.586rem; /* 25.4px */\n  --step-7: 1.695rem; /* 27.1px */\n  --leading: 1.58;\n\n  --space-1: 9px;\n  --space-2: 18px;\n  --space-3: 27px;\n  --space-4: 36px;\n  --space-5: 45px;\n  --space-6: 54px;\n  --space-7: 63px;\n  --space-8: 72px;\n  --section-gap: 135px;\n  --max-width: 1170px;\n  --columns: 6;\n  --gutter: 27px;\n\n  --radius: 16px;\n  --border: 2px solid var(--rule);\n  --shadow: 2px 2px 0 var(--ink);\n\n  --motion-duration: 250ms;\n  --motion-easing: steps(7, end);\n}\n\nhtml { font-size: 106.3%; }\nbody { background: var(--paper); color: var(--ink); font-family: var(--font-body); line-height: var(--leading); }\n@media (prefers-reduced-motion: reduce) {\n  *, *::before, *::after { animation: none !important; transition: none !important; }\n}",
+      "trace": [
+        {
+          "dimension": "hue",
+          "bytes": [
+            0,
+            1
+          ],
+          "hex": "72 73",
+          "rule": "0x7273 = 29299; 29299/65536 × 360",
+          "result": "160.94°"
+        },
+        {
+          "dimension": "polarity · paper lightness",
+          "bytes": [
+            2
+          ],
+          "hex": "98",
+          "rule": "152 ≥ 77 → light; L = 0.90 + 75/178 × 0.085",
+          "result": "light, L 0.936"
+        },
+        {
+          "dimension": "paper chroma",
+          "bytes": [
+            3
+          ],
+          "hex": "3d",
+          "rule": "61/255 × 0.045",
+          "result": "0.011"
+        },
+        {
+          "dimension": "accent chroma",
+          "bytes": [
+            4
+          ],
+          "hex": "ef",
+          "rule": "0.07 + 239/255 × 0.16",
+          "result": "0.22"
+        },
+        {
+          "dimension": "accent2 hue offset",
+          "bytes": [
+            5
+          ],
+          "hex": "fd",
+          "rule": "30 + 253/255 × 300",
+          "result": "+327.65°"
+        },
+        {
+          "dimension": "display face",
+          "bytes": [
+            6
+          ],
+          "hex": "d5",
+          "rule": "213 mod 98 = 17",
+          "result": "Bodoni Moda"
+        },
+        {
+          "dimension": "body face",
+          "bytes": [
+            7
+          ],
+          "hex": "db",
+          "rule": "219 mod 62 = 33",
+          "result": "Kumbh Sans"
+        },
+        {
+          "dimension": "display case · weight",
+          "bytes": [
+            8
+          ],
+          "hex": "59",
+          "rule": "89 mod 4 = 1; ⌊89/4⌋ mod 3",
+          "result": "upper, 500"
+        },
+        {
+          "dimension": "display tracking",
+          "bytes": [
+            9
+          ],
+          "hex": "89",
+          "rule": "−0.04 + 137/255 × 0.24",
+          "result": "0.089em"
+        },
+        {
+          "dimension": "type scale ratio",
+          "bytes": [
+            10
+          ],
+          "hex": "01",
+          "rule": "1.067 + 1/255 × 0.551",
+          "result": "1.069"
+        },
+        {
+          "dimension": "density",
+          "bytes": [
+            11
+          ],
+          "hex": "3d",
+          "rule": "t = 61/255",
+          "result": "t 0.239: base 17px, line-height 1.58, unit 9px"
+        },
+        {
+          "dimension": "grid columns · gutter",
+          "bytes": [
+            12
+          ],
+          "hex": "b7",
+          "rule": "3 + 183 mod 10; unit × (1 + ⌊183/10⌋ mod 4)",
+          "result": "6 columns, 27px gutter"
+        },
+        {
+          "dimension": "text block span · start",
+          "bytes": [
+            13
+          ],
+          "hex": "22",
+          "rule": "span 2/15, start 2/15",
+          "result": "columns 1–3 of 6"
+        },
+        {
+          "dimension": "first-screen height",
+          "bytes": [
+            14
+          ],
+          "hex": "f5",
+          "rule": "45 + 245/255 × 55",
+          "result": "98%"
+        },
+        {
+          "dimension": "sections · separator",
+          "bytes": [
+            15
+          ],
+          "hex": "27",
+          "rule": "3 + 39 mod 6; ⌊39/6⌋ mod 5",
+          "result": "6 sections, bands"
+        },
+        {
+          "dimension": "anchor subject · size",
+          "bytes": [
+            16
+          ],
+          "hex": "80",
+          "rule": "128 mod 8; 25 + ⌊128/8⌋/31 × 75",
+          "result": "headline, 64%"
+        },
+        {
+          "dimension": "anchor position · rotation",
+          "bytes": [
+            17
+          ],
+          "hex": "b1",
+          "rule": "x 1/15; ((11) − 7.5)/7.5 × 8",
+          "result": "x 0.07, 3.5°"
+        },
+        {
+          "dimension": "motif shape · size",
+          "bytes": [
+            18
+          ],
+          "hex": "b9",
+          "rule": "185 mod 12; unit × (1 + ⌊185/12⌋ mod 8)",
+          "result": "brackets, 72px"
+        },
+        {
+          "dimension": "motif placement · angle",
+          "bytes": [
+            19
+          ],
+          "hex": "08",
+          "rule": "8 mod 4; ⌊8/4⌋ × 180/63",
+          "result": "edges, 6°"
+        },
+        {
+          "dimension": "radius · border",
+          "bytes": [
+            20
+          ],
+          "hex": "97",
+          "rule": "RADII[151 mod 8]; ⌊151/8⌋ mod 4; ⌊151/32⌋ mod 4",
+          "result": "16px radius, 2px solid border"
+        },
+        {
+          "dimension": "shadow · texture",
+          "bytes": [
+            21
+          ],
+          "hex": "de",
+          "rule": "222 & 3; (222 >> 2) & 3; 3 + 13 × 0.6",
+          "result": "2px hard shadow, dot-screen 10.8%"
+        },
+        {
+          "dimension": "motion property · duration",
+          "bytes": [
+            22
+          ],
+          "hex": "1a",
+          "rule": "⌊26/64⌋; (26 mod 64)/63 × 600",
+          "result": "opacity, 250ms"
+        },
+        {
+          "dimension": "easing",
+          "bytes": [
+            23
+          ],
+          "hex": "1d",
+          "rule": "29 < 32 → steps",
+          "result": "steps(7, end)"
+        },
+        {
+          "dimension": "voice person · headline form",
+          "bytes": [
+            24
+          ],
+          "hex": "38",
+          "rule": "56 mod 4; ⌊56/4⌋ mod 6",
+          "result": "i, label"
+        },
+        {
+          "dimension": "sentence length · register",
+          "bytes": [
+            25
+          ],
+          "hex": "c0",
+          "rule": "3 + (192 & 15); (192 >> 4)/15",
+          "result": "3 words, register 0.8"
+        },
+        {
+          "dimension": "twist target",
+          "bytes": [
+            26
+          ],
+          "hex": "44",
+          "rule": "68 mod 9",
+          "result": "anchor"
+        },
+        {
+          "dimension": "twist operation · amount",
+          "bytes": [
+            27
+          ],
+          "hex": "23",
+          "rule": "35 mod 10; ⌊35/10⌋",
+          "result": "repeat, 3"
+        },
+        {
+          "dimension": "CJK display face",
+          "bytes": [
+            29
+          ],
+          "hex": "66",
+          "rule": "102 mod 14",
+          "result": "Long Cang",
+          "note": "used on Chinese pages"
+        },
+        {
+          "dimension": "mono face",
+          "bytes": [
+            30
+          ],
+          "hex": "74",
+          "rule": "116 mod 8",
+          "result": "IBM Plex Mono"
+        }
+      ]
+    },
+    {
+      "number": 5,
+      "slug": "05-685aef94",
+      "ref": "685aef945e648cf90fb582eb92814cc33ad52210e9523541c75eb38ba3a7eed1",
+      "hash": "685aef945e648cf90fb582eb92814cc33ad52210e9523541c75eb38ba3a7eed1",
+      "short": "685aef94",
+      "algorithm": "hash-design/v2",
+      "library": "bd20321c36ab",
+      "constraints": {
+        "lightOnly": false,
+        "darkOnly": false,
+        "reducedMotion": false,
+        "brandColors": []
+      },
+      "content": {
+        "subject": "第四巷面包店",
+        "facts": [
+          "店名：第四巷面包店（Fourth Lane Bakery）",
+          "地址：老城区第四巷 17 号，巷口数第二个门，绿色木门",
+          "营业：周二至周日 7:00–19:00；周一休息",
+          "每天两炉：7:00 第一炉（乡村面包、可颂），11:00 第二炉（肉桂卷、黑麦面包）",
+          "卖完即止，当天不留货",
+          "乡村面包：天然酵种，48 小时低温发酵，整个 ¥38，半个 ¥20",
+          "黑麦面包：70% 黑麦，750 g，每日限 12 个，¥42",
+          "可颂：法国发酵黄油，¥16",
+          "肉桂卷：¥18，只在第二炉",
+          "酵种养了 9 年，店里叫它“老周”",
+          "面粉：本地石磨全麦粉 + 法国 T65",
+          "预订：提前一天 17:00 前，电话 021-5555-0417 或店内登记",
+          "周六 9:00–11:30 面包课，6 人小班，¥260/人，带走自己烤的面包",
+          "店主：周岚，前建筑师，2019 年开店",
+          "店内 6 个座位，手冲咖啡 ¥22"
+        ],
+        "language": "zh"
+      },
+      "label": "light · 147° · Klee One / Alegreya Sans · 9 col",
+      "palette": {
+        "polarity": "light",
+        "hue": 146.74,
+        "paperL": 0.977,
+        "paperC": 0.026,
+        "accentC": 0.129,
+        "accent2Offset": 147.65,
+        "colors": {
+          "paper": "#edfded",
+          "ink": "#2c3d2d",
+          "muted": "#697369",
+          "accent": "#4c9c57",
+          "accent2": "#9783d2",
+          "rule": "#b2c7b3",
+          "panel": "#dbefdc"
+        }
+      },
+      "contrast": {
+        "lines": [
+          {
+            "pair": "ink on paper",
+            "ratio": 10.97,
+            "verdict": "AAA — any text"
+          },
+          {
+            "pair": "muted on paper",
+            "ratio": 4.67,
+            "verdict": "AA — body text OK"
+          },
+          {
+            "pair": "ink on panel",
+            "ratio": 9.6,
+            "verdict": "AAA — any text"
+          },
+          {
+            "pair": "accent on paper",
+            "ratio": 3.21,
+            "verdict": "large text / UI marks only (≥24px or bold ≥19px)"
+          },
+          {
+            "pair": "accent2 on paper",
+            "ratio": 3.06,
+            "verdict": "large text / UI marks only (≥24px or bold ≥19px)"
+          },
+          {
+            "pair": "#000000 on accent",
+            "ratio": 6.2,
+            "verdict": "AA — body text OK"
+          },
+          {
+            "pair": "#000000 on accent2",
+            "ratio": 6.49,
+            "verdict": "AA — body text OK"
+          }
+        ],
+        "onAccent": "#000000",
+        "onAccent2": "#000000"
+      },
+      "type": {
+        "display": {
+          "family": "Klee One",
+          "weights": [
+            400,
+            600
+          ],
+          "fallback": "\"Hiragino Mincho ProN\", serif",
+          "source": "google"
+        },
+        "body": {
+          "family": "Alegreya Sans",
+          "weights": [
+            400,
+            500,
+            700
+          ],
+          "fallback": "\"Gill Sans\", Calibri, sans-serif",
+          "source": "google"
+        },
+        "mono": {
+          "family": "Red Hat Mono",
+          "weights": [
+            400,
+            500
+          ],
+          "fallback": "\"Courier New\", monospace",
+          "source": "google"
+        },
+        "cjk": {
+          "display": "Zhi Mang Xing",
+          "body": "Noto Sans SC"
+        },
+        "case": {
+          "id": "small-caps",
+          "text": "small caps (font-variant-caps: all-small-caps)"
+        },
+        "weight": 600,
+        "tracking": 0.13
+      },
+      "fonts": {
+        "stacks": {
+          "display": "\"Klee One\", \"Zhi Mang Xing\", \"Hiragino Mincho ProN\", serif",
+          "body": "\"Alegreya Sans\", \"Noto Sans SC\", \"Gill Sans\", Calibri, sans-serif",
+          "mono": "\"Red Hat Mono\", \"Courier New\", monospace"
+        },
+        "googleFontsUrl": "https://fonts.googleapis.com/css2?family=Klee+One:wght@400;600&family=Alegreya+Sans:wght@400;500;700&family=Red+Hat+Mono:wght@400;500&family=Zhi+Mang+Xing&family=Noto+Sans+SC:wght@400;700&display=swap"
+      },
+      "scale": {
+        "ratio": 1.348,
+        "steps": [
+          {
+            "step": -2,
+            "px": 8,
+            "rem": 0.499
+          },
+          {
+            "step": -1,
+            "px": 10.8,
+            "rem": 0.672
+          },
+          {
+            "step": 0,
+            "px": 14.5,
+            "rem": 0.906
+          },
+          {
+            "step": 1,
+            "px": 19.5,
+            "rem": 1.222
+          },
+          {
+            "step": 2,
+            "px": 26.3,
+            "rem": 1.647
+          },
+          {
+            "step": 3,
+            "px": 35.5,
+            "rem": 2.22
+          },
+          {
+            "step": 4,
+            "px": 47.9,
+            "rem": 2.992
+          },
+          {
+            "step": 5,
+            "px": 64.5,
+            "rem": 4.034
+          },
+          {
+            "step": 6,
+            "px": 87,
+            "rem": 5.437
+          },
+          {
+            "step": 7,
+            "px": 117.3,
+            "rem": 7.33
+          }
+        ]
+      },
+      "density": {
+        "t": 0.922,
+        "baseSize": 14.5,
+        "lineHeight": 1.37,
+        "unit": 4,
+        "sectionGap": 43,
+        "maxWidth": 1410
+      },
+      "layout": {
+        "columns": 9,
+        "gutter": 12,
+        "span": 4,
+        "start": 4,
+        "firstScreen": 61,
+        "sections": 6,
+        "separator": {
+          "id": "numbers",
+          "text": "numbered section heads (01, 02 …) in the mono face"
+        }
+      },
+      "anchor": {
+        "subject": {
+          "id": "initial",
+          "text": "the initial letter (or first character) of the subject"
+        },
+        "size": 42,
+        "x": 0.33,
+        "rotation": 6
+      },
+      "motif": {
+        "shape": {
+          "id": "zigzags",
+          "text": "zigzag lines"
+        },
+        "size": 12,
+        "placement": {
+          "id": "edges",
+          "text": "along the page edges"
+        },
+        "angle": 11
+      },
+      "surface": {
+        "radius": 0,
+        "border": 1,
+        "borderStyle": "dotted",
+        "shadow": 2,
+        "texture": {
+          "id": "none",
+          "text": "flat colour, no texture"
+        },
+        "textureOpacity": 6
+      },
+      "motion": {
+        "still": false,
+        "property": {
+          "id": "opacity",
+          "text": "opacity"
+        },
+        "duration": 500,
+        "easing": "cubic-bezier(0, 0.4, 0.37, 1)"
+      },
+      "voice": {
+        "person": {
+          "id": "none",
+          "text": "impersonal: no pronouns, facts stated plainly"
+        },
+        "headline": {
+          "id": "question",
+          "text": "a question the facts answer"
+        },
+        "sentenceWords": 17,
+        "register": 0.33
+      },
+      "twist": {
+        "target": {
+          "id": "cta",
+          "text": "the primary call to action"
+        },
+        "operation": {
+          "id": "outline",
+          "text": "outlined: stroke only, no fill"
+        },
+        "amount": 13,
+        "text": "The primary call to action: outlined: stroke only, no fill."
+      },
+      "bans": [
+        "generic-sans",
+        "purple-blue-gradient",
+        "centered-hero-two-buttons",
+        "identical-cards",
+        "glassmorphism",
+        "emoji-icons",
+        "buzzword-copy",
+        "soft-shadow-rounded",
+        "invented-facts",
+        "tailwind-default-palette",
+        "scroll-fade-everything",
+        "pill-badge-sparkle",
+        "placeholder-content",
+        "template-sections"
+      ],
+      "tokensCss": "/* hash-design hash-design/v2 · 685aef94 */\n:root {\n  --paper: #edfded;\n  --ink: #2c3d2d;\n  --muted: #697369;\n  --accent: #4c9c57;\n  --on-accent: #000000;\n  --accent2: #9783d2;\n  --on-accent2: #000000;\n  --rule: #b2c7b3;\n  --panel: #dbefdc;\n\n  --font-display: \"Klee One\", \"Zhi Mang Xing\", \"Hiragino Mincho ProN\", serif;\n  --font-body: \"Alegreya Sans\", \"Noto Sans SC\", \"Gill Sans\", Calibri, sans-serif;\n  --font-mono: \"Red Hat Mono\", \"Courier New\", monospace;\n  --display-weight: 600;\n  --display-tracking: 0.13em;\n\n  --step-n2: 0.499rem; /* 8px */\n  --step-n1: 0.672rem; /* 10.8px */\n  --step-0: 0.906rem; /* 14.5px */\n  --step-1: 1.222rem; /* 19.5px */\n  --step-2: 1.647rem; /* 26.3px */\n  --step-3: 2.22rem; /* 35.5px */\n  --step-4: 2.992rem; /* 47.9px */\n  --step-5: 4.034rem; /* 64.5px */\n  --step-6: 5.437rem; /* 87px */\n  --step-7: 7.33rem; /* 117.3px */\n  --leading: 1.37;\n\n  --space-1: 4px;\n  --space-2: 8px;\n  --space-3: 12px;\n  --space-4: 16px;\n  --space-5: 20px;\n  --space-6: 24px;\n  --space-7: 28px;\n  --space-8: 32px;\n  --section-gap: 43px;\n  --max-width: 1410px;\n  --columns: 9;\n  --gutter: 12px;\n\n  --radius: 0px;\n  --border: 1px dotted var(--rule);\n  --shadow: 2px 2px 0 var(--ink);\n\n  --motion-duration: 500ms;\n  --motion-easing: cubic-bezier(0, 0.4, 0.37, 1);\n}\n\nhtml { font-size: 90.6%; }\nbody { background: var(--paper); color: var(--ink); font-family: var(--font-body); line-height: var(--leading); }\n@media (prefers-reduced-motion: reduce) {\n  *, *::before, *::after { animation: none !important; transition: none !important; }\n}",
+      "trace": [
+        {
+          "dimension": "hue",
+          "bytes": [
+            0,
+            1
+          ],
+          "hex": "68 5a",
+          "rule": "0x685a = 26714; 26714/65536 × 360",
+          "result": "146.74°"
+        },
+        {
+          "dimension": "polarity · paper lightness",
+          "bytes": [
+            2
+          ],
+          "hex": "ef",
+          "rule": "239 ≥ 77 → light; L = 0.90 + 162/178 × 0.085",
+          "result": "light, L 0.977"
+        },
+        {
+          "dimension": "paper chroma",
+          "bytes": [
+            3
+          ],
+          "hex": "94",
+          "rule": "148/255 × 0.045",
+          "result": "0.026"
+        },
+        {
+          "dimension": "accent chroma",
+          "bytes": [
+            4
+          ],
+          "hex": "5e",
+          "rule": "0.07 + 94/255 × 0.16",
+          "result": "0.129"
+        },
+        {
+          "dimension": "accent2 hue offset",
+          "bytes": [
+            5
+          ],
+          "hex": "64",
+          "rule": "30 + 100/255 × 300",
+          "result": "+147.65°"
+        },
+        {
+          "dimension": "display face",
+          "bytes": [
+            6
+          ],
+          "hex": "8c",
+          "rule": "140 mod 98 = 42",
+          "result": "Klee One"
+        },
+        {
+          "dimension": "body face",
+          "bytes": [
+            7
+          ],
+          "hex": "f9",
+          "rule": "249 mod 62 = 1",
+          "result": "Alegreya Sans"
+        },
+        {
+          "dimension": "display case · weight",
+          "bytes": [
+            8
+          ],
+          "hex": "0f",
+          "rule": "15 mod 4 = 3; ⌊15/4⌋ mod 2",
+          "result": "small-caps, 600"
+        },
+        {
+          "dimension": "display tracking",
+          "bytes": [
+            9
+          ],
+          "hex": "b5",
+          "rule": "−0.04 + 181/255 × 0.24",
+          "result": "0.13em"
+        },
+        {
+          "dimension": "type scale ratio",
+          "bytes": [
+            10
+          ],
+          "hex": "82",
+          "rule": "1.067 + 130/255 × 0.551",
+          "result": "1.348"
+        },
+        {
+          "dimension": "density",
+          "bytes": [
+            11
+          ],
+          "hex": "eb",
+          "rule": "t = 235/255",
+          "result": "t 0.922: base 14.5px, line-height 1.37, unit 4px"
+        },
+        {
+          "dimension": "grid columns · gutter",
+          "bytes": [
+            12
+          ],
+          "hex": "92",
+          "rule": "3 + 146 mod 10; unit × (1 + ⌊146/10⌋ mod 4)",
+          "result": "9 columns, 12px gutter"
+        },
+        {
+          "dimension": "text block span · start",
+          "bytes": [
+            13
+          ],
+          "hex": "81",
+          "rule": "span 1/15, start 8/15",
+          "result": "columns 4–7 of 9"
+        },
+        {
+          "dimension": "first-screen height",
+          "bytes": [
+            14
+          ],
+          "hex": "4c",
+          "rule": "45 + 76/255 × 55",
+          "result": "61%"
+        },
+        {
+          "dimension": "sections · separator",
+          "bytes": [
+            15
+          ],
+          "hex": "c3",
+          "rule": "3 + 195 mod 6; ⌊195/6⌋ mod 5",
+          "result": "6 sections, numbers"
+        },
+        {
+          "dimension": "anchor subject · size",
+          "bytes": [
+            16
+          ],
+          "hex": "3a",
+          "rule": "58 mod 8; 25 + ⌊58/8⌋/31 × 75",
+          "result": "initial, 42%"
+        },
+        {
+          "dimension": "anchor position · rotation",
+          "bytes": [
+            17
+          ],
+          "hex": "d5",
+          "rule": "x 5/15; ((13) − 7.5)/7.5 × 8",
+          "result": "x 0.33, 6°"
+        },
+        {
+          "dimension": "motif shape · size",
+          "bytes": [
+            18
+          ],
+          "hex": "22",
+          "rule": "34 mod 12; unit × (1 + ⌊34/12⌋ mod 8)",
+          "result": "zigzags, 12px"
+        },
+        {
+          "dimension": "motif placement · angle",
+          "bytes": [
+            19
+          ],
+          "hex": "10",
+          "rule": "16 mod 4; ⌊16/4⌋ × 180/63",
+          "result": "edges, 11°"
+        },
+        {
+          "dimension": "radius · border",
+          "bytes": [
+            20
+          ],
+          "hex": "e9",
+          "rule": "RADII[233 mod 8]; ⌊233/8⌋ mod 4; ⌊233/32⌋ mod 4",
+          "result": "0px radius, 1px dotted border"
+        },
+        {
+          "dimension": "shadow · texture",
+          "bytes": [
+            21
+          ],
+          "hex": "52",
+          "rule": "82 & 3; (82 >> 2) & 3; 3 + 5 × 0.6",
+          "result": "2px hard shadow, none"
+        },
+        {
+          "dimension": "motion property · duration",
+          "bytes": [
+            22
+          ],
+          "hex": "35",
+          "rule": "⌊53/64⌋; (53 mod 64)/63 × 600",
+          "result": "opacity, 500ms"
+        },
+        {
+          "dimension": "easing",
+          "bytes": [
+            23
+          ],
+          "hex": "41",
+          "rule": "65 ≥ 32 → cubic-bezier from bits",
+          "result": "cubic-bezier(0, 0.4, 0.37, 1)"
+        },
+        {
+          "dimension": "voice person · headline form",
+          "bytes": [
+            24
+          ],
+          "hex": "c7",
+          "rule": "199 mod 4; ⌊199/4⌋ mod 6",
+          "result": "none, question"
+        },
+        {
+          "dimension": "sentence length · register",
+          "bytes": [
+            25
+          ],
+          "hex": "5e",
+          "rule": "3 + (94 & 15); (94 >> 4)/15",
+          "result": "17 words, register 0.33"
+        },
+        {
+          "dimension": "twist target",
+          "bytes": [
+            26
+          ],
+          "hex": "b3",
+          "rule": "179 mod 9",
+          "result": "cta"
+        },
+        {
+          "dimension": "twist operation · amount",
+          "bytes": [
+            27
+          ],
+          "hex": "8b",
+          "rule": "139 mod 10; ⌊139/10⌋",
+          "result": "outline, 13"
+        },
+        {
+          "dimension": "CJK display face",
+          "bytes": [
+            29
+          ],
+          "hex": "a7",
+          "rule": "167 mod 14",
+          "result": "Zhi Mang Xing",
+          "note": "used on Chinese pages"
+        },
+        {
+          "dimension": "mono face",
+          "bytes": [
+            30
+          ],
+          "hex": "ee",
+          "rule": "238 mod 8",
+          "result": "Red Hat Mono"
+        }
+      ]
+    }
+  ]
+}

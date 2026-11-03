@@ -1,0 +1,2862 @@
+{
+  "algorithm": "hash-design/v2",
+  "library": "bd20321c36ab",
+  "createdAt": "2026-11-03T11:21:11.829Z",
+  "source": "seed:sluice",
+  "constraints": {
+    "lightOnly": false,
+    "darkOnly": false,
+    "reducedMotion": false,
+    "brandColors": []
+  },
+  "content": {
+    "subject": "Sluice — self-hosted webhook inbox",
+    "facts": [
+      "Name: Sluice — a self-hosted inbox for webhooks",
+      "What it does: gives you a public URL for webhooks, stores every delivery, and forwards it to your local or internal service",
+      "One static binary, about 11 MB, for Linux, macOS and Windows on amd64 and arm64",
+      "Storage: a single SQLite file; no Redis, no Postgres, no queue to run",
+      "Install: curl -fsSL https://sluice.example/install.sh | sh",
+      "Start: sluice serve --forward http://localhost:3000",
+      "Retries failed forwards with exponential backoff for up to 72 hours",
+      "Replay any stored delivery: sluice replay <delivery-id>",
+      "Verifies HMAC-SHA256 signatures and rejects deliveries older than 5 minutes",
+      "Web UI on port 8081: search deliveries by path, header or body text",
+      "Keeps deliveries for 30 days by default; change it with --retain",
+      "1,800 deliveries per second on a 2-vCPU VM, in the project's own benchmark",
+      "No hosted service, no account, no telemetry",
+      "Written in Go; MIT licence; 41 contributors",
+      "Current version 0.9.2, released 14 October 2026",
+      "Maintainer: Ines Okafor, who started it in 2023 after losing a weekend of payment webhooks"
+    ],
+    "language": "en"
+  },
+  "designs": [
+    {
+      "number": 1,
+      "slug": "01-484a15b6",
+      "ref": "484a15b64867e03aaf0d0be02da68ff09776e4bbfbdcfdc23070083359cf770d",
+      "hash": "484a15b64867e03aaf0d0be02da68ff09776e4bbfbdcfdc23070083359cf770d",
+      "short": "484a15b6",
+      "algorithm": "hash-design/v2",
+      "library": "bd20321c36ab",
+      "constraints": {
+        "lightOnly": false,
+        "darkOnly": false,
+        "reducedMotion": false,
+        "brandColors": []
+      },
+      "content": {
+        "subject": "Sluice — self-hosted webhook inbox",
+        "facts": [
+          "Name: Sluice — a self-hosted inbox for webhooks",
+          "What it does: gives you a public URL for webhooks, stores every delivery, and forwards it to your local or internal service",
+          "One static binary, about 11 MB, for Linux, macOS and Windows on amd64 and arm64",
+          "Storage: a single SQLite file; no Redis, no Postgres, no queue to run",
+          "Install: curl -fsSL https://sluice.example/install.sh | sh",
+          "Start: sluice serve --forward http://localhost:3000",
+          "Retries failed forwards with exponential backoff for up to 72 hours",
+          "Replay any stored delivery: sluice replay <delivery-id>",
+          "Verifies HMAC-SHA256 signatures and rejects deliveries older than 5 minutes",
+          "Web UI on port 8081: search deliveries by path, header or body text",
+          "Keeps deliveries for 30 days by default; change it with --retain",
+          "1,800 deliveries per second on a 2-vCPU VM, in the project's own benchmark",
+          "No hosted service, no account, no telemetry",
+          "Written in Go; MIT licence; 41 contributors",
+          "Current version 0.9.2, released 14 October 2026",
+          "Maintainer: Ines Okafor, who started it in 2023 after losing a weekend of payment webhooks"
+        ],
+        "language": "en"
+      },
+      "label": "dark · 102° · EB Garamond / Young Serif · 8 col",
+      "palette": {
+        "polarity": "dark",
+        "hue": 101.66,
+        "paperL": 0.173,
+        "paperC": 0.032,
+        "accentC": 0.115,
+        "accent2Offset": 151.18,
+        "colors": {
+          "paper": "#131001",
+          "ink": "#cfccb2",
+          "muted": "#7f7e70",
+          "accent": "#897c15",
+          "accent2": "#4b7db6",
+          "rule": "#3d3a1f",
+          "panel": "#1f1c04"
+        }
+      },
+      "contrast": {
+        "lines": [
+          {
+            "pair": "ink on paper",
+            "ratio": 11.73,
+            "verdict": "AAA — any text"
+          },
+          {
+            "pair": "muted on paper",
+            "ratio": 4.65,
+            "verdict": "AA — body text OK"
+          },
+          {
+            "pair": "ink on panel",
+            "ratio": 10.55,
+            "verdict": "AAA — any text"
+          },
+          {
+            "pair": "accent on paper",
+            "ratio": 4.5,
+            "verdict": "AA — body text OK"
+          },
+          {
+            "pair": "accent2 on paper",
+            "ratio": 4.45,
+            "verdict": "large text / UI marks only (≥24px or bold ≥19px)"
+          },
+          {
+            "pair": "#000000 on accent",
+            "ratio": 4.96,
+            "verdict": "AA — body text OK"
+          },
+          {
+            "pair": "#000000 on accent2",
+            "ratio": 4.91,
+            "verdict": "AA — body text OK"
+          }
+        ],
+        "onAccent": "#000000",
+        "onAccent2": "#000000"
+      },
+      "type": {
+        "display": {
+          "family": "EB Garamond",
+          "weights": [
+            400,
+            500
+          ],
+          "italic": true,
+          "fallback": "Garamond, \"Times New Roman\", serif",
+          "source": "google"
+        },
+        "body": {
+          "family": "Young Serif",
+          "weights": [
+            400
+          ],
+          "fallback": "Georgia, serif",
+          "source": "google"
+        },
+        "mono": {
+          "family": "Share Tech Mono",
+          "weights": [
+            400
+          ],
+          "fallback": "\"Courier New\", monospace",
+          "source": "google"
+        },
+        "cjk": {
+          "display": "ZCOOL QingKe HuangYou",
+          "body": "Noto Serif SC"
+        },
+        "case": {
+          "id": "small-caps",
+          "text": "small caps (font-variant-caps: all-small-caps)"
+        },
+        "weight": 500,
+        "tracking": -0.028
+      },
+      "fonts": {
+        "stacks": {
+          "display": "\"EB Garamond\", Garamond, \"Times New Roman\", serif",
+          "body": "\"Young Serif\", Georgia, serif",
+          "mono": "\"Share Tech Mono\", \"Courier New\", monospace"
+        },
+        "googleFontsUrl": "https://fonts.googleapis.com/css2?family=EB+Garamond:ital,wght@0,400;0,500;1,400;1,500&family=Young+Serif&family=Share+Tech+Mono&display=swap"
+      },
+      "scale": {
+        "ratio": 1.091,
+        "steps": [
+          {
+            "step": -2,
+            "px": 12.2,
+            "rem": 0.761
+          },
+          {
+            "step": -1,
+            "px": 13.3,
+            "rem": 0.831
+          },
+          {
+            "step": 0,
+            "px": 14.5,
+            "rem": 0.906
+          },
+          {
+            "step": 1,
+            "px": 15.8,
+            "rem": 0.989
+          },
+          {
+            "step": 2,
+            "px": 17.3,
+            "rem": 1.079
+          },
+          {
+            "step": 3,
+            "px": 18.8,
+            "rem": 1.177
+          },
+          {
+            "step": 4,
+            "px": 20.5,
+            "rem": 1.284
+          },
+          {
+            "step": 5,
+            "px": 22.4,
+            "rem": 1.401
+          },
+          {
+            "step": 6,
+            "px": 24.5,
+            "rem": 1.528
+          },
+          {
+            "step": 7,
+            "px": 26.7,
+            "rem": 1.667
+          }
+        ]
+      },
+      "density": {
+        "t": 0.878,
+        "baseSize": 14.5,
+        "lineHeight": 1.39,
+        "unit": 5,
+        "sectionGap": 49,
+        "maxWidth": 1400
+      },
+      "layout": {
+        "columns": 8,
+        "gutter": 5,
+        "span": 5,
+        "start": 3,
+        "firstScreen": 76,
+        "sections": 3,
+        "separator": {
+          "id": "rules",
+          "text": "hairline rules in the rule colour"
+        }
+      },
+      "anchor": {
+        "subject": {
+          "id": "motif",
+          "text": "the motif drawn at full scale"
+        },
+        "size": 69,
+        "x": 0.4,
+        "rotation": -0.5
+      },
+      "motif": {
+        "shape": {
+          "id": "rules",
+          "text": "hairline rules"
+        },
+        "size": 20,
+        "placement": {
+          "id": "markers",
+          "text": "as list and heading markers"
+        },
+        "angle": 131
+      },
+      "surface": {
+        "radius": 0,
+        "border": 3,
+        "borderStyle": "dotted",
+        "shadow": 0,
+        "texture": {
+          "id": "dot-screen",
+          "text": "a fine dot screen (radial-gradient pattern)"
+        },
+        "textureOpacity": 10.8
+      },
+      "motion": {
+        "still": false,
+        "property": {
+          "id": "colour",
+          "text": "colour (color / background-color)"
+        },
+        "duration": 580,
+        "easing": "cubic-bezier(0, 1.2, 0.63, 1)"
+      },
+      "voice": {
+        "person": {
+          "id": "i",
+          "text": "first person singular (\"I\")"
+        },
+        "headline": {
+          "id": "statement",
+          "text": "a plain statement"
+        },
+        "sentenceWords": 3,
+        "register": 0.47
+      },
+      "twist": {
+        "target": {
+          "id": "cta",
+          "text": "the primary call to action"
+        },
+        "operation": {
+          "id": "vertical",
+          "text": "set vertically (writing-mode: vertical-rl)"
+        },
+        "amount": 5,
+        "text": "The primary call to action: set vertically (writing-mode: vertical-rl)."
+      },
+      "bans": [
+        "generic-sans",
+        "purple-blue-gradient",
+        "centered-hero-two-buttons",
+        "identical-cards",
+        "glassmorphism",
+        "emoji-icons",
+        "buzzword-copy",
+        "soft-shadow-rounded",
+        "invented-facts",
+        "tailwind-default-palette",
+        "scroll-fade-everything",
+        "pill-badge-sparkle",
+        "placeholder-content",
+        "template-sections"
+      ],
+      "tokensCss": "/* hash-design hash-design/v2 · 484a15b6 */\n:root {\n  --paper: #131001;\n  --ink: #cfccb2;\n  --muted: #7f7e70;\n  --accent: #897c15;\n  --on-accent: #000000;\n  --accent2: #4b7db6;\n  --on-accent2: #000000;\n  --rule: #3d3a1f;\n  --panel: #1f1c04;\n\n  --font-display: \"EB Garamond\", Garamond, \"Times New Roman\", serif;\n  --font-body: \"Young Serif\", Georgia, serif;\n  --font-mono: \"Share Tech Mono\", \"Courier New\", monospace;\n  --display-weight: 500;\n  --display-tracking: -0.028em;\n\n  --step-n2: 0.761rem; /* 12.2px */\n  --step-n1: 0.831rem; /* 13.3px */\n  --step-0: 0.906rem; /* 14.5px */\n  --step-1: 0.989rem; /* 15.8px */\n  --step-2: 1.079rem; /* 17.3px */\n  --step-3: 1.177rem; /* 18.8px */\n  --step-4: 1.284rem; /* 20.5px */\n  --step-5: 1.401rem; /* 22.4px */\n  --step-6: 1.528rem; /* 24.5px */\n  --step-7: 1.667rem; /* 26.7px */\n  --leading: 1.39;\n\n  --space-1: 5px;\n  --space-2: 10px;\n  --space-3: 15px;\n  --space-4: 20px;\n  --space-5: 25px;\n  --space-6: 30px;\n  --space-7: 35px;\n  --space-8: 40px;\n  --section-gap: 49px;\n  --max-width: 1400px;\n  --columns: 8;\n  --gutter: 5px;\n\n  --radius: 0px;\n  --border: 3px dotted var(--rule);\n  --shadow: none;\n\n  --motion-duration: 580ms;\n  --motion-easing: cubic-bezier(0, 1.2, 0.63, 1);\n}\n\nhtml { font-size: 90.6%; }\nbody { background: var(--paper); color: var(--ink); font-family: var(--font-body); line-height: var(--leading); }\n@media (prefers-reduced-motion: reduce) {\n  *, *::before, *::after { animation: none !important; transition: none !important; }\n}",
+      "trace": [
+        {
+          "dimension": "hue",
+          "bytes": [
+            0,
+            1
+          ],
+          "hex": "48 4a",
+          "rule": "0x484a = 18506; 18506/65536 × 360",
+          "result": "101.66°"
+        },
+        {
+          "dimension": "polarity · paper lightness",
+          "bytes": [
+            2
+          ],
+          "hex": "15",
+          "rule": "21 < 77 → dark; L = 0.14 + 21/76 × 0.12",
+          "result": "dark, L 0.173"
+        },
+        {
+          "dimension": "paper chroma",
+          "bytes": [
+            3
+          ],
+          "hex": "b6",
+          "rule": "182/255 × 0.045",
+          "result": "0.032"
+        },
+        {
+          "dimension": "accent chroma",
+          "bytes": [
+            4
+          ],
+          "hex": "48",
+          "rule": "0.07 + 72/255 × 0.16",
+          "result": "0.115"
+        },
+        {
+          "dimension": "accent2 hue offset",
+          "bytes": [
+            5
+          ],
+          "hex": "67",
+          "rule": "30 + 103/255 × 300",
+          "result": "+151.18°"
+        },
+        {
+          "dimension": "display face",
+          "bytes": [
+            6
+          ],
+          "hex": "e0",
+          "rule": "224 mod 98 = 28",
+          "result": "EB Garamond"
+        },
+        {
+          "dimension": "body face",
+          "bytes": [
+            7
+          ],
+          "hex": "3a",
+          "rule": "58 mod 62 = 58",
+          "result": "Young Serif"
+        },
+        {
+          "dimension": "display case · weight",
+          "bytes": [
+            8
+          ],
+          "hex": "af",
+          "rule": "175 mod 4 = 3; ⌊175/4⌋ mod 2",
+          "result": "small-caps, 500"
+        },
+        {
+          "dimension": "display tracking",
+          "bytes": [
+            9
+          ],
+          "hex": "0d",
+          "rule": "−0.04 + 13/255 × 0.24",
+          "result": "-0.028em"
+        },
+        {
+          "dimension": "type scale ratio",
+          "bytes": [
+            10
+          ],
+          "hex": "0b",
+          "rule": "1.067 + 11/255 × 0.551",
+          "result": "1.091"
+        },
+        {
+          "dimension": "density",
+          "bytes": [
+            11
+          ],
+          "hex": "e0",
+          "rule": "t = 224/255",
+          "result": "t 0.878: base 14.5px, line-height 1.39, unit 5px"
+        },
+        {
+          "dimension": "grid columns · gutter",
+          "bytes": [
+            12
+          ],
+          "hex": "2d",
+          "rule": "3 + 45 mod 10; unit × (1 + ⌊45/10⌋ mod 4)",
+          "result": "8 columns, 5px gutter"
+        },
+        {
+          "dimension": "text block span · start",
+          "bytes": [
+            13
+          ],
+          "hex": "a6",
+          "rule": "span 6/15, start 10/15",
+          "result": "columns 3–7 of 8"
+        },
+        {
+          "dimension": "first-screen height",
+          "bytes": [
+            14
+          ],
+          "hex": "8f",
+          "rule": "45 + 143/255 × 55",
+          "result": "76%"
+        },
+        {
+          "dimension": "sections · separator",
+          "bytes": [
+            15
+          ],
+          "hex": "f0",
+          "rule": "3 + 240 mod 6; ⌊240/6⌋ mod 5",
+          "result": "3 sections, rules"
+        },
+        {
+          "dimension": "anchor subject · size",
+          "bytes": [
+            16
+          ],
+          "hex": "97",
+          "rule": "151 mod 8; 25 + ⌊151/8⌋/31 × 75",
+          "result": "motif, 69%"
+        },
+        {
+          "dimension": "anchor position · rotation",
+          "bytes": [
+            17
+          ],
+          "hex": "76",
+          "rule": "x 6/15; ((7) − 7.5)/7.5 × 8",
+          "result": "x 0.4, -0.5°"
+        },
+        {
+          "dimension": "motif shape · size",
+          "bytes": [
+            18
+          ],
+          "hex": "e4",
+          "rule": "228 mod 12; unit × (1 + ⌊228/12⌋ mod 8)",
+          "result": "rules, 20px"
+        },
+        {
+          "dimension": "motif placement · angle",
+          "bytes": [
+            19
+          ],
+          "hex": "bb",
+          "rule": "187 mod 4; ⌊187/4⌋ × 180/63",
+          "result": "markers, 131°"
+        },
+        {
+          "dimension": "radius · border",
+          "bytes": [
+            20
+          ],
+          "hex": "fb",
+          "rule": "RADII[251 mod 8]; ⌊251/8⌋ mod 4; ⌊251/32⌋ mod 4",
+          "result": "0px radius, 3px dotted border"
+        },
+        {
+          "dimension": "shadow · texture",
+          "bytes": [
+            21
+          ],
+          "hex": "dc",
+          "rule": "220 & 3; (220 >> 2) & 3; 3 + 13 × 0.6",
+          "result": "no shadow, dot-screen 10.8%"
+        },
+        {
+          "dimension": "motion property · duration",
+          "bytes": [
+            22
+          ],
+          "hex": "fd",
+          "rule": "⌊253/64⌋; (253 mod 64)/63 × 600",
+          "result": "colour, 580ms"
+        },
+        {
+          "dimension": "easing",
+          "bytes": [
+            23
+          ],
+          "hex": "c2",
+          "rule": "194 ≥ 32 → cubic-bezier from bits",
+          "result": "cubic-bezier(0, 1.2, 0.63, 1)"
+        },
+        {
+          "dimension": "voice person · headline form",
+          "bytes": [
+            24
+          ],
+          "hex": "30",
+          "rule": "48 mod 4; ⌊48/4⌋ mod 6",
+          "result": "i, statement"
+        },
+        {
+          "dimension": "sentence length · register",
+          "bytes": [
+            25
+          ],
+          "hex": "70",
+          "rule": "3 + (112 & 15); (112 >> 4)/15",
+          "result": "3 words, register 0.47"
+        },
+        {
+          "dimension": "twist target",
+          "bytes": [
+            26
+          ],
+          "hex": "08",
+          "rule": "8 mod 9",
+          "result": "cta"
+        },
+        {
+          "dimension": "twist operation · amount",
+          "bytes": [
+            27
+          ],
+          "hex": "33",
+          "rule": "51 mod 10; ⌊51/10⌋",
+          "result": "vertical, 5"
+        },
+        {
+          "dimension": "CJK display face",
+          "bytes": [
+            29
+          ],
+          "hex": "cf",
+          "rule": "207 mod 14",
+          "result": "ZCOOL QingKe HuangYou",
+          "note": "used on Chinese pages"
+        },
+        {
+          "dimension": "mono face",
+          "bytes": [
+            30
+          ],
+          "hex": "77",
+          "rule": "119 mod 8",
+          "result": "Share Tech Mono"
+        }
+      ]
+    },
+    {
+      "number": 2,
+      "slug": "02-599481a7",
+      "ref": "599481a7a798601d36af352c4c6d9d5258964970e32c07c18a784219d3840aca",
+      "hash": "599481a7a798601d36af352c4c6d9d5258964970e32c07c18a784219d3840aca",
+      "short": "599481a7",
+      "algorithm": "hash-design/v2",
+      "library": "bd20321c36ab",
+      "constraints": {
+        "lightOnly": false,
+        "darkOnly": false,
+        "reducedMotion": false,
+        "brandColors": []
+      },
+      "content": {
+        "subject": "Sluice — self-hosted webhook inbox",
+        "facts": [
+          "Name: Sluice — a self-hosted inbox for webhooks",
+          "What it does: gives you a public URL for webhooks, stores every delivery, and forwards it to your local or internal service",
+          "One static binary, about 11 MB, for Linux, macOS and Windows on amd64 and arm64",
+          "Storage: a single SQLite file; no Redis, no Postgres, no queue to run",
+          "Install: curl -fsSL https://sluice.example/install.sh | sh",
+          "Start: sluice serve --forward http://localhost:3000",
+          "Retries failed forwards with exponential backoff for up to 72 hours",
+          "Replay any stored delivery: sluice replay <delivery-id>",
+          "Verifies HMAC-SHA256 signatures and rejects deliveries older than 5 minutes",
+          "Web UI on port 8081: search deliveries by path, header or body text",
+          "Keeps deliveries for 30 days by default; change it with --retain",
+          "1,800 deliveries per second on a 2-vCPU VM, in the project's own benchmark",
+          "No hosted service, no account, no telemetry",
+          "Written in Go; MIT licence; 41 contributors",
+          "Current version 0.9.2, released 14 October 2026",
+          "Maintainer: Ines Okafor, who started it in 2023 after losing a weekend of payment webhooks"
+        ],
+        "language": "en"
+      },
+      "label": "light · 126° · Zen Old Mincho / Josefin Sans · 9 col",
+      "palette": {
+        "polarity": "light",
+        "hue": 125.97,
+        "paperL": 0.925,
+        "paperC": 0.029,
+        "accentC": 0.175,
+        "accent2Offset": 208.82,
+        "colors": {
+          "paper": "#e1ead5",
+          "ink": "#333b27",
+          "muted": "#63685c",
+          "accent": "#668a00",
+          "accent2": "#c160af",
+          "rule": "#a9b49a",
+          "panel": "#d1dcc2"
+        }
+      },
+      "contrast": {
+        "lines": [
+          {
+            "pair": "ink on paper",
+            "ratio": 9.43,
+            "verdict": "AAA — any text"
+          },
+          {
+            "pair": "muted on paper",
+            "ratio": 4.62,
+            "verdict": "AA — body text OK"
+          },
+          {
+            "pair": "ink on panel",
+            "ratio": 8.2,
+            "verdict": "AAA — any text"
+          },
+          {
+            "pair": "accent on paper",
+            "ratio": 3.26,
+            "verdict": "large text / UI marks only (≥24px or bold ≥19px)"
+          },
+          {
+            "pair": "accent2 on paper",
+            "ratio": 3.05,
+            "verdict": "large text / UI marks only (≥24px or bold ≥19px)"
+          },
+          {
+            "pair": "#000000 on accent",
+            "ratio": 5.2,
+            "verdict": "AA — body text OK"
+          },
+          {
+            "pair": "#000000 on accent2",
+            "ratio": 5.56,
+            "verdict": "AA — body text OK"
+          }
+        ],
+        "onAccent": "#000000",
+        "onAccent2": "#000000"
+      },
+      "type": {
+        "display": {
+          "family": "Zen Old Mincho",
+          "weights": [
+            400,
+            700
+          ],
+          "fallback": "\"Songti SC\", \"Yu Mincho\", serif",
+          "source": "google"
+        },
+        "body": {
+          "family": "Josefin Sans",
+          "weights": [
+            400,
+            600
+          ],
+          "fallback": "\"Century Gothic\", sans-serif",
+          "source": "google"
+        },
+        "mono": {
+          "family": "Courier Prime",
+          "weights": [
+            400
+          ],
+          "fallback": "\"Courier New\", monospace",
+          "source": "google"
+        },
+        "cjk": {
+          "display": "Noto Sans SC",
+          "body": "Noto Sans SC"
+        },
+        "case": {
+          "id": "lower",
+          "text": "lowercase"
+        },
+        "weight": 700,
+        "tracking": 0.125
+      },
+      "fonts": {
+        "stacks": {
+          "display": "\"Zen Old Mincho\", \"Songti SC\", \"Yu Mincho\", serif",
+          "body": "\"Josefin Sans\", \"Century Gothic\", sans-serif",
+          "mono": "\"Courier Prime\", \"Courier New\", monospace"
+        },
+        "googleFontsUrl": "https://fonts.googleapis.com/css2?family=Zen+Old+Mincho:wght@400;700&family=Josefin+Sans:wght@400;600&family=Courier+Prime&display=swap"
+      },
+      "scale": {
+        "ratio": 1.182,
+        "steps": [
+          {
+            "step": -2,
+            "px": 12.5,
+            "rem": 0.783
+          },
+          {
+            "step": -1,
+            "px": 14.8,
+            "rem": 0.925
+          },
+          {
+            "step": 0,
+            "px": 17.5,
+            "rem": 1.094
+          },
+          {
+            "step": 1,
+            "px": 20.7,
+            "rem": 1.293
+          },
+          {
+            "step": 2,
+            "px": 24.4,
+            "rem": 1.528
+          },
+          {
+            "step": 3,
+            "px": 28.9,
+            "rem": 1.806
+          },
+          {
+            "step": 4,
+            "px": 34.2,
+            "rem": 2.135
+          },
+          {
+            "step": 5,
+            "px": 40.4,
+            "rem": 2.524
+          },
+          {
+            "step": 6,
+            "px": 47.7,
+            "rem": 2.983
+          },
+          {
+            "step": 7,
+            "px": 56.4,
+            "rem": 3.526
+          }
+        ]
+      },
+      "density": {
+        "t": 0.173,
+        "baseSize": 17.5,
+        "lineHeight": 1.6,
+        "unit": 9,
+        "sectionGap": 144,
+        "maxWidth": 1140
+      },
+      "layout": {
+        "columns": 9,
+        "gutter": 36,
+        "span": 8,
+        "start": 1,
+        "firstScreen": 79,
+        "sections": 7,
+        "separator": {
+          "id": "space",
+          "text": "space only: the section gap, no lines or fills"
+        }
+      },
+      "anchor": {
+        "subject": {
+          "id": "headline",
+          "text": "the headline, set as large as the width allows"
+        },
+        "size": 52,
+        "x": 0.4,
+        "rotation": 1.5
+      },
+      "motif": {
+        "shape": {
+          "id": "dots",
+          "text": "dots"
+        },
+        "size": 63,
+        "placement": {
+          "id": "edges",
+          "text": "along the page edges"
+        },
+        "angle": 80
+      },
+      "surface": {
+        "radius": 0,
+        "border": 0,
+        "borderStyle": "dotted",
+        "shadow": 0,
+        "texture": {
+          "id": "dot-screen",
+          "text": "a fine dot screen (radial-gradient pattern)"
+        },
+        "textureOpacity": 4.2
+      },
+      "motion": {
+        "still": false,
+        "property": {
+          "id": "opacity",
+          "text": "opacity"
+        },
+        "duration": 70,
+        "easing": "cubic-bezier(0, 1.2, 0.37, 1)"
+      },
+      "voice": {
+        "person": {
+          "id": "you",
+          "text": "second person (\"you\")"
+        },
+        "headline": {
+          "id": "number-first",
+          "text": "starts with a number from the facts"
+        },
+        "sentenceWords": 11,
+        "register": 0.47
+      },
+      "twist": {
+        "target": {
+          "id": "footer",
+          "text": "the footer"
+        },
+        "operation": {
+          "id": "repeat",
+          "text": "repeated"
+        },
+        "amount": 2,
+        "text": "Repeat the footer 4 times in a row."
+      },
+      "bans": [
+        "generic-sans",
+        "purple-blue-gradient",
+        "centered-hero-two-buttons",
+        "identical-cards",
+        "glassmorphism",
+        "emoji-icons",
+        "buzzword-copy",
+        "soft-shadow-rounded",
+        "invented-facts",
+        "tailwind-default-palette",
+        "scroll-fade-everything",
+        "pill-badge-sparkle",
+        "placeholder-content",
+        "template-sections"
+      ],
+      "tokensCss": "/* hash-design hash-design/v2 · 599481a7 */\n:root {\n  --paper: #e1ead5;\n  --ink: #333b27;\n  --muted: #63685c;\n  --accent: #668a00;\n  --on-accent: #000000;\n  --accent2: #c160af;\n  --on-accent2: #000000;\n  --rule: #a9b49a;\n  --panel: #d1dcc2;\n\n  --font-display: \"Zen Old Mincho\", \"Songti SC\", \"Yu Mincho\", serif;\n  --font-body: \"Josefin Sans\", \"Century Gothic\", sans-serif;\n  --font-mono: \"Courier Prime\", \"Courier New\", monospace;\n  --display-weight: 700;\n  --display-tracking: 0.125em;\n\n  --step-n2: 0.783rem; /* 12.5px */\n  --step-n1: 0.925rem; /* 14.8px */\n  --step-0: 1.094rem; /* 17.5px */\n  --step-1: 1.293rem; /* 20.7px */\n  --step-2: 1.528rem; /* 24.4px */\n  --step-3: 1.806rem; /* 28.9px */\n  --step-4: 2.135rem; /* 34.2px */\n  --step-5: 2.524rem; /* 40.4px */\n  --step-6: 2.983rem; /* 47.7px */\n  --step-7: 3.526rem; /* 56.4px */\n  --leading: 1.6;\n\n  --space-1: 9px;\n  --space-2: 18px;\n  --space-3: 27px;\n  --space-4: 36px;\n  --space-5: 45px;\n  --space-6: 54px;\n  --space-7: 63px;\n  --space-8: 72px;\n  --section-gap: 144px;\n  --max-width: 1140px;\n  --columns: 9;\n  --gutter: 36px;\n\n  --radius: 0px;\n  --border: 0px dotted var(--rule);\n  --shadow: none;\n\n  --motion-duration: 70ms;\n  --motion-easing: cubic-bezier(0, 1.2, 0.37, 1);\n}\n\nhtml { font-size: 109.4%; }\nbody { background: var(--paper); color: var(--ink); font-family: var(--font-body); line-height: var(--leading); }\n@media (prefers-reduced-motion: reduce) {\n  *, *::before, *::after { animation: none !important; transition: none !important; }\n}",
+      "trace": [
+        {
+          "dimension": "hue",
+          "bytes": [
+            0,
+            1
+          ],
+          "hex": "59 94",
+          "rule": "0x5994 = 22932; 22932/65536 × 360",
+          "result": "125.97°"
+        },
+        {
+          "dimension": "polarity · paper lightness",
+          "bytes": [
+            2
+          ],
+          "hex": "81",
+          "rule": "129 ≥ 77 → light; L = 0.90 + 52/178 × 0.085",
+          "result": "light, L 0.925"
+        },
+        {
+          "dimension": "paper chroma",
+          "bytes": [
+            3
+          ],
+          "hex": "a7",
+          "rule": "167/255 × 0.045",
+          "result": "0.029"
+        },
+        {
+          "dimension": "accent chroma",
+          "bytes": [
+            4
+          ],
+          "hex": "a7",
+          "rule": "0.07 + 167/255 × 0.16",
+          "result": "0.175"
+        },
+        {
+          "dimension": "accent2 hue offset",
+          "bytes": [
+            5
+          ],
+          "hex": "98",
+          "rule": "30 + 152/255 × 300",
+          "result": "+208.82°"
+        },
+        {
+          "dimension": "display face",
+          "bytes": [
+            6
+          ],
+          "hex": "60",
+          "rule": "96 mod 98 = 96",
+          "result": "Zen Old Mincho"
+        },
+        {
+          "dimension": "body face",
+          "bytes": [
+            7
+          ],
+          "hex": "1d",
+          "rule": "29 mod 62 = 29",
+          "result": "Josefin Sans"
+        },
+        {
+          "dimension": "display case · weight",
+          "bytes": [
+            8
+          ],
+          "hex": "36",
+          "rule": "54 mod 4 = 2; ⌊54/4⌋ mod 2",
+          "result": "lower, 700"
+        },
+        {
+          "dimension": "display tracking",
+          "bytes": [
+            9
+          ],
+          "hex": "af",
+          "rule": "−0.04 + 175/255 × 0.24",
+          "result": "0.125em"
+        },
+        {
+          "dimension": "type scale ratio",
+          "bytes": [
+            10
+          ],
+          "hex": "35",
+          "rule": "1.067 + 53/255 × 0.551",
+          "result": "1.182"
+        },
+        {
+          "dimension": "density",
+          "bytes": [
+            11
+          ],
+          "hex": "2c",
+          "rule": "t = 44/255",
+          "result": "t 0.173: base 17.5px, line-height 1.6, unit 9px"
+        },
+        {
+          "dimension": "grid columns · gutter",
+          "bytes": [
+            12
+          ],
+          "hex": "4c",
+          "rule": "3 + 76 mod 10; unit × (1 + ⌊76/10⌋ mod 4)",
+          "result": "9 columns, 36px gutter"
+        },
+        {
+          "dimension": "text block span · start",
+          "bytes": [
+            13
+          ],
+          "hex": "6d",
+          "rule": "span 13/15, start 6/15",
+          "result": "columns 1–8 of 9"
+        },
+        {
+          "dimension": "first-screen height",
+          "bytes": [
+            14
+          ],
+          "hex": "9d",
+          "rule": "45 + 157/255 × 55",
+          "result": "79%"
+        },
+        {
+          "dimension": "sections · separator",
+          "bytes": [
+            15
+          ],
+          "hex": "52",
+          "rule": "3 + 82 mod 6; ⌊82/6⌋ mod 5",
+          "result": "7 sections, space"
+        },
+        {
+          "dimension": "anchor subject · size",
+          "bytes": [
+            16
+          ],
+          "hex": "58",
+          "rule": "88 mod 8; 25 + ⌊88/8⌋/31 × 75",
+          "result": "headline, 52%"
+        },
+        {
+          "dimension": "anchor position · rotation",
+          "bytes": [
+            17
+          ],
+          "hex": "96",
+          "rule": "x 6/15; ((9) − 7.5)/7.5 × 8",
+          "result": "x 0.4, 1.5°"
+        },
+        {
+          "dimension": "motif shape · size",
+          "bytes": [
+            18
+          ],
+          "hex": "49",
+          "rule": "73 mod 12; unit × (1 + ⌊73/12⌋ mod 8)",
+          "result": "dots, 63px"
+        },
+        {
+          "dimension": "motif placement · angle",
+          "bytes": [
+            19
+          ],
+          "hex": "70",
+          "rule": "112 mod 4; ⌊112/4⌋ × 180/63",
+          "result": "edges, 80°"
+        },
+        {
+          "dimension": "radius · border",
+          "bytes": [
+            20
+          ],
+          "hex": "e3",
+          "rule": "RADII[227 mod 8]; ⌊227/8⌋ mod 4; ⌊227/32⌋ mod 4",
+          "result": "0px radius, 0px dotted border"
+        },
+        {
+          "dimension": "shadow · texture",
+          "bytes": [
+            21
+          ],
+          "hex": "2c",
+          "rule": "44 & 3; (44 >> 2) & 3; 3 + 2 × 0.6",
+          "result": "no shadow, dot-screen 4.2%"
+        },
+        {
+          "dimension": "motion property · duration",
+          "bytes": [
+            22
+          ],
+          "hex": "07",
+          "rule": "⌊7/64⌋; (7 mod 64)/63 × 600",
+          "result": "opacity, 70ms"
+        },
+        {
+          "dimension": "easing",
+          "bytes": [
+            23
+          ],
+          "hex": "c1",
+          "rule": "193 ≥ 32 → cubic-bezier from bits",
+          "result": "cubic-bezier(0, 1.2, 0.37, 1)"
+        },
+        {
+          "dimension": "voice person · headline form",
+          "bytes": [
+            24
+          ],
+          "hex": "8a",
+          "rule": "138 mod 4; ⌊138/4⌋ mod 6",
+          "result": "you, number-first"
+        },
+        {
+          "dimension": "sentence length · register",
+          "bytes": [
+            25
+          ],
+          "hex": "78",
+          "rule": "3 + (120 & 15); (120 >> 4)/15",
+          "result": "11 words, register 0.47"
+        },
+        {
+          "dimension": "twist target",
+          "bytes": [
+            26
+          ],
+          "hex": "42",
+          "rule": "66 mod 9",
+          "result": "footer"
+        },
+        {
+          "dimension": "twist operation · amount",
+          "bytes": [
+            27
+          ],
+          "hex": "19",
+          "rule": "25 mod 10; ⌊25/10⌋",
+          "result": "repeat, 2"
+        },
+        {
+          "dimension": "CJK display face",
+          "bytes": [
+            29
+          ],
+          "hex": "84",
+          "rule": "132 mod 14",
+          "result": "Noto Sans SC",
+          "note": "used on Chinese pages"
+        },
+        {
+          "dimension": "mono face",
+          "bytes": [
+            30
+          ],
+          "hex": "0a",
+          "rule": "10 mod 8",
+          "result": "Courier Prime"
+        }
+      ]
+    },
+    {
+      "number": 3,
+      "slug": "03-1cd7911b",
+      "ref": "1cd7911b8574fe1900d372c843e42efbd961ed3c5dbc6436b17d4b2c7bbc2304",
+      "hash": "1cd7911b8574fe1900d372c843e42efbd961ed3c5dbc6436b17d4b2c7bbc2304",
+      "short": "1cd7911b",
+      "algorithm": "hash-design/v2",
+      "library": "bd20321c36ab",
+      "constraints": {
+        "lightOnly": false,
+        "darkOnly": false,
+        "reducedMotion": false,
+        "brandColors": []
+      },
+      "content": {
+        "subject": "Sluice — self-hosted webhook inbox",
+        "facts": [
+          "Name: Sluice — a self-hosted inbox for webhooks",
+          "What it does: gives you a public URL for webhooks, stores every delivery, and forwards it to your local or internal service",
+          "One static binary, about 11 MB, for Linux, macOS and Windows on amd64 and arm64",
+          "Storage: a single SQLite file; no Redis, no Postgres, no queue to run",
+          "Install: curl -fsSL https://sluice.example/install.sh | sh",
+          "Start: sluice serve --forward http://localhost:3000",
+          "Retries failed forwards with exponential backoff for up to 72 hours",
+          "Replay any stored delivery: sluice replay <delivery-id>",
+          "Verifies HMAC-SHA256 signatures and rejects deliveries older than 5 minutes",
+          "Web UI on port 8081: search deliveries by path, header or body text",
+          "Keeps deliveries for 30 days by default; change it with --retain",
+          "1,800 deliveries per second on a 2-vCPU VM, in the project's own benchmark",
+          "No hosted service, no account, no telemetry",
+          "Written in Go; MIT licence; 41 contributors",
+          "Current version 0.9.2, released 14 October 2026",
+          "Maintainer: Ines Okafor, who started it in 2023 after losing a weekend of payment webhooks"
+        ],
+        "language": "en"
+      },
+      "label": "light · 41° · Permanent Marker / IBM Plex Sans Condensed · 10 col",
+      "palette": {
+        "polarity": "light",
+        "hue": 40.56,
+        "paperL": 0.932,
+        "paperC": 0.005,
+        "accentC": 0.153,
+        "accent2Offset": 166.47,
+        "colors": {
+          "paper": "#ece7e6",
+          "ink": "#403531",
+          "muted": "#72645f",
+          "accent": "#ce5f34",
+          "accent2": "#0093a1",
+          "rule": "#bbafab",
+          "panel": "#e2d7d3"
+        }
+      },
+      "contrast": {
+        "lines": [
+          {
+            "pair": "ink on paper",
+            "ratio": 9.67,
+            "verdict": "AAA — any text"
+          },
+          {
+            "pair": "muted on paper",
+            "ratio": 4.63,
+            "verdict": "AA — body text OK"
+          },
+          {
+            "pair": "ink on panel",
+            "ratio": 8.41,
+            "verdict": "AAA — any text"
+          },
+          {
+            "pair": "accent on paper",
+            "ratio": 3.23,
+            "verdict": "large text / UI marks only (≥24px or bold ≥19px)"
+          },
+          {
+            "pair": "accent2 on paper",
+            "ratio": 3.01,
+            "verdict": "large text / UI marks only (≥24px or bold ≥19px)"
+          },
+          {
+            "pair": "#000000 on accent",
+            "ratio": 5.31,
+            "verdict": "AA — body text OK"
+          },
+          {
+            "pair": "#000000 on accent2",
+            "ratio": 5.69,
+            "verdict": "AA — body text OK"
+          }
+        ],
+        "onAccent": "#000000",
+        "onAccent2": "#000000"
+      },
+      "type": {
+        "display": {
+          "family": "Permanent Marker",
+          "weights": [
+            400
+          ],
+          "fallback": "\"Marker Felt\", cursive",
+          "source": "google"
+        },
+        "body": {
+          "family": "IBM Plex Sans Condensed",
+          "weights": [
+            400,
+            500,
+            600
+          ],
+          "fallback": "\"Arial Narrow\", sans-serif",
+          "source": "google"
+        },
+        "mono": {
+          "family": "Cousine",
+          "weights": [
+            400,
+            700
+          ],
+          "fallback": "\"Courier New\", Courier, monospace",
+          "source": "google"
+        },
+        "cjk": {
+          "display": "Noto Sans SC",
+          "body": "Noto Sans SC"
+        },
+        "case": {
+          "id": "as-written",
+          "text": "as written (sentence case)"
+        },
+        "weight": 400,
+        "tracking": 0.159
+      },
+      "fonts": {
+        "stacks": {
+          "display": "\"Permanent Marker\", \"Marker Felt\", cursive",
+          "body": "\"IBM Plex Sans Condensed\", \"Arial Narrow\", sans-serif",
+          "mono": "Cousine, \"Courier New\", Courier, monospace"
+        },
+        "googleFontsUrl": "https://fonts.googleapis.com/css2?family=Permanent+Marker&family=IBM+Plex+Sans+Condensed:wght@400;500;600&family=Cousine:wght@400;700&display=swap"
+      },
+      "scale": {
+        "ratio": 1.313,
+        "steps": [
+          {
+            "step": -2,
+            "px": 8.7,
+            "rem": 0.544
+          },
+          {
+            "step": -1,
+            "px": 11.4,
+            "rem": 0.714
+          },
+          {
+            "step": 0,
+            "px": 15,
+            "rem": 0.938
+          },
+          {
+            "step": 1,
+            "px": 19.7,
+            "rem": 1.231
+          },
+          {
+            "step": 2,
+            "px": 25.9,
+            "rem": 1.616
+          },
+          {
+            "step": 3,
+            "px": 34,
+            "rem": 2.122
+          },
+          {
+            "step": 4,
+            "px": 44.6,
+            "rem": 2.786
+          },
+          {
+            "step": 5,
+            "px": 58.5,
+            "rem": 3.658
+          },
+          {
+            "step": 6,
+            "px": 76.9,
+            "rem": 4.804
+          },
+          {
+            "step": 7,
+            "px": 100.9,
+            "rem": 6.307
+          }
+        ]
+      },
+      "density": {
+        "t": 0.784,
+        "baseSize": 15,
+        "lineHeight": 1.41,
+        "unit": 5,
+        "sectionGap": 61,
+        "maxWidth": 1360
+      },
+      "layout": {
+        "columns": 10,
+        "gutter": 15,
+        "span": 5,
+        "start": 6,
+        "firstScreen": 55,
+        "sections": 8,
+        "separator": {
+          "id": "bands",
+          "text": "full-width bands alternating paper and panel"
+        }
+      },
+      "anchor": {
+        "subject": {
+          "id": "number",
+          "text": "one number taken from the facts"
+        },
+        "size": 90,
+        "x": 0.07,
+        "rotation": -1.5
+      },
+      "motif": {
+        "shape": {
+          "id": "half-circles",
+          "text": "half circles"
+        },
+        "size": 20,
+        "placement": {
+          "id": "edges",
+          "text": "along the page edges"
+        },
+        "angle": 43
+      },
+      "surface": {
+        "radius": 4,
+        "border": 3,
+        "borderStyle": "dashed",
+        "shadow": 0,
+        "texture": {
+          "id": "dot-screen",
+          "text": "a fine dot screen (radial-gradient pattern)"
+        },
+        "textureOpacity": 9.6
+      },
+      "motion": {
+        "still": false,
+        "property": {
+          "id": "transform",
+          "text": "position (transform: translate)"
+        },
+        "duration": 340,
+        "easing": "cubic-bezier(0.64, 0.2, 0.63, 1)"
+      },
+      "voice": {
+        "person": {
+          "id": "we",
+          "text": "first person plural (\"we\")"
+        },
+        "headline": {
+          "id": "label",
+          "text": "a label: a noun phrase, no verb"
+        },
+        "sentenceWords": 16,
+        "register": 0.47
+      },
+      "twist": {
+        "target": {
+          "id": "footer",
+          "text": "the footer"
+        },
+        "operation": {
+          "id": "invert",
+          "text": "inverted: paper-coloured on ink"
+        },
+        "amount": 4,
+        "text": "The footer: inverted: paper-coloured on ink."
+      },
+      "bans": [
+        "generic-sans",
+        "purple-blue-gradient",
+        "centered-hero-two-buttons",
+        "identical-cards",
+        "glassmorphism",
+        "emoji-icons",
+        "buzzword-copy",
+        "soft-shadow-rounded",
+        "invented-facts",
+        "tailwind-default-palette",
+        "scroll-fade-everything",
+        "pill-badge-sparkle",
+        "placeholder-content",
+        "template-sections"
+      ],
+      "tokensCss": "/* hash-design hash-design/v2 · 1cd7911b */\n:root {\n  --paper: #ece7e6;\n  --ink: #403531;\n  --muted: #72645f;\n  --accent: #ce5f34;\n  --on-accent: #000000;\n  --accent2: #0093a1;\n  --on-accent2: #000000;\n  --rule: #bbafab;\n  --panel: #e2d7d3;\n\n  --font-display: \"Permanent Marker\", \"Marker Felt\", cursive;\n  --font-body: \"IBM Plex Sans Condensed\", \"Arial Narrow\", sans-serif;\n  --font-mono: Cousine, \"Courier New\", Courier, monospace;\n  --display-weight: 400;\n  --display-tracking: 0.159em;\n\n  --step-n2: 0.544rem; /* 8.7px */\n  --step-n1: 0.714rem; /* 11.4px */\n  --step-0: 0.938rem; /* 15px */\n  --step-1: 1.231rem; /* 19.7px */\n  --step-2: 1.616rem; /* 25.9px */\n  --step-3: 2.122rem; /* 34px */\n  --step-4: 2.786rem; /* 44.6px */\n  --step-5: 3.658rem; /* 58.5px */\n  --step-6: 4.804rem; /* 76.9px */\n  --step-7: 6.307rem; /* 100.9px */\n  --leading: 1.41;\n\n  --space-1: 5px;\n  --space-2: 10px;\n  --space-3: 15px;\n  --space-4: 20px;\n  --space-5: 25px;\n  --space-6: 30px;\n  --space-7: 35px;\n  --space-8: 40px;\n  --section-gap: 61px;\n  --max-width: 1360px;\n  --columns: 10;\n  --gutter: 15px;\n\n  --radius: 4px;\n  --border: 3px dashed var(--rule);\n  --shadow: none;\n\n  --motion-duration: 340ms;\n  --motion-easing: cubic-bezier(0.64, 0.2, 0.63, 1);\n}\n\nhtml { font-size: 93.8%; }\nbody { background: var(--paper); color: var(--ink); font-family: var(--font-body); line-height: var(--leading); }\n@media (prefers-reduced-motion: reduce) {\n  *, *::before, *::after { animation: none !important; transition: none !important; }\n}",
+      "trace": [
+        {
+          "dimension": "hue",
+          "bytes": [
+            0,
+            1
+          ],
+          "hex": "1c d7",
+          "rule": "0x1cd7 = 7383; 7383/65536 × 360",
+          "result": "40.56°"
+        },
+        {
+          "dimension": "polarity · paper lightness",
+          "bytes": [
+            2
+          ],
+          "hex": "91",
+          "rule": "145 ≥ 77 → light; L = 0.90 + 68/178 × 0.085",
+          "result": "light, L 0.932"
+        },
+        {
+          "dimension": "paper chroma",
+          "bytes": [
+            3
+          ],
+          "hex": "1b",
+          "rule": "27/255 × 0.045",
+          "result": "0.005"
+        },
+        {
+          "dimension": "accent chroma",
+          "bytes": [
+            4
+          ],
+          "hex": "85",
+          "rule": "0.07 + 133/255 × 0.16",
+          "result": "0.153"
+        },
+        {
+          "dimension": "accent2 hue offset",
+          "bytes": [
+            5
+          ],
+          "hex": "74",
+          "rule": "30 + 116/255 × 300",
+          "result": "+166.47°"
+        },
+        {
+          "dimension": "display face",
+          "bytes": [
+            6
+          ],
+          "hex": "fe",
+          "rule": "254 mod 98 = 58",
+          "result": "Permanent Marker"
+        },
+        {
+          "dimension": "body face",
+          "bytes": [
+            7
+          ],
+          "hex": "19",
+          "rule": "25 mod 62 = 25",
+          "result": "IBM Plex Sans Condensed"
+        },
+        {
+          "dimension": "display case · weight",
+          "bytes": [
+            8
+          ],
+          "hex": "00",
+          "rule": "0 mod 4 = 0; ⌊0/4⌋ mod 1",
+          "result": "as-written, 400"
+        },
+        {
+          "dimension": "display tracking",
+          "bytes": [
+            9
+          ],
+          "hex": "d3",
+          "rule": "−0.04 + 211/255 × 0.24",
+          "result": "0.159em"
+        },
+        {
+          "dimension": "type scale ratio",
+          "bytes": [
+            10
+          ],
+          "hex": "72",
+          "rule": "1.067 + 114/255 × 0.551",
+          "result": "1.313"
+        },
+        {
+          "dimension": "density",
+          "bytes": [
+            11
+          ],
+          "hex": "c8",
+          "rule": "t = 200/255",
+          "result": "t 0.784: base 15px, line-height 1.41, unit 5px"
+        },
+        {
+          "dimension": "grid columns · gutter",
+          "bytes": [
+            12
+          ],
+          "hex": "43",
+          "rule": "3 + 67 mod 10; unit × (1 + ⌊67/10⌋ mod 4)",
+          "result": "10 columns, 15px gutter"
+        },
+        {
+          "dimension": "text block span · start",
+          "bytes": [
+            13
+          ],
+          "hex": "e4",
+          "rule": "span 4/15, start 14/15",
+          "result": "columns 6–10 of 10"
+        },
+        {
+          "dimension": "first-screen height",
+          "bytes": [
+            14
+          ],
+          "hex": "2e",
+          "rule": "45 + 46/255 × 55",
+          "result": "55%"
+        },
+        {
+          "dimension": "sections · separator",
+          "bytes": [
+            15
+          ],
+          "hex": "fb",
+          "rule": "3 + 251 mod 6; ⌊251/6⌋ mod 5",
+          "result": "8 sections, bands"
+        },
+        {
+          "dimension": "anchor subject · size",
+          "bytes": [
+            16
+          ],
+          "hex": "d9",
+          "rule": "217 mod 8; 25 + ⌊217/8⌋/31 × 75",
+          "result": "number, 90%"
+        },
+        {
+          "dimension": "anchor position · rotation",
+          "bytes": [
+            17
+          ],
+          "hex": "61",
+          "rule": "x 1/15; ((6) − 7.5)/7.5 × 8",
+          "result": "x 0.07, -1.5°"
+        },
+        {
+          "dimension": "motif shape · size",
+          "bytes": [
+            18
+          ],
+          "hex": "ed",
+          "rule": "237 mod 12; unit × (1 + ⌊237/12⌋ mod 8)",
+          "result": "half-circles, 20px"
+        },
+        {
+          "dimension": "motif placement · angle",
+          "bytes": [
+            19
+          ],
+          "hex": "3c",
+          "rule": "60 mod 4; ⌊60/4⌋ × 180/63",
+          "result": "edges, 43°"
+        },
+        {
+          "dimension": "radius · border",
+          "bytes": [
+            20
+          ],
+          "hex": "5d",
+          "rule": "RADII[93 mod 8]; ⌊93/8⌋ mod 4; ⌊93/32⌋ mod 4",
+          "result": "4px radius, 3px dashed border"
+        },
+        {
+          "dimension": "shadow · texture",
+          "bytes": [
+            21
+          ],
+          "hex": "bc",
+          "rule": "188 & 3; (188 >> 2) & 3; 3 + 11 × 0.6",
+          "result": "no shadow, dot-screen 9.6%"
+        },
+        {
+          "dimension": "motion property · duration",
+          "bytes": [
+            22
+          ],
+          "hex": "64",
+          "rule": "⌊100/64⌋; (100 mod 64)/63 × 600",
+          "result": "transform, 340ms"
+        },
+        {
+          "dimension": "easing",
+          "bytes": [
+            23
+          ],
+          "hex": "36",
+          "rule": "54 ≥ 32 → cubic-bezier from bits",
+          "result": "cubic-bezier(0.64, 0.2, 0.63, 1)"
+        },
+        {
+          "dimension": "voice person · headline form",
+          "bytes": [
+            24
+          ],
+          "hex": "b1",
+          "rule": "177 mod 4; ⌊177/4⌋ mod 6",
+          "result": "we, label"
+        },
+        {
+          "dimension": "sentence length · register",
+          "bytes": [
+            25
+          ],
+          "hex": "7d",
+          "rule": "3 + (125 & 15); (125 >> 4)/15",
+          "result": "16 words, register 0.47"
+        },
+        {
+          "dimension": "twist target",
+          "bytes": [
+            26
+          ],
+          "hex": "4b",
+          "rule": "75 mod 9",
+          "result": "footer"
+        },
+        {
+          "dimension": "twist operation · amount",
+          "bytes": [
+            27
+          ],
+          "hex": "2c",
+          "rule": "44 mod 10; ⌊44/10⌋",
+          "result": "invert, 4"
+        },
+        {
+          "dimension": "CJK display face",
+          "bytes": [
+            29
+          ],
+          "hex": "bc",
+          "rule": "188 mod 14",
+          "result": "Noto Sans SC",
+          "note": "used on Chinese pages"
+        },
+        {
+          "dimension": "mono face",
+          "bytes": [
+            30
+          ],
+          "hex": "23",
+          "rule": "35 mod 8",
+          "result": "Cousine"
+        }
+      ]
+    },
+    {
+      "number": 4,
+      "slug": "04-6f5edb67",
+      "ref": "6f5edb678505792a5df56fcaf6fcfb16f70d7cb066532939b252c0df0136a59b",
+      "hash": "6f5edb678505792a5df56fcaf6fcfb16f70d7cb066532939b252c0df0136a59b",
+      "short": "6f5edb67",
+      "algorithm": "hash-design/v2",
+      "library": "bd20321c36ab",
+      "constraints": {
+        "lightOnly": false,
+        "darkOnly": false,
+        "reducedMotion": false,
+        "brandColors": []
+      },
+      "content": {
+        "subject": "Sluice — self-hosted webhook inbox",
+        "facts": [
+          "Name: Sluice — a self-hosted inbox for webhooks",
+          "What it does: gives you a public URL for webhooks, stores every delivery, and forwards it to your local or internal service",
+          "One static binary, about 11 MB, for Linux, macOS and Windows on amd64 and arm64",
+          "Storage: a single SQLite file; no Redis, no Postgres, no queue to run",
+          "Install: curl -fsSL https://sluice.example/install.sh | sh",
+          "Start: sluice serve --forward http://localhost:3000",
+          "Retries failed forwards with exponential backoff for up to 72 hours",
+          "Replay any stored delivery: sluice replay <delivery-id>",
+          "Verifies HMAC-SHA256 signatures and rejects deliveries older than 5 minutes",
+          "Web UI on port 8081: search deliveries by path, header or body text",
+          "Keeps deliveries for 30 days by default; change it with --retain",
+          "1,800 deliveries per second on a 2-vCPU VM, in the project's own benchmark",
+          "No hosted service, no account, no telemetry",
+          "Written in Go; MIT licence; 41 contributors",
+          "Current version 0.9.2, released 14 October 2026",
+          "Maintainer: Ines Okafor, who started it in 2023 after losing a weekend of payment webhooks"
+        ],
+        "language": "en"
+      },
+      "label": "light · 157° · Cormorant SC / Overpass · 9 col",
+      "palette": {
+        "polarity": "light",
+        "hue": 156.61,
+        "paperL": 0.968,
+        "paperC": 0.018,
+        "accentC": 0.153,
+        "accent2Offset": 35.88,
+        "colors": {
+          "paper": "#ebf8f0",
+          "ink": "#2b3d32",
+          "muted": "#647169",
+          "accent": "#009c5d",
+          "accent2": "#009d9a",
+          "rule": "#afc3b6",
+          "panel": "#d8ebdf"
+        }
+      },
+      "contrast": {
+        "lines": [
+          {
+            "pair": "ink on paper",
+            "ratio": 10.58,
+            "verdict": "AAA — any text"
+          },
+          {
+            "pair": "muted on paper",
+            "ratio": 4.68,
+            "verdict": "AA — body text OK"
+          },
+          {
+            "pair": "ink on panel",
+            "ratio": 9.29,
+            "verdict": "AAA — any text"
+          },
+          {
+            "pair": "accent on paper",
+            "ratio": 3.25,
+            "verdict": "large text / UI marks only (≥24px or bold ≥19px)"
+          },
+          {
+            "pair": "accent2 on paper",
+            "ratio": 3.06,
+            "verdict": "large text / UI marks only (≥24px or bold ≥19px)"
+          },
+          {
+            "pair": "#000000 on accent",
+            "ratio": 5.91,
+            "verdict": "AA — body text OK"
+          },
+          {
+            "pair": "#000000 on accent2",
+            "ratio": 6.29,
+            "verdict": "AA — body text OK"
+          }
+        ],
+        "onAccent": "#000000",
+        "onAccent2": "#000000"
+      },
+      "type": {
+        "display": {
+          "family": "Cormorant SC",
+          "weights": [
+            500,
+            600
+          ],
+          "fallback": "Garamond, Georgia, serif",
+          "source": "google"
+        },
+        "body": {
+          "family": "Overpass",
+          "weights": [
+            400,
+            600
+          ],
+          "fallback": "Arial, sans-serif",
+          "source": "google"
+        },
+        "mono": {
+          "family": "Overpass Mono",
+          "weights": [
+            400,
+            600
+          ],
+          "fallback": "\"Courier New\", monospace",
+          "source": "google"
+        },
+        "cjk": {
+          "display": "ZCOOL XiaoWei",
+          "body": "Noto Sans SC"
+        },
+        "case": {
+          "id": "upper",
+          "text": "UPPERCASE"
+        },
+        "weight": 600,
+        "tracking": 0.191
+      },
+      "fonts": {
+        "stacks": {
+          "display": "\"Cormorant SC\", Garamond, Georgia, serif",
+          "body": "Overpass, Arial, sans-serif",
+          "mono": "\"Overpass Mono\", \"Courier New\", monospace"
+        },
+        "googleFontsUrl": "https://fonts.googleapis.com/css2?family=Cormorant+SC:wght@500;600&family=Overpass:wght@400;600&family=Overpass+Mono:wght@400;600&display=swap"
+      },
+      "scale": {
+        "ratio": 1.307,
+        "steps": [
+          {
+            "step": -2,
+            "px": 8.8,
+            "rem": 0.549
+          },
+          {
+            "step": -1,
+            "px": 11.5,
+            "rem": 0.717
+          },
+          {
+            "step": 0,
+            "px": 15,
+            "rem": 0.938
+          },
+          {
+            "step": 1,
+            "px": 19.6,
+            "rem": 1.225
+          },
+          {
+            "step": 2,
+            "px": 25.6,
+            "rem": 1.601
+          },
+          {
+            "step": 3,
+            "px": 33.5,
+            "rem": 2.093
+          },
+          {
+            "step": 4,
+            "px": 43.8,
+            "rem": 2.736
+          },
+          {
+            "step": 5,
+            "px": 57.2,
+            "rem": 3.576
+          },
+          {
+            "step": 6,
+            "px": 74.8,
+            "rem": 4.673
+          },
+          {
+            "step": 7,
+            "px": 97.7,
+            "rem": 6.108
+          }
+        ]
+      },
+      "density": {
+        "t": 0.792,
+        "baseSize": 15,
+        "lineHeight": 1.41,
+        "unit": 5,
+        "sectionGap": 60,
+        "maxWidth": 1370
+      },
+      "layout": {
+        "columns": 9,
+        "gutter": 5,
+        "span": 8,
+        "start": 2,
+        "firstScreen": 99,
+        "sections": 7,
+        "separator": {
+          "id": "space",
+          "text": "space only: the section gap, no lines or fills"
+        }
+      },
+      "anchor": {
+        "subject": {
+          "id": "motif",
+          "text": "the motif drawn at full scale"
+        },
+        "size": 98,
+        "x": 0.87,
+        "rotation": -8
+      },
+      "motif": {
+        "shape": {
+          "id": "crosses",
+          "text": "small crosses (+)"
+        },
+        "size": 15,
+        "placement": {
+          "id": "edges",
+          "text": "along the page edges"
+        },
+        "angle": 126
+      },
+      "surface": {
+        "radius": 8,
+        "border": 0,
+        "borderStyle": "dotted",
+        "shadow": 6,
+        "texture": {
+          "id": "none",
+          "text": "flat colour, no texture"
+        },
+        "textureOpacity": 6
+      },
+      "motion": {
+        "still": false,
+        "property": {
+          "id": "opacity",
+          "text": "opacity"
+        },
+        "duration": 390,
+        "easing": "cubic-bezier(0.77, 0.2, 0.37, 1)"
+      },
+      "voice": {
+        "person": {
+          "id": "you",
+          "text": "second person (\"you\")"
+        },
+        "headline": {
+          "id": "label",
+          "text": "a label: a noun phrase, no verb"
+        },
+        "sentenceWords": 5,
+        "register": 0.33
+      },
+      "twist": {
+        "target": {
+          "id": "footer",
+          "text": "the footer"
+        },
+        "operation": {
+          "id": "undersize",
+          "text": "set far smaller than expected"
+        },
+        "amount": 22,
+        "text": "Set the footer at 0.34× the size it would normally get."
+      },
+      "bans": [
+        "generic-sans",
+        "purple-blue-gradient",
+        "centered-hero-two-buttons",
+        "identical-cards",
+        "glassmorphism",
+        "emoji-icons",
+        "buzzword-copy",
+        "soft-shadow-rounded",
+        "invented-facts",
+        "tailwind-default-palette",
+        "scroll-fade-everything",
+        "pill-badge-sparkle",
+        "placeholder-content",
+        "template-sections"
+      ],
+      "tokensCss": "/* hash-design hash-design/v2 · 6f5edb67 */\n:root {\n  --paper: #ebf8f0;\n  --ink: #2b3d32;\n  --muted: #647169;\n  --accent: #009c5d;\n  --on-accent: #000000;\n  --accent2: #009d9a;\n  --on-accent2: #000000;\n  --rule: #afc3b6;\n  --panel: #d8ebdf;\n\n  --font-display: \"Cormorant SC\", Garamond, Georgia, serif;\n  --font-body: Overpass, Arial, sans-serif;\n  --font-mono: \"Overpass Mono\", \"Courier New\", monospace;\n  --display-weight: 600;\n  --display-tracking: 0.191em;\n\n  --step-n2: 0.549rem; /* 8.8px */\n  --step-n1: 0.717rem; /* 11.5px */\n  --step-0: 0.938rem; /* 15px */\n  --step-1: 1.225rem; /* 19.6px */\n  --step-2: 1.601rem; /* 25.6px */\n  --step-3: 2.093rem; /* 33.5px */\n  --step-4: 2.736rem; /* 43.8px */\n  --step-5: 3.576rem; /* 57.2px */\n  --step-6: 4.673rem; /* 74.8px */\n  --step-7: 6.108rem; /* 97.7px */\n  --leading: 1.41;\n\n  --space-1: 5px;\n  --space-2: 10px;\n  --space-3: 15px;\n  --space-4: 20px;\n  --space-5: 25px;\n  --space-6: 30px;\n  --space-7: 35px;\n  --space-8: 40px;\n  --section-gap: 60px;\n  --max-width: 1370px;\n  --columns: 9;\n  --gutter: 5px;\n\n  --radius: 8px;\n  --border: 0px dotted var(--rule);\n  --shadow: 6px 6px 0 var(--ink);\n\n  --motion-duration: 390ms;\n  --motion-easing: cubic-bezier(0.77, 0.2, 0.37, 1);\n}\n\nhtml { font-size: 93.8%; }\nbody { background: var(--paper); color: var(--ink); font-family: var(--font-body); line-height: var(--leading); }\n@media (prefers-reduced-motion: reduce) {\n  *, *::before, *::after { animation: none !important; transition: none !important; }\n}",
+      "trace": [
+        {
+          "dimension": "hue",
+          "bytes": [
+            0,
+            1
+          ],
+          "hex": "6f 5e",
+          "rule": "0x6f5e = 28510; 28510/65536 × 360",
+          "result": "156.61°"
+        },
+        {
+          "dimension": "polarity · paper lightness",
+          "bytes": [
+            2
+          ],
+          "hex": "db",
+          "rule": "219 ≥ 77 → light; L = 0.90 + 142/178 × 0.085",
+          "result": "light, L 0.968"
+        },
+        {
+          "dimension": "paper chroma",
+          "bytes": [
+            3
+          ],
+          "hex": "67",
+          "rule": "103/255 × 0.045",
+          "result": "0.018"
+        },
+        {
+          "dimension": "accent chroma",
+          "bytes": [
+            4
+          ],
+          "hex": "85",
+          "rule": "0.07 + 133/255 × 0.16",
+          "result": "0.153"
+        },
+        {
+          "dimension": "accent2 hue offset",
+          "bytes": [
+            5
+          ],
+          "hex": "05",
+          "rule": "30 + 5/255 × 300",
+          "result": "+35.88°"
+        },
+        {
+          "dimension": "display face",
+          "bytes": [
+            6
+          ],
+          "hex": "79",
+          "rule": "121 mod 98 = 23",
+          "result": "Cormorant SC"
+        },
+        {
+          "dimension": "body face",
+          "bytes": [
+            7
+          ],
+          "hex": "2a",
+          "rule": "42 mod 62 = 42",
+          "result": "Overpass"
+        },
+        {
+          "dimension": "display case · weight",
+          "bytes": [
+            8
+          ],
+          "hex": "5d",
+          "rule": "93 mod 4 = 1; ⌊93/4⌋ mod 2",
+          "result": "upper, 600"
+        },
+        {
+          "dimension": "display tracking",
+          "bytes": [
+            9
+          ],
+          "hex": "f5",
+          "rule": "−0.04 + 245/255 × 0.24",
+          "result": "0.191em"
+        },
+        {
+          "dimension": "type scale ratio",
+          "bytes": [
+            10
+          ],
+          "hex": "6f",
+          "rule": "1.067 + 111/255 × 0.551",
+          "result": "1.307"
+        },
+        {
+          "dimension": "density",
+          "bytes": [
+            11
+          ],
+          "hex": "ca",
+          "rule": "t = 202/255",
+          "result": "t 0.792: base 15px, line-height 1.41, unit 5px"
+        },
+        {
+          "dimension": "grid columns · gutter",
+          "bytes": [
+            12
+          ],
+          "hex": "f6",
+          "rule": "3 + 246 mod 10; unit × (1 + ⌊246/10⌋ mod 4)",
+          "result": "9 columns, 5px gutter"
+        },
+        {
+          "dimension": "text block span · start",
+          "bytes": [
+            13
+          ],
+          "hex": "fc",
+          "rule": "span 12/15, start 15/15",
+          "result": "columns 2–9 of 9"
+        },
+        {
+          "dimension": "first-screen height",
+          "bytes": [
+            14
+          ],
+          "hex": "fb",
+          "rule": "45 + 251/255 × 55",
+          "result": "99%"
+        },
+        {
+          "dimension": "sections · separator",
+          "bytes": [
+            15
+          ],
+          "hex": "16",
+          "rule": "3 + 22 mod 6; ⌊22/6⌋ mod 5",
+          "result": "7 sections, space"
+        },
+        {
+          "dimension": "anchor subject · size",
+          "bytes": [
+            16
+          ],
+          "hex": "f7",
+          "rule": "247 mod 8; 25 + ⌊247/8⌋/31 × 75",
+          "result": "motif, 98%"
+        },
+        {
+          "dimension": "anchor position · rotation",
+          "bytes": [
+            17
+          ],
+          "hex": "0d",
+          "rule": "x 13/15; ((0) − 7.5)/7.5 × 8",
+          "result": "x 0.87, -8°"
+        },
+        {
+          "dimension": "motif shape · size",
+          "bytes": [
+            18
+          ],
+          "hex": "7c",
+          "rule": "124 mod 12; unit × (1 + ⌊124/12⌋ mod 8)",
+          "result": "crosses, 15px"
+        },
+        {
+          "dimension": "motif placement · angle",
+          "bytes": [
+            19
+          ],
+          "hex": "b0",
+          "rule": "176 mod 4; ⌊176/4⌋ × 180/63",
+          "result": "edges, 126°"
+        },
+        {
+          "dimension": "radius · border",
+          "bytes": [
+            20
+          ],
+          "hex": "66",
+          "rule": "RADII[102 mod 8]; ⌊102/8⌋ mod 4; ⌊102/32⌋ mod 4",
+          "result": "8px radius, 0px dotted border"
+        },
+        {
+          "dimension": "shadow · texture",
+          "bytes": [
+            21
+          ],
+          "hex": "53",
+          "rule": "83 & 3; (83 >> 2) & 3; 3 + 5 × 0.6",
+          "result": "6px hard shadow, none"
+        },
+        {
+          "dimension": "motion property · duration",
+          "bytes": [
+            22
+          ],
+          "hex": "29",
+          "rule": "⌊41/64⌋; (41 mod 64)/63 × 600",
+          "result": "opacity, 390ms"
+        },
+        {
+          "dimension": "easing",
+          "bytes": [
+            23
+          ],
+          "hex": "39",
+          "rule": "57 ≥ 32 → cubic-bezier from bits",
+          "result": "cubic-bezier(0.77, 0.2, 0.37, 1)"
+        },
+        {
+          "dimension": "voice person · headline form",
+          "bytes": [
+            24
+          ],
+          "hex": "b2",
+          "rule": "178 mod 4; ⌊178/4⌋ mod 6",
+          "result": "you, label"
+        },
+        {
+          "dimension": "sentence length · register",
+          "bytes": [
+            25
+          ],
+          "hex": "52",
+          "rule": "3 + (82 & 15); (82 >> 4)/15",
+          "result": "5 words, register 0.33"
+        },
+        {
+          "dimension": "twist target",
+          "bytes": [
+            26
+          ],
+          "hex": "c0",
+          "rule": "192 mod 9",
+          "result": "footer"
+        },
+        {
+          "dimension": "twist operation · amount",
+          "bytes": [
+            27
+          ],
+          "hex": "df",
+          "rule": "223 mod 10; ⌊223/10⌋",
+          "result": "undersize, 22"
+        },
+        {
+          "dimension": "CJK display face",
+          "bytes": [
+            29
+          ],
+          "hex": "36",
+          "rule": "54 mod 14",
+          "result": "ZCOOL XiaoWei",
+          "note": "used on Chinese pages"
+        },
+        {
+          "dimension": "mono face",
+          "bytes": [
+            30
+          ],
+          "hex": "a5",
+          "rule": "165 mod 8",
+          "result": "Overpass Mono"
+        }
+      ]
+    },
+    {
+      "number": 5,
+      "slug": "05-08b46918",
+      "ref": "08b4691844e6d5dfec8f67699f5a2ee99d6d45ab4b948f79e17097a21d3ecdab",
+      "hash": "08b4691844e6d5dfec8f67699f5a2ee99d6d45ab4b948f79e17097a21d3ecdab",
+      "short": "08b46918",
+      "algorithm": "hash-design/v2",
+      "library": "bd20321c36ab",
+      "constraints": {
+        "lightOnly": false,
+        "darkOnly": false,
+        "reducedMotion": false,
+        "brandColors": []
+      },
+      "content": {
+        "subject": "Sluice — self-hosted webhook inbox",
+        "facts": [
+          "Name: Sluice — a self-hosted inbox for webhooks",
+          "What it does: gives you a public URL for webhooks, stores every delivery, and forwards it to your local or internal service",
+          "One static binary, about 11 MB, for Linux, macOS and Windows on amd64 and arm64",
+          "Storage: a single SQLite file; no Redis, no Postgres, no queue to run",
+          "Install: curl -fsSL https://sluice.example/install.sh | sh",
+          "Start: sluice serve --forward http://localhost:3000",
+          "Retries failed forwards with exponential backoff for up to 72 hours",
+          "Replay any stored delivery: sluice replay <delivery-id>",
+          "Verifies HMAC-SHA256 signatures and rejects deliveries older than 5 minutes",
+          "Web UI on port 8081: search deliveries by path, header or body text",
+          "Keeps deliveries for 30 days by default; change it with --retain",
+          "1,800 deliveries per second on a 2-vCPU VM, in the project's own benchmark",
+          "No hosted service, no account, no telemetry",
+          "Written in Go; MIT licence; 41 contributors",
+          "Current version 0.9.2, released 14 October 2026",
+          "Maintainer: Ines Okafor, who started it in 2023 after losing a weekend of payment webhooks"
+        ],
+        "language": "en"
+      },
+      "label": "light · 12° · Bodoni Moda / Literata · 12 col",
+      "palette": {
+        "polarity": "light",
+        "hue": 12.24,
+        "paperL": 0.913,
+        "paperC": 0.004,
+        "accentC": 0.113,
+        "accent2Offset": 300.59,
+        "colors": {
+          "paper": "#e5e1e1",
+          "ink": "#403536",
+          "muted": "#6e5f60",
+          "accent": "#b9626e",
+          "accent2": "#9871af",
+          "rule": "#b4a8a9",
+          "panel": "#dbd0d1"
+        }
+      },
+      "contrast": {
+        "lines": [
+          {
+            "pair": "ink on paper",
+            "ratio": 9.09,
+            "verdict": "AAA — any text"
+          },
+          {
+            "pair": "muted on paper",
+            "ratio": 4.67,
+            "verdict": "AA — body text OK"
+          },
+          {
+            "pair": "ink on panel",
+            "ratio": 7.84,
+            "verdict": "AAA — any text"
+          },
+          {
+            "pair": "accent on paper",
+            "ratio": 3.22,
+            "verdict": "large text / UI marks only (≥24px or bold ≥19px)"
+          },
+          {
+            "pair": "accent2 on paper",
+            "ratio": 3.05,
+            "verdict": "large text / UI marks only (≥24px or bold ≥19px)"
+          },
+          {
+            "pair": "#000000 on accent",
+            "ratio": 5.04,
+            "verdict": "AA — body text OK"
+          },
+          {
+            "pair": "#000000 on accent2",
+            "ratio": 5.32,
+            "verdict": "AA — body text OK"
+          }
+        ],
+        "onAccent": "#000000",
+        "onAccent2": "#000000"
+      },
+      "type": {
+        "display": {
+          "family": "Bodoni Moda",
+          "weights": [
+            400,
+            500,
+            700
+          ],
+          "italic": true,
+          "fallback": "Didot, \"Bodoni 72\", serif",
+          "source": "google"
+        },
+        "body": {
+          "family": "Literata",
+          "weights": [
+            400,
+            600
+          ],
+          "italic": true,
+          "fallback": "Georgia, serif",
+          "source": "google"
+        },
+        "mono": {
+          "family": "Overpass Mono",
+          "weights": [
+            400,
+            600
+          ],
+          "fallback": "\"Courier New\", monospace",
+          "source": "google"
+        },
+        "cjk": {
+          "display": "Noto Sans SC",
+          "body": "Noto Serif SC"
+        },
+        "case": {
+          "id": "as-written",
+          "text": "as written (sentence case)"
+        },
+        "weight": 700,
+        "tracking": 0.095
+      },
+      "fonts": {
+        "stacks": {
+          "display": "\"Bodoni Moda\", Didot, \"Bodoni 72\", serif",
+          "body": "Literata, Georgia, serif",
+          "mono": "\"Overpass Mono\", \"Courier New\", monospace"
+        },
+        "googleFontsUrl": "https://fonts.googleapis.com/css2?family=Bodoni+Moda:ital,wght@0,400;0,500;0,700;1,400;1,500;1,700&family=Literata:ital,wght@0,400;0,600;1,400;1,600&family=Overpass+Mono:wght@400;600&display=swap"
+      },
+      "scale": {
+        "ratio": 1.29,
+        "steps": [
+          {
+            "step": -2,
+            "px": 9.9,
+            "rem": 0.62
+          },
+          {
+            "step": -1,
+            "px": 12.8,
+            "rem": 0.799
+          },
+          {
+            "step": 0,
+            "px": 16.5,
+            "rem": 1.031
+          },
+          {
+            "step": 1,
+            "px": 21.3,
+            "rem": 1.33
+          },
+          {
+            "step": 2,
+            "px": 27.5,
+            "rem": 1.716
+          },
+          {
+            "step": 3,
+            "px": 35.4,
+            "rem": 2.214
+          },
+          {
+            "step": 4,
+            "px": 45.7,
+            "rem": 2.856
+          },
+          {
+            "step": 5,
+            "px": 58.9,
+            "rem": 3.684
+          },
+          {
+            "step": 6,
+            "px": 76,
+            "rem": 4.752
+          },
+          {
+            "step": 7,
+            "px": 98.1,
+            "rem": 6.13
+          }
+        ]
+      },
+      "density": {
+        "t": 0.412,
+        "baseSize": 16.5,
+        "lineHeight": 1.53,
+        "unit": 8,
+        "sectionGap": 112,
+        "maxWidth": 1230
+      },
+      "layout": {
+        "columns": 12,
+        "gutter": 32,
+        "span": 9,
+        "start": 2,
+        "firstScreen": 55,
+        "sections": 8,
+        "separator": {
+          "id": "space",
+          "text": "space only: the section gap, no lines or fills"
+        }
+      },
+      "anchor": {
+        "subject": {
+          "id": "fact-list",
+          "text": "the facts as one list, nothing else"
+        },
+        "size": 71,
+        "x": 0.87,
+        "rotation": -1.5
+      },
+      "motif": {
+        "shape": {
+          "id": "half-circles",
+          "text": "half circles"
+        },
+        "size": 48,
+        "placement": {
+          "id": "markers",
+          "text": "as list and heading markers"
+        },
+        "angle": 120
+      },
+      "surface": {
+        "radius": 0,
+        "border": 1,
+        "borderStyle": "dashed",
+        "shadow": 0,
+        "texture": {
+          "id": "grain",
+          "text": "fine noise grain over the paper"
+        },
+        "textureOpacity": 8.4
+      },
+      "motion": {
+        "still": false,
+        "property": {
+          "id": "clip-path",
+          "text": "a wipe (clip-path)"
+        },
+        "duration": 140,
+        "easing": "cubic-bezier(0.77, 0.6, 0.37, 1)"
+      },
+      "voice": {
+        "person": {
+          "id": "we",
+          "text": "first person plural (\"we\")"
+        },
+        "headline": {
+          "id": "label",
+          "text": "a label: a noun phrase, no verb"
+        },
+        "sentenceWords": 3,
+        "register": 0.47
+      },
+      "twist": {
+        "target": {
+          "id": "links",
+          "text": "the links"
+        },
+        "operation": {
+          "id": "oversize",
+          "text": "set far larger than expected"
+        },
+        "amount": 16,
+        "text": "Set the links at 3.6× the size it would normally get."
+      },
+      "bans": [
+        "generic-sans",
+        "purple-blue-gradient",
+        "centered-hero-two-buttons",
+        "identical-cards",
+        "glassmorphism",
+        "emoji-icons",
+        "buzzword-copy",
+        "soft-shadow-rounded",
+        "invented-facts",
+        "tailwind-default-palette",
+        "scroll-fade-everything",
+        "pill-badge-sparkle",
+        "placeholder-content",
+        "template-sections"
+      ],
+      "tokensCss": "/* hash-design hash-design/v2 · 08b46918 */\n:root {\n  --paper: #e5e1e1;\n  --ink: #403536;\n  --muted: #6e5f60;\n  --accent: #b9626e;\n  --on-accent: #000000;\n  --accent2: #9871af;\n  --on-accent2: #000000;\n  --rule: #b4a8a9;\n  --panel: #dbd0d1;\n\n  --font-display: \"Bodoni Moda\", Didot, \"Bodoni 72\", serif;\n  --font-body: Literata, Georgia, serif;\n  --font-mono: \"Overpass Mono\", \"Courier New\", monospace;\n  --display-weight: 700;\n  --display-tracking: 0.095em;\n\n  --step-n2: 0.62rem; /* 9.9px */\n  --step-n1: 0.799rem; /* 12.8px */\n  --step-0: 1.031rem; /* 16.5px */\n  --step-1: 1.33rem; /* 21.3px */\n  --step-2: 1.716rem; /* 27.5px */\n  --step-3: 2.214rem; /* 35.4px */\n  --step-4: 2.856rem; /* 45.7px */\n  --step-5: 3.684rem; /* 58.9px */\n  --step-6: 4.752rem; /* 76px */\n  --step-7: 6.13rem; /* 98.1px */\n  --leading: 1.53;\n\n  --space-1: 8px;\n  --space-2: 16px;\n  --space-3: 24px;\n  --space-4: 32px;\n  --space-5: 40px;\n  --space-6: 48px;\n  --space-7: 56px;\n  --space-8: 64px;\n  --section-gap: 112px;\n  --max-width: 1230px;\n  --columns: 12;\n  --gutter: 32px;\n\n  --radius: 0px;\n  --border: 1px dashed var(--rule);\n  --shadow: none;\n\n  --motion-duration: 140ms;\n  --motion-easing: cubic-bezier(0.77, 0.6, 0.37, 1);\n}\n\nhtml { font-size: 103.1%; }\nbody { background: var(--paper); color: var(--ink); font-family: var(--font-body); line-height: var(--leading); }\n@media (prefers-reduced-motion: reduce) {\n  *, *::before, *::after { animation: none !important; transition: none !important; }\n}",
+      "trace": [
+        {
+          "dimension": "hue",
+          "bytes": [
+            0,
+            1
+          ],
+          "hex": "08 b4",
+          "rule": "0x08b4 = 2228; 2228/65536 × 360",
+          "result": "12.24°"
+        },
+        {
+          "dimension": "polarity · paper lightness",
+          "bytes": [
+            2
+          ],
+          "hex": "69",
+          "rule": "105 ≥ 77 → light; L = 0.90 + 28/178 × 0.085",
+          "result": "light, L 0.913"
+        },
+        {
+          "dimension": "paper chroma",
+          "bytes": [
+            3
+          ],
+          "hex": "18",
+          "rule": "24/255 × 0.045",
+          "result": "0.004"
+        },
+        {
+          "dimension": "accent chroma",
+          "bytes": [
+            4
+          ],
+          "hex": "44",
+          "rule": "0.07 + 68/255 × 0.16",
+          "result": "0.113"
+        },
+        {
+          "dimension": "accent2 hue offset",
+          "bytes": [
+            5
+          ],
+          "hex": "e6",
+          "rule": "30 + 230/255 × 300",
+          "result": "+300.59°"
+        },
+        {
+          "dimension": "display face",
+          "bytes": [
+            6
+          ],
+          "hex": "d5",
+          "rule": "213 mod 98 = 17",
+          "result": "Bodoni Moda"
+        },
+        {
+          "dimension": "body face",
+          "bytes": [
+            7
+          ],
+          "hex": "df",
+          "rule": "223 mod 62 = 37",
+          "result": "Literata"
+        },
+        {
+          "dimension": "display case · weight",
+          "bytes": [
+            8
+          ],
+          "hex": "ec",
+          "rule": "236 mod 4 = 0; ⌊236/4⌋ mod 3",
+          "result": "as-written, 700"
+        },
+        {
+          "dimension": "display tracking",
+          "bytes": [
+            9
+          ],
+          "hex": "8f",
+          "rule": "−0.04 + 143/255 × 0.24",
+          "result": "0.095em"
+        },
+        {
+          "dimension": "type scale ratio",
+          "bytes": [
+            10
+          ],
+          "hex": "67",
+          "rule": "1.067 + 103/255 × 0.551",
+          "result": "1.29"
+        },
+        {
+          "dimension": "density",
+          "bytes": [
+            11
+          ],
+          "hex": "69",
+          "rule": "t = 105/255",
+          "result": "t 0.412: base 16.5px, line-height 1.53, unit 8px"
+        },
+        {
+          "dimension": "grid columns · gutter",
+          "bytes": [
+            12
+          ],
+          "hex": "9f",
+          "rule": "3 + 159 mod 10; unit × (1 + ⌊159/10⌋ mod 4)",
+          "result": "12 columns, 32px gutter"
+        },
+        {
+          "dimension": "text block span · start",
+          "bytes": [
+            13
+          ],
+          "hex": "5a",
+          "rule": "span 10/15, start 5/15",
+          "result": "columns 2–10 of 12"
+        },
+        {
+          "dimension": "first-screen height",
+          "bytes": [
+            14
+          ],
+          "hex": "2e",
+          "rule": "45 + 46/255 × 55",
+          "result": "55%"
+        },
+        {
+          "dimension": "sections · separator",
+          "bytes": [
+            15
+          ],
+          "hex": "e9",
+          "rule": "3 + 233 mod 6; ⌊233/6⌋ mod 5",
+          "result": "8 sections, space"
+        },
+        {
+          "dimension": "anchor subject · size",
+          "bytes": [
+            16
+          ],
+          "hex": "9d",
+          "rule": "157 mod 8; 25 + ⌊157/8⌋/31 × 75",
+          "result": "fact-list, 71%"
+        },
+        {
+          "dimension": "anchor position · rotation",
+          "bytes": [
+            17
+          ],
+          "hex": "6d",
+          "rule": "x 13/15; ((6) − 7.5)/7.5 × 8",
+          "result": "x 0.87, -1.5°"
+        },
+        {
+          "dimension": "motif shape · size",
+          "bytes": [
+            18
+          ],
+          "hex": "45",
+          "rule": "69 mod 12; unit × (1 + ⌊69/12⌋ mod 8)",
+          "result": "half-circles, 48px"
+        },
+        {
+          "dimension": "motif placement · angle",
+          "bytes": [
+            19
+          ],
+          "hex": "ab",
+          "rule": "171 mod 4; ⌊171/4⌋ × 180/63",
+          "result": "markers, 120°"
+        },
+        {
+          "dimension": "radius · border",
+          "bytes": [
+            20
+          ],
+          "hex": "4b",
+          "rule": "RADII[75 mod 8]; ⌊75/8⌋ mod 4; ⌊75/32⌋ mod 4",
+          "result": "0px radius, 1px dashed border"
+        },
+        {
+          "dimension": "shadow · texture",
+          "bytes": [
+            21
+          ],
+          "hex": "94",
+          "rule": "148 & 3; (148 >> 2) & 3; 3 + 9 × 0.6",
+          "result": "no shadow, grain 8.4%"
+        },
+        {
+          "dimension": "motion property · duration",
+          "bytes": [
+            22
+          ],
+          "hex": "8f",
+          "rule": "⌊143/64⌋; (143 mod 64)/63 × 600",
+          "result": "clip-path, 140ms"
+        },
+        {
+          "dimension": "easing",
+          "bytes": [
+            23
+          ],
+          "hex": "79",
+          "rule": "121 ≥ 32 → cubic-bezier from bits",
+          "result": "cubic-bezier(0.77, 0.6, 0.37, 1)"
+        },
+        {
+          "dimension": "voice person · headline form",
+          "bytes": [
+            24
+          ],
+          "hex": "e1",
+          "rule": "225 mod 4; ⌊225/4⌋ mod 6",
+          "result": "we, label"
+        },
+        {
+          "dimension": "sentence length · register",
+          "bytes": [
+            25
+          ],
+          "hex": "70",
+          "rule": "3 + (112 & 15); (112 >> 4)/15",
+          "result": "3 words, register 0.47"
+        },
+        {
+          "dimension": "twist target",
+          "bytes": [
+            26
+          ],
+          "hex": "97",
+          "rule": "151 mod 9",
+          "result": "links"
+        },
+        {
+          "dimension": "twist operation · amount",
+          "bytes": [
+            27
+          ],
+          "hex": "a2",
+          "rule": "162 mod 10; ⌊162/10⌋",
+          "result": "oversize, 16"
+        },
+        {
+          "dimension": "CJK display face",
+          "bytes": [
+            29
+          ],
+          "hex": "3e",
+          "rule": "62 mod 14",
+          "result": "Noto Sans SC",
+          "note": "used on Chinese pages"
+        },
+        {
+          "dimension": "mono face",
+          "bytes": [
+            30
+          ],
+          "hex": "cd",
+          "rule": "205 mod 8",
+          "result": "Overpass Mono"
+        }
+      ]
+    }
+  ]
+}

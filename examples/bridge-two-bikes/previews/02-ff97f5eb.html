@@ -1,0 +1,636 @@
+<!-- hash-design #2 · ff97f5eb · ref ff97f5eb7af797dedf971e60545913ce41ba9815941b805785faec5e78028650 -->
+<!doctype html>
+<html lang="zh-CN">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>二号桥单车铺 · Bridge No.2 Cycle Works</title>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Michroma&family=Libre+Franklin:ital,wght@0,400;0,500;0,600;0,700;0,800;0,900;1,400;1,500;1,600;1,700;1,800;1,900&family=Red+Hat+Mono:wght@400;500&family=LXGW+WenKai+TC&family=Noto+Sans+SC:wght@400;700&display=swap">
+<!--
+  Twist (numbers · invert): every number on the page is set paper-coloured on ink.
+  Applied literally to every Arabic-numeral figure: prices, durations, times, the phone
+  number, the "2" in the English name and the anchor "27".
+  Nearest literal reading: Chinese numerals that are part of a name or a word
+  (二号桥, 周三, 一圈, 一个) are read as words, not numbers, and stay ink on paper.
+-->
+<style>
+/* hash-design hash-design/v2 · ff97f5eb */
+:root {
+  --paper: #fff6f8;
+  --ink: #473037;
+  --muted: #7c6d71;
+  --accent: #d6668e;
+  --on-accent: #000000;
+  --accent2: #b777c6;
+  --on-accent2: #000000;
+  --rule: #deb4c0;
+  --panel: #ffe0e9;
+
+  --font-display: Michroma, "LXGW WenKai TC", "Arial Black", sans-serif;
+  --font-body: "Libre Franklin", "Noto Sans SC", "Franklin Gothic Book", Arial, sans-serif;
+  --font-mono: "Red Hat Mono", "Courier New", monospace;
+  --display-weight: 400;
+  --display-tracking: 0.102em;
+
+  --step-n2: 0.805rem; /* 12.9px */
+  --step-n1: 0.911rem; /* 14.6px */
+  --step-0: 1.031rem; /* 16.5px */
+  --step-1: 1.167rem; /* 18.7px */
+  --step-2: 1.321rem; /* 21.1px */
+  --step-3: 1.496rem; /* 23.9px */
+  --step-4: 1.693rem; /* 27.1px */
+  --step-5: 1.917rem; /* 30.7px */
+  --step-6: 2.17rem; /* 34.7px */
+  --step-7: 2.456rem; /* 39.3px */
+  --leading: 1.54;
+
+  --space-1: 8px;
+  --space-2: 16px;
+  --space-3: 24px;
+  --space-4: 32px;
+  --space-5: 40px;
+  --space-6: 48px;
+  --space-7: 56px;
+  --space-8: 64px;
+  --section-gap: 117px;
+  --max-width: 1220px;
+  --columns: 7;
+  --gutter: 8px;
+
+  --radius: 2px;
+  --border: 2px solid var(--rule);
+  --shadow: 6px 6px 0 var(--ink);
+
+  --motion-duration: 0ms;
+  --motion-easing: cubic-bezier(0.64, 0.4, 0.9, 1);
+}
+
+html { font-size: 103.1%; }
+body { background: var(--paper); color: var(--ink); font-family: var(--font-body); line-height: var(--leading); }
+@media (prefers-reduced-motion: reduce) {
+  *, *::before, *::after { animation: none !important; transition: none !important; }
+}
+
+/* ---------- page ---------- */
+*, *::before, *::after { box-sizing: border-box; }
+body {
+  margin: 0;
+  font-size: var(--step-0);
+  background-image: repeating-linear-gradient(0deg, color-mix(in srgb, var(--ink) 3.6%, transparent) 0 1px, transparent 1px 4px);
+}
+p, h1, h2, h3, dl, dd, ul, figure { margin: 0; }
+a { color: inherit; }
+:focus-visible { outline: 2px solid var(--ink); outline-offset: 3px; }
+
+.wrap {
+  max-width: var(--max-width);
+  margin: 0 auto;
+  padding: 0 var(--space-3);
+  display: grid;
+  grid-template-columns: repeat(var(--columns), minmax(0, 1fr));
+  column-gap: var(--gutter);
+}
+
+/* display faces */
+.cjk-d, h1, h2 {
+  font-family: var(--font-display);
+  font-weight: var(--display-weight);
+  letter-spacing: var(--display-tracking);
+}
+.latin-d {
+  font-family: var(--font-display);
+  font-weight: var(--display-weight);
+  font-variant-caps: all-small-caps;
+  letter-spacing: var(--display-tracking);
+}
+
+/* the twist: every number, paper on ink */
+.num {
+  font-family: var(--font-mono);
+  font-weight: 500;
+  font-variant-numeric: tabular-nums;
+  letter-spacing: 0;
+  background: var(--ink);
+  color: var(--paper);
+  padding: 0.04em 0.3em;
+  border-radius: var(--radius);
+  white-space: nowrap;
+  -webkit-box-decoration-break: clone;
+  box-decoration-break: clone;
+}
+
+/* ---------- first screen: 49% of viewport height ---------- */
+.hero {
+  position: relative;
+  min-height: 49vh;
+  display: flex;
+  align-items: center;
+  border-bottom: var(--border);
+  overflow: hidden;
+}
+.hero > .wrap { width: 100%; }
+.hero-text {
+  grid-column: 2 / span 2;
+  position: relative;
+  z-index: 2;
+  padding: var(--space-5) var(--space-2) var(--space-5) 0;
+}
+.brand { margin-bottom: var(--space-3); }
+.brand-zh { display: block; font-size: var(--step-2); line-height: 1.3; }
+.brand-en { display: block; font-size: var(--step-0); color: var(--muted); }
+.brand-en .num { font-size: 0.86em; }
+h1 {
+  font-size: var(--step-7);
+  line-height: 1.24;
+  margin-bottom: var(--space-3);
+}
+.lede { max-width: 24em; margin-bottom: var(--space-2); }
+.hours { font-size: var(--step-n1); color: var(--muted); }
+.keep { display: inline-block; }
+.hours .num { font-size: 0.95em; }
+
+/* anchor: one number from the facts, 44% wide, centred at 67%, rotated 3.5deg */
+.anchor {
+  position: absolute;
+  z-index: 1;
+  left: 67%;
+  top: 50%;
+  width: 44%;
+  transform: translate(-50%, -50%) rotate(3.5deg);
+  background: var(--ink);
+  color: var(--paper);
+  border-radius: var(--radius);
+  outline: 2px solid var(--accent);
+  outline-offset: 6px;
+  padding: var(--space-2) var(--space-3) var(--space-1);
+  animation: anchor-wipe var(--motion-duration) var(--motion-easing) 1 both;
+}
+.anchor-cap {
+  display: flex;
+  justify-content: space-between;
+  gap: var(--space-2);
+  font-size: var(--step-n2);
+  letter-spacing: var(--display-tracking);
+}
+.anchor-cap .latin-d { color: var(--rule); }
+.anchor-num {
+  display: flex;
+  align-items: baseline;
+  justify-content: center;
+  font-family: var(--font-display);
+  font-weight: var(--display-weight);
+  font-size: min(15vw, 30vh);
+  line-height: 1.08;
+  letter-spacing: 0.04em;
+}
+.anchor-unit {
+  font-family: "LXGW WenKai TC", "Noto Sans SC", sans-serif;
+  font-size: 0.24em;
+  color: var(--accent);
+  margin-left: 0.1em;
+  letter-spacing: 0;
+}
+@keyframes anchor-wipe {
+  from { clip-path: inset(-16px 100% -16px -16px); }
+  to   { clip-path: inset(-16px -16px -16px -16px); }
+}
+
+/* ---------- five sections, each a bordered box on the grid ---------- */
+main.wrap { padding-top: var(--space-8); padding-bottom: var(--space-8); }
+.box {
+  grid-column: 1 / -1;
+  display: grid;
+  grid-template-columns: subgrid;
+  align-items: start;
+  border: var(--border);
+  border-radius: var(--radius);
+  box-shadow: var(--shadow);
+  background: var(--paper);
+  padding: var(--space-6) 0 var(--space-7);
+}
+.box.alt { background: var(--panel); }
+.box-tag {
+  grid-column: 1;
+  padding-left: var(--space-3);
+  display: flex;
+  flex-direction: column;
+  gap: var(--space-1);
+  align-items: flex-start;
+}
+.box-tag::before {
+  content: "";
+  width: 16px;
+  height: 16px;
+  margin-bottom: var(--space-1);
+  background: var(--accent);
+  border-radius: var(--radius);
+  transform: rotate(14deg);
+}
+.box-tag .tag-zh { font-family: "LXGW WenKai TC", "Noto Sans SC", sans-serif; font-size: var(--step-2); line-height: 1.2; }
+.box-tag .latin-d { font-size: var(--step-n2); color: var(--muted); line-height: 1.4; }
+.box-body { grid-column: 2 / 7; }
+h2 {
+  font-size: var(--step-6);
+  line-height: 1.28;
+  margin-bottom: var(--space-3);
+  max-width: 18em;
+  text-wrap: balance;
+}
+h2 .num { font-size: 0.82em; vertical-align: 0.06em; }
+.box-body > p { max-width: 36em; }
+.box-body > p + p { margin-top: var(--space-1); }
+
+/* motif: 40px squares at 14deg, between sections */
+.divider {
+  grid-column: 1 / -1;
+  height: var(--section-gap);
+  display: grid;
+  grid-template-columns: repeat(var(--columns), minmax(0, 1fr));
+  column-gap: var(--gutter);
+  align-items: center;
+  justify-items: center;
+}
+.sq {
+  display: block;
+  width: 40px;
+  height: 40px;
+  transform: rotate(14deg);
+  border: var(--border);
+  border-radius: var(--radius);
+  background: var(--paper);
+}
+.sq.a { background: var(--accent); border-color: var(--accent); }
+.sq.b { background: var(--accent2); border-color: var(--accent2); }
+.sq.k { background: var(--ink); border-color: var(--ink); }
+
+/* wipe: clip-path on hover, focus and state change */
+.wipe { position: relative; isolation: isolate; }
+.wipe::before {
+  content: "";
+  position: absolute;
+  inset: 0;
+  z-index: -1;
+  background: var(--accent);
+  clip-path: inset(0 100% 0 0);
+  transition: clip-path var(--motion-duration) var(--motion-easing);
+}
+.wipe:hover::before,
+.wipe:focus-visible::before,
+.wipe:focus-within::before { clip-path: inset(0 0 0 0); }
+
+/* 01 price list */
+.prices {
+  list-style: none;
+  padding: 0;
+  margin-top: var(--space-4);
+  border-top: 2px solid var(--ink);
+}
+.prices li {
+  display: grid;
+  grid-template-columns: minmax(0, 1.1fr) minmax(0, 2fr) minmax(6.5em, auto);
+  column-gap: var(--space-2);
+  align-items: baseline;
+  padding: var(--space-2) var(--space-1);
+  border-bottom: var(--border);
+}
+.prices li::before { background: var(--panel); }
+.p-name { font-family: "LXGW WenKai TC", "Noto Sans SC", sans-serif; font-size: var(--step-2); line-height: 1.3; }
+.p-name .latin-d { font-size: 0.82em; }
+.p-note { font-size: var(--step-n1); color: var(--muted); }
+.p-note .num { font-size: 0.95em; }
+.p-price { text-align: right; font-size: var(--step-1); white-space: nowrap; }
+.p-price .num { font-size: var(--step-2); }
+.prices li.major { padding-top: var(--space-3); padding-bottom: var(--space-3); }
+.prices li.major .p-name { font-size: var(--step-4); }
+.prices li.major .p-note { font-size: var(--step-0); color: var(--ink); }
+.prices li.major .p-price .num { font-size: var(--step-4); }
+
+/* 02 used bikes */
+.used { display: grid; grid-template-columns: minmax(0, 3fr) minmax(0, 2fr); gap: var(--space-5); margin-top: var(--space-4); }
+.spec { border-top: 2px solid var(--ink); }
+.spec div {
+  display: grid;
+  grid-template-columns: 6em minmax(0, 1fr);
+  gap: var(--space-2);
+  padding: var(--space-1) 0;
+  border-bottom: var(--border);
+  align-items: baseline;
+}
+.spec dt { font-size: var(--step-n1); color: var(--muted); }
+.spec dd { font-size: var(--step-1); }
+.stance {
+  font-family: "LXGW WenKai TC", "Noto Sans SC", sans-serif;
+  font-size: var(--step-5);
+  line-height: 1.3;
+  border-left: 6px solid var(--accent);
+  padding-left: var(--space-2);
+}
+.stance small { display: block; font-family: var(--font-body); font-size: var(--step-n1); color: var(--muted); margin-top: var(--space-1); line-height: var(--leading); }
+
+/* 03 owner */
+.chen { display: grid; grid-template-columns: minmax(0, 2fr) minmax(0, 3fr); gap: var(--space-5); align-items: end; margin-top: var(--space-4); }
+.chen-name { font-size: var(--step-7); line-height: 1.1; }
+.chen-name small { display: block; font-size: var(--step-n2); color: var(--muted); margin-top: var(--space-1); }
+
+/* 04 thursday ride */
+.ride { display: grid; grid-template-columns: minmax(0, 1fr) minmax(0, 1fr); gap: var(--space-5); align-items: center; margin-top: var(--space-4); }
+.loop { width: 100%; height: auto; display: block; }
+.loop .k { fill: var(--accent); }
+.loop .k0 { fill: var(--accent2); }
+.loop .trace { fill: none; stroke: var(--rule); stroke-width: 2; }
+.loop-legend { font-size: var(--step-n1); color: var(--muted); margin-top: var(--space-1); }
+
+/* 05 find us */
+.week {
+  list-style: none;
+  padding: 0;
+  margin-top: var(--space-4);
+  display: grid;
+  grid-template-columns: repeat(7, minmax(0, 1fr));
+  border: var(--border);
+  border-radius: var(--radius);
+  background: var(--paper);
+}
+.week li {
+  padding: var(--space-1) var(--space-1) var(--space-2);
+  border-right: var(--border);
+  display: flex;
+  flex-direction: column;
+  gap: 4px;
+  font-size: var(--step-n1);
+  min-width: 0;
+}
+.week li:last-child { border-right: 0; }
+.week .d { font-family: "LXGW WenKai TC", "Noto Sans SC", sans-serif; font-size: var(--step-1); }
+.week .off { color: var(--muted); }
+.week .num { align-self: flex-start; font-size: var(--step-n2); }
+.week .to { font-size: var(--step-n2); color: var(--muted); }
+.week .ride-mark { margin-top: 4px; font-size: var(--step-n2); border-top: 2px solid var(--accent2); padding-top: 4px; }
+.visit { display: grid; grid-template-columns: minmax(0, 1fr) minmax(0, 1fr); gap: var(--space-5); margin-top: var(--space-5); align-items: start; }
+.visit h3 { font-family: "LXGW WenKai TC", "Noto Sans SC", sans-serif; font-weight: 400; font-size: var(--step-2); margin-bottom: var(--space-1); }
+.call {
+  display: inline-flex;
+  flex-wrap: wrap;
+  align-items: center;
+  gap: var(--space-1) var(--space-2);
+  margin-top: var(--space-2);
+  padding: var(--space-2) var(--space-3);
+  border: 2px solid var(--ink);
+  border-radius: var(--radius);
+  box-shadow: var(--shadow);
+  background: var(--paper);
+  text-decoration: none;
+  font-weight: 600;
+}
+.call:hover, .call:focus-visible { color: var(--on-accent); }
+.call .num { font-size: var(--step-1); }
+
+/* footer */
+.foot { border-top: var(--border); padding: var(--space-4) 0 var(--space-6); }
+.foot p { grid-column: 2 / 7; font-size: var(--step-n1); color: var(--muted); }
+.foot .latin-d { color: var(--ink); }
+
+/* ---------- mid widths: anchor joins the flow ---------- */
+@media (max-width: 899px) {
+  .hero { display: block; padding: var(--space-4) 0 var(--space-6); }
+  .hero-text { grid-column: 2 / 7; padding: 0 0 var(--space-4); }
+  .anchor {
+    position: relative;
+    left: auto;
+    top: auto;
+    margin-left: 45%;
+    transform: rotate(3.5deg);
+  }
+  .anchor-num { font-size: 15vw; }
+  .used, .chen, .ride, .visit { grid-template-columns: 1fr; gap: var(--space-4); }
+}
+
+/* ---------- below 640px: one column; separators and anchor stay ---------- */
+@media (max-width: 639px) {
+  .wrap { grid-template-columns: 1fr; padding: 0 var(--space-2); }
+  .hero { padding: var(--space-3) 0 var(--space-4); }
+  .hero-text { grid-column: 1; padding-bottom: var(--space-3); }
+  .brand { margin-bottom: var(--space-2); }
+  h1 { font-size: var(--step-5); margin-bottom: var(--space-2); }
+  .anchor { padding: var(--space-1) var(--space-2) 4px; }
+  .anchor-cap { font-size: 10px; }
+  .anchor-cap .latin-d { display: none; }
+  .anchor-num { font-size: 16vw; }
+  main.wrap { padding-top: var(--space-5); }
+  .box { grid-template-columns: 1fr; padding: var(--space-4) var(--space-3) var(--space-5); }
+  .box-tag { grid-column: 1; padding-left: 0; flex-direction: row; align-items: center; gap: var(--space-2); margin-bottom: var(--space-2); }
+  .box-tag::before { margin-bottom: 0; flex: none; }
+  .box-body { grid-column: 1; }
+  h2 { font-size: var(--step-4); }
+  .divider { height: 96px; display: flex; justify-content: space-around; }
+  .divider .sq:nth-child(n+6) { display: none; }
+  .prices li { grid-template-columns: minmax(0, 1fr) auto; row-gap: 4px; padding-left: 0; padding-right: 0; }
+  .p-note { grid-column: 1 / -1; grid-row: 2; }
+  .prices li.major .p-name { font-size: var(--step-3); }
+  .prices li.major .p-price .num { font-size: var(--step-3); }
+  .stance { font-size: var(--step-3); }
+  .chen-name { font-size: var(--step-6); }
+  .week { grid-template-columns: 1fr; }
+  .week li { flex-direction: row; flex-wrap: wrap; align-items: baseline; gap: var(--space-1); border-right: 0; border-bottom: var(--border); padding: var(--space-1) var(--space-2); }
+  .week li:last-child { border-bottom: 0; }
+  .week .d { min-width: 3em; }
+  .week .ride-mark { margin-top: 0; border-top: 0; border-left: 2px solid var(--accent2); padding: 0 0 0 var(--space-1); }
+  .foot p { grid-column: 1; }
+  .spec div { grid-template-columns: 4em minmax(0, 1fr); }
+}
+</style>
+</head>
+<body>
+
+<header class="hero">
+  <div class="wrap">
+    <div class="hero-text">
+      <p class="brand">
+        <span class="brand-zh cjk-d">二号桥单车铺</span>
+        <span class="brand-en latin-d">Bridge No.<span class="num">2</span> Cycle Works</span>
+      </p>
+      <h1>把车推到<span class="keep">二号桥桥洞下</span></h1>
+      <p class="lede">我们只修车、卖二手车和零件，不卖新车。店主老陈修车 <span class="num">27</span> 年，以前在自行车厂做装配。</p>
+      <p class="hours"><span class="keep">周三至周日 <span class="num">10:00–20:00</span>；</span><span class="keep">周一、周二休息</span></p>
+    </div>
+  </div>
+  <figure class="anchor" aria-label="店主老陈修车 27 年">
+    <figcaption class="anchor-cap"><span>老陈修车</span><span class="latin-d">Lao Chen · years</span></figcaption>
+    <p class="anchor-num"><span>27</span><span class="anchor-unit">年</span></p>
+  </figure>
+</header>
+
+<main class="wrap" id="main">
+
+  <section class="box" id="prices" aria-labelledby="h-prices">
+    <div class="box-tag"><span class="tag-zh">价目</span><span class="latin-d">Repairs</span></div>
+    <div class="box-body">
+      <h2 id="h-prices">先看清价目，再把车交给我们</h2>
+      <p>以下是我们的修车项目与价格。全车保养约需 <span class="num">2</span> 小时，公路车 Fitting 须提前预约。</p>
+      <ul class="prices">
+        <li class="wipe" tabindex="0">
+          <span class="p-name">补胎</span>
+          <span class="p-note"></span>
+          <span class="p-price"><span class="num">¥15</span></span>
+        </li>
+        <li class="wipe" tabindex="0">
+          <span class="p-name">换内胎</span>
+          <span class="p-note">含内胎</span>
+          <span class="p-price"><span class="num">¥35</span></span>
+        </li>
+        <li class="wipe major" tabindex="0">
+          <span class="p-name">全车保养</span>
+          <span class="p-note">清洗传动、调变速和刹车、紧固全车螺丝；约 <span class="num">2</span> 小时</span>
+          <span class="p-price"><span class="num">¥180</span></span>
+        </li>
+        <li class="wipe" tabindex="0">
+          <span class="p-name">手工编轮组</span>
+          <span class="p-note">工期 <span class="num">5</span> 天</span>
+          <span class="p-price"><span class="num">¥260</span> 起</span>
+        </li>
+        <li class="wipe" tabindex="0">
+          <span class="p-name">公路车 <span class="latin-d">Fitting</span></span>
+          <span class="p-note">约 <span class="num">90</span> 分钟，需预约</span>
+          <span class="p-price"><span class="num">¥480</span></span>
+        </li>
+      </ul>
+    </div>
+  </section>
+
+  <div class="divider" aria-hidden="true">
+    <span class="sq"></span><span class="sq a"></span><span class="sq"></span><span class="sq"></span><span class="sq"></span><span class="sq"></span><span class="sq"></span>
+  </div>
+
+  <section class="box alt" id="used" aria-labelledby="h-used">
+    <div class="box-tag"><span class="tag-zh">二手车</span><span class="latin-d">Used bikes</span></div>
+    <div class="box-body">
+      <h2 id="h-used">挑一辆换过链条和刹车皮的二手车</h2>
+      <p>我们的每辆二手车都换过链条和刹车皮，保修 <span class="num">90</span> 天。</p>
+      <div class="used">
+        <dl class="spec">
+          <div><dt>链条</dt><dd>每辆已更换</dd></div>
+          <div><dt>刹车皮</dt><dd>每辆已更换</dd></div>
+          <div><dt>保修</dt><dd><span class="num">90</span> 天</dd></div>
+        </dl>
+        <p class="stance">我们不卖新车。<small>店里只修车、卖二手车和零件。</small></p>
+      </div>
+    </div>
+  </section>
+
+  <div class="divider" aria-hidden="true">
+    <span class="sq"></span><span class="sq"></span><span class="sq"></span><span class="sq a"></span><span class="sq"></span><span class="sq"></span><span class="sq"></span>
+  </div>
+
+  <section class="box" id="owner" aria-labelledby="h-owner">
+    <div class="box-tag"><span class="tag-zh">店主</span><span class="latin-d">The owner</span></div>
+    <div class="box-body">
+      <h2 id="h-owner">把车交给修车 <span class="num">27</span> 年的老陈</h2>
+      <div class="chen">
+        <p class="chen-name cjk-d">陈立平<small>店主 · 大家叫他老陈</small></p>
+        <div>
+          <p>我们的店主叫陈立平，大家都叫他老陈。修车之前，他在自行车厂做装配。</p>
+          <dl class="spec" style="margin-top: var(--space-2);">
+            <div><dt>修车</dt><dd><span class="num">27</span> 年</dd></div>
+            <div><dt>此前</dt><dd>自行车厂装配</dd></div>
+          </dl>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <div class="divider" aria-hidden="true">
+    <span class="sq"></span><span class="sq"></span><span class="sq"></span><span class="sq"></span><span class="sq"></span><span class="sq b"></span><span class="sq"></span>
+  </div>
+
+  <section class="box alt" id="ride" aria-labelledby="h-ride">
+    <div class="box-tag"><span class="tag-zh">夜骑</span><span class="latin-d">Thursday ride</span></div>
+    <div class="box-body">
+      <h2 id="h-ride">周四晚上，带上车灯来店门口</h2>
+      <div class="ride">
+        <div>
+          <p>每周四 <span class="num">19:30</span>，我们从店门口出发，沿江骑行一圈。全程 <span class="num">24</span> 公里，不收费用，请自带车灯。</p>
+          <dl class="spec" style="margin-top: var(--space-3);">
+            <div><dt>出发</dt><dd>每周四 <span class="num">19:30</span>，店门口</dd></div>
+            <div><dt>路线</dt><dd>沿江一圈，<span class="num">24</span> 公里</dd></div>
+            <div><dt>费用</dt><dd>免费</dd></div>
+            <div><dt>自备</dt><dd>车灯</dd></div>
+          </dl>
+        </div>
+        <figure>
+          <svg class="loop" viewBox="0 0 420 192" role="img" aria-label="一圈 24 格，每格代表 1 公里，示意图">
+            <ellipse class="trace" cx="210" cy="96" rx="186" ry="70"/>
+            <rect class="k0" x="200" y="16" width="20" height="20" rx="2" transform="rotate(14 210 26)"/>
+            <rect class="k" x="250.1" y="20.4" width="16" height="16" rx="2" transform="rotate(14 258.1 28.4)"/>
+            <rect class="k" x="295.0" y="27.4" width="16" height="16" rx="2" transform="rotate(14 303.0 35.4)"/>
+            <rect class="k" x="333.5" y="38.5" width="16" height="16" rx="2" transform="rotate(14 341.5 46.5)"/>
+            <rect class="k" x="363.1" y="53.0" width="16" height="16" rx="2" transform="rotate(14 371.1 61.0)"/>
+            <rect class="k" x="381.7" y="69.9" width="16" height="16" rx="2" transform="rotate(14 389.7 77.9)"/>
+            <rect class="k" x="388.0" y="88.0" width="16" height="16" rx="2" transform="rotate(14 396.0 96.0)"/>
+            <rect class="k" x="381.7" y="106.1" width="16" height="16" rx="2" transform="rotate(14 389.7 114.1)"/>
+            <rect class="k" x="363.1" y="123.0" width="16" height="16" rx="2" transform="rotate(14 371.1 131.0)"/>
+            <rect class="k" x="333.5" y="137.5" width="16" height="16" rx="2" transform="rotate(14 341.5 145.5)"/>
+            <rect class="k" x="295.0" y="148.6" width="16" height="16" rx="2" transform="rotate(14 303.0 156.6)"/>
+            <rect class="k" x="250.1" y="155.6" width="16" height="16" rx="2" transform="rotate(14 258.1 163.6)"/>
+            <rect class="k" x="202.0" y="158.0" width="16" height="16" rx="2" transform="rotate(14 210.0 166.0)"/>
+            <rect class="k" x="153.9" y="155.6" width="16" height="16" rx="2" transform="rotate(14 161.9 163.6)"/>
+            <rect class="k" x="109.0" y="148.6" width="16" height="16" rx="2" transform="rotate(14 117.0 156.6)"/>
+            <rect class="k" x="70.5" y="137.5" width="16" height="16" rx="2" transform="rotate(14 78.5 145.5)"/>
+            <rect class="k" x="40.9" y="123.0" width="16" height="16" rx="2" transform="rotate(14 48.9 131.0)"/>
+            <rect class="k" x="22.3" y="106.1" width="16" height="16" rx="2" transform="rotate(14 30.3 114.1)"/>
+            <rect class="k" x="16.0" y="88.0" width="16" height="16" rx="2" transform="rotate(14 24.0 96.0)"/>
+            <rect class="k" x="22.3" y="69.9" width="16" height="16" rx="2" transform="rotate(14 30.3 77.9)"/>
+            <rect class="k" x="40.9" y="53.0" width="16" height="16" rx="2" transform="rotate(14 48.9 61.0)"/>
+            <rect class="k" x="70.5" y="38.5" width="16" height="16" rx="2" transform="rotate(14 78.5 46.5)"/>
+            <rect class="k" x="109.0" y="27.4" width="16" height="16" rx="2" transform="rotate(14 117.0 35.4)"/>
+            <rect class="k" x="153.9" y="20.4" width="16" height="16" rx="2" transform="rotate(14 161.9 28.4)"/>
+          </svg>
+          <figcaption class="loop-legend">示意：一格代表 <span class="num">1</span> 公里，共 <span class="num">24</span> 格；紫色一格为店门口出发点。</figcaption>
+        </figure>
+      </div>
+    </div>
+  </section>
+
+  <div class="divider" aria-hidden="true">
+    <span class="sq"></span><span class="sq a"></span><span class="sq"></span><span class="sq"></span><span class="sq"></span><span class="sq"></span><span class="sq"></span>
+  </div>
+
+  <section class="box" id="visit" aria-labelledby="h-visit">
+    <div class="box-tag"><span class="tag-zh">到店</span><span class="latin-d">Find us</span></div>
+    <div class="box-body">
+      <h2 id="h-visit">认准蓝色卷帘门和门口的旧车轮</h2>
+      <p>我们在河西路二号桥桥洞下东侧。店门是蓝色卷帘门，门口立着一个旧车轮。</p>
+      <ul class="week" aria-label="营业时间">
+        <li class="off"><span class="d">周一</span><span>休息</span></li>
+        <li class="off"><span class="d">周二</span><span>休息</span></li>
+        <li><span class="d">周三</span><span class="num">10:00</span><span class="to">至</span><span class="num">20:00</span></li>
+        <li><span class="d">周四</span><span class="num">10:00</span><span class="to">至</span><span class="num">20:00</span><span class="ride-mark">夜骑 <span class="num">19:30</span> 出发</span></li>
+        <li><span class="d">周五</span><span class="num">10:00</span><span class="to">至</span><span class="num">20:00</span></li>
+        <li><span class="d">周六</span><span class="num">10:00</span><span class="to">至</span><span class="num">20:00</span></li>
+        <li><span class="d">周日</span><span class="num">10:00</span><span class="to">至</span><span class="num">20:00</span></li>
+      </ul>
+      <div class="visit">
+        <div>
+          <h3>门口气泵</h3>
+          <p>门口的气泵免费使用，<span class="num">24</span> 小时可用，不必等到营业时间。</p>
+        </div>
+        <div>
+          <h3>预约</h3>
+          <p>请致电预约，或在营业时间到店登记。公路车 Fitting 必须预约。</p>
+          <a class="call wipe" href="tel:057155550222"><span>致电</span><span class="num">0571-5555-0222</span></a>
+        </div>
+      </div>
+    </div>
+  </section>
+
+</main>
+
+<footer class="foot">
+  <div class="wrap">
+    <p><span class="latin-d">Bridge No.<span class="num">2</span> Cycle Works</span> · 二号桥单车铺 · 河西路二号桥桥洞下东侧</p>
+  </div>
+</footer>
+
+</body>
+</html>
