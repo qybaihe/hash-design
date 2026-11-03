@@ -1,6 +1,6 @@
 {
   "name": "hash-design",
-  "version": "0.1.0",
+  "version": "0.2.0",
   "description": "Roll true-random hashes and map them, through a fixed decision tree, onto concrete design directions — so AI-built pages stop collapsing into the same template.",
   "license": "MIT",
   "author": "qybaihe",

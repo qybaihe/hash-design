@@ -1,6 +1,6 @@
 {
   "name": "hash-design-mcp",
-  "version": "0.1.0",
+  "version": "0.2.0",
   "private": true,
   "description": "Private wrapper: runs the hash-design MCP server (`hash-design mcp`) from a checkout as packages/mcp/dist/bin.js.",
   "license": "MIT",
@@ -45,6 +45,6 @@
     "build": "tsc -b"
   },
   "dependencies": {
-    "hash-design": "^0.1.0"
+    "hash-design": "^0.2.0"
   }
 }
