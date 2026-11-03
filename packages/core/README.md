@@ -27,7 +27,7 @@ console.log(renderBrief(r.designs[0], r.content));
 ```
 
 See the [main README](https://github.com/qybaihe/hash-design#readme) for the method, the MCP tools, the Skill and a
-live demo. Also in [简体中文](https://github.com/qybaihe/hash-design/blob/main/README.zh-CN.md) ·
+live demo. Short versions in [简体中文](https://github.com/qybaihe/hash-design/blob/main/README.zh-CN.md) ·
 [日本語](https://github.com/qybaihe/hash-design/blob/main/README.ja.md) ·
 [한국어](https://github.com/qybaihe/hash-design/blob/main/README.ko.md) ·
 [Español](https://github.com/qybaihe/hash-design/blob/main/README.es.md). MIT.

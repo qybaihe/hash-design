@@ -28,7 +28,7 @@
 
 ### If you changed the English README
 
-- [ ] The translations (`README.zh-CN.md`, `README.ja.md`, `README.ko.md`, `README.es.md`) are updated, or a follow-up issue is linked
+- [ ] If the tagline, hero, install commands or what the tool does changed: the short versions (`README.zh-CN.md`, `README.ja.md`, `README.ko.md`, `README.es.md`) are updated, or a follow-up issue is linked
 
 ## Notes for reviewers
 
