@@ -28,8 +28,8 @@
 
 ```text
 Install the hash-design skill for this agent: run `npx -y hash-design skill install --dir .`
-and register its MCP server with `npx -y hash-design mcp` (with hash-design 0.1.0, use
-`npx -y hash-design-mcp@0.1.0`), following https://github.com/qybaihe/hash-design#quick-start.
+and register its MCP server with `npx -y hash-design mcp`, following
+https://github.com/qybaihe/hash-design#quick-start.
 ```
 
 </div>
@@ -54,7 +54,7 @@ This is an external random constraint that breaks the model's default aesthetic.
 
 The default output is a web page. Pass a **scenario** and the same rolled directions become a slide deck, mobile app screens, a dashboard, a poster / social card or an HTML email (see [Scenarios](#scenarios)).
 
-It ships as an **Agent Skill** (when and in what order to run the workflow), an **MCP server** (stdio, four tools), a **CLI** and a **TypeScript library**, published together on npm as [`hash-design`](https://www.npmjs.com/package/hash-design) (the MCP server joins the package in 0.2.0).
+It ships as an **Agent Skill** (when and in what order to run the workflow), an **MCP server** (stdio, four tools), a **CLI** and a **TypeScript library**, published together on npm as [`hash-design`](https://www.npmjs.com/package/hash-design).
 
 ## Quick start
 
@@ -64,8 +64,8 @@ Open your coding agent (Claude Code, Cursor, Codex, Windsurf, VS Code Copilot…
 
 ```text
 Install the hash-design skill for this agent: run `npx -y hash-design skill install --dir .`
-and register its MCP server with `npx -y hash-design mcp` (with hash-design 0.1.0, use
-`npx -y hash-design-mcp@0.1.0`), following https://github.com/qybaihe/hash-design#quick-start.
+and register its MCP server with `npx -y hash-design mcp`, following
+https://github.com/qybaihe/hash-design#quick-start.
 ```
 
 The agent copies the Skill into your project's `.claude/skills/` and `.agents/skills/` and registers the MCP server (`claude mcp add` in Claude Code, `.cursor/mcp.json` in Cursor, `codex mcp add` in Codex); nothing is cloned or built. Start a new session afterwards so the agent loads both, then [use it](#use-it). To run the commands yourself, follow the steps below.
@@ -96,15 +96,10 @@ Agents that read both `.claude/skills/` and `.agents/skills/` (Cursor, VS Code C
 
 **MCP server.** Register `npx -y hash-design mcp` with your agent; it runs the server on stdio.
 
-> [!NOTE]
-> `hash-design mcp` arrives in hash-design 0.2.0, the next release. With 0.1.0, the version on npm today, register `npx -y hash-design-mcp@0.1.0` instead: the earlier, separately published hash-design/v1 server (the 40-branch library and its six tools), with no further updates.
-
 #### Claude Code
 
 ```bash
 claude mcp add hash-design -- npx -y hash-design mcp
-# with hash-design 0.1.0:
-claude mcp add hash-design -- npx -y hash-design-mcp@0.1.0
 ```
 
 Or commit a project-level `.mcp.json`:
@@ -119,8 +114,6 @@ Or commit a project-level `.mcp.json`:
   }
 }
 ```
-
-With 0.1.0, the `args` are `["-y", "hash-design-mcp@0.1.0"]`.
 
 #### Cursor
 
@@ -394,7 +387,7 @@ Any agent that loads `SKILL.md` folders: `skill install` writes `.claude/skills/
 <details>
 <summary><strong>Is it on npm?</strong></summary>
 
-Yes. [`hash-design`](https://www.npmjs.com/package/hash-design) 0.1.0 has the library, the CLI and the Skill (`npx -y hash-design skill install`). The MCP server joins it in 0.2.0 as `hash-design mcp`; until then use `npx -y hash-design-mcp@0.1.0`, the earlier separate server package, which gets no new versions. Releases are published from GitHub Actions with npm Trusted Publishing ([docs/publishing.md](docs/publishing.md)).
+Yes. [`hash-design`](https://www.npmjs.com/package/hash-design) has the library, the CLI, the Skill (`npx -y hash-design skill install`) and the MCP server (`npx -y hash-design mcp`). The earlier, separately published `hash-design-mcp` package gets no new versions; if you registered it, switch to `npx -y hash-design mcp`. Releases are published from GitHub Actions with npm Trusted Publishing ([docs/publishing.md](docs/publishing.md)).
 
 </details>
 
@@ -474,7 +467,8 @@ packages/core/           # npm: hash-design — data, mapping, briefs, critique,
   src/critique.ts        #   static AI-template checks
   src/compare.ts         #   side-by-side compare page
   src/cli.ts             #   CLI
-packages/mcp/            # npm: hash-design-mcp — stdio MCP server
+  src/mcp.ts             #   MCP server (hash-design mcp)
+packages/mcp/            # private wrapper: runs the same MCP server from a clone (not on npm)
 skills/hash-design/      # Skill source (.claude/ and .cursor/ hold synced copies)
 examples/                # 4 full hash-design/v1 runs: facts → roll → 5 briefs → 5 previews → compare page → screenshots
 docs/                    # architecture, mapping spec, MCP reference

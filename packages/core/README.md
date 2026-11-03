@@ -6,18 +6,16 @@ surface, motion, voice and twist (no style library) — so AI-built pages stop c
 purple gradients, centered hero with two buttons, three identical cards…).
 
 ```bash
-npx -y hash-design skill install --target both --dir .   # the Skill, for Claude Code and Cursor
-claude mcp add hash-design -- npx -y hash-design mcp     # the MCP server (0.2.0 or later)
-npx -y hash-design --help                                # the CLI
+npx -y hash-design skill install --dir .               # the Skill, for Claude Code, Codex, Cursor and others
+claude mcp add hash-design -- npx -y hash-design mcp   # the MCP server
+npx -y hash-design --help                              # the CLI
 ```
-
-`hash-design mcp` is new in 0.2.0; with 0.1.0, register `npx -y hash-design-mcp@0.1.0` instead.
 
 ```bash
 hash-design roll --subject "Fourth Lane Bakery" --fact "Open Tue–Sun 7:00–19:00" --out design/hash-design
 hash-design critique design/hash-design/previews/01-*.html --roll design/hash-design/roll.json --pick 1
 hash-design compare --roll design/hash-design/roll.json
-hash-design skill install --target both
+hash-design skill install
 hash-design mcp   # stdio MCP server, started by your agent
 ```
 

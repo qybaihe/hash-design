@@ -4,7 +4,7 @@
 
 本页写给维护者。发布到 npm 的只有一个包：**`hash-design`**（`packages/core`）。正式发布由 GitHub Actions 通过 [npm Trusted Publishing](https://docs.npmjs.com/trusted-publishers)（OIDC）完成：不创建 npm token，不存成 secret，工作流也不读取任何 token。
 
-现状：`hash-design@0.1.0` 已于 2026-11-02 从提交 `475ba16` 手动发布（所以这个包已经存在，可以给它添加 Trusted Publisher）。之后的每个版本都走工作流，前提是：
+现状：`hash-design@0.1.0` 已于 2026-11-02 从提交 `475ba16` 手动发布（所以这个包已经存在，可以给它添加 Trusted Publisher）。从 0.2.0 起，之后的每个版本都走工作流，前提是：
 
 1. [在 npmjs.com 上给 `hash-design` 添加 Trusted Publisher](#给-hash-design-添加-trusted-publisher)（一次）；
 2. 每个版本按[发布步骤](#发布步骤)走。
@@ -23,13 +23,13 @@
 从 0.2.0 起，`hash-design` 包含 MCP server（`packages/core/src/mcp.ts`）及其依赖（`@modelcontextprotocol/sdk`、`zod`），一个包就够了：
 
 ```bash
-npx -y hash-design skill install --target both --dir .   # Skill
+npx -y hash-design skill install --dir .                 # Skill
 claude mcp add hash-design -- npx -y hash-design mcp     # MCP server（hash-design >= 0.2.0）
 ```
 
-hash-design 0.1.0 没有 `mcp` 命令。0.2.0 发布之前，MCP server 来自 `hash-design-mcp@0.1.0`（0.1.0 那次一次性手动发布时上了 npm，仍然可用：`claude mcp add hash-design -- npx -y hash-design-mcp@0.1.0`），或者来自克隆的源码（`node ~/hash-design/packages/mcp/dist/bin.js`）。`packages/mcp` 作为这个 private 包装留在仓库里。
+hash-design 0.1.0 没有 `mcp` 命令。在克隆的源码里，同一个 server 也可以用 `node ~/hash-design/packages/mcp/dist/bin.js` 启动：`packages/mcp` 作为这个 private 包装留在仓库里。
 
-`hash-design-mcp` 不会再有新版本。0.2.0 发布后，维护者可以把它标记为 deprecated，让找到它的人改用新命令。这只修改 registry 上的元数据，不发布任何东西；0.2.0 之前不要运行，因为在那之前它是文档里写的备用方案：
+`hash-design-mcp` 不会再有新版本；它的 0.1.0 是和 `hash-design@0.1.0` 一起手动发布的 hash-design/v1 server，README 里已经不再提它。0.2.0 上了 npm 之后，维护者可以把它标记为 deprecated，让找到它的人改用新命令。这只修改 registry 上的元数据，不发布任何东西：
 
 ```bash
 npm deprecate hash-design-mcp "Use npx -y hash-design mcp (hash-design 0.2.0 or later)"
@@ -118,7 +118,7 @@ npm trust github hash-design --repo qybaihe/hash-design --file release.yml --all
 
 `npm run release:check` 也会在每次 push 和 pull request 的 CI 里运行，所以包清单一旦变得不可发布，或者 `packages/mcp` 不再是 private，CI 会在发版之前就报错。
 
-0.2.0 上了 npm 之后：把五个 README、`packages/core/README.md` 和 `docs/mcp-tools*.md` 里 `hash-design-mcp@0.1.0` 的备用说明删掉，并按上面的方法把 `hash-design-mcp` 标记为 deprecated。
+0.2.0 上了 npm 之后，按上面的方法把 `hash-design-mcp` 标记为 deprecated。
 
 ## 发布步骤失败时
 

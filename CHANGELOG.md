@@ -3,9 +3,21 @@
 All notable changes to this project are documented here.
 The format follows [Keep a Changelog](https://keepachangelog.com/en/1.1.0/), and the project aims to follow [Semantic Versioning](https://semver.org/spec/v2.0.0.html).
 
-`hash-design@0.1.0` and `hash-design-mcp@0.1.0` were published to npm by hand on 2026-11-02, both built from commit `475ba16`. From the next version on, only `hash-design` is published, by the release workflow; `hash-design-mcp` is a private workspace in this repository and its 0.1.0 on npm will not be updated. No git tag has been created. The `[0.1.0]` section below describes `main` at commit `ec5398a`; the published 0.1.0 tarballs also contain the `[Unreleased]` changes merged by `475ba16` (up to and including design scenarios).
+`hash-design@0.1.0` and `hash-design-mcp@0.1.0` were published to npm by hand on 2026-11-02, both built from commit `475ba16`. From 0.2.0 on, only `hash-design` is published, by the release workflow; `hash-design-mcp` is a private workspace in this repository and its 0.1.0 on npm will not be updated. No git tag was created for 0.1.0. The `[0.1.0]` section below describes `main` at commit `ec5398a`; the published 0.1.0 tarballs also contain the `[0.2.0]` entries that were merged by `475ba16` (everything up to and including design scenarios, before `hash-design/v2`). 0.2.0 is the first version published by the release workflow, tagged `v0.2.0`.
 
 ## [Unreleased]
+
+## [0.2.0] - 2026-11-02
+
+What changes for someone on the published 0.1.0:
+
+- **`hash-design/v2`: the hash is the direction.** There is no branch library any more; each byte of a hash sets one design parameter. Refs are the bare 64-hex hash, so v1 refs (`<hash>+<n>`) need 0.1.0 to reproduce. The four examples stay as v1 records.
+- **One package.** The MCP server ships in `hash-design` and runs as `npx -y hash-design mcp`. `hash-design-mcp` gets no new versions.
+- **N directions and a short reply.** A roll has 1–12 directions (default 5). After a roll the agent sends one line per direction and waits for a number, `render` or `reroll`.
+- **Any agent.** `skill install` writes `.claude/skills/` and `.agents/skills/` (Codex, Cursor, VS Code Copilot, Windsurf), and `--to` takes any other skills folder.
+- **Release workflow.** Published from GitHub Actions with npm Trusted Publishing and provenance.
+
+The full list follows. Entries up to and including design scenarios were already in the 0.1.0 tarballs (see the note at the top).
 
 ### Added
 
@@ -14,7 +26,6 @@ The format follows [Keep a Changelog](https://keepachangelog.com/en/1.1.0/), and
 - `packages/core/src/data/space.ts`: short lists of neutral primitives that bytes index into (cases, separators, anchor subjects, motif shapes and placements, border styles, radii, textures, motion properties, voice persons, headline forms, twist targets and operations).
 - `directionLabel()` and `twistText()` in the library; `roll_designs` returns a `label` per design instead of a branch.
 - Mapping tests for v2: the pinned library fingerprint, determinism, the documented byte rules, that each byte moves only its own parameters, contrast floors in both polarities over 2,000 random hashes, the spread of fonts, accents, grids and twists, N independent designs, prefix-stable seeded rolls and v1 refs being rejected.
-
 - English README as the main document, with full translations in Simplified Chinese (`README.zh-CN.md`), Japanese (`README.ja.md`), Korean (`README.ko.md`) and Spanish (`README.es.md`), and a language switcher at the top of each.
 - `docs/architecture.md`, `docs/mapping.md` (the `hash-design/v1` specification with worked examples) and `docs/mcp-tools.md` (every MCP tool, resource and prompt with CLI equivalents), each with a Chinese version, plus a `docs/README.md` index.
 - Community files: `CONTRIBUTING.md`, `CODE_OF_CONDUCT.md` (Contributor Covenant 2.1), `SECURITY.md`, this changelog, issue templates (bug report, feature request, new branch proposal) and a pull request template.
@@ -33,9 +44,8 @@ The format follows [Keep a Changelog](https://keepachangelog.com/en/1.1.0/), and
 - N, the number of directions, is documented end to end: `count` (MCP), `--count`/`-n` (CLI) and the Skill, which reads it from the request ("3 directions", `/hash-design 3`, Claude Code's `ARGUMENTS:`). Range 1–12, default 5, exported as `DEFAULT_COUNT` and `MAX_COUNT`. Each direction is its own hash, so constraints never lower the cap; 12 is a product cap (one brief and one independently rendered preview per direction).
 - `skill install --target agents` writes `.agents/skills/` (read by Codex, Cursor, VS Code Copilot and Windsurf, per their docs), `--target` takes comma lists and `all`, and `--to <skills-dir>` drops the skill into any other agent's folder. Afterwards it prints the CLI and `mcp` commands that work where it ran (`npx -y hash-design …` through npx). The READMEs document Codex (`codex mcp add hash-design -- npx -y hash-design mcp`, `~/.codex/config.toml`) and any other stdio MCP client.
 - `scripts/hero-gif.mjs` (`npm run hero:gif`) renders an animated hero from the same example: `/hash-design` picked in a prompt box, five SHA-256 refs ticking and locking to the real ones, the five previews popping in and lining up as a compare row. Frames are captured deterministically at `t = i / fps` and encoded to `docs/assets/hero.gif` (960 px, 20 fps, 6 s loop) and `docs/assets/hero.mp4` (H.264).
-
 - npm release automation for the one published package, `hash-design`: `.github/workflows/release.yml` publishes it with provenance when a GitHub Release tagged `v<version>` is published (never on a plain push; a manual run is a dry run). It authenticates with npm Trusted Publishing (OIDC: `id-token: write`, `contents: read`, npm ≥ 11.5.1), so no npm token or repository secret is used; the Trusted Publisher is configured on `hash-design` only. `scripts/release-check.mjs` (`npm run release:check`, now also in CI instead of the bare `npm pack --dry-run`) checks lockstep versions, the tag, the CHANGELOG section, `hash-design`'s publish fields and tarball contents, and that `packages/mcp` stays private. `scripts/release-version.mjs` (`npm run release:version -- <version>`) sets one version across the workspace. Setup and steps: [docs/publishing.md](docs/publishing.md).
-- `hash-design mcp` runs the MCP server on stdio from the published package: `claude mcp add hash-design -- npx -y hash-design mcp`. The server moved from `packages/mcp/src/server.ts` to `packages/core/src/mcp.ts` (exported as `hash-design/mcp`), and `hash-design` now depends on `@modelcontextprotocol/sdk` and `zod`; the CLI loads them only for this command. `hash-design` 0.1.0 does not have it; until the next release, `npx -y hash-design-mcp@0.1.0` still works. The smoke test drives both `hash-design mcp` and the `packages/mcp` wrapper, and `release-check` requires `dist/mcp.js` and the server's dependencies in the tarball.
+- `hash-design mcp` runs the MCP server on stdio from the published package: `claude mcp add hash-design -- npx -y hash-design mcp`. The server moved from `packages/mcp/src/server.ts` to `packages/core/src/mcp.ts` (exported as `hash-design/mcp`), and `hash-design` now depends on `@modelcontextprotocol/sdk` and `zod`; the CLI loads them only for this command. `hash-design` 0.1.0 does not have it. The smoke test drives both `hash-design mcp` and the `packages/mcp` wrapper, and `release-check` requires `dist/mcp.js` and the server's dependencies in the tarball.
 
 ### Changed
 
@@ -49,7 +59,7 @@ The format follows [Keep a Changelog](https://keepachangelog.com/en/1.1.0/), and
 - The Skill, MCP tool descriptions and server instructions, CLI help, `docs/mapping.md`, `docs/architecture.md`, `docs/mcp-tools.md` (each with its Chinese version), `CONTRIBUTING.md`, the issue and pull request templates and all five READMEs describe v2.
 - The four example runs are kept as **hash-design/v1 records** rather than re-rolled: their `roll.json` files still say `hash-design/v1`, each example README says so and points to commit `475ba16` to reproduce them, and the README hero caption and Showcase section say they are v1 runs. `examples.test.ts` checks that they are labelled v1 and that every preview still scores at least 90 on the critique; `scripts/examples.mjs` refuses to re-roll a v1 record or rebuild its compare page.
 - `hash-design-mcp` is no longer published to npm. `packages/mcp` stays in the repository as a private workspace (`"private": true`, so it cannot be published by accident) and is now a thin wrapper that re-exports the server from `hash-design`, so `node …/packages/mcp/dist/bin.js` keeps working in a clone.
-- The READMEs install from npm: `npx -y hash-design skill install --dir .` and `claude mcp add hash-design -- npx -y hash-design mcp` (with the `hash-design-mcp@0.1.0` fallback until 0.2.0), a "tell your agent" line built on those two commands, a real npm version badge, and a From source section for contributors. The not-on-npm callout and badge are gone. `packages/core/README.md` (the npm page), `docs/mcp-tools*.md`, `docs/architecture*.md` and `docs/publishing*.md` match.
+- The READMEs install from npm: `npx -y hash-design skill install --dir .` and `claude mcp add hash-design -- npx -y hash-design mcp`, a "tell your agent" line built on those two commands, a real npm version badge, and a From source section for contributors. The not-on-npm callout and badge are gone. `packages/core/README.md` (the npm page), `docs/mcp-tools*.md`, `docs/architecture*.md` and `docs/publishing*.md` match.
 - After a roll the agent now replies with one line per direction and stops; previews and the compare page are rendered when the user answers `render` (the MCP prompt, server instructions and Skill follow the same stop points). A number builds that direction straight away.
 - `skill install` defaults to `claude,agents` instead of `claude,cursor` (`both` still means the old pair). Cursor reads `.agents/skills/`, so it is still covered.
 - `hash-design roll --count` rejects anything but a whole number from 1 to 12, and `--out` with `--format md|json` is an error instead of being ignored.
@@ -91,5 +101,6 @@ First complete version. Published to npm on 2026-11-02 (see the note at the top)
 - **Example**: Fourth Lane Bakery, a full run from facts to five independently rendered previews, a compare page and screenshots, published on GitHub Pages.
 - **Tooling**: Vitest suite (core, CLI, MCP over in-memory transport, sync and example consistency), stdio smoke test, ESLint, Prettier, GitHub Actions CI on Node 20 / 22 / 24 with `npm pack --dry-run`, and a Pages workflow.
 
-[Unreleased]: https://github.com/qybaihe/hash-design/compare/ec5398a...HEAD
+[Unreleased]: https://github.com/qybaihe/hash-design/compare/v0.2.0...HEAD
+[0.2.0]: https://github.com/qybaihe/hash-design/compare/ec5398a...v0.2.0
 [0.1.0]: https://github.com/qybaihe/hash-design/tree/ec5398a

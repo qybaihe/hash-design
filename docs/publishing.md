@@ -4,7 +4,7 @@
 
 This page is for maintainers. One package is published to npm: **`hash-design`** (`packages/core`). Releases are published by GitHub Actions with [npm Trusted Publishing](https://docs.npmjs.com/trusted-publishers) (OIDC): no npm token is created, stored as a secret or read by the workflow.
 
-Where things stand: `hash-design@0.1.0` was published by hand on 2026-11-02 from commit `475ba16` (so the package exists and a Trusted Publisher can be attached to it). Every later version goes through the workflow, once:
+Where things stand: `hash-design@0.1.0` was published by hand on 2026-11-02 from commit `475ba16` (so the package exists and a Trusted Publisher can be attached to it). Every later version, starting with 0.2.0, goes through the workflow, once:
 
 1. [the Trusted Publisher is added to `hash-design` on npmjs.com](#add-the-trusted-publisher-to-hash-design) (once), then
 2. each version follows the [release steps](#release-steps).
@@ -23,13 +23,13 @@ The root `package.json` is private too. All three `package.json` files share one
 From 0.2.0 the `hash-design` package contains the MCP server (`packages/core/src/mcp.ts`) and its dependencies (`@modelcontextprotocol/sdk`, `zod`), so the one package covers everything:
 
 ```bash
-npx -y hash-design skill install --target both --dir .   # the Skill
+npx -y hash-design skill install --dir .                 # the Skill
 claude mcp add hash-design -- npx -y hash-design mcp     # the MCP server (hash-design >= 0.2.0)
 ```
 
-hash-design 0.1.0 does not have the `mcp` command. Until 0.2.0 is published, the server comes from `hash-design-mcp@0.1.0`, which the one-time manual publish of 0.1.0 put on npm and which still works (`claude mcp add hash-design -- npx -y hash-design-mcp@0.1.0`), or from a clone (`node ~/hash-design/packages/mcp/dist/bin.js`). `packages/mcp` stays in the repository as that private wrapper.
+hash-design 0.1.0 does not have the `mcp` command. In a clone the same server also runs as `node ~/hash-design/packages/mcp/dist/bin.js`: `packages/mcp` stays in the repository as that private wrapper.
 
-`hash-design-mcp` gets no new versions. Once 0.2.0 is out, a maintainer can deprecate it so people who find it are pointed at the new command. This only changes registry metadata and publishes nothing; do not run it before 0.2.0, because until then it is the documented fallback:
+`hash-design-mcp` gets no new versions; its 0.1.0, published by hand together with `hash-design@0.1.0`, is the hash-design/v1 server, and the READMEs no longer mention it. Once 0.2.0 is on npm, a maintainer can deprecate it so people who find it are pointed at the new command. This only changes registry metadata and publishes nothing:
 
 ```bash
 npm deprecate hash-design-mcp "Use npx -y hash-design mcp (hash-design 0.2.0 or later)"
@@ -118,7 +118,7 @@ Two things to keep in mind:
 
 `npm run release:check` also runs in CI on every push and pull request, so a manifest that is no longer publishable, or a `packages/mcp` that is no longer private, fails CI before a release is attempted.
 
-After 0.2.0 is on npm: remove the `hash-design-mcp@0.1.0` fallback notes from the five READMEs, `packages/core/README.md` and `docs/mcp-tools*.md`, and deprecate `hash-design-mcp` as above.
+After 0.2.0 is on npm, deprecate `hash-design-mcp` as above.
 
 ## When the publish step fails
 
