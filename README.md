@@ -22,7 +22,7 @@
 
 **[Live examples](https://qybaihe.github.io/hash-design/) · [Mapping spec](docs/mapping.md) · [MCP reference](docs/mcp-tools.md) · [Changelog](CHANGELOG.md)**
 
-[Quick start](#quick-start) · [How it works](#how-it-works) · [Showcase](#showcase) · [Reference](#reference) · [FAQ](#faq)
+[Showcase](#showcase) · [Quick start](#quick-start) · [How it works](#how-it-works) · [Reference](#reference) · [FAQ](#faq)
 
 **Tell your agent** (Claude Code, Cursor, Codex, Windsurf, VS Code Copilot…):
 
@@ -35,6 +35,34 @@ https://github.com/qybaihe/hash-design#quick-start.
 </div>
 
 ---
+
+## Showcase
+
+Four full runs, each from its own fact sheet and a fixed seed that only makes it reproducible. They were rolled with **hash-design/v1**, the 40-branch library that v2 replaced, and are kept as records of real runs: their refs do not reproduce under v2, and their plates are labelled with v1 branch names. Every preview was rendered by its own sub-agent that saw only its brief, and every one still scores at least 90/100 on `critique_page`. All of them are on the [examples index](https://qybaihe.github.io/hash-design/). Each plate below is one roll: its five directions side by side.
+
+### Fourth Lane Bakery (第四巷面包店) — a neighbourhood bakery · Chinese page
+
+[![Fourth Lane Bakery: five rolled directions side by side — Bureaucratic form, Bauhaus primary, Ink and seal, Risograph duotone, Hong Kong shop sign](docs/assets/showcase/fourth-lane-bakery.png)](examples/fourth-lane-bakery)
+
+Seed `fourth-lane-bakery` · `critique_page` 96–100 · brief adherence 100 · [example folder](examples/fourth-lane-bakery): facts, briefs, previews and the process
+
+### Sluice — a self-hosted webhook inbox · English page
+
+[![Sluice: five rolled directions side by side — Record sleeve, Gallery catalogue, Terminal phosphor, Academic paper, Lab notebook](docs/assets/showcase/sluice.png)](examples/sluice)
+
+Seed `sluice` · `critique_page` 92–96 · brief adherence 90–100 · [example folder](examples/sluice): facts, briefs, previews and the process
+
+### Bridge No.2 Cycle Works (二号桥单车铺) — a bicycle repair shop · Chinese page
+
+[![Bridge No.2 Cycle Works: five rolled directions side by side — Swiss grid, Couture lookbook, Ticket stub, Game manual, Chinese almanac](docs/assets/showcase/bridge-two-bikes.png)](examples/bridge-two-bikes)
+
+Seed `bridge-two-bikes-5` · `critique_page` 96–100 · brief adherence 100 · [example folder](examples/bridge-two-bikes): facts, briefs, previews and the process
+
+### Causeway — a one-day music festival on a tidal island · English page
+
+[![Causeway: five rolled directions side by side — Engineering plate, Topographic map, Warm handmade, Editorial magazine, Memphis pop](docs/assets/showcase/causeway-festival.png)](examples/causeway-festival)
+
+Seed `causeway-festival-6` · `critique_page` 96–100 · brief adherence 100 · [example folder](examples/causeway-festival): facts, briefs, previews and the process
 
 ## What hash-design does
 
@@ -291,34 +319,6 @@ Run `hash-design brief 6ebe9acd06cbf4810ad2989965b22bc39bd527084bdda2964f9f0d49e
 - for a non-web scenario, a Scenario section: format, canvas, file structure, slide / screen count, how the layout, anchor and motion translate, and the scenario's rules and must-nots
 
 Briefs are written for agents and are bilingual: headings carry Chinese and English labels, and `language` (`zh` or `en`, auto-detected from the subject and facts) switches the instructions, the scenario text and whether CJK webfonts are loaded. The global ban texts are currently written in Chinese only.
-
-## Showcase
-
-Four full runs, each from its own fact sheet and a fixed seed that only makes it reproducible. They were rolled with **hash-design/v1**, the 40-branch library that v2 replaced, and are kept as records of real runs: their refs do not reproduce under v2, and their plates are labelled with v1 branch names. Every preview was rendered by its own sub-agent that saw only its brief, and every one still scores at least 90/100 on `critique_page`. All of them are on the [examples index](https://qybaihe.github.io/hash-design/). Each plate below is one roll: its five directions side by side.
-
-### Fourth Lane Bakery (第四巷面包店) — a neighbourhood bakery · Chinese page
-
-[![Fourth Lane Bakery: five rolled directions side by side — Bureaucratic form, Bauhaus primary, Ink and seal, Risograph duotone, Hong Kong shop sign](docs/assets/showcase/fourth-lane-bakery.png)](examples/fourth-lane-bakery)
-
-Seed `fourth-lane-bakery` · `critique_page` 96–100 · brief adherence 100 · [example folder](examples/fourth-lane-bakery): facts, briefs, previews and the process
-
-### Sluice — a self-hosted webhook inbox · English page
-
-[![Sluice: five rolled directions side by side — Record sleeve, Gallery catalogue, Terminal phosphor, Academic paper, Lab notebook](docs/assets/showcase/sluice.png)](examples/sluice)
-
-Seed `sluice` · `critique_page` 92–96 · brief adherence 90–100 · [example folder](examples/sluice): facts, briefs, previews and the process
-
-### Bridge No.2 Cycle Works (二号桥单车铺) — a bicycle repair shop · Chinese page
-
-[![Bridge No.2 Cycle Works: five rolled directions side by side — Swiss grid, Couture lookbook, Ticket stub, Game manual, Chinese almanac](docs/assets/showcase/bridge-two-bikes.png)](examples/bridge-two-bikes)
-
-Seed `bridge-two-bikes-5` · `critique_page` 96–100 · brief adherence 100 · [example folder](examples/bridge-two-bikes): facts, briefs, previews and the process
-
-### Causeway — a one-day music festival on a tidal island · English page
-
-[![Causeway: five rolled directions side by side — Engineering plate, Topographic map, Warm handmade, Editorial magazine, Memphis pop](docs/assets/showcase/causeway-festival.png)](examples/causeway-festival)
-
-Seed `causeway-festival-6` · `critique_page` 96–100 · brief adherence 100 · [example folder](examples/causeway-festival): facts, briefs, previews and the process
 
 ## Reference
 

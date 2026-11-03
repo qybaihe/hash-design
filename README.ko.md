@@ -22,7 +22,7 @@
 
 **[라이브 예시](https://qybaihe.github.io/hash-design/) · [매핑 명세](docs/mapping.md) · [MCP 레퍼런스](docs/mcp-tools.md) · [변경 기록](CHANGELOG.md)**
 
-[빠른 시작](#빠른-시작) · [작동 방식](#작동-방식) · [쇼케이스](#쇼케이스) · [레퍼런스](#레퍼런스) · [자주 묻는 질문](#자주-묻는-질문)
+[쇼케이스](#쇼케이스) · [빠른 시작](#빠른-시작) · [작동 방식](#작동-방식) · [레퍼런스](#레퍼런스) · [자주 묻는 질문](#자주-묻는-질문)
 
 **에이전트에게 이렇게 말하세요** (Claude Code, Cursor, Codex, Windsurf, VS Code Copilot 등):
 
@@ -35,6 +35,34 @@
 </div>
 
 ---
+
+## 쇼케이스
+
+전체 과정을 실행한 예시 네 개입니다. 각각 자기 팩트 시트와 고정 seed를 씁니다(seed는 재현용일 뿐입니다). 이 예시들은 v2가 대체한 브랜치 40개짜리 라이브러리인 **hash-design/v1**로 롤했으며, 실제 실행 기록으로 남겨 두었습니다. 그래서 ref는 v2에서 재현되지 않고, 이미지에는 v1 브랜치 이름이 붙어 있습니다. 각 프리뷰는 자기 브리프만 본 서브 에이전트가 만들었고, 모두 지금도 `critique_page`에서 90/100 이상입니다. 전부 [예시 목록](https://qybaihe.github.io/hash-design/)에 있습니다. 아래 각 이미지는 한 번의 롤이며, 다섯 방향을 나란히 보여 줍니다.
+
+### Fourth Lane Bakery (第四巷面包店) — 동네 빵집 · 중국어 페이지
+
+[![Fourth Lane Bakery: 롤로 뽑은 다섯 방향을 나란히 — Bureaucratic form, Bauhaus primary, Ink and seal, Risograph duotone, Hong Kong shop sign](docs/assets/showcase/fourth-lane-bakery.png)](examples/fourth-lane-bakery)
+
+seed `fourth-lane-bakery` · `critique_page` 96–100 · 브리프 준수도 100 · [예시 폴더](examples/fourth-lane-bakery): 팩트, 브리프, 프리뷰, 작업 과정
+
+### Sluice — 셀프 호스팅 웹훅 수신함 · 영어 페이지
+
+[![Sluice: 롤로 뽑은 다섯 방향을 나란히 — Record sleeve, Gallery catalogue, Terminal phosphor, Academic paper, Lab notebook](docs/assets/showcase/sluice.png)](examples/sluice)
+
+seed `sluice` · `critique_page` 92–96 · 브리프 준수도 90–100 · [예시 폴더](examples/sluice): 팩트, 브리프, 프리뷰, 작업 과정
+
+### Bridge No.2 Cycle Works (二号桥单车铺) — 다리 밑 자전거 수리점 · 중국어 페이지
+
+[![Bridge No.2 Cycle Works: 롤로 뽑은 다섯 방향을 나란히 — Swiss grid, Couture lookbook, Ticket stub, Game manual, Chinese almanac](docs/assets/showcase/bridge-two-bikes.png)](examples/bridge-two-bikes)
+
+seed `bridge-two-bikes-5` · `critique_page` 96–100 · 브리프 준수도 100 · [예시 폴더](examples/bridge-two-bikes): 팩트, 브리프, 프리뷰, 작업 과정
+
+### Causeway — 썰물 때만 건너가는 섬의 하루짜리 음악 축제 · 영어 페이지
+
+[![Causeway: 롤로 뽑은 다섯 방향을 나란히 — Engineering plate, Topographic map, Warm handmade, Editorial magazine, Memphis pop](docs/assets/showcase/causeway-festival.png)](examples/causeway-festival)
+
+seed `causeway-festival-6` · `critique_page` 96–100 · 브리프 준수도 100 · [예시 폴더](examples/causeway-festival): 팩트, 브리프, 프리뷰, 작업 과정
 
 ## hash-design가 하는 일
 
@@ -291,34 +319,6 @@ flowchart LR
 - 웹이 아닌 시나리오라면 "시나리오" 절: 포맷, 캔버스, 파일 구조, 슬라이드/화면 수, 레이아웃·앵커·모션을 옮기는 방법, 시나리오 규칙과 금지 사항
 
 브리프는 에이전트가 읽도록 작성되며 2개 국어로 되어 있습니다. 제목에는 중국어와 영어 레이블이 함께 붙고, `language`(`zh` 또는 `en`, 주제와 팩트에서 자동 감지)에 따라 지시문, 시나리오 설명, CJK 웹폰트 로드 여부가 바뀝니다. 전역 금지 규칙 문구는 현재 중국어로만 작성되어 있습니다.
-
-## 쇼케이스
-
-전체 과정을 실행한 예시 네 개입니다. 각각 자기 팩트 시트와 고정 seed를 씁니다(seed는 재현용일 뿐입니다). 이 예시들은 v2가 대체한 브랜치 40개짜리 라이브러리인 **hash-design/v1**로 롤했으며, 실제 실행 기록으로 남겨 두었습니다. 그래서 ref는 v2에서 재현되지 않고, 이미지에는 v1 브랜치 이름이 붙어 있습니다. 각 프리뷰는 자기 브리프만 본 서브 에이전트가 만들었고, 모두 지금도 `critique_page`에서 90/100 이상입니다. 전부 [예시 목록](https://qybaihe.github.io/hash-design/)에 있습니다. 아래 각 이미지는 한 번의 롤이며, 다섯 방향을 나란히 보여 줍니다.
-
-### Fourth Lane Bakery (第四巷面包店) — 동네 빵집 · 중국어 페이지
-
-[![Fourth Lane Bakery: 롤로 뽑은 다섯 방향을 나란히 — Bureaucratic form, Bauhaus primary, Ink and seal, Risograph duotone, Hong Kong shop sign](docs/assets/showcase/fourth-lane-bakery.png)](examples/fourth-lane-bakery)
-
-seed `fourth-lane-bakery` · `critique_page` 96–100 · 브리프 준수도 100 · [예시 폴더](examples/fourth-lane-bakery): 팩트, 브리프, 프리뷰, 작업 과정
-
-### Sluice — 셀프 호스팅 웹훅 수신함 · 영어 페이지
-
-[![Sluice: 롤로 뽑은 다섯 방향을 나란히 — Record sleeve, Gallery catalogue, Terminal phosphor, Academic paper, Lab notebook](docs/assets/showcase/sluice.png)](examples/sluice)
-
-seed `sluice` · `critique_page` 92–96 · 브리프 준수도 90–100 · [예시 폴더](examples/sluice): 팩트, 브리프, 프리뷰, 작업 과정
-
-### Bridge No.2 Cycle Works (二号桥单车铺) — 다리 밑 자전거 수리점 · 중국어 페이지
-
-[![Bridge No.2 Cycle Works: 롤로 뽑은 다섯 방향을 나란히 — Swiss grid, Couture lookbook, Ticket stub, Game manual, Chinese almanac](docs/assets/showcase/bridge-two-bikes.png)](examples/bridge-two-bikes)
-
-seed `bridge-two-bikes-5` · `critique_page` 96–100 · 브리프 준수도 100 · [예시 폴더](examples/bridge-two-bikes): 팩트, 브리프, 프리뷰, 작업 과정
-
-### Causeway — 썰물 때만 건너가는 섬의 하루짜리 음악 축제 · 영어 페이지
-
-[![Causeway: 롤로 뽑은 다섯 방향을 나란히 — Engineering plate, Topographic map, Warm handmade, Editorial magazine, Memphis pop](docs/assets/showcase/causeway-festival.png)](examples/causeway-festival)
-
-seed `causeway-festival-6` · `critique_page` 96–100 · 브리프 준수도 100 · [예시 폴더](examples/causeway-festival): 팩트, 브리프, 프리뷰, 작업 과정
 
 ## 레퍼런스
 

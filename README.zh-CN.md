@@ -22,7 +22,7 @@
 
 **[在线示例](https://qybaihe.github.io/hash-design/) · [映射规范](docs/mapping.zh-CN.md) · [MCP 参考](docs/mcp-tools.zh-CN.md) · [更新日志](CHANGELOG.md)**
 
-[快速开始](#快速开始) · [它怎么工作](#它怎么工作) · [案例展示](#案例展示) · [参考](#参考) · [常见问题](#常见问题)
+[案例展示](#案例展示) · [快速开始](#快速开始) · [它怎么工作](#它怎么工作) · [参考](#参考) · [常见问题](#常见问题)
 
 **直接告诉你的 Agent**（Claude Code、Cursor、Codex、Windsurf、VS Code Copilot……）：
 
@@ -35,6 +35,34 @@
 </div>
 
 ---
+
+## 案例展示
+
+4 次完整运行，各有自己的事实清单和固定 seed（固定 seed 只是为了可复现）。它们是用 **hash-design/v1**（已被 v2 取代的 40 分支库）掷出的，作为真实运行的记录保留：它们的 ref 在 v2 下无法复现，拼图上标的也是 v1 的分支名。每个预览都由只看得到自己那份 brief 的子 Agent 独立完成，`critique_page` 仍然全部不低于 90 分。所有示例都在[示例首页](https://qybaihe.github.io/hash-design/)。下面每张图是一次掷骰：5 个方向并排。
+
+### 第四巷面包店：街区面包店 · 中文页面
+
+[![第四巷面包店：5 个随机方向并排——公文表格、包豪斯、水墨印章、Riso 双色套印、港式招牌](docs/assets/showcase/fourth-lane-bakery.png)](examples/fourth-lane-bakery)
+
+seed `fourth-lane-bakery` · `critique_page` 96–100 · brief 遵守度 100 · [示例目录](examples/fourth-lane-bakery)：事实清单、brief、预览和过程记录
+
+### Sluice：自托管的 webhook 收件箱 · 英文页面
+
+[![Sluice：5 个随机方向并排——唱片封套、美术馆图录、终端荧光、学术论文、方格实验本](docs/assets/showcase/sluice.png)](examples/sluice)
+
+seed `sluice` · `critique_page` 92–96 · brief 遵守度 90–100 · [示例目录](examples/sluice)：事实清单、brief、预览和过程记录
+
+### 二号桥单车铺：桥洞下的单车修理铺 · 中文页面
+
+[![二号桥单车铺：5 个随机方向并排——瑞士网格、时装画册、票根、游戏说明书、老黄历](docs/assets/showcase/bridge-two-bikes.png)](examples/bridge-two-bikes)
+
+seed `bridge-two-bikes-5` · `critique_page` 96–100 · brief 遵守度 100 · [示例目录](examples/bridge-two-bikes)：事实清单、brief、预览和过程记录
+
+### Causeway：潮汐岛上的一日音乐节 · 英文页面
+
+[![Causeway：5 个随机方向并排——工程图版、地形图、手作温度、杂志编辑、孟菲斯](docs/assets/showcase/causeway-festival.png)](examples/causeway-festival)
+
+seed `causeway-festival-6` · `critique_page` 96–100 · brief 遵守度 100 · [示例目录](examples/causeway-festival)：事实清单、brief、预览和过程记录
 
 ## hash-design 做什么
 
@@ -291,34 +319,6 @@ flowchart LR
 - 非 web 场景还有一节「场景」：格式、画布、文件结构、页数 / 屏数、版式 / 锚点 / 动效如何落地，以及场景规则和禁忌
 
 brief 是写给 Agent 看的，标题中英双语。`language`（`zh` 或 `en`，默认根据 subject 和 facts 自动判断）决定执行指令和场景说明用哪种语言，以及是否加载中文字体。全局禁令的文字目前只有中文。
-
-## 案例展示
-
-4 次完整运行，各有自己的事实清单和固定 seed（固定 seed 只是为了可复现）。它们是用 **hash-design/v1**（已被 v2 取代的 40 分支库）掷出的，作为真实运行的记录保留：它们的 ref 在 v2 下无法复现，拼图上标的也是 v1 的分支名。每个预览都由只看得到自己那份 brief 的子 Agent 独立完成，`critique_page` 仍然全部不低于 90 分。所有示例都在[示例首页](https://qybaihe.github.io/hash-design/)。下面每张图是一次掷骰：5 个方向并排。
-
-### 第四巷面包店：街区面包店 · 中文页面
-
-[![第四巷面包店：5 个随机方向并排——公文表格、包豪斯、水墨印章、Riso 双色套印、港式招牌](docs/assets/showcase/fourth-lane-bakery.png)](examples/fourth-lane-bakery)
-
-seed `fourth-lane-bakery` · `critique_page` 96–100 · brief 遵守度 100 · [示例目录](examples/fourth-lane-bakery)：事实清单、brief、预览和过程记录
-
-### Sluice：自托管的 webhook 收件箱 · 英文页面
-
-[![Sluice：5 个随机方向并排——唱片封套、美术馆图录、终端荧光、学术论文、方格实验本](docs/assets/showcase/sluice.png)](examples/sluice)
-
-seed `sluice` · `critique_page` 92–96 · brief 遵守度 90–100 · [示例目录](examples/sluice)：事实清单、brief、预览和过程记录
-
-### 二号桥单车铺：桥洞下的单车修理铺 · 中文页面
-
-[![二号桥单车铺：5 个随机方向并排——瑞士网格、时装画册、票根、游戏说明书、老黄历](docs/assets/showcase/bridge-two-bikes.png)](examples/bridge-two-bikes)
-
-seed `bridge-two-bikes-5` · `critique_page` 96–100 · brief 遵守度 100 · [示例目录](examples/bridge-two-bikes)：事实清单、brief、预览和过程记录
-
-### Causeway：潮汐岛上的一日音乐节 · 英文页面
-
-[![Causeway：5 个随机方向并排——工程图版、地形图、手作温度、杂志编辑、孟菲斯](docs/assets/showcase/causeway-festival.png)](examples/causeway-festival)
-
-seed `causeway-festival-6` · `critique_page` 96–100 · brief 遵守度 100 · [示例目录](examples/causeway-festival)：事实清单、brief、预览和过程记录
 
 ## 参考
 
