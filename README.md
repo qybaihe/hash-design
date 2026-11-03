@@ -4,9 +4,9 @@
 
 # hash-design
 
-<p align="center"><a href="https://qybaihe.github.io/hash-design/causeway-festival/compare.html"><picture><source media="(prefers-reduced-motion: reduce)" srcset="docs/assets/hero.png"><img src="docs/assets/hero.gif" width="960" alt="Animation: /hash-design is picked in a prompt box and a landing page for Causeway is requested; five SHA-256 refs tick and lock; the five real previews (Engineering plate, Topographic map, Warm handmade, Editorial magazine, Memphis pop) pop in, then line up as a compare row: pick one, reproducible from its ref"></picture></a></p>
+<p align="center"><a href="https://qybaihe.github.io/hash-design/causeway-festival/compare.html"><picture><source media="(prefers-reduced-motion: reduce)" srcset="docs/assets/hero.png"><img src="docs/assets/hero.gif" width="960" alt="Animation: /hash-design is picked in a prompt box and a landing page for Causeway is requested; five SHA-256 refs tick and lock; the five real previews (Jost / IBM Plex Serif, Marcellus SC / Libre Franklin, Xanh Mono / DotGothic16, Hanken Grotesk / Atkinson Hyperlegible, Martian Mono / Sorts Mill Goudy) pop in, then line up as a compare row: pick one, reproducible from its ref"></picture></a></p>
 
-<p align="center"><sub>Real output, not a mock-up: <a href="examples/causeway-festival">examples/causeway-festival</a>, each preview built by its own sub-agent from one frozen brief.<br><a href="https://qybaihe.github.io/hash-design/"><b>Browse all 4 live examples →</b></a> · a run from hash-design/v1 (see <a href="#showcase">Showcase</a>) · <a href="docs/assets/hero.png">still image</a> · <a href="docs/assets/hero.mp4">MP4</a></sub></p>
+<p align="center"><sub>Real output, not a mock-up: <a href="examples/causeway-festival">examples/causeway-festival</a>, each preview built by its own sub-agent from one frozen brief.<br><a href="https://qybaihe.github.io/hash-design/"><b>Browse all 4 live examples →</b></a> · a hash-design/v2 run, seed <code>causeway-festival</code> · <a href="docs/assets/hero.png">still image</a> · <a href="docs/assets/hero.mp4">MP4</a></sub></p>
 
 ### One prompt, five design directions, picked by true-random SHA-256 hashes instead of the model.
 
@@ -38,31 +38,31 @@ https://github.com/qybaihe/hash-design#quick-start.
 
 ## Showcase
 
-Four full runs, each from its own fact sheet and a fixed seed that only makes it reproducible. They were rolled with **hash-design/v1**, the 40-branch library that v2 replaced, and are kept as records of real runs: their refs do not reproduce under v2, and their plates are labelled with v1 branch names. Every preview was rendered by its own sub-agent that saw only its brief, and every one still scores at least 90/100 on `critique_page`. All of them are on the [examples index](https://qybaihe.github.io/hash-design/). Each plate below is one roll: its five directions side by side.
+Four full runs, each from its own fact sheet and a fixed seed that only makes it reproducible: the seed is the example's folder name, used once with no re-rolls. All four are **hash-design/v2** runs, so every brief is exactly what its ref reproduces today (`examples.test.ts` checks it byte for byte). Every preview was rendered by its own sub-agent that saw only its brief and the fact sheet; all 20 score 100/100 on `critique_page`, with brief adherence 100. All of them are on the [examples index](https://qybaihe.github.io/hash-design/). Each plate below is one roll: its five directions side by side.
 
 ### Fourth Lane Bakery (第四巷面包店) — a neighbourhood bakery · Chinese page
 
-[![Fourth Lane Bakery: five rolled directions side by side — Bureaucratic form, Bauhaus primary, Ink and seal, Risograph duotone, Hong Kong shop sign](docs/assets/showcase/fourth-lane-bakery.png)](examples/fourth-lane-bakery)
+[![Fourth Lane Bakery: five rolled directions side by side — Holtwood One SC / IBM Plex Sans Condensed, Bevan / Red Hat Text, Italiana / Arimo, Bodoni Moda / Kumbh Sans, Klee One / Alegreya Sans](docs/assets/showcase/fourth-lane-bakery.png)](examples/fourth-lane-bakery)
 
-Seed `fourth-lane-bakery` · `critique_page` 96–100 · brief adherence 100 · [example folder](examples/fourth-lane-bakery): facts, briefs, previews and the process
+Seed `fourth-lane-bakery` · `critique_page` 100 · brief adherence 100 · [example folder](examples/fourth-lane-bakery): facts, briefs, previews and the process
 
 ### Sluice — a self-hosted webhook inbox · English page
 
-[![Sluice: five rolled directions side by side — Record sleeve, Gallery catalogue, Terminal phosphor, Academic paper, Lab notebook](docs/assets/showcase/sluice.png)](examples/sluice)
+[![Sluice: five rolled directions side by side — EB Garamond / Young Serif, Zen Old Mincho / Josefin Sans, Permanent Marker / IBM Plex Sans Condensed, Cormorant SC / Overpass, Bodoni Moda / Literata](docs/assets/showcase/sluice.png)](examples/sluice)
 
-Seed `sluice` · `critique_page` 92–96 · brief adherence 90–100 · [example folder](examples/sluice): facts, briefs, previews and the process
+Seed `sluice` · `critique_page` 100 · brief adherence 100 · [example folder](examples/sluice): facts, briefs, previews and the process
 
 ### Bridge No.2 Cycle Works (二号桥单车铺) — a bicycle repair shop · Chinese page
 
-[![Bridge No.2 Cycle Works: five rolled directions side by side — Swiss grid, Couture lookbook, Ticket stub, Game manual, Chinese almanac](docs/assets/showcase/bridge-two-bikes.png)](examples/bridge-two-bikes)
+[![Bridge No.2 Cycle Works: five rolled directions side by side — Libre Bodoni / Old Standard TT, Michroma / Libre Franklin, Homemade Apple / Hanken Grotesk, Alfa Slab One / Hanken Grotesk, Xanh Mono / Libre Baskerville](docs/assets/showcase/bridge-two-bikes.png)](examples/bridge-two-bikes)
 
-Seed `bridge-two-bikes-5` · `critique_page` 96–100 · brief adherence 100 · [example folder](examples/bridge-two-bikes): facts, briefs, previews and the process
+Seed `bridge-two-bikes` · `critique_page` 100 · brief adherence 100 · [example folder](examples/bridge-two-bikes): facts, briefs, previews and the process
 
 ### Causeway — a one-day music festival on a tidal island · English page
 
-[![Causeway: five rolled directions side by side — Engineering plate, Topographic map, Warm handmade, Editorial magazine, Memphis pop](docs/assets/showcase/causeway-festival.png)](examples/causeway-festival)
+[![Causeway: five rolled directions side by side — Jost / IBM Plex Serif, Marcellus SC / Libre Franklin, Xanh Mono / DotGothic16, Hanken Grotesk / Atkinson Hyperlegible, Martian Mono / Sorts Mill Goudy](docs/assets/showcase/causeway-festival.png)](examples/causeway-festival)
 
-Seed `causeway-festival-6` · `critique_page` 96–100 · brief adherence 100 · [example folder](examples/causeway-festival): facts, briefs, previews and the process
+Seed `causeway-festival` · `critique_page` 100 · brief adherence 100 · [example folder](examples/causeway-festival): facts, briefs, previews and the process
 
 ## What hash-design does
 
@@ -470,7 +470,7 @@ packages/core/           # npm: hash-design — data, mapping, briefs, critique,
   src/mcp.ts             #   MCP server (hash-design mcp)
 packages/mcp/            # private wrapper: runs the same MCP server from a clone (not on npm)
 skills/hash-design/      # Skill source (.claude/ and .cursor/ hold synced copies)
-examples/                # 4 full hash-design/v1 runs: facts → roll → 5 briefs → 5 previews → compare page → screenshots
+examples/                # 4 full hash-design/v2 runs: facts → roll → 5 briefs → 5 previews → compare page → screenshots
 docs/                    # architecture, mapping spec, MCP reference
 scripts/                 # sync / smoke / verify-fonts / examples / screenshot / hero / hero-gif / prepack
 ```
