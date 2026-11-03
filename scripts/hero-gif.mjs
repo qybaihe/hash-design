@@ -1,11 +1,9 @@
 #!/usr/bin/env node
 // Renders the animated README hero from one example's real roll and screenshots:
 //   1. a prompt box: "/hash-design" picked from an autocomplete, then a short request is typed
-//   2. "roll → 5 × SHA-256": five hex refs tick, then lock to the roll's real refs and branches
-//   3. the five real desktop screenshots pop in one after another, labelled with branch and ref
+//   2. "roll → 5 × SHA-256": five hex refs tick, then lock to the roll's real refs (polarity, hue and grid below each)
+//   3. the five real desktop screenshots pop in one after another, labelled with their faces and ref
 //   4. they shrink into a compare row: "Pick one · reproducible from its ref", then the loop restarts
-//
-// The examples are hash-design/v1 records, so their roll.json designs still carry a v1 branch; the labels come from it.
 //
 //   node scripts/hero-gif.mjs [example] [--fps 20]   default: causeway-festival
 //
@@ -55,9 +53,9 @@ function shot(slug) {
 const designs = roll.designs.map((d) => ({
   n: String(d.number).padStart(2, '0'),
   short: d.short,
-  probe: d.probe ? `+${d.probe}` : '',
-  id: d.branch.id,
-  label: d.branch.name.en,
+  probe: '',
+  id: `${d.palette.polarity} · ${Math.round(d.palette.hue)}° · ${d.layout.columns} col`,
+  label: `${d.type.display.family} / ${d.type.body.family}`,
   colors: [d.palette.colors.paper, d.palette.colors.ink, d.palette.colors.accent, d.palette.colors.accent2],
   img: shot(d.slug),
 }));

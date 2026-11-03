@@ -1,8 +1,7 @@
 #!/usr/bin/env node
 // Renders the README hero and the GitHub social preview from one example's real roll and screenshots:
-// one prompt at the top fans out into the five rolled directions, each labelled with its ref, branch and palette.
-//
-// The examples are hash-design/v1 records, so their roll.json designs still carry a v1 branch; the labels come from it.
+// one prompt at the top fans out into the five rolled directions, each labelled with its short ref, its display and
+// body faces and its palette.
 //
 //   node scripts/hero.mjs [example]   default: causeway-festival
 //
@@ -49,7 +48,7 @@ function shot(slug) {
 
 const cards = roll.designs
   .map((d) => {
-    const ref = d.short + (d.probe ? `+${d.probe}` : '');
+    const ref = d.short;
     const c = d.palette.colors;
     const chips = [c.paper, c.ink, c.accent, c.accent2]
       .map((hex) => `<i style="background:${esc(hex)}" title="${esc(hex)}"></i>`)
@@ -59,8 +58,8 @@ const cards = roll.designs
         <span class="ref" data-ref>${esc(ref)}</span>
         <div class="page"><img src="${shot(d.slug)}" alt=""></div>
         <figcaption>
-          <div class="name"><span class="n">${String(d.number).padStart(2, '0')}</span>${esc(d.branch.name.en)}</div>
-          <div class="slug"><span class="chips">${chips}</span>${esc(d.branch.id)}</div>
+          <div class="name"><span class="n">${String(d.number).padStart(2, '0')}</span><span class="faces">${esc(d.type.display.family)} <s>/</s> ${esc(d.type.body.family)}</span></div>
+          <div class="slug"><span class="chips">${chips}</span>${esc(d.palette.polarity)} · ${Math.round(d.palette.hue)}° · ${d.layout.columns} col</div>
         </figcaption>
       </figure>`;
   })
@@ -129,7 +128,9 @@ const html = `<!doctype html>
   .page { flex: 1; min-height: 0; border: 1.5px solid var(--ink); background: #fff; overflow: hidden; }
   .page img { display: block; width: 100%; height: 100%; object-fit: cover; object-position: top center; }
   figcaption { padding-top: 9px; }
-  .name { font: 600 17px/1.1 var(--cond); display: flex; gap: 7px; align-items: baseline; }
+  .name { font: 600 15.5px/1.15 var(--cond); display: flex; gap: 7px; align-items: baseline; white-space: nowrap; min-width: 0; }
+  .faces { overflow: hidden; text-overflow: ellipsis; min-width: 0; }
+  .faces s { text-decoration: none; color: var(--muted); font-weight: 500; }
   .name .n { font: 600 12px/1 var(--mono); color: var(--mark); }
   .slug { margin-top: 5px; font: 11px/1 var(--mono); color: var(--muted); display: flex; align-items: center; gap: 8px; }
   .chips { display: inline-flex; }
