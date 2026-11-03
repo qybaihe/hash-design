@@ -38,16 +38,16 @@ server 在本地以你的用户权限运行，不发起任何网络请求。相�
 | ---------- | ------------------- | ------------------------------------------ | ------------------------------------------------------------ |
 | `subject`  | string，必填        | —                                          | 页面是做什么的                                               |
 | `facts`    | string[]            | `[]`                                       | 页面唯一可以陈述的事实                                       |
-| `count`    | integer 1–12        | 5                                          |                                                              |
+| `count`    | integer 1–12        | 5                                          | 每个方向各是一个独立的哈希，约束不会降低上限                 |
 | `seed`     | string              | —                                          | 可复现的掷骰，仅用于示例/测试                                |
 | `language` | `zh` \| `en`        | 根据 subject 和 facts 自动判断             | brief 的语言                                                 |
 | `out_dir`  | string              | —                                          | 把 `roll.json`、`ROLL.md`、`briefs/NN-<short>.md` 冻结到这里 |
 | `detail`   | `full` \| `summary` | 有 `out_dir` 时为 `summary`，否则为 `full` | 是否把每份 brief 都内联在返回结果里                          |
 | 约束       | 见上文              |                                            |                                                              |
 
-返回两个文本块：（1）Markdown（汇总表、ref、写入的文件、`detail = full` 时的 brief，以及下一步）；（2）一个 JSON 对象 `{ source, library, constraints, designs: [{ number, ref, label, format? }] }`，供程序使用。`ref` 是 64 位十六进制哈希，`label` 是一行摘要，例如 `light · 156° · Libre Franklin / Atkinson Hyperlegible · 4 col`；只有非 web 的 `scenario` 才有 `format`。
+返回两个文本块：（1）Markdown（汇总表、ref、写入的文件、`detail = full` 时的 brief，以及要发给用户的 [reply](#回复协议)）；（2）一个 JSON 对象 `{ reply, source, library, constraints, designs: [{ number, ref, label, format? }] }`，供程序使用。`ref` 是 64 位十六进制哈希，`label` 是一行摘要，例如 `light · 156° · Libre Franklin / Atkinson Hyperlegible · 4 col`；只有非 web 的 `scenario` 才有 `format`。
 
-CLI：`hash-design roll --subject … --fact … --facts-file … --count … --seed … --out … --format md|json|summary [约束参数，如 --scenario deck]`。CLI 没有 `--language` 参数，始终自动判断。
+CLI：`hash-design roll --subject … --fact … --facts-file … --count … --seed … --out … --format md|json|summary|reply [约束参数，如 --scenario deck]`。`--format reply` 打印 reply（带 `--out` 时打印在文件列表之后）。CLI 没有 `--language` 参数，始终自动判断。
 
 ### `get_brief`
 
@@ -86,7 +86,7 @@ CLI：`hash-design critique <page.html> [--css <file>] [--brief <ref> | --roll <
 
 ### `build_compare_page`
 
-写出 `compare.html`：把每个预览放进缩放的 iframe 里并排展示，每张卡片标题为 `方向 <短哈希>`（英文 roll 为 `Direction <short hash>`），并写明深浅与色相、色块、字体、栅格、密度、语气和变数，带桌面 / 手机切换和聚焦模式（按键 1–9）。非 web 场景下，副标题和每张卡片会写明场景和格式；固定画布（`deck`、`poster`）按真实尺寸缩放，“桌面”按钮变为“画布”。预览应位于 `<previews_dir>/NN-<short>.html`，缺失的会被列出来。页面上的标签、按钮和操作说明跟随这次 roll 的语言（`roll.json` 里的 `content.language`，中文或英文）。
+写出 `compare.html`：把每个预览放进缩放的 iframe 里并排展示，每张卡片标题为 `方向 <短哈希>`（英文 roll 为 `Direction <short hash>`），并写明深浅与色相、色块、字体、栅格、密度、语气和变数，带桌面 / 手机切换和聚焦模式（按键 1–9）。非 web 场景下，副标题和每张卡片会写明场景和格式；固定画布（`deck`、`poster`）按真实尺寸缩放，“桌面”按钮变为“画布”。预览应位于 `<previews_dir>/NN-<short>.html`，缺失的会被列出来；全部齐全时返回第二段 [reply](#回复协议)。按键 1–9 聚焦前九个预览，←/→ 可以逐个切换全部预览。页面上的标签、按钮和操作说明跟随这次 roll 的语言（`roll.json` 里的 `content.language`，中文或英文）。
 
 | 参数           | 类型         | 默认值                            |
 | -------------- | ------------ | --------------------------------- |
@@ -98,6 +98,42 @@ CLI：`hash-design critique <page.html> [--css <file>] [--brief <ref> | --roll <
 
 CLI：`hash-design compare [--roll <roll.json>] [--out <compare.html>] [--previews <dir>] [--briefs <dir>] [--title <t>]`。
 
+## 回复协议
+
+Agent 对用户说什么是固定的，所以换哪个 Agent 都一样简短。库里的 `renderReply()` 从冻结的数据生成它；`roll_designs` 会返回它（JSON 块里也有 `reply`），`build_compare_page` 返回第二段，CLI 用 `roll --format reply` 和 `compare` 打印。Skill 要求 Agent 原样发给用户（用户用别的语言就翻译），然后停下。
+
+```text
+**hash-design** · N directions for “<subject>” · <scenario> · <true-random | seed …>
+
+1. **<Display face>** / <Body face> — <light|dark> paper, hue <H>° · <C>-column grid · anchor: <subject>[ · <format>] · `<short ref>`
+…
+
+Reply with a number to build that direction as the final <page|deck|app screens|dashboard|poster|email>, **render** to see all N as previews side by side first, or **reroll** for a new set.
+```
+
+| 用户回复          | Agent 做什么                                                           |
+| ----------------- | ---------------------------------------------------------------------- |
+| 编号              | 只按那份 brief 做正式产物，然后调用 `critique_page`                    |
+| `render` / 预览   | 每份 brief 一个独立预览，`build_compare_page`，发出第二段 reply 并停下 |
+| `reroll` / 重掷   | 重新掷（新的真随机哈希）                                               |
+| 混搭（"#2 + #4"） | 照做，并在文件里注明两个 ref                                           |
+
+每一行的字段都直接读自映射出的数字：标题和正文字体、纸面深浅和 OKLCH 色相、栅格栏数、首屏锚点、非 web 场景的格式，以及短 ref。非 web 场景会加上格式，并在问句里说出产物名称。对比页之后，标题行变为 `**hash-design** · N 个预览已并排：<路径>`，问句只问编号。中文 roll 的 reply 是中文。
+
+真实输出，来自 `hash-design roll --subject "第四巷面包店" --fact "周一休息" --seed reply-demo --count 3 --scenario app --format reply`：
+
+```text
+**hash-design** · 为「第四巷面包店」掷出 3 个方向 · 手机 App 界面 · seed reply-demo
+
+1. **Caveat** / Literata — 浅色纸，色相 330° · 5 栏网格 · 首屏锚点 initial · 顶部分段 + 返回栈 · `ea849a45`
+2. **Hanken Grotesk** / Crimson Pro — 浅色纸，色相 344° · 10 栏网格 · 首屏锚点 number · 单任务流程 · `f458a091`
+3. **Overpass** / Barlow Condensed — 浅色纸，色相 234° · 5 栏网格 · 首屏锚点 grid-diagram · 顶部分段 + 返回栈 · `a6b46334`
+
+回复编号，直接按该方向做正式 App 界面；回复「预览」先把 3 个方向都做成预览并排对比；回复「重掷」换一批。
+```
+
+`packages/core/test/reply.test.ts` 会对三次掷骰（web N=3、中文 deck N=7、email N=1）检查这个形状，并检查 Skill 里的示意与之一致。
+
 ## 资源
 
 | URI                      | 内容                                        |
@@ -107,7 +143,7 @@ CLI：`hash-design compare [--roll <roll.json>] [--out <compare.html>] [--previe
 
 ## Prompt
 
-`hash-design`，参数为 `subject`（必填）、`facts`（每行一条）、`count` 和 `scenario`。它会展开成一条用户消息，带 Agent 依次完成：用 `out_dir="design/hash-design"`、给定的场景、不带 seed 调用 `roll_designs` → 每份 brief 做一个预览 → 用 `roll_path` + `pick` 调用 `critique_page` → `build_compare_page` → 停下来等用户回复编号 → 按选中的 brief 做正式页面，并再评审一次。
+`hash-design`，参数为 `subject`（必填）、`facts`（每行一条）、`count` 和 `scenario`。它会展开成一条用户消息，带 Agent 依次完成：用 `out_dir="design/hash-design"`、给定的场景、不带 seed 调用 `roll_designs` → 发出 reply 并停下 → 用户回复“render”时：每份 brief 做一个预览，用 `roll_path` + `pick` 调用 `critique_page`，`build_compare_page`，发出它的 reply 并停下 → 用户回复编号时：按那份 brief 做正式产物，并再评审一次。
 
 ## 一次掷骰写出的文件
 

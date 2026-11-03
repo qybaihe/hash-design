@@ -20,6 +20,8 @@ A roll of N (1–12, default 5) is N hashes mapped one by one. Each design depen
 
 Seeded rolls are prefix-stable: design _i_ of a seeded roll is `sha256("hash-design/v2:<seed>:<i>")` whatever N is, so `--count 3` gives the first three designs of `--count 12`.
 
+Where N is set: `count` in MCP, `--count`/`-n` in the CLI, `DEFAULT_COUNT` / `MAX_COUNT` in the library, and the Skill reads it from the request ("3 directions", `/hash-design 3`). 12 is a product cap, not an algorithm limit: every direction becomes its own brief and its own independently rendered preview, and the compare page focuses the first nine by number key. Constraints never lower the cap, because they shape each design instead of removing candidates.
+
 Two directions of the same roll differ the way two random hashes differ: independently in every byte. Nothing forces them apart; with 256 values per byte and dozens of parameters, two identical designs would need two identical hashes.
 
 ## 3. Bytes → parameters
